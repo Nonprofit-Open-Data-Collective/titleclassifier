@@ -1,5 +1,11 @@
 These files contain a subset of Form 990 Part VII that contain only unique (non-duplicated) title strings. 
 
+```r
+# load data files directly from github by: 
+URL <- "https://github.com/Nonprofit-Open-Data-Collective/titleclassifier/blob/main/data-dev/2018-part-vii-unique-titles.rds?raw=true"
+d <- readRDS(gzcon(url( URL )))
+```
+
 There are a little over 900,000 unique title strings across across all files. 
 
 ```r
