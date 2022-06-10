@@ -1,4 +1,6 @@
-These files contain a subset of Form 990 Part VII that contain only unique title strings. 
+These files contain a subset of Form 990 Part VII that contain only unique (non-duplicated) title strings. 
+
+There are a little over 900,000 unique title strings across across all files. 
 
 ```r
 > head( d$F9_07_PZ_DTK_TITLE, 100 )
