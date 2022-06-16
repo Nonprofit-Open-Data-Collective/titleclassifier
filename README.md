@@ -19,5 +19,4 @@ Example functions from peopleparser:
 
 * https://github.com/Nonprofit-Open-Data-Collective/peopleparser/blob/master/R/prep.name.R
 * https://github.com/Nonprofit-Open-Data-Collective/peopleparser/blob/master/R/remove.punctuation.R
-* https://github.com/Nonprofit-Open-Data-Collective/peopleparser/blob/master/R/trim.spaces.R
-* https://github.com/Nonprofit-Open-Data-Collective/peopleparser/blob/master/R/prep.name.R 
+* https://github.com/Nonprofit-Open-Data-Collective/peopleparser/blob/master/R/trim.spaces.R 
