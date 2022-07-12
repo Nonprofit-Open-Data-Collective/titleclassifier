@@ -36,47 +36,47 @@ format_comp_df <- function( comp.dat ){
       KeyEmpl = F9_07_PC_DTK_POS_KEY_EMPLOYEE, #X or NA
       HighComp = F9_07_PC_DTK_POS_HIGH_COMP_EMP, #X or NA (should only be 1)
       FmrOfficer = F9_07_PC_DTK_POS_FORMER)   #X or NA (sparse)
-
-
+  
+  
   #' Clean up main variables:
   ## ------------------------------------------------------------------------
-
+  
   #converting all compensation fields to numeric if not already
   d2$RptCmpOrg  <- as.numeric( d2$RptCmpOrg )
   d2$RptCmpRltd <- as.numeric( d2$RptCmpRltd )
   d2$OtherComp  <- as.numeric( d2$OtherComp )
-
+  
   #if compensation field is NA, translate that to 0
   d2$RptCmpOrg[ is.na(d2$RptCmpOrg) ]   <- 0
   d2$RptCmpRltd[ is.na(d2$RptCmpRltd) ] <- 0
   d2$OtherComp[ is.na(d2$OtherComp) ]   <- 0
-
+  
   #sum up all compensations for total comp column
   d2$TotalComp <- d2$RptCmpOrg + d2$RptCmpRltd + d2$OtherComp
-
+  
   #converting average hours worked per week field to numeric if not already
   d2$AvgHrs <- as.numeric( d2$AvgHrs )
   d2$AvgHrs[ is.na(d2$AvgHrs) ]   <- 0
-
+  
   #converting missing titles to an empty string
   d2$TitleTxt[ is.na(d2$TitleTxt) ] <- ""
-
+  
   #converting empty checkboxes for title classification to empty string
   d2$TrustOrDir[ is.na(d2$TrustOrDir) ] <- ""
   d2$Officer[ is.na(d2$Officer) ] <- ""
   d2$KeyEmpl[ is.na(d2$KeyEmpl) ] <- ""
   d2$HighComp[ is.na(d2$HighComp) ] <- ""
   d2$FmrOfficer[ is.na(d2$FmrOfficer) ] <- ""
-
+  
   #removing duplicate rows
   d3 <- unique(d2)
-
+  
   #if working with Jesse's "title-test-run.csv" file
   # d3 <- unique(subset(d2,select = FilerEIN:NTMAJ12))
-
+  
   #returning a cleaned up dataset
   return( d3 )
-
+  
 }
 
 ###########
@@ -98,13 +98,13 @@ split_compound_title <- function(title.text){
   title.text <- toupper(title.text)
   if(is.na(title.text)) return("")
   if(nchar(title.text) == 0) return(title.text)
-
+  
   #delineators: AND, &, /, ;, ","
   if(comma_split(title.text))
     title.list <- unlist(strsplit(title.text," AND |&|/|;|,"))
   else
     title.list <- unlist(strsplit(title.text," AND |&|/|;"))
-
+  
   return(title.list)
 }
 
@@ -124,16 +124,15 @@ split_compound_title <- function(title.text){
 comma_split <- function(title.text){
   #only using comma splits if the other title is guaranteed
   TitleTxt <- toupper(title.text)
-
+  
   #if there are no commas, there's no need to continue
   if(!grepl(",",TitleTxt)) return(FALSE)
-
+  
   #split title using "," delineator, then standardize second title
   title.list <- unlist(strsplit(title.text,","))
   st2 <- standardize_titles(apply_cleaning(split_compound_title(title.list[2])[1]))
-  st2 <- correct_title(st2)
   if(nchar(st2) == 0) return(FALSE)
-
+  
   #list of possible standardized second title strings
   possibles <- c("PRESIDENT", "CEO", "DIRECTOR\\b", "CHAIR",
                  "TRUSTEE\\b", "TREASURER", "SECRETARY", "OFFICER",
@@ -161,14 +160,14 @@ comma_split <- function(title.text){
 #'
 #' @export
 apply_cleaning <- function(title.text){
-
+  
   #capitalize all text
   TitleTxt <- toupper(title.text)
-
+  
   #remove anything in between parentheses - first paren is indicator
   TitleTxt <- gsub("\\(.*\\)", "", TitleTxt)
   TitleTxt <- gsub("\\(.*$", "", TitleTxt)
-
+  
   #substitute ordinal numbers
   TitleTxt <- gsub("1ST","FIRST",TitleTxt)
   TitleTxt <- gsub("2ND","SECOND",TitleTxt)
@@ -180,12 +179,12 @@ apply_cleaning <- function(title.text){
   TitleTxt <- gsub("8TH","EIGHTH",TitleTxt)
   TitleTxt <- gsub("9TH","NINTH",TitleTxt)
   TitleTxt <- gsub("10TH","TENTH",TitleTxt)
-
+  
   #remove punctuation, numbers, and "stop" words with dates (replaced with spaces)
   TitleTxt <- gsub("\\d[A-Z]*\\s", " ", TitleTxt)
   TitleTxt <- gsub("\\d", " ", TitleTxt)
   TitleTxt <- gsub("[[:punct:]]", " ", TitleTxt)
-
+  
   #'stop words are still useful potentially for role status categorization
   #"stop" words (since, from, thru, through, as of, etc.)
   transition.words <- c("THRU","THROUGH","THR\\b","\\bFROM\\b",
@@ -201,7 +200,7 @@ apply_cleaning <- function(title.text){
   for(word in transition.words){
     TitleTxt <- gsub(word, " ", TitleTxt)
   }
-
+  
   # CONJUNCTION WORDS
   conjunction.words <- c("\\bTO\\b","\\bOF\\b","\\bFOR\\b",
                          "\\bAND\\b","\\bOR\\b", "\\bAN\\b","\\bTHE\\b")
@@ -209,18 +208,18 @@ apply_cleaning <- function(title.text){
   for(word in conjunction.words){
     TitleTxt <- gsub(word, " ", TitleTxt)
   }
-
+  
   #months
   month.words <- c("JANUARY","\\bJAN\\b","FEBRUARY","\\bFEB\\b",
                    "MARCH","\\bMAR\\b","APRIL","APR","\\bMAY\\b",
-                   "JUNE","\\bJUN\\b","JULY","\\bJUL\\b","AUGUST",
+                   "JUNE","\\bJUN\\b","JULY","\\bJUL\\b","AUGUST\\b",
                    "\\bAUG\\b","SEPTEMBER","\\bSEP\\b","OCTOBER",
                    "\\bOCT\\b","NOVEMBER","\\bNOV\\b","DECEMBER","\\bDEC\\b"
   )
   for(word in month.words){
     TitleTxt <- gsub(word, " ", TitleTxt)
   }
-
+  
   #number words
   number.words <- c("FIRST","SECOND","THIRD","FOURTH","FIFTH",
                     "SIXTH","SEVENTH","EIGHTH","NINTH","TENTH",
@@ -229,15 +228,15 @@ apply_cleaning <- function(title.text){
   for(word in number.words){
     TitleTxt <- gsub(word, " ", TitleTxt)
   }
-
+  
   #remove starting and leading spaces and excess spacing
   TitleTxt <- gsub("^\\s* | \\s*$", "", TitleTxt)
   TitleTxt <- gsub( "\\s{2,}", " ", TitleTxt )
-
+  
   #miscellaneous fixes
   #replace common C0 (c zero) with CO (c o)
   TitleTxt <- gsub( "C0", "CO", TitleTxt )
-
+  
   return(TitleTxt)
 }
 
@@ -258,24 +257,24 @@ apply_cleaning <- function(title.text){
 extract_date <- function(title.text){
   title <- toupper(title.text)
   returnDate <- c(NA,0)
-
+  
   # Get what is inside the parentheses (only keep strings with #'s contained)
-  k <- str_extract_all(title, "\\([^()]+\\)")[[1]]
+  k <- stringr::str_extract_all(title, "\\([^()]+\\)")[[1]]
   k <- substring(k, 2, nchar(k)-1)
   if(length(k) != 0){
     if(!grepl("[[:digit:]]",k[1])) k <- character(0)
   }
-
+  
   #numerical dates
   if(length(k) == 0){
     # "/" as a delineator
-    k <- str_extract_all(title,"\\d+/\\d+(/\\d+)*\\b")[[1]]
+    k <- stringr::str_extract_all(title,"\\d+/\\d+(/\\d+)*\\b")[[1]]
     if(length(k) == 0){
       # "-" as a delineator
-      k <- str_extract_all(title,"\\d+-\\d+(-\\d+)*\\b")[[1]]
+      k <- stringr::str_extract_all(title,"\\d+-\\d+(-\\d+)*\\b")[[1]]
     }
   }
-
+  
   #spelt out months
   if(length(k) == 0){
     month.words <- c("JAN","FEB",
@@ -285,11 +284,11 @@ extract_date <- function(title.text){
                      "NOV","DEC")
     for(word in month.words){
       month <- paste0("\\b",word,".*\\b")
-      k <- str_extract_all(title,month)[[1]]
+      k <- stringr::str_extract_all(title,month)[[1]]
       if(length(k) != 0) break
     }
   }
-
+  
   #formatting our return vector
   if(length(k) > 0) {
     returnDate[1] <- k[1]
@@ -315,17 +314,17 @@ extract_date <- function(title.text){
 #'
 #' @export
 standardize_titles <- function( title.text ){
-
-  TitleTxt <- title.text
-
+  
+  TitleTxt <- toupper(title.text) #in case it fell thru
+  
   #Some notes:
   #don't want to double replace
   #gotta go more specific than general
   #using regex \\s and \\b to allow for more flexibility and cleaner code
-
+  
   #' ### Vice Presidents
   ## ------------------------------------------------------------------------
-
+  
   TitleTxt <- gsub( "\\bE\\sV\\sPRESIDENT", "EXECUTIVE VICE PRESIDENT", TitleTxt )
   TitleTxt <- gsub( "\\bE\\sVICE", "EXECUTIVE VICE", TitleTxt )
   TitleTxt <- gsub( "\\bS\\sVICE", "SENIOR VICE", TitleTxt )
@@ -336,15 +335,15 @@ standardize_titles <- function( title.text ){
   TitleTxt <- gsub( "\\bS\\s*V\\s*PI\\b", "SENIOR VICE PRESIDENT", TitleTxt )
   TitleTxt <- gsub( "\\bE\\s*V\\s*P\\b", "EXECUTIVE VICE PRESIDENT", TitleTxt )
   TitleTxt <- gsub( "\\bA\\s*V\\s*P\\b", "ASSISTANT VICE PRESIDENT", TitleTxt )
-
+  
   TitleTxt <- gsub( "V\\s*P\\s*F\\b", "VICE PRESIDENT FINANCE", TitleTxt )
   TitleTxt <- gsub( "V\\s*P\\s*O\\b", "VICE PRESIDENT OPERATIONS", TitleTxt )
   TitleTxt <- gsub( "V\\s*P\\s*H\\s*R\\b", "VICE PRESIDENT HUMAN RESOURCES", TitleTxt )
   TitleTxt <- gsub( "V\\s*P\\s*M\\s*A\\b", "VICE PRESIDENT MEDICAL AFFAIRS", TitleTxt )
-
+  
   # TitleTxt <- gsub( "\\bVC$", "VICE PRESIDENT", TitleTxt ) #WRONG: vice chair
   TitleTxt <- gsub( "V\\s*P\\b", "VICE PRESIDENT", TitleTxt )
-
+  
   vice.president.texts <- c("V\\s*PRESIDENT\\b", "V\\s*PRESIDEN\\b",
                             "V\\s*PRESIDE\\b", "V\\s*PRESID\\b",
                             "V\\s*PRESI\\b", "V\\s*PRES\\b",
@@ -354,7 +353,7 @@ standardize_titles <- function( title.text ){
   for(name in vice.president.texts){
     TitleTxt <- gsub(name, "VICE PRESIDENT", TitleTxt)
   }
-
+  
   #' ### Convert To Uniform Titles
   ## ------------------------------------------------------------------------
   #EXECUTIVE
@@ -365,7 +364,7 @@ standardize_titles <- function( title.text ){
   for(name in executive.texts){
     TitleTxt <- gsub( name, "EXECUTIVE", TitleTxt )
   }
-
+  
   ## ------------------------------------------------------------------------
   #Director
   director.texts <- c("\\bDIRCTR\\b",
@@ -375,7 +374,7 @@ standardize_titles <- function( title.text ){
   for(name in director.texts){
     TitleTxt <- gsub( name, "DIRECTOR", TitleTxt )
   }
-
+  
   ## ------------------------------------------------------------------------
   #Operations
   operation.texts <- c("\\bOPERATION\\b","\\bOPERATIO\\b",
@@ -386,13 +385,13 @@ standardize_titles <- function( title.text ){
   for(name in operation.texts){
     TitleTxt <- gsub( name, "OPERATIONS", TitleTxt )
   }
-
+  
   ## ------------------------------------------------------------------------
   #ASSISTANT/ASSOCIATE
   TitleTxt <- gsub( "\\bASS\\s*T\\b", "ASSISTANT", TitleTxt )
   TitleTxt <- gsub("\\bASSIST\\b", "ASSISTANT", TitleTxt)
   TitleTxt <- gsub( "\\bASSOC\\b", "ASSOCIATE", TitleTxt )
-
+  
   ## ------------------------------------------------------------------------
   #PRESIDENT
   president.texts <- c("\\bPRESIDEN\\b", "\\bPRESIDE\\b",
@@ -402,7 +401,7 @@ standardize_titles <- function( title.text ){
   for(name in president.texts){
     TitleTxt <- gsub( name, "PRESIDENT", TitleTxt )
   }
-
+  
   ## ------------------------------------------------------------------------
   ###SECRETARY
   secretary.texts <- c("\\bSECRETAR\\b", "\\bSECT\\b",
@@ -413,7 +412,7 @@ standardize_titles <- function( title.text ){
     TitleTxt <- gsub( name, "SECRETARY", TitleTxt )
   }
   # if(agrepl("SECRETARY",TitleTxt)) TitleTxt <- "SECRETARY"
-
+  
   ## ------------------------------------------------------------------------
   #TREASURER
   treasurer.texts <- c("TREASURE\\b","TREASUR\\b",
@@ -423,7 +422,7 @@ standardize_titles <- function( title.text ){
   for(name in treasurer.texts){
     TitleTxt <- gsub( name, "TREASURER", TitleTxt )
   }
-
+  
   ## ------------------------------------------------------------------------
   #FINANCE
   finance.texts <- c("\\bFINANC\\b","\\bFINAN\\b",
@@ -433,7 +432,7 @@ standardize_titles <- function( title.text ){
   for(name in finance.texts){
     TitleTxt <- gsub( name, "FINANCE", TitleTxt )
   }
-
+  
   ## ------------------------------------------------------------------------
   #SENIOR
   senior.texts <- c("\\bSENIO\\b","\\bSENI\\b",
@@ -441,12 +440,12 @@ standardize_titles <- function( title.text ){
   for(name in senior.texts){
     TitleTxt <- gsub( name, "SENIOR", TitleTxt )
   }
-
+  
   ## ------------------------------------------------------------------------
   #JUNIOR
   TitleTxt <- gsub( "JUNIO", "JUNIOR", TitleTxt )
   TitleTxt <- gsub( "JR", "JUNIOR", TitleTxt )
-
+  
   ## ------------------------------------------------------------------------
   #Development
   development.texts <- c("\\bDEVELOPMEN\\b","\\bDEVELOPME\\b",
@@ -456,13 +455,13 @@ standardize_titles <- function( title.text ){
   for(name in development.texts){
     TitleTxt <- gsub( name, "DEVELOPMENT", TitleTxt )
   }
-
+  
   ## ------------------------------------------------------------------------
   #VICE CHAIR
   TitleTxt <- gsub( "V\\s*C\\b", "VICE CHAIR", TitleTxt )
   TitleTxt <- gsub( "V\\s\\bCHAIR\\b", "VICE CHAIR", TitleTxt )
   TitleTxt <- gsub( "\\bVICE\\b\\sC\\b", "VICE CHAIR", TitleTxt )
-
+  
   #CHAIR
   TitleTxt <- gsub( "CHAIRPERSON", "CHAIR", TitleTxt )
   TitleTxt <- gsub( "CHAIRWOMAN", "CHAIR", TitleTxt )
@@ -474,7 +473,7 @@ standardize_titles <- function( title.text ){
   TitleTxt <- gsub("\\bC\\b", "CHAIR", TitleTxt) #assume standalone c is chair
   TitleTxt <- gsub("\\bCHAIRM\\b", "CHAIR", TitleTxt)
   TitleTxt <- gsub("\\bCHAIRMA\\b", "CHAIR", TitleTxt)
-
+  
   ## ------------------------------------------------------------------------
   #Condense Abbreviations
   TitleTxt <- gsub( "C\\sE\\sO", "CEO", TitleTxt ) #executive
@@ -487,15 +486,15 @@ standardize_titles <- function( title.text ){
   TitleTxt <- gsub( "C\\sR\\sN\\sA", "CRNA", TitleTxt ) #certified registered nurse anesthetist
   TitleTxt <- gsub( "C\\sN\\sO", "CNO", TitleTxt ) #nursing
   TitleTxt <- gsub( "C\\sM\\sO", "CMO", TitleTxt ) #marketing
-
+  
   #EXECUTIVE DIRECTOR
   TitleTxt <- gsub( "\\bE\\b DIRECTOR", "EXECUTIVE DIRECTOR", TitleTxt )
   TitleTxt <- gsub( "\\bE\\s\\bD\\b", "EXECUTIVE DIRECTOR", TitleTxt )
-
+  
   ## ------------------------------------------------------------------------
   #KEY EMPLOYEE
   TitleTxt <- gsub( "KEY\\s\\bE\\b", "KEY EMPLOYEE\\b", TitleTxt )
-
+  
   # FORMER OFFICER
   #Note: weird category
   #thought we were deleting old formers?
@@ -507,7 +506,7 @@ standardize_titles <- function( title.text ){
   for(name in officer.texts){
     TitleTxt <- gsub(name,"OFFICER",TitleTxt)
   }
-
+  
   ## ------------------------------------------------------------------------
   #ADMIN
   administration.texts <- c("\\bADMINISTRATIO\\b","\\bADMINISTRATI\\b",
@@ -520,7 +519,7 @@ standardize_titles <- function( title.text ){
   for(name in administration.texts){
     TitleTxt <- gsub(name,"ADMINISTRATION",TitleTxt)
   }
-
+  
   ## ------------------------------------------------------------------------
   #COORDINATOR
   coordinator.texts <- c("\\bCOORDINATO\\b","\\bCOORDINAT\\b",
@@ -530,7 +529,7 @@ standardize_titles <- function( title.text ){
   for(name in coordinator.texts){
     TitleTxt <- gsub(name,"COORDINATOR",TitleTxt)
   }
-
+  
   ## ------------------------------------------------------------------------
   #STRATEGY
   strategy.texts <- c("\\bSTRATEGI\\b", "\\bSTRATEGI\\b",
@@ -539,7 +538,7 @@ standardize_titles <- function( title.text ){
   for(name in strategy.texts){
     TitleTxt <- gsub(name,"STRATEGY",TitleTxt)
   }
-
+  
   ## ------------------------------------------------------------------------
   #HUMAN RESOURCES
   TitleTxt <- gsub( "\\bHU\\b", "HUMAN", TitleTxt )
@@ -552,7 +551,7 @@ standardize_titles <- function( title.text ){
   TitleTxt <- gsub( "\\bRESOUR\\b", "RESOURCES", TitleTxt )
   TitleTxt <- gsub( "\\bRESOURC\\b", "RESOURCES", TitleTxt )
   TitleTxt <- gsub( "\\bRESOURCE\\b", "RESOURCES", TitleTxt )
-
+  
   ## ------------------------------------------------------------------------
   #MANAGEMENT
   management.texts <- c("\\bMANAGEMEN\\b","\\bMANAGEME\\b",
@@ -566,7 +565,7 @@ standardize_titles <- function( title.text ){
   for(name in management.texts){
     TitleTxt <- gsub(name,"MANAGEMENT",TitleTxt)
   }
-
+  
   ## ------------------------------------------------------------------------
   #PROGRAM
   program.texts <- c("\\bPROGRAMS\\b","\\bPROGRA\\b",
@@ -574,21 +573,21 @@ standardize_titles <- function( title.text ){
   for(name in program.texts){
     TitleTxt <- gsub(name,"PROGRAM",TitleTxt)
   }
-
+  
   #PROJECT
   project.texts <- c("\\bPROJECTS\\b","\\bPROJEC\\b",
                      "\\bPROJE\\b","\\bPROJ\\b")
   for(name in project.texts){
     TitleTxt <- gsub(name,"PROJECT",TitleTxt)
   }
-
+  
   ## ------------------------------------------------------------------------
   #PUBLIC
   public.texts <- c("\\bPUBLI\\b", "\\bPUBL\\b", "\\bPUB\\b")
   for(name in public.texts){
     TitleTxt <- gsub(name,"PUBLIC",TitleTxt)
   }
-
+  
   ## ------------------------------------------------------------------------
   #BUSINESS
   business.texts <- c("\\bBUSINES\\b", "\\bBUSINE\\b",
@@ -597,7 +596,7 @@ standardize_titles <- function( title.text ){
   for(name in business.texts){
     TitleTxt <- gsub(name,"BUSINESS",TitleTxt)
   }
-
+  
   ## ------------------------------------------------------------------------
   # COMMUNICATIONS
   communications.texts <- c("\\bCOMMUNICATION\\b", "\\bCOMMUNICATIO\\b",
@@ -609,7 +608,7 @@ standardize_titles <- function( title.text ){
   for(name in communications.texts){
     TitleTxt <- gsub(name,"COMMUNICATIONS",TitleTxt)
   }
-
+  
   ## ------------------------------------------------------------------------
   #INFORMATION
   information.texts <- c("\\bINFORMATIO\\b", "\\bINFORMATI\\b",
@@ -619,7 +618,7 @@ standardize_titles <- function( title.text ){
   for(name in information.texts){
     TitleTxt <- gsub(name,"INFORMATION",TitleTxt)
   }
-
+  
   ## ------------------------------------------------------------------------
   #INTELLIGENCE
   intelligence.texts <- c("\\bINTELLIGENC\\b", "\\bINTELLIGEN\\b",
@@ -629,7 +628,7 @@ standardize_titles <- function( title.text ){
   for(name in intelligence.texts){
     TitleTxt <- gsub(name,"INTELLIGENCE",TitleTxt)
   }
-
+  
   ## ------------------------------------------------------------------------
   #TECHNOLOGY
   technology.texts <- c("\\bTECHNOLOG\\b","\\bTECHNOLO\\b",
@@ -638,7 +637,7 @@ standardize_titles <- function( title.text ){
   for(name in technology.texts){
     TitleTxt <- gsub(name,"TECHNOLOGY",TitleTxt)
   }
-
+  
   ## ------------------------------------------------------------------------
   #INSTITUTION
   institution.texts <- c("\\bINSTITUTIO\\b", "\\bINSTITUTI\\b",
@@ -648,7 +647,7 @@ standardize_titles <- function( title.text ){
   for(name in institution.texts){
     TitleTxt <- gsub(name,"INSTITUTION",TitleTxt)
   }
-
+  
   ## ------------------------------------------------------------------------
   #ACADEMICS
   academics.texts <- c("\\bACADEMIC\\b","\\bACADEMI\\b",
@@ -657,7 +656,7 @@ standardize_titles <- function( title.text ){
   for(name in academics.texts){
     TitleTxt <- gsub(name,"ACADEMICS",TitleTxt)
   }
-
+  
   ## ------------------------------------------------------------------------
   #MARKETING
   marketing.texts <- c("\\bMARKETIN\\b","\\bMARKETI\\b",
@@ -667,7 +666,7 @@ standardize_titles <- function( title.text ){
   for(name in marketing.texts){
     TitleTxt <- gsub(name,"MARKETING",TitleTxt)
   }
-
+  
   ## ------------------------------------------------------------------------
   #ADVANCEMENT
   advancement.texts <- c("\\bADVANCEMEN\\b", "\\bADVANCEME\\b",
@@ -679,7 +678,7 @@ standardize_titles <- function( title.text ){
   for(name in advancement.texts){
     TitleTxt <- gsub(name,"ADVANCEMENT",TitleTxt)
   }
-
+  
   ## ------------------------------------------------------------------------
   # PHILANTHROPY
   philanthropy.texts <- c("\\bPHILANTHROP\\b","\\bPHILANTHRO\\b",
@@ -689,7 +688,7 @@ standardize_titles <- function( title.text ){
   for(name in philanthropy.texts){
     TitleTxt <- gsub(name,"PHILANTHROPY",TitleTxt)
   }
-
+  
   ## ------------------------------------------------------------------------
   #SYSTEMS
   systems.texts <- c("\\bSYSTEM\\b","\\bSYSTE\\b",
@@ -697,7 +696,7 @@ standardize_titles <- function( title.text ){
   for(name in systems.texts){
     TitleTxt <- gsub(name,"SYSTEMS",TitleTxt)
   }
-
+  
   ## ------------------------------------------------------------------------
   #GENERAL
   general.texts <- c("\\bGENERA\\b", "\\bGENER\\b",
@@ -706,7 +705,7 @@ standardize_titles <- function( title.text ){
   for(name in general.texts){
     TitleTxt <- gsub(name,"GENERAL",TitleTxt)
   }
-
+  
   ## ------------------------------------------------------------------------
   #PLANNING
   planning.texts <- c("\\bPLANNIN\\b","\\bPLANNI\\b",
@@ -714,7 +713,7 @@ standardize_titles <- function( title.text ){
   for(name in planning.texts){
     TitleTxt <- gsub(name,"PLANNING",TitleTxt)
   }
-
+  
   ## ------------------------------------------------------------------------
   #COMPLIANCE
   compliance.texts <- c("\\bCOMPLIANC\\b","\\bCOMPLIAN\\b",
@@ -723,7 +722,7 @@ standardize_titles <- function( title.text ){
   for(name in compliance.texts){
     TitleTxt <- gsub(name,"COMPLIANCE",TitleTxt)
   }
-
+  
   ## ------------------------------------------------------------------------
   #ENROLLMENT
   enrollment.texts <- c("\\bENROLLMEN\\b","\\bENROLLME\\b",
@@ -732,21 +731,21 @@ standardize_titles <- function( title.text ){
   for(name in enrollment.texts){
     TitleTxt <- gsub(name,"ENROLLMENT",TitleTxt)
   }
-
+  
   ## ------------------------------------------------------------------------
   #ADMISSIONS
   admissions.texts <- c("\\bADMISSION\\b","\\bADMISS\\b","\\bADMIS\\b")
   for(name in admissions.texts){
     TitleTxt <- gsub(name,"ADMISSIONS",TitleTxt)
   }
-
+  
   ## ------------------------------------------------------------------------
   #CHIEF
   chief.texts <- c("\\bCHIE\\b","\\bCHI\\b","\\bCH\\b")
   for(name in chief.texts){
     TitleTxt <- gsub(name,"CHIEF",TitleTxt)
   }
-
+  
   ## ------------------------------------------------------------------------
   #EMERITUS
   emeritus.texts <- c("\\bEMERITU\\b", "\\bEMERITA\\b", "\\bEMERIT\\b",
@@ -756,7 +755,7 @@ standardize_titles <- function( title.text ){
   for(title in emeritus.texts){
     TitleTxt <- gsub(title,"EMERITUS",TitleTxt)
   }
-
+  
   ## ------------------------------------------------------------------------
   #convert all full c-suite positions into abbrev
   TitleTxt <- gsub( "CHIEF\\sEXECUTIVE\\sOFFICER", "CEO", TitleTxt ) #executive
@@ -771,8 +770,8 @@ standardize_titles <- function( title.text ){
   TitleTxt <- gsub( "CHIEF\\sMARKETING\\sOFFICER", "CMO", TitleTxt ) #marketing
   #change executive director and chief executive director to CEO
   TitleTxt <- gsub("EXECUTIVE DIRECTOR", "CEO", TitleTxt)
-
-
+  
+  
   ## ------------------------------------------------------------------------
   #miscellaneous:
   TitleTxt <- gsub( "BOARD MEMBERDEPT CHAIR", "BOARD MEMBER DEPT CHAIR", TitleTxt )
@@ -783,20 +782,20 @@ standardize_titles <- function( title.text ){
   TitleTxt <- gsub("\\bCONSU\\b","CONSULTANT", TitleTxt)
   TitleTxt <- gsub("\\bM\\b","MANAGEMENT", TitleTxt) #standalone m is likely mgmt
   TitleTxt <- gsub("\\bP\\b","PRESIDENT", TitleTxt) #standalone p is likely pres
-
+  
   TitleTxt <- gsub("\\bFO\\b","FOUNDER", TitleTxt)
-
-
+  
+  
   board.texts <- c("\\bBOAR\\b", "\\bBOA\\b", "\\bBO\\b",
                    "\\bB\\b", "\\bBRD\\b")
   for(title in board.texts){
     TitleTxt <- gsub(title,"BOARD",TitleTxt)
   }
-
+  
   TitleTxt <- gsub("\\bMBR\\b", "MEMBER", TitleTxt)
   TitleTxt <- gsub("PRESIDENT PRESIDENT", "PRESIDENT", TitleTxt)
-
-
+  
+  
   #heuristics
   if(TitleTxt == "VICE") TitleTxt <- "VICE PRESIDENT" #standalone vice is likely vp
   else if(TitleTxt == "PR") TitleTxt <- "PRESIDENT" #standalone pr is likely pres
@@ -805,9 +804,9 @@ standardize_titles <- function( title.text ){
   else if(TitleTxt == "N/A" | TitleTxt == "\\bN\\s*A\\b" |
           TitleTxt == "\\s*") TitleTxt <- NA
   #NA could be north america but most likely null value
-
+  
   ## ------------------------------------------------------------------------
-
+  
   #CORRECT TITLES ONES
   ## ---------
   TitleTxt <- gsub("EXECUTIVE OFFICER", "EX-OFFICIO", TitleTxt)
@@ -816,7 +815,7 @@ standardize_titles <- function( title.text ){
   TitleTxt <- gsub("\\sD\\b", " DIRECTOR", TitleTxt) #assume lone d is director
   TitleTxt <- gsub("EXECUTIVE DIRECTOR", "CEO", TitleTxt) #necessary replacement
   TitleTxt <- gsub("\\bCO\\s", "CO-", TitleTxt) #co-chair over co chair for example
-
+  
   #missed abbreviation
   TitleTxt <- gsub("\\bBOD\\b", "BOARD", TitleTxt) #board or body?
   TitleTxt <- gsub("\\bBOA\\b", "BOARD", TitleTxt)
@@ -831,16 +830,16 @@ standardize_titles <- function( title.text ){
   TitleTxt <- gsub("\\bADMN\\b", "ADMINISTRATION", TitleTxt)
   TitleTxt <- gsub("\\bCHAIRPE\\b", "CHAIR", TitleTxt)
   TitleTxt <- gsub("\\bTRTEE\\b", "TRUSTEE",TitleTxt)
-
+  
   #missed in apply_cleaning
   TitleTxt <- gsub("\\bAS\\b", "",TitleTxt)
   TitleTxt <- gsub("\\bAFTER\\b", "",TitleTxt)
   TitleTxt <- gsub("\\bBEFORE\\b", "",TitleTxt)
   TitleTxt <- gsub("\\bINCOMING\\b", "",TitleTxt)
-
+  
   ######
   return( TitleTxt )
-
+  
 }
 
 #########
@@ -900,16 +899,16 @@ build_standard_titles <- function(comp.table){
   column_names <- append(column_names, "TitleNum")
   colnames(pdf) <- column_names
   pdf$Date <- NA
-  pdf$Num.Dates <- 0
+  # pdf$Num.Dates <- 0
   for(i in 1:length(pdf$TitleTxt)){
     dates <- extract_date(pdf$TitleTxt[i])
     pdf$Date[i] <- dates[1]
-    pdf$Num.Dates <- dates[2]
+    # pdf$Num.Dates <- dates[2]
   }
   #if reading from jesse's data
   # cdf <- pdf %>% rename(Cleaned_Title = TitleTxt2)
   # cdf$Cleaned_Title <- cdf$StandardTitles
-
+  
   print("ALL DONE!")
   write.csv(cdf,paste0("refined-titles-UTD-",Sys.Date(),".csv"))
   return(cdf)
