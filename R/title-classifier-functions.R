@@ -20,7 +20,7 @@ format_comp_df <- function( comp.dat ){
     rename(
       FilingId = OBJECT_ID, #numeric
       FilerEIN = EIN, #numeric
-      FilerName1 = NAME,  #string
+      # FilerName1 = NAME,  #string
       # FilerName = NAME.x, #string #different if reading Jesse's file
       FormYr = TAXYR, #numeric
       FORMTYPE  = FORMTYPE, #990,990ez (no 990PF's for comp table)
@@ -837,6 +837,10 @@ standardize_titles <- function( title.text ){
   TitleTxt <- gsub("\\bBEFORE\\b", "",TitleTxt)
   TitleTxt <- gsub("\\bINCOMING\\b", "",TitleTxt)
   
+  #remove spacing issues
+  TitleTxt <- gsub("^\\s* | \\s*$", "", TitleTxt)
+  TitleTxt <- gsub( "\\s{2,}", " ", TitleTxt )
+  
   ######
   return( TitleTxt )
   
@@ -905,6 +909,8 @@ build_standard_titles <- function(comp.table){
     pdf$Date[i] <- dates[1]
     # pdf$Num.Dates <- dates[2]
   }
+  
+  cdf <- pdf
   #if reading from jesse's data
   # cdf <- pdf %>% rename(Cleaned_Title = TitleTxt2)
   # cdf$Cleaned_Title <- cdf$StandardTitles
