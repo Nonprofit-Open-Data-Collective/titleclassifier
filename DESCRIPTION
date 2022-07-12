@@ -7,11 +7,7 @@ Authors@R:
            role = c("aut", "cre"),
            email = "kc734@cornell.edu",
            comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: The package is the first step towards title classification. It is
-desigend to take in a data frame of a compensation table, and manipulate the 
-title information to standardize and get basic information out of it. Later work 
-towards role, status, and functional domain assignments from the data frame will
-be worked into the package.
+Description: The package is the first step towards title classification.
 License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
     license
 Encoding: UTF-8
