@@ -309,7 +309,8 @@ split_titles <- function(title.text){
 #' unmingle function
 #' 
 #' @description 
-#' we will use hunspell
+#' unmingles titles that are stuck together
+#' e.g. separates "executivedirector" into "executive director"
 unmingle <- function(title.text){
   TitleTxt <- title.text
   
@@ -405,8 +406,6 @@ build_split_titles <- function(comp.data){
         if(length(subtitle) >= 1){
           if(!is.na(subtitle) & nchar(subtitle) > 0){
             subtitle <- apply_substitutes(subtitle)
-            subtitle <- fix_of(subtitle)
-            subtitle <- spellcheck(subtitle) #slows things down, but is useful
             pdf[k,] <- comp.data[i,]
             pdf$TitleTxt3[k] <- subtitle
             pdf$Num.Title[k] <- j
@@ -419,64 +418,5 @@ build_split_titles <- function(comp.data){
   time2 <- Sys.time()
   print(paste0("RUNTIME: ", difftime(time2,time1, units = "mins"), " MINUTES"))
   return(pdf)
-}
-
-
-#' @title 
-#' fix "of" function
-#' 
-#' @description 
-#' inserts an "of" in between the title and subject if not present and needed
-#' e.g. would insert "of" in "VP Operations" --> "VP of Operations"
-#' 
-#' currently occurs after title standardization 
-#' (but can potentially occur before too)
-fix_of <- function(title.text){
-  TitleTxt <- title.text
-  # TitleTxt <- apply_substitutes(TitleTxt) #depending on order of op's
-  titleMatch <- FALSE
-  subjectMatch <- FALSE
-  current.title <- NA
-  titlePos <- 0
-  if(!grepl("\\bOF\\b", TitleTxt)){
-    possible.title.list <- c("VICE PRESIDENT", "DIRECTOR", "CHAIR",
-                             "DEAN", "TRUSTEE", "CEO", "SECRETARY")
-    possible.subject.list <- c("OPERATIONS", "FINANCE", "ADMINISTRATION",
-                               "MANAGEMENT", "EXHIBIT", "PUBLICITY", 
-                               "ACTIVITIES", "BUILDING", "EDUCATION",
-                               "MARKETING", "STRATEGY", "SALES",
-                               "ENSHRINEMENT", "ADVANCEMENT", "FUNDRAISING",
-                               "COMMUNICATION", "PRODUCT", "CONSULTING",
-                               "TECHNOLOGY", "DEVELOPMENT", "GROUNDS",
-                               "\\bART", "MUSIC", "ENGINEERING",
-                               "BUSINESS", "DESIGN","EXPERIENCE",
-                               "CULTURE", "\\bLAB", "AFFAIR",
-                               "BRANDING", "INTERNAL", "PUBLIC",
-                               "EXTERNAL", "PROMOTION", "HUMAN RESOURCES",
-                               "LEGAL", "RESEARCH", "TRANSPORTATION", 
-                               "FELLOWSHIP", "FOUNDATION", "EVENT",
-                               "COLLECTION", "SCHOOL", "ASSOCIATION")
-    for(title in possible.title.list){
-      if(grepl(title,TitleTxt)){
-        titleMatch <- TRUE
-        current.title <- title
-        titlePos <- regexpr(title,TitleTxt)[1]
-        break
-      }
-    }
-    for(subject in possible.subject.list){
-      if(grepl(subject,TitleTxt)){
-        if(regexpr(subject,TitleTxt)[1] > titlePos){
-          subjectMatch <- TRUE
-          break
-        }
-      }
-    }
-  }
-  if(titleMatch & subjectMatch){
-    TitleTxt <- sub(current.title, paste0(current.title, " OF "), TitleTxt)
-    TitleTxt <- gsub( "\\s{2,}", " ", TitleTxt)
-  }
-  return(TitleTxt)
 }
 

@@ -910,6 +910,114 @@ substitute_miscellaneous <- function(title.text){
 }
 
 
+#' @title 
+#' standardize title mapping function
+#' 
+#' @description 
+#' maps long names to abbreviations if CEO, COO, or CFO
+#' maps executive director to CEO
+#' 
+#' @export
+stand_titles <- function(title.text){
+  TitleTxt <- title.text
+  #convert known c-suite positions into abbrev
+  TitleTxt <- gsub( "CHIEF\\sEXECUTIVE\\sOFFICER", "CEO", TitleTxt ) #executive
+  TitleTxt <- gsub( "CHIEF\\sOPERATIONS\\sOFFICER", "COO", TitleTxt ) #operating
+  TitleTxt <- gsub( "CHIEF\\sOPERATING\\sOFFICER", "COO", TitleTxt ) #operating
+  TitleTxt <- gsub( "CHIEF\\sFINANCE\\sOFFICER", "CFO", TitleTxt ) #finance
+  TitleTxt <- gsub( "CHIEF\\sFINANCIAL\\sOFFICER", "CFO", TitleTxt ) #finance
+  #all other c-suites are unclear (for now)
+  
+  #change executive director and chief executive director to CEO
+  TitleTxt <- gsub("EXECUTIVE DIRECTOR", "CEO", TitleTxt)
+  
+  return(TitleTxt)
+}
+
+
+#' @title 
+#' fix "of" function
+#' 
+#' @description 
+#' inserts an "of" in between the title and subject if not present and needed
+#' e.g. would insert "of" in "VP Operations" --> "VP of Operations"
+#' 
+#' currently occurs after title standardization 
+#' (but can potentially occur before too)
+fix_of <- function(title.text){
+  TitleTxt <- title.text
+  # TitleTxt <- apply_substitutes(TitleTxt) #depending on order of op's
+  titleMatch <- FALSE
+  subjectMatch <- FALSE
+  current.title <- NA
+  titlePos <- 0
+  if(!grepl("\\bOF\\b", TitleTxt)){
+    possible.title.list <- c("VICE PRESIDENT", "DIRECTOR", "CHAIR",
+                             "DEAN", "TRUSTEE", "CEO", "SECRETARY")
+    possible.subject.list <- c("OPERATIONS", "FINANCE", "ADMINISTRATION",
+                               "MANAGEMENT", "EXHIBIT", "PUBLICITY", 
+                               "ACTIVITIES", "BUILDING", "EDUCATION",
+                               "MARKETING", "STRATEGY", "SALES",
+                               "ENSHRINEMENT", "ADVANCEMENT", "FUNDRAISING",
+                               "COMMUNICATION", "PRODUCT", "CONSULTING",
+                               "TECHNOLOGY", "DEVELOPMENT", "GROUNDS",
+                               "\\bART", "MUSIC", "ENGINEERING",
+                               "BUSINESS", "DESIGN","EXPERIENCE",
+                               "CULTURE", "\\bLAB", "AFFAIR",
+                               "BRANDING", "INTERNAL", "PUBLIC",
+                               "EXTERNAL", "PROMOTION", "HUMAN RESOURCES",
+                               "LEGAL", "RESEARCH", "TRANSPORTATION", 
+                               "FELLOWSHIP", "FOUNDATION", "EVENT",
+                               "COLLECTION", "SCHOOL", "ASSOCIATION")
+    for(title in possible.title.list){
+      if(grepl(title,TitleTxt)){
+        titleMatch <- TRUE
+        current.title <- title
+        titlePos <- regexpr(title,TitleTxt)[1]
+        break
+      }
+    }
+    for(subject in possible.subject.list){
+      if(grepl(subject,TitleTxt)){
+        if(regexpr(subject,TitleTxt)[1] > titlePos){
+          subjectMatch <- TRUE
+          break
+        }
+      }
+    }
+  }
+  if(titleMatch & subjectMatch){
+    TitleTxt <- sub(current.title, paste0(current.title, " OF "), TitleTxt)
+    TitleTxt <- gsub( "\\s{2,}", " ", TitleTxt)
+  }
+  return(TitleTxt)
+}
+
+
+#' @title 
+#' spell check function
+#' 
+#' @description 
+#' correct small spelling mistakes
+#' right now only correcting president, treasurer, and trustee misspellings
+spellcheck <- function(title.text){
+  TitleTxt <- title.text
+  
+  if(!grepl("\\s",TitleTxt) && !is.na(TitleTxt)){
+    suggested.titles <- hunspell::hunspell_suggest(TitleTxt)[[1]]
+    for(title in suggested.titles){
+      if((title == "PRESIDENT" && grepl("^\\s*P",TitleTxt) && TitleTxt != "PRESIDENT"))
+        TitleTxt <- "PRESIDENT"
+      else if(title == "TREASURER" && grepl("^\\s*T",TitleTxt) && TitleTxt != "TREASURER")
+        TitleTxt <- "TREASURER"
+      else if(title == "TRUSTEE" && grepl("^\\s*T",TitleTxt) && TitleTxt != "TRUSTEE"
+         && TitleTxt != "TRUSTEES")
+        TitleTxt <- "TRUSTEE"
+    }
+  }
+  return(TitleTxt)
+}
+
 
 #' @title 
 #' apply substitutes wrapper function
@@ -979,62 +1087,17 @@ apply_substitutes <- function (title.text){
   TitleTxt <- gsub( "\\s{2,}", " ", TitleTxt )
   
   TitleTxt <- stand_titles(TitleTxt)
+  TitleTxt <- fix_of(TitleTxt)
+  TitleTxt <- spellcheck(TitleTxt) #slows things down, but is useful
   
   return( TitleTxt )
 }
 
 
-#' @title 
-#' standardize title mapping function
-#' 
-#' @description 
-#' maps long names to abbreviations if CEO, COO, or CFO
-#' maps executive director to CEO
-#' 
-#' @export
-stand_titles <- function(title.text){
-  TitleTxt <- title.text
-  #convert known c-suite positions into abbrev
-  TitleTxt <- gsub( "CHIEF\\sEXECUTIVE\\sOFFICER", "CEO", TitleTxt ) #executive
-  TitleTxt <- gsub( "CHIEF\\sOPERATIONS\\sOFFICER", "COO", TitleTxt ) #operating
-  TitleTxt <- gsub( "CHIEF\\sOPERATING\\sOFFICER", "COO", TitleTxt ) #operating
-  TitleTxt <- gsub( "CHIEF\\sFINANCE\\sOFFICER", "CFO", TitleTxt ) #finance
-  TitleTxt <- gsub( "CHIEF\\sFINANCIAL\\sOFFICER", "CFO", TitleTxt ) #finance
-  #all other c-suites are unclear (for now)
-  
-  #change executive director and chief executive director to CEO
-  TitleTxt <- gsub("EXECUTIVE DIRECTOR", "CEO", TitleTxt)
-  
-  return(TitleTxt)
-}
 
 
 
-#' @title 
-#' spell check function
-#' 
-#' @description 
-#' correct small spelling mistakes
-#' right now only correcting president, treasurer, and trustee misspellings
-spellcheck <- function(title.text){
-  TitleTxt <- title.text
-  
-  if(!grepl("\\s",TitleTxt) && !is.na(TitleTxt)){
-    suggested.titles <- hunspell::hunspell_suggest(TitleTxt)[[1]]
-    for(title in suggested.titles){
-      if((title == "PRESIDENT" && grepl("^\\s*P",TitleTxt) && TitleTxt != "PRESIDENT"))
-        TitleTxt <- "PRESIDENT"
-      else if(title == "TREASURER" && grepl("^\\s*T",TitleTxt) && TitleTxt != "TREASURER")
-        TitleTxt <- "TREASURER"
-      else if(title == "TRUSTEE" && grepl("^\\s*T",TitleTxt) && TitleTxt != "TRUSTEE"
-         && TitleTxt != "TRUSTEES")
-        TitleTxt <- "TRUSTEE"
-    }
-  }
-  return(TitleTxt)
-}
-
-
+########
 
 
 
@@ -1067,6 +1130,7 @@ spellcheck <- function(title.text){
 gen_status_codes <- function(title.text){
   
 }
+
 
 
 
