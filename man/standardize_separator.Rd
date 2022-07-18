@@ -8,6 +8,7 @@ standardize_separator(title.text)
 }
 \description{
 standardize the separator for distinguishing titles
-possible separators are / & ;
+possible separators are & ; and \ (rarely used but sometimes)
+note: / and , already caught
 They all get mapped to &
 }

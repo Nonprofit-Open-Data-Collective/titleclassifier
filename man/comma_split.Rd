@@ -2,7 +2,8 @@
 % Please edit documentation in R/title-classifier-functions.R
 \name{comma_split}
 \alias{comma_split}
-\title{comma split function}
+\title{comma split function
+DEPRECATED}
 \usage{
 comma_split(title.text)
 }

@@ -29,8 +29,6 @@ clean_dates <- function(comp.data){
 #'
 #' @description
 #' returns T/F if a string contains a date 
-#' 
-#' @export
 identify_date <- function(title.text){
   TitleTxt <- title.text
   #mm/dd/yyyy format
@@ -76,8 +74,6 @@ identify_date <- function(title.text){
 #'
 #' @description
 #' remove dates from raw title text
-#' 
-#' @export
 remove_date <- function(title.text){
   TitleTxt <- title.text
   #mm/dd/yyyy format
@@ -99,9 +95,6 @@ remove_date <- function(title.text){
                    "SEPTEMBER","SEPT","SEP","OCTOBER","OCT",
                    "NOVEMBER","NOV","DECEMBER","DEC", 
                    "YEAR","YR", "MO", "MOS", "MONTH", "MONTHS")
-  for(word in month.words){
-    TitleTxt <- gsub(word,"",TitleTxt)
-  }
   for(word in month.words){
     month <- paste0("\\b",word,"\\b")
     TitleTxt <- gsub(month,"",TitleTxt)
@@ -127,8 +120,6 @@ remove_date <- function(title.text){
 #'
 #' @description
 #' converts ordinal numbers (1st) to their alphabetic counterpart (first)
-#'
-#' @export
 convert_ordinal <- function(title.text){
   TitleTxt <- title.text
   #substitute ordinal numbers
@@ -148,7 +139,7 @@ convert_ordinal <- function(title.text){
 
 #' @title
 #' extract date function
-#'
+#' EXPERIMENTAL/DEPRECATED
 #'
 #' @description
 #' `extract_date` extracts the date information from an unfiltered title string,
@@ -158,8 +149,6 @@ convert_ordinal <- function(title.text){
 #' and outputs a length 2 vector with the first element being the date string,
 #' and the second being the number of detected dates in the string. If there is
 #' no date present, the return vector has the first element NA and the second 0.
-#'
-#' @export
 extract_date <- function(title.text){
   title <- toupper(title.text)
   title <- gsub("\\.","",title)
@@ -206,21 +195,4 @@ extract_date <- function(title.text){
   return(returnDate)
 }
 
-# i <- 1
-# cotitles <- data.frame(matrix(ncol = 3))
-# # comp.data <- read.csv("test-tables/refined-titles-UTD-2022-07-11.csv")
-# for(title in comp.data$TitleTxt){
-#   title <- pre_clean(title)
-#   title <- convert_ordinal(title)
-#   if(identify_date(title)) {
-#     cotitles[i,1] <- title
-#     cotitles[i,3] <- extract_date(title)[1]
-#     cotitles[i,2] <- remove_date(title)
-#     print(paste0(i," ",extract_date(title)[1]))
-#     print(paste0(i, " ",remove_date(title)))
-#     i <- i + 1
-#   }
-# }
-# rm(i)
-# colnames(cotitles) <- c("ORIGINAL", "FILTERED", "DATE")
 

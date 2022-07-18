@@ -2,7 +2,8 @@
 % Please edit documentation in R/title-classifier-functions.R
 \name{apply_cleaning}
 \alias{apply_cleaning}
-\title{apply cleaning function}
+\title{apply cleaning function
+DEPRECATED (need to extract the gen_status_codes parts)}
 \usage{
 apply_cleaning(title.text)
 }

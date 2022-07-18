@@ -2,7 +2,8 @@
 % Please edit documentation in R/clean-dates.R
 \name{extract_date}
 \alias{extract_date}
-\title{extract date function}
+\title{extract date function
+EXPERIMENTAL/DEPRECATED}
 \usage{
 extract_date(title.text)
 }

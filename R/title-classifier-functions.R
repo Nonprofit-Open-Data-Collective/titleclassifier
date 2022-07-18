@@ -1,4 +1,7 @@
-######
+#general
+
+require(dplyr)
+
 #PREPARE DF
 
 #' @title
@@ -82,6 +85,7 @@ format_comp_df <- function( comp.dat ){
 ### DATA CLEANING
 #' @title
 #' Split compound titles
+#' DEPRECATED
 #'
 #' @description
 #' `split_compound_title` splits compound titles into separate strings if evident.
@@ -109,6 +113,7 @@ split_compound_title <- function(title.text){
 
 #' @title
 #' comma split function
+#' DEPRECATED
 #'
 #' @description
 #' `comma_split` checks if using a comma as a title delineator works (if appl.).
@@ -148,6 +153,7 @@ comma_split <- function(title.text){
 ######
 #' @title
 #' apply cleaning function
+#' DEPRECATED (need to extract the gen_status_codes parts)
 #'
 #' @description
 #' `apply_cleaning` applies cleaning steps (capitalization, punctuation and number
@@ -243,7 +249,7 @@ apply_cleaning <- function(title.text){
 
 #' @title
 #' standardize titles function
-#'
+#' DEPRECATED
 #'
 #' @description
 #' `standardize_titles` provides a hard-coded mapping from raw titles to their
@@ -442,7 +448,7 @@ standardize_titles <- function( title.text ){
   #thought we were deleting old formers?
   # TitleTxt <- gsub( "FMR", "FORMER", TitleTxt )
   # TitleTxt <- gsub( "FORNER", "FORMER", TitleTxt )
-  officer.texts <- c("\\bOFFICO\\b", "\\bOFFICE\\b",
+  officer.texts <- c("\\bOFFICO\\b", #"\\bOFFICE\\b", #office is its separate thing
                      "\\bOFFIC\\b","\\bOFFI\\b",
                      "\\bOFF\\b","\\bOFCR\\b")
   for(name in officer.texts){
@@ -796,7 +802,6 @@ standardize_titles <- function( title.text ){
   TitleTxt <- gsub("\\bCL\\b", "CLERK", TitleTxt)
   TitleTxt <- gsub("\\bER\\b", "EDITOR", TitleTxt)
   TitleTxt <- gsub("\\bEDR\\b", "EDITOR", TitleTxt)
-  TitleTxt <- gsub("\\bA\\b", "ASSISTANT", TitleTxt) #standalone likely = assistant
   TitleTxt <- gsub("\\bASSIT\\b", "ASSISTANT", TitleTxt)
   TitleTxt <- gsub("\\bADMI\\b", "ADMINISTRATION", TitleTxt)
   TitleTxt <- gsub("\\bADMN\\b", "ADMINISTRATION", TitleTxt)
@@ -811,6 +816,19 @@ standardize_titles <- function( title.text ){
   TitleTxt <- gsub("\\bPUBLIC RELAT\\b", "PUBLIC RELATIONS", TitleTxt)
   TitleTxt <- gsub("\\bPUBLIC REALTIONS\\b", "PUBLIC RELATIONS", TitleTxt)
   TitleTxt <- gsub("\\bPUBLIC REL\\b", "PUBLIC RELATIONS", TitleTxt)
+  TitleTxt <- gsub("\\bFI\\b", "FINANCE", TitleTxt)
+  
+  #transportation
+  transportation.texts <- c("\\bTRANSPORTATIO\\b", "\\bTRANSPORTATI\\b",
+                            "\\bTRANSPORTAT\\b", "\\bTRANSPORTA\\b",
+                            "\\bTRANSPORT\\b", "\\bTRANSPOR\\b",
+                            "\\bTRANSPO\\b", "\\bTRANSP\\b", "\\bTRANS\\b")
+  for(name in transportation.texts){
+    TitleTxt <- gsub(name, "TRANSPORTATION", TitleTxt)
+  }
+  
+  TitleTxt <- gsub("\\bGM\\b", "GENERAL MANAGER", TitleTxt)
+  TItleTxt <- gsub("\\bCO$", "COMMITTEE", TitleTxt) # more often than not
   
   
   #remove residual spacing issues
@@ -828,6 +846,7 @@ standardize_titles <- function( title.text ){
 
 #' @title
 #' build standard titles function
+#' DEPRECATED
 #'
 #'
 #' @description
@@ -917,9 +936,6 @@ build_standard_titles <- function(comp.table){
 #' @description
 #' gets rid of meaningless punctuation (like periods), 
 #' converts titles to uppercase
-#' 
-#' @export
-#' 
 pre_clean <- function(title.text){
   TitleTxt <- title.text
   TitleTxt <- toupper(TitleTxt)
@@ -927,32 +943,4 @@ pre_clean <- function(title.text){
   return(TitleTxt)
 }
 
-#' @title 
-#' apply substitutes function
-#'
-#' @description 
-#' wrapper function
-#' 
-#' apply custom dictionary of common abbreviations and misspellings 
-#' Co (co-chair) vs Co. (coordinator)
-#' unmingle()  # use spell check to separate 2 words missing a space:  executivedirector
-#' spellcheck()   # only apply to words over certain length, and only make substitutions of 1 or 2 small changes (extra letter, flipped order of letters, missing letter, wrong letter)
-#' 
-#' this is probably to take the place of apply_cleaning
-#' Note: not yet written yet
-#' @export
-#' 
-apply_substitutes <- function (title.text){
 
-}
-
-
-
-
-#FIRST CLEAN DATES THEN STANDARDIZE (clean dates makes it )
-
-#can remove periods without issue
-#period, -, /, 
-#replace for with of's
-
-#we split on / , & ;

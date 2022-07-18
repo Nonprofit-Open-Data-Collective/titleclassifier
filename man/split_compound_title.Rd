@@ -2,7 +2,8 @@
 % Please edit documentation in R/title-classifier-functions.R
 \name{split_compound_title}
 \alias{split_compound_title}
-\title{Split compound titles}
+\title{Split compound titles
+DEPRECATED}
 \usage{
 split_compound_title(title.text)
 }

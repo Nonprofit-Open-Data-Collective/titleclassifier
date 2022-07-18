@@ -12,4 +12,7 @@ for example, TITLE OF TITLE is fine, “AS OF DATE” is not
 
 if "of" is part of a date (and namely as of), then we replace with "SINCE"
 for also gets mapped to of?
+
+depending on context, we can add in "of" between vice president or director
+and its subject
 }

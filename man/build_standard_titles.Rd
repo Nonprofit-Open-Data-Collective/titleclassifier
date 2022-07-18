@@ -2,7 +2,8 @@
 % Please edit documentation in R/title-classifier-functions.R
 \name{build_standard_titles}
 \alias{build_standard_titles}
-\title{build standard titles function}
+\title{build standard titles function
+DEPRECATED}
 \usage{
 build_standard_titles(comp.table)
 }

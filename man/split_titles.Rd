@@ -2,16 +2,11 @@
 % Please edit documentation in R/conjunction-cleaning.R
 \name{split_titles}
 \alias{split_titles}
-\title{split titles function}
+\title{split titles wrapper function}
 \usage{
-split_titles(comp.data)
+split_titles(title.text)
 }
 \description{
-basically doing the smae thing as build standard titles but on a split title
-wrapper function
-it will be applied on a data frame however (sorta like build_standard_titles
-
-simply splitting on "&"
-assuming it's already cleaned well,
-this function is to take the place of split_compound_titles
+basically does the same as split compound titles, but is more standardized
+only separator is &, removes punctuation too
 }

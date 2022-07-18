@@ -2,7 +2,8 @@
 % Please edit documentation in R/title-classifier-functions.R
 \name{standardize_titles}
 \alias{standardize_titles}
-\title{standardize titles function}
+\title{standardize titles function
+DEPRECATED}
 \usage{
 standardize_titles(title.text)
 }
