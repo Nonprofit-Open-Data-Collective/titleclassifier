@@ -306,6 +306,7 @@ split_titles <- function(title.text){
 
 
 #' @title 
+#' unmingle function
 #' 
 #' @description 
 #' we will use hunspell

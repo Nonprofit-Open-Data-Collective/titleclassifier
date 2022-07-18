@@ -2,7 +2,7 @@
 % Please edit documentation in R/conjunction-cleaning.R
 \name{unmingle}
 \alias{unmingle}
-\title{}
+\title{unmingle function}
 \usage{
 unmingle(title.text)
 }
