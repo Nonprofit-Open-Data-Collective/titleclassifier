@@ -7,5 +7,6 @@
 unmingle(title.text)
 }
 \description{
-we will use hunspell
+unmingles titles that are stuck together
+e.g. separates "executivedirector" into "executive director"
 }
