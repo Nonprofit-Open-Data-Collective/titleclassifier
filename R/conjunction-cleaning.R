@@ -253,55 +253,17 @@ clean_conjunctions <- function(title.text){
   TitleTxt <- standardize_comma(TitleTxt)
   TitleTxt <- standardize_slash(TitleTxt)
   TitleTxt <- standardize_separator(TitleTxt)
-  TitleTxt <- gsub("\\bAND AND\\b", "AND", TitleTxt)
-  TitleTxt <- gsub("\\bOF OF\\b", "OF", TitleTxt)
-  TitleTxt <- gsub("\\bTO TO\\b", "TO", TitleTxt)
+  while(grepl("\\bAND AND\\b",TitleTxt))
+    TitleTxt <- gsub("\\bAND AND\\b", "AND", TitleTxt)
+  while(grepl("\\OF OF\\b",TitleTxt))
+    TitleTxt <- gsub("\\bOF OF\\b", "OF", TitleTxt)
+  while(grepl("\\TO TO\\b",TitleTxt))
+    TitleTxt <- gsub("\\bTO TO\\b", "TO", TitleTxt)
   
   #"the" can safely be removed
   TitleTxt <- gsub("\\bTHE\\b", "", TitleTxt)
   
   return(TitleTxt)
-}
-
-#' @title 
-#' split titles wrapper function
-#' 
-#' @description 
-#' basically does the same as split compound titles, but is more standardized
-#' only separator is &, removes punctuation too
-#' 
-#' @export
-#' 
-split_titles <- function(title.text){
-  TitleTxt <- title.text
-  TitleTxt <- clean_conjunctions(TitleTxt)
-  title.list <- unlist(strsplit(TitleTxt,"&"))
-  return.list <- c()
-  for(i in 1:length(title.list)){
-    #get rid of punctuation and numbers (except for apostrophe)
-    title <- gsub("[^[:alnum:][:space:]'-]","",title.list[i])
-    title <- gsub("\\d", "",title)
-    title <- gsub("-", " ",title)
-    
-    title <- unmingle(title)
-    if(!grepl("&", title)){
-      if(length(title) > 0 && grepl("[A-Z]",title))
-        return.list <- append(return.list,title)
-    }
-    else{
-      if(grepl("\\bEX[A-Z]*\\b\\s*&\\s*DIR[A-Z]*\\b", title)){
-        title <- gsub("\\bEX[A-Z]*\\b\\s*&\\s*DIR[A-Z]*\\b", "EXECUTIVE DIRECTOR", title)
-        return.list <- append(return.list, title)
-      }
-      else{
-        subtitles <- unlist(strsplit(title, "&"))
-        for(st in subtitles){
-          return.list <- append(return.list, st)
-        }
-      }
-    }
-  }
-  return(return.list)
 }
 
 
@@ -368,6 +330,49 @@ standardize_space <-function(title.text){
   
   #other wise do nothing
   return(TitleTxt)
+}
+
+
+
+#' @title 
+#' split titles wrapper function
+#' 
+#' @description 
+#' basically does the same as split compound titles, but is more standardized
+#' only separator is &, removes punctuation too
+#' 
+#' @export
+#' 
+split_titles <- function(title.text){
+  TitleTxt <- title.text
+  TitleTxt <- clean_conjunctions(TitleTxt)
+  title.list <- unlist(strsplit(TitleTxt,"&"))
+  return.list <- c()
+  for(i in 1:length(title.list)){
+    #get rid of punctuation and numbers (except for apostrophe)
+    title <- gsub("[^[:alnum:][:space:]'-]","",title.list[i])
+    title <- gsub("\\d", "",title)
+    title <- gsub("-", " ",title)
+    
+    title <- unmingle(title)
+    if(!grepl("&", title)){
+      if(length(title) > 0 && grepl("[A-Z]",title))
+        return.list <- append(return.list,title)
+    }
+    else{
+      if(grepl("\\bEX[A-Z]*\\b\\s*&\\s*DIR[A-Z]*\\b", title)){
+        title <- gsub("\\bEX[A-Z]*\\b\\s*&\\s*DIR[A-Z]*\\b", "EXECUTIVE DIRECTOR", title)
+        return.list <- append(return.list, title)
+      }
+      else{
+        subtitles <- unlist(strsplit(title, "&"))
+        for(st in subtitles){
+          return.list <- append(return.list, st)
+        }
+      }
+    }
+  }
+  return(return.list)
 }
 
 

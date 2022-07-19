@@ -1086,6 +1086,11 @@ apply_substitutes <- function (title.text){
   TitleTxt <- gsub("^\\s* | \\s*$", "", TitleTxt)
   TitleTxt <- gsub( "\\s{2,}", " ", TitleTxt )
   
+  #remove unnecessary conjunctions at the end
+  TitleTxt <- gsub("\\bAND$","",TitleTxt)
+  TitleTxt <- gsub("\\bOF$","",TitleTxt)
+  TitleTxt <- gsub("\\bTO$","",TitleTxt)
+  
   TitleTxt <- stand_titles(TitleTxt)
   
   TitleTxt <- fix_of(TitleTxt)
@@ -1093,10 +1098,6 @@ apply_substitutes <- function (title.text){
   
   return( TitleTxt )
 }
-
-
-
-
 
 
 
