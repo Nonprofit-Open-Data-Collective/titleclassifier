@@ -1,27 +1,4 @@
 #clean-dates
-#' @title
-#' clean dates wrapper function, takes in a data frame
-#'
-#' @description
-#'
-#' @export
-clean_dates <- function(comp.data){
-  comp.table <- comp.data
-  
-  comp.table$Date.Code <- 0
-  for(i in 1:length(comp.table$TitleTxt)) {
-    #asssume the table already formatted correctly
-    title <- convert_ordinal(comp.table$TitleTxt[i])
-    if(identify_date(title)){
-      comp.table$Date.Code[i] <- 1
-      comp.table$TitleTxt2[i] <- remove_date(title)
-    }
-    else{
-      comp.table$TitleTxt2[i] <- title
-    }
-  }
-  return(comp.table)
-}
 
 #assuming everything is uppercase
 #' @title
@@ -136,6 +113,7 @@ convert_ordinal <- function(title.text){
   
   return(TitleTxt)
 }
+
 
 #' @title
 #' extract date function

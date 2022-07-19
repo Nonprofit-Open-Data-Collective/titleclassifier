@@ -4,7 +4,7 @@
 
 #' @title 
 #' categorize titles function
-#' DEPRECATED
+#' DEPRECATED but to be updated
 #' 
 #' @description 
 #' categorizes the titles in comp.data 
@@ -14,12 +14,10 @@
 #' to work well, it's helpful to remove the of's in titles
 #' 
 #' @export
-categorize_titles <- function( comp.dat )
+categorize_titles <- function( comp.data )
 {
   
-  
-  
-  d2 <- comp.dat
+  d2 <- comp.data
   
   
   # ### Load Categorized Titles

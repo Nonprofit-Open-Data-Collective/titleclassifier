@@ -3,9 +3,9 @@
 \name{categorize_titles}
 \alias{categorize_titles}
 \title{categorize titles function
-DEPRECATED}
+DEPRECATED but to be updated}
 \usage{
-categorize_titles(comp.dat)
+categorize_titles(comp.data)
 }
 \description{
 categorizes the titles in comp.data

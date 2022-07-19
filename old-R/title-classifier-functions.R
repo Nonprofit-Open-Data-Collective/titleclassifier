@@ -1,85 +1,6 @@
 #general
+#all deprecated!
 
-require(dplyr)
-
-#PREPARE DF
-
-#' @title
-#' Format the compensation table data frame (from 990 form, Part VII, Table 01)
-#'
-#' @description
-#' `format_comp_df` returns a processed data frame with renamed column titles
-#' and cleaned up fields from the raw table extracted from PVII T01 build. Also,
-#' this function removes duplicated lines if present. Both the input and output
-#' are data frames. Ultimately this function provides takes in raw data and
-#' returns a data frame with understandable information about DTK individuals.
-#'
-#' @export
-format_comp_df <- function( comp.dat ){
-  ## ------------------------------------------------------------------------
-  d2 <-
-    comp.dat %>%
-    rename(
-      FilingId = OBJECT_ID, #numeric
-      FilerEIN = EIN, #numeric
-      # FilerName1 = NAME,  #string
-      # FilerName = NAME.x, #string #different if reading Jesse's file
-      FormYr = TAXYR, #numeric
-      FORMTYPE  = FORMTYPE, #990,990ez (no 990PF's for comp table)
-      URL = URL, #string
-      PersonNm = F9_07_PZ_DTK_NAME, #string
-      TitleTxt = F9_07_PZ_DTK_TITLE, #string
-      AvgHrs = F9_07_PZ_DTK_AVE_HOURS_WEEK, #numeric
-      TrustOrDir = F9_07_PC_DTK_POS_TRUSTEE_INDIV, #X or NA (should also consider institutional trustee)
-      Officer = F9_07_PC_DTK_POS_OFFICER,  #X or NA
-      RptCmpOrg = F9_07_PZ_COMP_DIRECT,   #numeric
-      RptCmpRltd = F9_07_PZ_COMP_RELATED,  #numeric
-      OtherComp = F9_07_PZ_COMP_OTHER,  #numeric
-      KeyEmpl = F9_07_PC_DTK_POS_KEY_EMPLOYEE, #X or NA
-      HighComp = F9_07_PC_DTK_POS_HIGH_COMP_EMP, #X or NA (should only be 1)
-      FmrOfficer = F9_07_PC_DTK_POS_FORMER)   #X or NA (sparse)
-  
-  
-  ## ------------------------------------------------------------------------
-  
-  #converting all compensation fields to numeric if not already
-  d2$RptCmpOrg  <- as.numeric( d2$RptCmpOrg )
-  d2$RptCmpRltd <- as.numeric( d2$RptCmpRltd )
-  d2$OtherComp  <- as.numeric( d2$OtherComp )
-  
-  #if compensation field is NA, translate that to 0
-  d2$RptCmpOrg[ is.na(d2$RptCmpOrg) ]   <- 0
-  d2$RptCmpRltd[ is.na(d2$RptCmpRltd) ] <- 0
-  d2$OtherComp[ is.na(d2$OtherComp) ]   <- 0
-  
-  #sum up all compensations for total comp column
-  d2$TotalComp <- d2$RptCmpOrg + d2$RptCmpRltd + d2$OtherComp
-  
-  #converting average hours worked per week field to numeric if not already
-  d2$AvgHrs <- as.numeric( d2$AvgHrs )
-  d2$AvgHrs[ is.na(d2$AvgHrs) ]   <- 0
-  
-  #converting missing titles to an empty string
-  d2$TitleTxt[ is.na(d2$TitleTxt) ] <- ""
-  d2$TitleTxt <- pre_clean(d2$TitleTxt)
-  
-  #converting empty checkboxes for title classification to empty string
-  d2$TrustOrDir[ is.na(d2$TrustOrDir) ] <- ""
-  d2$Officer[ is.na(d2$Officer) ] <- ""
-  d2$KeyEmpl[ is.na(d2$KeyEmpl) ] <- ""
-  d2$HighComp[ is.na(d2$HighComp) ] <- ""
-  d2$FmrOfficer[ is.na(d2$FmrOfficer) ] <- ""
-  
-  #removing duplicate rows
-  d3 <- unique(d2)
-  
-  #if working with Jesse's "title-test-run.csv" file
-  # d3 <- unique(subset(d2,select = FilerEIN:NTMAJ12))
-  
-  #returning a cleaned up dataset
-  return( d3 )
-  
-}
 
 ###########
 ### DATA CLEANING
@@ -96,7 +17,6 @@ format_comp_df <- function( comp.dat ){
 #' title is standardized). The input is a string, and the output is a vector
 #' with variable length.
 #'
-#' @export
 split_compound_title <- function(title.text){
   title.text <- toupper(title.text)
   if(is.na(title.text)) return("")
@@ -124,7 +44,6 @@ split_compound_title <- function(title.text){
 #' "Treasurer". The standardized list of titles is pretty general, and could be
 #' changed/improved as more edge cases are discovered.
 #'
-#' @export
 comma_split <- function(title.text){
   #only using comma splits if the other title is guaranteed
   TitleTxt <- toupper(title.text)
@@ -163,7 +82,6 @@ comma_split <- function(title.text){
 #'  efficiency, but currently that is a separate step. The function takes in an
 #'  input of a string and outputs a string.
 #'
-#' @export
 apply_cleaning <- function(title.text){
   
   #capitalize all text
@@ -259,7 +177,6 @@ apply_cleaning <- function(title.text){
 #' potentially possible to use agrep to allow for spelling mistakes in long titles,
 #' and/or also narrow down the title range depending on sector to improve efficiency.
 #'
-#' @export
 standardize_titles <- function( title.text ){
   
   TitleTxt <- toupper(title.text) #in case it fell thru
@@ -859,7 +776,6 @@ standardize_titles <- function( title.text ){
 #' This test function combines all the functions from this file to manipulate
 #' a data frame. It takes in a data frame and outputs a filtered data frame.
 #'
-#' @export
 build_standard_titles <- function(comp.table){
   df <- comp.table
   oldTitles <- df$TitleTxt
@@ -929,18 +845,5 @@ build_standard_titles <- function(comp.table){
 
 
 ######
-
-#' @title
-#' pre cleaning function
-#'
-#' @description
-#' gets rid of meaningless punctuation (like periods), 
-#' converts titles to uppercase
-pre_clean <- function(title.text){
-  TitleTxt <- title.text
-  TitleTxt <- toupper(TitleTxt)
-  TitleTxt <- gsub("\\.","",TitleTxt)
-  return(TitleTxt)
-}
 
 

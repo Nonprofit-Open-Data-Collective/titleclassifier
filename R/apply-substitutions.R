@@ -1087,49 +1087,13 @@ apply_substitutes <- function (title.text){
   TitleTxt <- gsub( "\\s{2,}", " ", TitleTxt )
   
   TitleTxt <- stand_titles(TitleTxt)
+  
   TitleTxt <- fix_of(TitleTxt)
   TitleTxt <- spellcheck(TitleTxt) #slows things down, but is useful
   
   return( TitleTxt )
 }
 
-
-
-
-
-########
-
-
-
-
-#' @title 
-#' generate status codes wrapper function
-#' NOT YET WRITTEN
-#' 
-#' 
-#' @description 
-#' phase 4
-#' 
-#' o	remove_sched_o()  # add binary code for “see schedule o” comments and remove text 
-#' standardize_qualifiers()  # use mapping of variants of qualifiers like past, former, ex-officio, emeritus all mapped to canonical version “PAST”
-#' future (“elect”) 
-#' current 
-#' interim (acting, through, as of, etc.)
-#' past (emeritus,
-#' co
-#' at large
-#' ex-officio
-#' 
-#' categorize_qualifiers()  # create binary codes for above categories 
-#' standardize_quantifiers()  # replace 1st with first, etc., only if at the start of the title 
-#' categorize_quantifiers () # create binary codes for above categories
-#' should we leave qualifiers or remove them from clean title text??? 
-#' I think removing is better, but would need to see examples 
-#' 
-#' @export
-gen_status_codes <- function(title.text){
-  
-}
 
 
 
