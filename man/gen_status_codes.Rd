@@ -2,27 +2,15 @@
 % Please edit documentation in R/status-codes.R
 \name{gen_status_codes}
 \alias{gen_status_codes}
-\title{generate status codes wrapper function
-NOT YET WRITTEN}
+\title{generate status codes wrapper function}
 \usage{
-gen_status_codes(title.text)
+gen_status_codes(comp.data)
 }
 \description{
-phase 4
+phase 4: remove all quantifiers and qualifiers
+we create flags for all of the qualifiers too
+the qualifiers include: schedule o, at large, as needed, ex officio, co,
+ordinal numbers, and role statuses (former, future, current, and interim)
 
-o	remove_sched_o()  # add binary code for “see schedule o” comments and remove text
-standardize_qualifiers()  # use mapping of variants of qualifiers like past, former, ex-officio, emeritus all mapped to canonical version “PAST”
-future (“elect”)
-current
-interim (acting, through, as of, etc.)
-past (emeritus,
-co
-at large
-ex-officio
-
-categorize_qualifiers()  # create binary codes for above categories
-standardize_quantifiers()  # replace 1st with first, etc., only if at the start of the title
-categorize_quantifiers () # create binary codes for above categories
-should we leave qualifiers or remove them from clean title text???
-I think removing is better, but would need to see examples
+roughly 2.5 minutes for 100,000 titles
 }
