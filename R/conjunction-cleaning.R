@@ -13,21 +13,14 @@ standardize_and <- function(title.text){
   TitleTxt <- title.text
   and_true <- FALSE # "and" not used as separator in raw
   amp_true <- TRUE # & used as separator in raw
-  possibles <- c("PRESIDENT", "CEO", "DIRECTOR\\b", "CHAIR",
-                 "TRUSTEE\\b", "TREASURER", "SECRETARY", "OFFICER",
-                 "COUNSEL","FOUNDER", "PUBLISHER","EDITOR\\b", "MEMBER\\b",
-                 "\\bCOO\\b", "CFO","MANAGER", "CTO", "ADMINISTRATOR",
-                 "\\bCRO\\b", "CURATOR", "TEACHER", "CLERK", "CONTROLLER",
-                 "LIAISON", "INSTRUCTOR", "GENERAL", "COMPTROLLER",
-                 "HISTORIAN", "ADVISOR", "ARTISTIC","KEEPER",
-                 "CHOREOGRAPHER", "EXECUTIVE\\s*$")
   if(grepl("\\bAND\\b",TitleTxt)){
     and_split <- unlist(strsplit(TitleTxt,"\\bAND\\b"))
     and_true <- TRUE
     for(i in 1:length(and_split)){
       testTitle <- apply_substitutes(and_split[i])
       titlePresent <- FALSE
-      for(title in possibles){
+      likely.titles <- readRDS("data/likely.titles.RDS")
+      for(title in likely.titles){
         if(grepl(title,testTitle))
           titlePresent <- TRUE
       }
@@ -41,7 +34,8 @@ standardize_and <- function(title.text){
     for(i in 1:length(amp_split)){
       testTitle <- apply_substitutes(amp_split[i])
       titlePresent <- FALSE
-      for(title in possibles){
+      likely.titles <- readRDS("data/likely.titles.RDS")
+      for(title in likely.titles){
         if(grepl(title,testTitle))
           titlePresent <- TRUE
       }
@@ -128,26 +122,20 @@ standardize_of <- function(title.text){
 standardize_comma <- function(title.text){
   TitleTxt <- title.text
   if(grepl(",",TitleTxt)){
-    possibles <- c("PRESIDENT", "CEO", "DIRECTOR\\b", "CHAIR",
-                   "TRUSTEE\\b", "TREASURER", "SECRETARY", "OFFICER",
-                   "COUNSEL","FOUNDER", "PUBLISHER","EDITOR\\b", "MEMBER\\b",
-                   "\\bCOO\\b", "CFO","MANAGER", "CTO", "ADMINISTRATOR",
-                   "\\bCRO\\b", "CURATOR", "TEACHER", "CLERK", "CONTROLLER",
-                   "LIAISON", "INSTRUCTOR", "GENERAL", "COMPTROLLER",
-                   "HISTORIAN", "ADVISOR", "ARTISTIC","KEEPER",
-                   "CHOREOGRAPHER", "EXECUTIVE\\s*$")
     com_split <- unlist(strsplit(TitleTxt,","))
     com_true <- TRUE #comma used as a separator (defaulted to true)
     com_eq_of <- FALSE #comma used as of (i.e. vp, finance)
     for(i in 1:length(com_split)){
       testTitle <- apply_substitutes(com_split[i])
       titlePresent <- FALSE
-      for(title in possibles){
+      likely.titles <- readRDS("data/likely.titles.RDS")
+      for(title in likely.titles){
         if(grepl(title,testTitle))
           titlePresent <- TRUE
         if((grepl("CHAIR",testTitle) | grepl("VICE PRESIDENT", testTitle) | 
             grepl("DIRECTOR", testTitle) | grepl("DEAN", testTitle) |
-            grepl("TRUSTEE", testTitle) | grepl("MANAGER", testTitle)) & i == 1){
+            grepl("TRUSTEE", testTitle) | grepl("MANAGER", testTitle) |
+            grepl("CEO", testTitle) | grepl("SECRETARY", testTitle)) & i == 1){
           com_eq_of <- TRUE
         }
       }
@@ -158,9 +146,9 @@ standardize_comma <- function(title.text){
       TitleTxt <- gsub(","," &",TitleTxt)
     
     #substitute first occurence of , --> "of", (will be caught in fix_of)
-    #"VP Sales, marketing, and partnerships"
+    #"VP, Sales, marketing, and partnerships"
     else if(com_eq_of) 
-      TitleTxt <- sub(",", " ", TitleTxt) 
+      TitleTxt <- gsub(",", " ", TitleTxt) 
     
     #extraneous comma is treated as "and"
     else 
@@ -177,26 +165,20 @@ standardize_comma <- function(title.text){
 standardize_slash <- function(title.text){
   TitleTxt <- title.text
   if(grepl("/",TitleTxt)){
-    possibles <- c("PRESIDENT", "CEO", "DIRECTOR\\b", "CHAIR",
-                    "TRUSTEE\\b", "TREASURER", "SECRETARY", "OFFICER",
-                    "COUNSEL","FOUNDER", "PUBLISHER","EDITOR\\b", "MEMBER\\b",
-                    "\\bCOO\\b", "CFO","MANAGER", "CTO", "ADMINISTRATOR",
-                    "\\bCRO\\b", "CURATOR", "TEACHER", "CLERK", "CONTROLLER",
-                    "LIAISON", "INSTRUCTOR", "GENERAL", "COMPTROLLER",
-                    "HISTORIAN", "ADVISOR", "ARTISTIC","KEEPER",
-                    "CHOREOGRAPHER", "EXECUTIVE\\s*$")
     slash_split <- unlist(strsplit(TitleTxt,"/"))
     slash_true <- TRUE #slash used as a separator (defaulted to true)
     slash_eq_of <- FALSE #slash used as of (i.e. vp, finance)
     for(i in 1:length(slash_split)){
       testTitle <- apply_substitutes(slash_split[i])
       titlePresent <- FALSE
-      for(title in possibles){
+      likely.titles <- readRDS("data/likely.titles.RDS")
+      for(title in likely.titles){
         if(grepl(title,testTitle))
           titlePresent <- TRUE
         if((grepl("CHAIR",testTitle) | grepl("VICE PRESIDENT", testTitle) | 
             grepl("DIRECTOR", testTitle) | grepl("DEAN", testTitle) |
-            grepl("TRUSTEE", testTitle) | grepl("MANAGER", testTitle)) & i == 1)
+            grepl("TRUSTEE", testTitle) | grepl("MANAGER", testTitle) |
+            grepl("CEO", testTitle) | grepl("SECRETARY", testTitle)) & i == 1)
           slash_eq_of <- TRUE
       }
       slash_true <- (slash_true & titlePresent)
@@ -205,9 +187,9 @@ standardize_slash <- function(title.text){
     if(slash_true) 
       TitleTxt <- gsub("/"," & ",TitleTxt)
     
-    #substitute first occurrence of , --> "of"
+    #substitute first occurrence of / --> "of" (to be fixed in fix_of)
     else if(slash_eq_of) 
-      TitleTxt <- sub("/", " OF ", TitleTxt) 
+      TitleTxt <- gsub("/", " ", TitleTxt) 
     
     #extraneous slash is treated as "AND"
     else 
@@ -230,7 +212,7 @@ standardize_slash <- function(title.text){
 standardize_separator <- function(title.text){
   TitleTxt <- title.text
   standard_separator <- "&"
-  alternate_separators <- c(";", "\\\\")
+  alternate_separators <- c(";", "\\\\", "/")
   for(separator in alternate_separators){
     TitleTxt <- gsub(separator,standard_separator,TitleTxt)
   }
@@ -306,19 +288,12 @@ unmingle <- function(title.text){
 standardize_space <-function(title.text){
   TitleTxt <- title.text
   space_split <- unlist(strsplit(TitleTxt," "))
-  possibles <- c("PRESIDENT", "CEO", "DIRECTOR\\b", "CHAIR",
-                 "TRUSTEE\\b", "TREASURER", "SECRETARY", "OFFICER",
-                 "COUNSEL","FOUNDER", "PUBLISHER","EDITOR\\b", "MEMBER\\b",
-                 "\\bCOO\\b", "CFO","MANAGER", "CTO", "ADMINISTRATOR",
-                 "\\bCRO\\b", "CURATOR", "TEACHER", "CLERK", "CONTROLLER",
-                 "LIAISON", "INSTRUCTOR", "GENERAL", "COMPTROLLER",
-                 "HISTORIAN", "ADVISOR", "ARTISTIC","KEEPER",
-                 "CHOREOGRAPHER", "EXECUTIVE\\s*$")
   space_true <- TRUE #space used as a separator (defaulted to true)
   for(i in 1:length(space_split)){
     testTitle <- apply_substitutes(space_split[i])
     titlePresent <- FALSE
-    for(title in possibles){
+    likely.titles <- readRDS("data/likely.titles.RDS")
+    for(title in likely.titles){
       if(grepl(title,testTitle))
         titlePresent <- TRUE
     }
@@ -350,9 +325,12 @@ split_titles <- function(title.text){
   return.list <- c()
   for(i in 1:length(title.list)){
     #get rid of punctuation and numbers (except for apostrophe)
-    title <- gsub("[^[:alnum:][:space:]'-]","",title.list[i])
+    title <- gsub("[^[:alnum:][:space:]']"," ",title.list[i]) 
+    #extraneous spaces to be deleted
+    
     title <- gsub("\\d", "",title)
-    title <- gsub("-", " ",title)
+    title <- gsub("'", "", title)
+    # title <- gsub("-", " ",title)
     
     title <- unmingle(title)
     if(!grepl("&", title)){

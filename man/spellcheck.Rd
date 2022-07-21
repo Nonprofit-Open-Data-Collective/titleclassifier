@@ -9,4 +9,6 @@ spellcheck(title.text)
 \description{
 correct small spelling mistakes
 right now only correcting president, treasurer, and trustee misspellings
+
+pretty slow function right now...
 }

@@ -23,12 +23,12 @@ identify_date <- function(title.text){
   }
   
   #months
-  month.words <- c("JAN","JANUARY","FEB","FEBRUARY",
-                   "MAR","MARCH","APR","APRIL","MAY",
-                   "JUN","JUNE","JUL","JULY","AUG", "AUGUST",
-                   "SEP","SEPT","SEPTEMBER","OCT","OCTOBER",
-                   "NOV","NOVEMBER","DEC","DECEMBER",
-                   "YEAR","YR", "MO", "MOS", "MONTH", "MONTHS")
+  month.words <- c("JANUARY","JAN","FEBRUARY","FEB",
+                   "MARCH","MAR","APRIL","APR","MAY",
+                   "JUNE","JUN","JULY","JUL","AUGUST","AUG",
+                   "SEPTEMBER","SEPT","SEP","OCTOBER","OCT",
+                   "NOVEMBER","NOV","DECEMBER","DEC", "PARTIAL YEAR", "PARTIAL YR",
+                   "PART YEAR", "PART YR","MO", "MOS", "MONTH", "MONTHS")
   for(word in month.words){
     month <- paste0("\\b",word,"\\b")
     if(grepl(month, TitleTxt)) {
@@ -70,8 +70,8 @@ remove_date <- function(title.text){
                    "MARCH","MAR","APRIL","APR","MAY",
                    "JUNE","JUN","JULY","JUL","AUGUST","AUG",
                    "SEPTEMBER","SEPT","SEP","OCTOBER","OCT",
-                   "NOVEMBER","NOV","DECEMBER","DEC", 
-                   "YEAR","YR", "MO", "MOS", "MONTH", "MONTHS")
+                   "NOVEMBER","NOV","DECEMBER","DEC", "PARTIAL YEAR", "PARTIAL YR",
+                   "PART YEAR", "PART YR","MO", "MOS", "MONTH", "MONTHS")
   for(word in month.words){
     month <- paste0("\\b",word,"\\b")
     TitleTxt <- gsub(month,"",TitleTxt)
@@ -155,8 +155,8 @@ extract_date <- function(title.text){
                      "MARCH","MAR","APRIL","APR","MAY",
                      "JUNE","JUN","JULY","JUL","AUGUST","AUG",
                      "SEPTEMBER","SEPT","SEP","OCTOBER","OCT",
-                     "NOVEMBER","NOV","DECEMBER","DEC", 
-                     "YEAR","YR", "MO", "MOS", "MONTH", "MONTHS")
+                     "NOVEMBER","NOV","DECEMBER","DEC", "PARTIAL YEAR", "PARTIAL YR",
+                     "PART YEAR", "PART YR","MO", "MOS", "MONTH", "MONTHS")
     for(word in month.words){
       month <- paste0("\\b",word,"\\b")
       k <- stringr::str_extract_all(title,month)[[1]]

@@ -248,6 +248,12 @@ categorize_titles <- function( comp.data )
   d2$TRUST [ grepl( "TRUSTEE", d2$TitleTxt2) ] <- 1
   d2$TRUST [ grepl( "MEMBER", d2$TitleTxt2) ] <- 1
   d2$TRUST [ grepl( "COUNCIL", d2$TitleTxt2) ] <- 1
+  d2$TRUST [ grepl( "COMMITTEE", d2$TitleTxt2) ] <- 1
+  d2$TRUST [ grepl( "GOVERNOR", d2$TitleTxt2) ] <- 1
+  d2$TRUST [ grepl( "REGENT", d2$TitleTxt2) ] <- 1
+  
+  d2$TRUST [ grepl( "EX-OFFICIO", d2$TitleTxt2) ] <- 1
+  d2$TRUST [ grepl( "DIRECTOR AT LARGE", d2$TitleTxt2) ] <- 1
   
   # titles <- d2$TitleTxt2[ d2$TRUST == 1]
   # table( titles ) %>% sort( decreasing=T ) %>% as.data.frame( ) %>% head( 20 ) %>% pander

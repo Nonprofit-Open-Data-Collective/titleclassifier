@@ -139,8 +139,9 @@ substitute_secretary <- function(title.text){
   
   TitleTxt <- gsub("\\bS\\b", "SECRETARY", TitleTxt) #assume standalone s is sec
   TitleTxt <- gsub("\\bSE\\b", "SECRETARY", TitleTxt) #ditto but with se
-  TitleTxt <- gsub("\\bSEC\\b", "SECRETARY", TitleTxt) #ditto but with se
-  TitleTxt <- gsub("\\bSECY\\b", "SECRETARY", TitleTxt) #ditto but with se
+  TitleTxt <- gsub("\\bSEC\\b", "SECRETARY", TitleTxt) #ditto but with sec
+  TitleTxt <- gsub("\\bSECY\\b", "SECRETARY", TitleTxt) #ditto but with secy
+  TitleTxt <- gsub("\\bSCRTRY\\b", "SECRETARY", TitleTxt)
   
   TitleTxt <- gsub("\\bSECT[A-Z]*\\b", "SECRETARY", TitleTxt) 
   
@@ -279,7 +280,9 @@ substitute_officer <- function(title.text){
   if(grepl("\\bEX O", TitleTxt) | grepl("\\bEX-O", TitleTxt)) 
     return(TitleTxt)
   
-  TitleTxt <- gsub("\\bOFF[A-Z]*\\b", "OFFICER", TitleTxt)
+  
+  if(!grepl("ROLLED", TitleTxt)) #preventing "rolled off"
+    TitleTxt <- gsub("\\bOFF[A-Z]*\\b", "OFFICER", TitleTxt)
   TitleTxt <- gsub("\\bOFCR\\b", "OFFICER", TitleTxt)
   
   return(TitleTxt)
@@ -809,7 +812,8 @@ substitute_transportation <- function(title.text){
 substitute_exofficio <- function(title.text){
   TitleTxt <- title.text
   
-  TitleTxt <- gsub("\\bEX OFF[A-Z]*\\b", "EX-OFFICIO", TitleTxt)
+  TitleTxt <- gsub("\\bEX\\s+OFF[A-Z]*\\b", "EX-OFFICIO", TitleTxt)
+  TitleTxt <- gsub("\\bEX-OFF[A-Z]*\\b", "EX-OFFICIO", TitleTxt)
   
   return(TitleTxt)
 }
@@ -824,6 +828,27 @@ substitute_atlarge <- function(title.text){
   
   TitleTxt <- gsub("\\bAT LA[A-Z]*\\b", "AT LARGE", TitleTxt)
   TitleTxt <- gsub("\\bAT\\s*$", "AT LARGE", TitleTxt)
+  
+  return(TitleTxt)
+}
+
+#' @title 
+#' substitute governor helper function
+#' 
+#' @description 
+#' condenses governor abbreviations to a standardized form
+#' also works on governance and government
+substitute_governor <- function(title.text){
+  TitleTxt <- title.text
+  
+  TitleTxt <- gsub("\\bGOVT\\b", "GOVERNMENT", TitleTxt)
+  TitleTxt <- gsub("\\bGOV'T\\b", "GOVERNMENT", TitleTxt)
+  
+  if(grepl("GOVERNANCE", TitleTxt)) return(TitleTxt)
+  else if(grepl("GOVERNMENT", TitleTxt)) return(TitleTxt)
+  else if(grepl("GOVERNING", TitleTxt)) return(TitleTxt)
+  
+  TitleTxt <- gsub("\\bGOV[A-Z]*\\b", "GOVERNOR", TitleTxt)
   
   return(TitleTxt)
 }
@@ -847,11 +872,9 @@ substitute_miscellaneous <- function(title.text){
   TitleTxt <- gsub("\\bDD\\b", "DEPUTY DIRECTOR", TitleTxt) #assume dd = dep director
   TitleTxt <- gsub("\\bCO\\s", "CO-", TitleTxt) #co-chair over co chair for example
   TitleTxt <- gsub("\\bCL\\b", "CLERK", TitleTxt)
-  TitleTxt <- gsub("\\bER\\b", "EDITOR", TitleTxt)
-  TitleTxt <- gsub("\\bEDR\\b", "EDITOR", TitleTxt)
   TitleTxt <- gsub("\\bCUL\\b", "CULTURE", TitleTxt)
   TitleTxt <- gsub("\\bSERV\\b", "SERVICE", TitleTxt)
-  TitleTxt <- gsub("\\bGOVERN\\b", "GOVERNANCE", TitleTxt)
+  # TitleTxt <- gsub("\\bGOVERN\\b", "GOVERNANCE", TitleTxt)
   TitleTxt <- gsub("\\bCHF\\b", "CHIEF", TitleTxt)
   TitleTxt <- gsub("\\bREC\\b", "RECORDING", TitleTxt)
   TitleTxt <- gsub("\\bORG\\s", "ORGANIZING ", TitleTxt)
@@ -860,6 +883,11 @@ substitute_miscellaneous <- function(title.text){
   TitleTxt <- gsub("\\bEDUCA\\b", "EDUCATION", TitleTxt)
   TitleTxt <- gsub("\\bADV\\s*$", "ADVISOR", TitleTxt)
   TitleTxt <- gsub("\\bADV\\b", "ADVANCEMENT", TitleTxt)
+  TitleTxt <- gsub("\\bSCHOLARSHIP\\b", "SCHOLARSHIPS", TitleTxt) #standardize plurality
+  
+  TitleTxt <- gsub("\\bER\\b", "EDITOR", TitleTxt)
+  TitleTxt <- gsub("\\bEDR\\b", "EDITOR", TitleTxt)
+  TitleTxt <- gsub("\\bEDI\\b", "EDITOR", TitleTxt)
   
   TitleTxt <- gsub("\\bAFFA[A-Z]*\\b", "AFFAIRS", TitleTxt)
   TitleTxt <- gsub("\\bCONSU[A-Z]*\\b","CONSULTANT", TitleTxt)
@@ -873,7 +901,8 @@ substitute_miscellaneous <- function(title.text){
   TitleTxt <- gsub("\\bPHY[A-Z]*\\b", "PHYSICAL", TitleTxt)
   TitleTxt <- gsub("\\bTHEATR[A-Z]*\\b","THEATER",TitleTxt)
   
-  TitleTxt <- gsub("\\bVICE$", "VICE PRESIDENT",TitleTxt)
+  TitleTxt <- gsub("\\bVICE\\s*$", "VICE PRESIDENT",TitleTxt)
+  TitleTxt <- gsub("\\bHUMAN\\s*$", "HUMAN RESOURCES", TitleTxt)
   
   #TRUSTEE
   TitleTxt <- gsub("\\bTRTEE\\b", "TRUSTEE", TitleTxt)
@@ -892,17 +921,18 @@ substitute_miscellaneous <- function(title.text){
   TitleTxt <- gsub("CEOCEO", "CEO", TitleTxt)
   
   #heuristics (won't be much use until we get rid of role statuses)
-  if(TitleTxt == "VICE") TitleTxt <- "VICE PRESIDENT" #standalone vice is likely vp
-  else if(TitleTxt == "PR") TitleTxt <- "PRESIDENT" #standalone pr is likely pres
-  else if(TitleTxt == "EX") TitleTxt <- "EXECUTIVE" #standalone ex is likely exec
+  if(grepl("^VICE$",TitleTxt)) TitleTxt <- "VICE PRESIDENT" #standalone vice is likely vp
+  else if(grepl("^PR$",TitleTxt)) TitleTxt <- "PRESIDENT" #standalone pr is likely pres
+  else if(grepl("^EX$",TitleTxt)) TitleTxt <- "EXECUTIVE" #standalone ex is likely exec
   else if(grepl("\\bT\\b", TitleTxt)) TitleTxt <- gsub("\\bT\\b","TRUSTEE",TitleTxt)
   #standalone t is likely trustee,#but could be treasurer
   else if(grepl("\\bEXECUTIVE V\\b", TitleTxt)) 
     TitleTxt <- gsub("\\bEXECUTIVE V\\b","EXECUTIVE VICE PRESIDENT", TitleTxt)
   else if(grepl("\\bCE$",TitleTxt)) TitleTxt <- gsub("\\bCE$","CEO",TitleTxt) #ceo misspelling
   else if (grepl("\\bCF$",TitleTxt)) TitleTxt <- gsub("\\bCF$","CFO",TitleTxt)
-  else if(TitleTxt == "EXECUTIVE OFFICER") TitleTxt <- "CEO"
-  else if(TitleTxt == "N/A" | TitleTxt == "\\bN\\s*A\\b" | TitleTxt == "\\s*")
+  else if(grepl("^EXECUTIVE OFFICER$",TitleTxt)) TitleTxt <- "CEO"
+  else if(grepl("^N/A$",TitleTxt) | grepl("^N\\s*A$",TitleTxt) | 
+          grepl("^\\s*$",TitleTxt))
     TitleTxt <- NA
   # NA could be north america but most likely null value
   
@@ -952,24 +982,9 @@ fix_of <- function(title.text){
   current.title <- NA
   titlePos <- 0
   if(!grepl("\\bOF\\b", TitleTxt)){
-    possible.title.list <- c("VICE PRESIDENT", "DIRECTOR", "CHAIR",
-                             "DEAN", "TRUSTEE", "CEO", "SECRETARY")
-    possible.subject.list <- c("OPERATIONS", "FINANCE", "ADMINISTRATION",
-                               "MANAGEMENT", "EXHIBIT", "PUBLICITY", 
-                               "ACTIVITIES", "BUILDING", "EDUCATION",
-                               "MARKETING", "STRATEGY", "SALES",
-                               "ENSHRINEMENT", "ADVANCEMENT", "FUNDRAISING",
-                               "COMMUNICATION", "PRODUCT", "CONSULTING",
-                               "TECHNOLOGY", "DEVELOPMENT", "GROUNDS",
-                               "\\bART", "MUSIC", "ENGINEERING",
-                               "BUSINESS", "DESIGN","EXPERIENCE",
-                               "CULTURE", "\\bLAB", "AFFAIR",
-                               "BRANDING", "INTERNAL", "PUBLIC",
-                               "EXTERNAL", "PROMOTION", "HUMAN RESOURCES",
-                               "LEGAL", "RESEARCH", "TRANSPORTATION", 
-                               "FELLOWSHIP", "FOUNDATION", "EVENT",
-                               "COLLECTION", "SCHOOL", "ASSOCIATION")
-    for(title in possible.title.list){
+    possible.titles <- readRDS("data/possible.titles.RDS")
+    likely.subjects <- readRDS("data/likely.subjects.RDS")
+    for(title in possible.titles){
       if(grepl(title,TitleTxt)){
         titleMatch <- TRUE
         current.title <- title
@@ -977,7 +992,7 @@ fix_of <- function(title.text){
         break
       }
     }
-    for(subject in possible.subject.list){
+    for(subject in likely.subjects){
       if(grepl(subject,TitleTxt)){
         if(regexpr(subject,TitleTxt)[1] > titlePos){
           subjectMatch <- TRUE
@@ -1000,10 +1015,14 @@ fix_of <- function(title.text){
 #' @description 
 #' correct small spelling mistakes
 #' right now only correcting president, treasurer, and trustee misspellings
+#' 
+#' pretty slow function right now...
 spellcheck <- function(title.text){
   TitleTxt <- title.text
   
-  if(!grepl("\\s",TitleTxt) && !is.na(TitleTxt)){
+  if(!grepl("\\s",TitleTxt) && !is.na(TitleTxt) &&
+     (grepl("^\\s*P",TitleTxt) || grepl("^\\s*T",TitleTxt) || 
+      grepl("^\\s*M",TitleTxt))){
     suggested.titles <- hunspell::hunspell_suggest(TitleTxt)[[1]]
     for(title in suggested.titles){
       if((title == "PRESIDENT" && grepl("^\\s*P",TitleTxt) && TitleTxt != "PRESIDENT"))
@@ -1013,10 +1032,34 @@ spellcheck <- function(title.text){
       else if(title == "TRUSTEE" && grepl("^\\s*T",TitleTxt) && TitleTxt != "TRUSTEE"
          && TitleTxt != "TRUSTEES")
         TitleTxt <- "TRUSTEE"
+      else if(title == "MEMBER" && grepl("^\\s*M",TitleTxt) && TitleTxt != "MEMBER"
+              && TitleTxt != "MEMBERSHIP")
+        TitleTxt <- "MEMBER"
     }
   }
   return(TitleTxt)
 }
+
+
+#' @title 
+#' remove trailing conjunctions
+#' 
+#' 
+#' @description 
+#' removes any trailing conjunctions (and, of, to) 
+#' as well as any leading conjunctions
+remove_trailing_conjunctions <- function(title.text){
+  TitleTxt <- title.text
+  
+  TitleTxt <- gsub("\\bAND$","",TitleTxt)
+  TitleTxt <- gsub("\\bOF$","",TitleTxt)
+  TitleTxt <- gsub("\\bTO$","",TitleTxt)
+  
+  TitleTxt <- gsub("^AND\\s+","",TitleTxt)
+  
+  return(TitleTxt)
+}
+
 
 
 #' @title 
@@ -1077,6 +1120,7 @@ apply_substitutes <- function (title.text){
   TitleTxt <- substitute_exofficio(TitleTxt)
   TitleTxt <- substitute_atlarge(TitleTxt)
   TitleTxt <- substitute_member(TitleTxt)
+  TitleTxt <- substitute_governor(TitleTxt)
   
   TitleTxt <- condense_abbreviations(TitleTxt) 
   
@@ -1087,17 +1131,18 @@ apply_substitutes <- function (title.text){
   TitleTxt <- gsub( "\\s{2,}", " ", TitleTxt )
   
   #remove unnecessary conjunctions at the end
-  TitleTxt <- gsub("\\bAND$","",TitleTxt)
-  TitleTxt <- gsub("\\bOF$","",TitleTxt)
-  TitleTxt <- gsub("\\bTO$","",TitleTxt)
+  TitleTxt <- remove_trailing_conjunctions(TitleTxt)
   
   TitleTxt <- stand_titles(TitleTxt)
   
   TitleTxt <- fix_of(TitleTxt)
+  TitleTxt <- gsub("\\bOF AND\\b", "OF", TitleTxt)
   TitleTxt <- spellcheck(TitleTxt) #slows things down, but is useful
   
   return( TitleTxt )
 }
+
+
 
 
 
