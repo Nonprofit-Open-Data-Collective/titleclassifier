@@ -126,7 +126,7 @@ categorize_miscellaneous <- function(comp.data){
   comp.table$AS.NEEDED <- 0
   comp.table$EX.OFFICIO <- 0
   comp.table$CO <- 0 #co-
-  comp.table$QUANTIFIER <- NA
+  comp.table$QUANTIFIER <- ""
   
   for(i in 1:length(comp.table$TitleTxt3)){
     TitleTxt <- comp.table$TitleTxt3[i]
@@ -254,7 +254,7 @@ standardize_current <- function(title.text){
 
 
 #' @title 
-#' standardize qualifiers wrapper function
+#' standardize qualifiers function
 #' 
 #' 
 #' @description 
@@ -268,6 +268,21 @@ standardize_qualifiers <- function(title.text){
   TitleTxt <- standardize_future(TitleTxt)
   TitleTxt <- standardize_interim(TitleTxt)
   TitleTxt <- standardize_current(TitleTxt)
+  
+  
+  #alternate method (can both run at the same time)
+  status.mapping <- readRDS("data/status.mapping.RDS")
+  for(i in 1:length(status.mapping$VARIANT)){
+    word <- status.mapping$VARIANT[i]
+    if(word != "EX" && word != "END")
+      TitleTxt <- gsub(paste0("\\b",word,"\\b"),status.mapping$CANONICAL[i],
+                       TitleTxt)
+    else{
+      TitleTxt <- gsub("\\bEX\\s","FORMER",TitleTxt)
+      TitleTxt <- gsub("\\bEX$","FORMER",TitleTxt)
+      TitleTxt <- gsub("\\bEND$","FORMER",TitleTxt)
+    }
+  }
   return(TitleTxt)
 }
 
