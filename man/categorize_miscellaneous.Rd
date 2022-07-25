@@ -9,5 +9,5 @@ categorize_miscellaneous(comp.data)
 \description{
 categorizes, removes, and creates flags for:
 schedule o, as needed, at large, ex officio, and co
-also includes numericals
+also includes numericals and regionals
 }

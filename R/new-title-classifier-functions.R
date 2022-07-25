@@ -168,8 +168,29 @@ build_split_titles <- function(comp.data){
 }
 
 
-
-
-
+#' @title 
+#' clean empty cells function
+#' 
+#' @description 
+#' removes any title rows without any meaningful information in the title cell,
+#' i.e. titles cells without any titles in them
+#' #we skip over titles that may have had valuable info removed like emeritus or 
+#' at large
+clean_empty_cells <- function(comp.data){
+  time1 <- Sys.time()
+  pdf <- data.frame(matrix(ncol = ncol(comp.data)))
+  k <- 1
+  for(i in 1:length(comp.data$TitleTxt4)){
+    print(i)
+    if(!is.na(comp.data$TitleTxt4[i])){
+      pdf[k,] <- comp.data[i,]
+      k <- k + 1
+    }
+  }
+  colnames(pdf) <- colnames(comp.data)
+  time2 <- Sys.time()
+  print(paste0("RUNTIME of empty cell removal (in mins): ", difftime(time2, time1, units= "mins")))
+  return(pdf)
+}
 
 

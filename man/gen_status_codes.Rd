@@ -12,5 +12,5 @@ we create flags for all of the qualifiers too
 the qualifiers include: schedule o, at large, as needed, ex officio, co,
 ordinal numbers, and role statuses (former, future, current, and interim)
 
-roughly 2.5 minutes for 100,000 titles
+roughly 5 minutes for 100,000 titles
 }

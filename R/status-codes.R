@@ -108,13 +108,69 @@ filter_co <- function(title.text){
 }
 
 #' @title 
+#' filter regional words function
+#' 
+#' 
+#' @description 
+#' removes regional word text if present and creates flag
+filter_regional <- function(title.text){
+  TitleTxt <- title.text
+  regional.words <- readRDS("data/regional.words.RDS")
+  for(i in 1:length(regional.words$REGIONS)){
+    word <- regional.words$REGIONS[i]
+    if(word != "PA" && word != "AREA")
+      TitleTxt <- gsub(paste0("\\b",word,"\\b"),"REGIONAL",
+                       TitleTxt)
+    else{
+      if(word == "PA"){
+        if(grepl("^\\bPA\\b", TitleTxt))
+          TitleTxt <- gsub("^\\bPA\\b","PAST",
+                           TitleTxt)
+        else if(!grepl("IMMED", TitleTxt))
+        TitleTxt <- gsub(paste0("\\b",word,"\\b"),"REGIONAL",
+                         TitleTxt)
+      }
+      else if(word == "AREA"){
+        if(!grepl("REPRESENTATIVE",TitleTxt))
+          TitleTxt <- gsub(paste0("\\b",word,"\\s[A-Z]+\\b$"),"REGIONAL",
+                         TitleTxt)
+        TitleTxt <- gsub(paste0("\\b",word,"\\b"),"REGIONAL",
+                        TitleTxt)
+      }
+    }
+  }
+  return(TitleTxt)
+}
+
+#' @title 
+#' remove numbers helper function
+#' 
+#' @description 
+#' removing common numbers from title text
+remove_numbers <- function(title.text){
+  TitleTxt <- title.text
+  number.list <- c("ONE", "TWO", "THREE", "FOUR", "FIVE",
+                  "SIX", "SEVEN", "EIGHT", "NINE", "TEN",
+                  "ELEVEN", "TWELVE", "THIRTEEN", "FOURTEEN",
+                  "FIFTEEN", "SIXTEEN", "SEVENTEEN", "EIGHTEEN",
+                  "NINETEEN", "TWENTY", "THIRTY", "FORTY","FIFTY",
+                  "SIXTY", "SEVENTY", "EIGHTY", "NINETY") 
+  for(number in number.list){
+    word <- paste0("\\b",number,"\\b")
+    TitleTxt <- gsub(word," ", TitleTxt)
+  }
+  return(TitleTxt)
+}
+
+
+#' @title 
 #' categorize miscellaneous wrapper function
 #' 
 #' 
 #' @description 
 #' categorizes, removes, and creates flags for:
 #' schedule o, as needed, at large, ex officio, and co
-#' also includes numericals
+#' also includes numericals and regionals
 categorize_miscellaneous <- function(comp.data){
   comp.table <- comp.data
   
@@ -127,6 +183,7 @@ categorize_miscellaneous <- function(comp.data){
   comp.table$EX.OFFICIO <- 0
   comp.table$CO <- 0 #co-
   comp.table$QUANTIFIER <- ""
+  comp.table$REGIONAL <- 0
   
   for(i in 1:length(comp.table$TitleTxt3)){
     TitleTxt <- comp.table$TitleTxt3[i]
@@ -166,7 +223,6 @@ categorize_miscellaneous <- function(comp.data){
       TitleTxt <- co.info[1]
     }
     
-    
     #filter quantifiers (aka ordinals)
     ordinals <- c("FIRST","SECOND","THIRD","FOURTH","FIFTH",
                   "SIXTH","SEVENTH","EIGHTH","NINETH","TENTH")
@@ -178,80 +234,28 @@ categorize_miscellaneous <- function(comp.data){
       }
     }
     
+    #filter regions
+    TitleTxt <- filter_regional(TitleTxt)
+    if(grepl("REGIONAL",TitleTxt)){
+      TitleTxt <- gsub("REGIONAL","", TitleTxt)
+      comp.table$REGIONAL[i] <- 1
+      possible.regional.list <- readRDS("data/possible.regional.list.RDS")
+      for(title in possible.regional.list){
+        if(grepl(title,TitleTxt)) {
+          TitleTxt <- paste0("REGIONAL ", title)
+          break
+        }
+      }
+    }
+    
+    #remove numbers
+    TitleTxt <- remove_numbers(TitleTxt)
+    
     comp.table$TitleTxt4[i] <- TitleTxt
   }
   
   return(comp.table)
 }
-
-
-
-
-#' @title 
-#' standardize former words function
-#' 
-#' @description 
-#' standardizes all synonyms for former in the title text and then removes them
-standardize_former <- function(title.text){
-  former.words <- readRDS("data/former.words.RDS")
-  
-  TitleTxt <- title.text
-  for(word in former.words){
-    TitleTxt <- gsub(word, "FORMER", TitleTxt)
-  }
-  return(TitleTxt)
-}
-
-
-#' @title 
-#' standardize future words function
-#' 
-#' @description 
-#' standardizes all synonyms for future in the title text and then removes them
-standardize_future <- function(title.text){
-  future.words <- readRDS("data/future.words.RDS")
-  
-  TitleTxt <- title.text
-  for(word in future.words){
-    TitleTxt <- gsub(word, "FUTURE", TitleTxt)
-  }
-  return(TitleTxt)
-}
-
-#' @title 
-#' standardize interim words function
-#' 
-#' @description 
-#' standardizes all synonyms for interim in the title text and then removes them
-standardize_interim <- function(title.text){
-  interim.words <- readRDS("data/interim.words.RDS")
-  
-  TitleTxt <- title.text
-  for(word in former.words){
-    TitleTxt <- gsub(word, "INTERIM", TitleTxt)
-  }
-  return(TitleTxt)
-}
-
-
-#' @title 
-#' standardize current words function
-#' 
-#' @description 
-#' standardizes all synonyms for current in the title text and then removes them
-#' 
-#' works as a catch all for titles that don't get categorized using the other 
-#' 3 role statuses
-standardize_current <- function(title.text){
-  current.words <- c("\\bCURRENT\\b")
-  
-  TitleTxt <- title.text
-  for(word in current.words){
-    TitleTxt <- gsub(word," ", TitleTxt)
-  }
-  return(TitleTxt)
-}
-
 
 #' @title 
 #' standardize qualifiers function
@@ -264,23 +268,25 @@ standardize_current <- function(title.text){
 #' (currently, current is just thrown away with no flag, but that can be changed)
 standardize_qualifiers <- function(title.text){
   TitleTxt <- title.text
-  TitleTxt <- standardize_former(TitleTxt)
-  TitleTxt <- standardize_future(TitleTxt)
-  TitleTxt <- standardize_interim(TitleTxt)
-  TitleTxt <- standardize_current(TitleTxt)
   
+  #method 1 (using helper functions)
+  # TitleTxt <- standardize_former(TitleTxt)
+  # TitleTxt <- standardize_future(TitleTxt)
+  # TitleTxt <- standardize_interim(TitleTxt)
+  # TitleTxt <- standardize_current(TitleTxt)
   
-  #alternate method (can both run at the same time)
+  #alternate method (doing all mappings at once)
   status.mapping <- readRDS("data/status.mapping.RDS")
   for(i in 1:length(status.mapping$VARIANT)){
     word <- status.mapping$VARIANT[i]
-    if(word != "EX" && word != "END")
+    if(word != "EX" && word != "END" && word != "NEW")
       TitleTxt <- gsub(paste0("\\b",word,"\\b"),status.mapping$CANONICAL[i],
                        TitleTxt)
     else{
       TitleTxt <- gsub("\\bEX\\s","FORMER",TitleTxt)
       TitleTxt <- gsub("\\bEX$","FORMER",TitleTxt)
       TitleTxt <- gsub("\\bEND$","FORMER",TitleTxt)
+      TitleTxt <- gsub("\\bNEW$","FORMER",TitleTxt)
     }
   }
   return(TitleTxt)
@@ -322,12 +328,12 @@ categorize_qualifiers <- function(comp.data){
       comp.table$INTERIM[i] <- 1
     }
     
-    #CURRENT (default)
+    #CURRENT (default) --> can create a flag for it, but why?
     if(grepl("CURRENT", TitleTxt)){
       TitleTxt <- gsub("CURRENT","", TitleTxt)
     }
     
-    #some sanity checks (we default to past)
+    #some sanity checks (we default to former if both former and future checked)
     if(comp.table$FUTURE[i] == 1 && comp.table$FORMER[i] == 1){
       comp.table$FUTURE[i] <- 0 #most likely = from until
     }
@@ -358,7 +364,7 @@ categorize_qualifiers <- function(comp.data){
 #' the qualifiers include: schedule o, at large, as needed, ex officio, co,
 #' ordinal numbers, and role statuses (former, future, current, and interim)
 #' 
-#' roughly 2.5 minutes for 100,000 titles
+#' roughly 5 minutes for 100,000 titles
 #' @export
 gen_status_codes <- function(comp.data){
   time1 <- Sys.time()

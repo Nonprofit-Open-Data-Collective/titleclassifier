@@ -29,6 +29,10 @@ substitute_vice <- function(title.text){
   TitleTxt <- gsub( "\\bV\\s*P[A-Z]*\\b", "VICE PRESIDENT", TitleTxt )
   TitleTxt <- gsub("\\bVICE\\s*P[A-Z]*\\b", "VICE PRESIDENT", TitleTxt)
   
+  
+  TitleTxt <- gsub("\\bVI$", "VICE PRESIDENT", TitleTxt) #heuristic
+  TitleTxt <- gsub("\\bVIC$", "VICE PRESIDENT", TitleTxt) #heuristic
+  
   return(TitleTxt)
 }
 
@@ -190,6 +194,7 @@ substitute_senior <- function(title.text){
   TitleTxt <- gsub("\\bSENI[A-Z]*\\b", "SENIOR", TitleTxt)
   TitleTxt <- gsub("\\bSEN\\b", "SENIOR", TitleTxt)
   TitleTxt <- gsub("\\bSR\\b", "SENIOR", TitleTxt)
+  TitleTxt <- gsub("\\bSNR\\b", "SENIOR", TitleTxt)
   
   TitleTxt <- gsub("\\bJUNI[A-Z]*\\b", "JUNIOR", TitleTxt)
   TitleTxt <- gsub( "\\bJR\\b", "JUNIOR", TitleTxt)
@@ -785,6 +790,7 @@ substitute_member <- function(title.text){
   TitleTxt <- gsub("\\bMBER\\b", "MEMBER", TitleTxt)
   TitleTxt <- gsub("\\bMMBR\\b", "MEMBER", TitleTxt)
   TitleTxt <- gsub("\\bMEM\\b", "MEMBER",TitleTxt)
+  TitleTxt <- gsub("\\bMEMB\\b", "MEMBER",TitleTxt)
   TitleTxt <- gsub("\\bME\\b", "MEMBER",TitleTxt)
   
   
@@ -814,6 +820,10 @@ substitute_exofficio <- function(title.text){
   
   TitleTxt <- gsub("\\bEX\\s+OFF[A-Z]*\\b", "EX-OFFICIO", TitleTxt)
   TitleTxt <- gsub("\\bEX-OFF[A-Z]*\\b", "EX-OFFICIO", TitleTxt)
+  
+  #typos
+  TitleTxt <- gsub("\\bEX OFICIO*\\b", "EX-OFFICIO", TitleTxt)
+  TitleTxt <- gsub("\\bEXOFFICIO", "EX-OFFICIO", TitleTxt)
   
   return(TitleTxt)
 }
@@ -865,6 +875,9 @@ substitute_miscellaneous <- function(title.text){
   #miscellaneous:
   TitleTxt <- gsub("\\bMINISTR\\b","MINISTER", TitleTxt)
   TitleTxt <- gsub("\\bSGT\\b","SERGEANT", TitleTxt)
+  TitleTxt <- gsub("\\bSARG[A-Z]*\\b","SERGEANT", TitleTxt)
+  TitleTxt <- gsub("\\bSERG[A-Z]*\\b","SERGEANT", TitleTxt)
+  TitleTxt <- gsub("\\bSERGEANT ARMS\\b","SERGEANT AT ARMS", TitleTxt)
   TitleTxt <- gsub("\\bFO\\b","FOUNDER", TitleTxt)
   TitleTxt <- gsub("\\bGM\\b", "GENERAL MANAGER", TitleTxt)
   TitleTxt <- gsub("\\bD AND T\\b", "DEVELOPMENT AND TECHNOLOGY", TitleTxt)
@@ -883,7 +896,12 @@ substitute_miscellaneous <- function(title.text){
   TitleTxt <- gsub("\\bEDUCA\\b", "EDUCATION", TitleTxt)
   TitleTxt <- gsub("\\bADV\\s*$", "ADVISOR", TitleTxt)
   TitleTxt <- gsub("\\bADV\\b", "ADVANCEMENT", TitleTxt)
+  TitleTxt <- gsub("\\bEXP\\b","EXPERIENCE", TitleTxt)
+  TitleTxt <- gsub("\\bOFCR\\b","OFFICER", TitleTxt)
+  TitleTxt <- gsub("\\bEXT\\b","EXTERNAL", TitleTxt)
+  TitleTxt <- gsub("\\bCHANCEL[A-Z]*\\b","CHANCELLOR", TitleTxt)
   TitleTxt <- gsub("\\bSCHOLARSHIP\\b", "SCHOLARSHIPS", TitleTxt) #standardize plurality
+  TitleTxt <- gsub("\\bJ\\b","JUNIOR", TitleTxt)
   
   TitleTxt <- gsub("\\bER\\b", "EDITOR", TitleTxt)
   TitleTxt <- gsub("\\bEDR\\b", "EDITOR", TitleTxt)
@@ -900,6 +918,10 @@ substitute_miscellaneous <- function(title.text){
   
   TitleTxt <- gsub("\\bPHY[A-Z]*\\b", "PHYSICAL", TitleTxt)
   TitleTxt <- gsub("\\bTHEATR[A-Z]*\\b","THEATER",TitleTxt)
+  TitleTxt <- gsub("\\bPARLIA[A-Z]*\\b","PARLIAMENTARIAN",TitleTxt)
+  TitleTxt <- gsub("DIRECTOR\\s+CHAPTER", "CHAPTER DIRECTOR", TitleTxt)
+  TitleTxt <- gsub("DIRECTOR\\s+JUNIOR", "JUNIOR DIRECTOR", TitleTxt)
+  TitleTxt <- gsub("DIRECTOR\\s+SENIOR", "SENIOR DIRECTOR", TitleTxt)
   
   TitleTxt <- gsub("\\bVICE\\s*$", "VICE PRESIDENT",TitleTxt)
   TitleTxt <- gsub("\\bHUMAN\\s*$", "HUMAN RESOURCES", TitleTxt)
@@ -915,15 +937,19 @@ substitute_miscellaneous <- function(title.text){
   TitleTxt <- gsub("\\bCONTRUCTION\\b", "CONSTRUCTION", TitleTxt)
   TitleTxt <- gsub("\\bFORNER\\b", "FORMER", TitleTxt)
   
+  #regionals
+  TitleTxt <- gsub("\\bSOUTHWES\\b", "SOUTHWEST", TitleTxt)
+  
   #duplicate removal
-  TitleTxt <- gsub("PRESIDENT PRESIDENT", "PRESIDENT", TitleTxt)
+  TitleTxt <- gsub("PRESIDENT\\s+PRESIDENT", "PRESIDENT", TitleTxt)
   TitleTxt <- gsub("PRESIDENTPR.*\\b", "PRESIDENT", TitleTxt)
   TitleTxt <- gsub("CEOCEO", "CEO", TitleTxt)
+  TitleTxt <- gsub("\\bDIRECTOR DIRECTOR\\b", "DIRECTOR", TitleTxt)
   
   #heuristics (won't be much use until we get rid of role statuses)
-  if(grepl("^VICE$",TitleTxt)) TitleTxt <- "VICE PRESIDENT" #standalone vice is likely vp
-  else if(grepl("^PR$",TitleTxt)) TitleTxt <- "PRESIDENT" #standalone pr is likely pres
-  else if(grepl("^EX$",TitleTxt)) TitleTxt <- "EXECUTIVE" #standalone ex is likely exec
+  if(grepl("^\\s*VICE\\s*$",TitleTxt)) TitleTxt <- "VICE PRESIDENT" #standalone vice is likely vp
+  else if(grepl("^\\s*PR\\s*$",TitleTxt)) TitleTxt <- "PRESIDENT" #standalone pr is likely pres
+  else if(grepl("^\\s*EX\\s*$",TitleTxt)) TitleTxt <- "EXECUTIVE" #standalone ex is likely exec
   else if(grepl("\\bT\\b", TitleTxt)) TitleTxt <- gsub("\\bT\\b","TRUSTEE",TitleTxt)
   #standalone t is likely trustee,#but could be treasurer
   else if(grepl("\\bEXECUTIVE V\\b", TitleTxt)) 
@@ -931,6 +957,7 @@ substitute_miscellaneous <- function(title.text){
   else if(grepl("\\bCE$",TitleTxt)) TitleTxt <- gsub("\\bCE$","CEO",TitleTxt) #ceo misspelling
   else if (grepl("\\bCF$",TitleTxt)) TitleTxt <- gsub("\\bCF$","CFO",TitleTxt)
   else if(grepl("^EXECUTIVE OFFICER$",TitleTxt)) TitleTxt <- "CEO"
+  else if(grepl("^AT\\s*LARGE$",TitleTxt)) TitleTxt <- "DIRECTOR" #at large sub
   else if(grepl("^N/A$",TitleTxt) | grepl("^N\\s*A$",TitleTxt) | 
           grepl("^\\s*$",TitleTxt))
     TitleTxt <- NA
@@ -951,15 +978,35 @@ substitute_miscellaneous <- function(title.text){
 stand_titles <- function(title.text){
   TitleTxt <- title.text
   #convert known c-suite positions into abbrev
-  TitleTxt <- gsub( "CHIEF\\sEXECUTIVE\\sOFFICER", "CEO", TitleTxt ) #executive
-  TitleTxt <- gsub( "CHIEF\\sOPERATIONS\\sOFFICER", "COO", TitleTxt ) #operating
-  TitleTxt <- gsub( "CHIEF\\sOPERATING\\sOFFICER", "COO", TitleTxt ) #operating
-  TitleTxt <- gsub( "CHIEF\\sFINANCE\\sOFFICER", "CFO", TitleTxt ) #finance
-  TitleTxt <- gsub( "CHIEF\\sFINANCIAL\\sOFFICER", "CFO", TitleTxt ) #finance
+  TitleTxt <- gsub( "CHIEF\\sEX[A-Z]*\\sOFF[A-Z]*\\b", "CEO", TitleTxt ) #executive
+  TitleTxt <- gsub( "CHIEF\\sEX[A-Z]*$", "CEO", TitleTxt ) #executive
+  
+  TitleTxt <- gsub( "CHIEF\\sOP[A-Z]*\\sOFFICER[A-Z]*\\b", "COO", TitleTxt ) #operating
+  # TitleTxt <- gsub( "CHIEF\\sOPERATING\\sOFFICER", "COO", TitleTxt ) #operating
+  
+  TitleTxt <- gsub( "CHIEF\\sFIN[A-Z]*\\sOFFICER", "CFO", TitleTxt ) #finance
+  # TitleTxt <- gsub( "CHIEF\\sFINANCIAL\\sOFFICER", "CFO", TitleTxt ) #finance
+  TitleTxt <- gsub( "CHIEF\\sFIN[A-Z]*$", "CFO", TitleTxt ) #finance
   #all other c-suites are unclear (for now)
   
   #change executive director and chief executive director to CEO
   TitleTxt <- gsub("EXECUTIVE DIRECTOR", "CEO", TitleTxt)
+  TitleTxt <- gsub("EXEC DIR[A-Z]*\\b", "CEO", TitleTxt)
+  TitleTxt <- gsub("\\bE\\s*D\\b", "CEO", TitleTxt)
+  TitleTxt <- gsub("\\bCOCEO\\b", "CO-CEO", TitleTxt)
+  
+  #board member substitutions
+  TitleTxt <- gsub("CHAPTER DIRECTOR", "BOARD MEMBER", TitleTxt)
+  TitleTxt <- gsub("^\\s*TRUSTEE\\s*$", "BOARD MEMBER", TitleTxt)
+  TitleTxt <- gsub("^\\s*DIRECTOR\\s*$", "BOARD MEMBER", TitleTxt)
+  TitleTxt <- gsub("GOVERNOR", "BOARD MEMBER", TitleTxt)
+  TitleTxt <- gsub("COUNCILOR", "BOARD MEMBER", TitleTxt)
+  TitleTxt <- gsub("COUNCIL MEMBER", "BOARD MEMBER", TitleTxt)
+  TitleTxt <- gsub("REGENT", "BOARD MEMBER", TitleTxt)
+  TitleTxt <- gsub("HONORARY DIRECTOR", "BOARD MEMBER", TitleTxt)
+  TitleTxt <- gsub("HONORARY MEMBER", "BOARD MEMBER", TitleTxt)
+  TitleTxt <- gsub("PARLIAMENTARIAN", "BOARD MEMBER", TitleTxt)
+  TitleTxt <- gsub("^\\s*EX-OFFICIO\\s*$", "BOARD MEMBER", TitleTxt)
   
   return(TitleTxt)
 }

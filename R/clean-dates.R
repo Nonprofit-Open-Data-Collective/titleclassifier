@@ -28,7 +28,8 @@ identify_date <- function(title.text){
                    "JUNE","JUN","JULY","JUL","AUGUST","AUG",
                    "SEPTEMBER","SEPT","SEP","OCTOBER","OCT",
                    "NOVEMBER","NOV","DECEMBER","DEC", "PARTIAL YEAR", "PARTIAL YR",
-                   "PART YEAR", "PART YR","MO", "MOS", "MONTH", "MONTHS")
+                   "PART YEAR", "PART-YEAR", "YR", "YEAR",
+                   "PART YR","MO", "MOS", "MONTH", "MONTHS")
   for(word in month.words){
     month <- paste0("\\b",word,"\\b")
     if(grepl(month, TitleTxt)) {

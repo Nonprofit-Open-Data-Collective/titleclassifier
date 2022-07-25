@@ -234,6 +234,7 @@ clean_conjunctions <- function(title.text){
   TitleTxt <- standardize_of(TitleTxt)
   TitleTxt <- standardize_comma(TitleTxt)
   TitleTxt <- standardize_slash(TitleTxt)
+  TitleTxt <- standardize_and(TitleTxt) #repeated bc of possible standardization changes
   TitleTxt <- standardize_separator(TitleTxt)
   while(grepl("\\bAND AND\\b",TitleTxt))
     TitleTxt <- gsub("\\bAND AND\\b", "AND", TitleTxt)

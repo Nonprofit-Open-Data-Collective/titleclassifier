@@ -2,7 +2,7 @@
 % Please edit documentation in R/status-codes.R
 \name{standardize_qualifiers}
 \alias{standardize_qualifiers}
-\title{standardize qualifiers wrapper function}
+\title{standardize qualifiers function}
 \usage{
 standardize_qualifiers(title.text)
 }

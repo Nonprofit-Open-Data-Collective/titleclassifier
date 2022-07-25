@@ -1,4 +1,5 @@
 #old-R
+require(dplyr)
 
 #old function just for testing purposes
 
@@ -254,6 +255,10 @@ categorize_titles <- function( comp.data )
   
   d2$TRUST [ grepl( "EX-OFFICIO", d2$TitleTxt2) ] <- 1
   d2$TRUST [ grepl( "DIRECTOR AT LARGE", d2$TitleTxt2) ] <- 1
+  d2$TRUST [ grepl( "PARLIAMENTARIAN", d2$TitleTxt2) ] <- 1
+  d2$TRUST [ grepl( "AT LARGE", d2$TitleTxt3) ] <- 1
+  d2$TRUST [ grepl( "^\\s*EMERITUS\\s*$", d2$TitleTxt3) ] <- 1
+  d2$TRUST [ grepl( "HONORARY DIRECTOR", d2$TitleTxt2) ] <- 1
   
   # titles <- d2$TitleTxt2[ d2$TRUST == 1]
   # table( titles ) %>% sort( decreasing=T ) %>% as.data.frame( ) %>% head( 20 ) %>% pander
