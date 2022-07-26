@@ -1,6 +1,6 @@
 library( dplyr )
 
-d <- read.csv( "soc-temp.csv" )
+d <- read.csv( "soc-raw.csv" )
 
 d$soc.code <- paste0( d$MajorGroup, d$MinorGroup, d$BroadGroup, d$DetailedOccupation )
 
