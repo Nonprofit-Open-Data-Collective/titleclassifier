@@ -3,28 +3,29 @@ Taxonomies used for mapping title variants to canonical forms, titles to domains
 https://docs.google.com/spreadsheets/d/1iYEY2HYDZTV0uvu35UuwdgAUQNKXSyab260pPPutP1M/edit?usp=sharing
 
 
-**Draft Status Codes**
 
-•	former (past, emeritus, etc)
-•	current 
-•	interim (acting, through, as of, etc.)
-•	future (“elect”)
-•	co (co-director, co-chair, etc.)
-•	ex-officio
-•	at-large
-•	regional (director los angeles; regent – AK)
-
-----------
-
-**ROLE**
+### ROLE
 
 * employee
 * board 
 
+----------
+
+### Draft Status Codes
+
+*	former (past, emeritus, etc) 
+*	current  
+*	interim (acting, through, as of, etc.) 
+*	future (“elect”) 
+*	co (co-director, co-chair, etc.) 
+*	ex-officio 
+*	at-large 
+*	regional (director los angeles; regent – AK) 
 
 ----------
 
-**HIERARCHY**
+
+## HIERARCHY
 
 **employee**
 
@@ -48,5 +49,16 @@ https://docs.google.com/spreadsheets/d/1iYEY2HYDZTV0uvu35UuwdgAUQNKXSyab260pPPut
 
 ---------------
 
-**Draft Domains**
+### Draft Domains
+
+(in progress) 
+
+### 2018 Standard Occupational Classification System (SOC) Codes
+
+https://www.bls.gov/soc/2018/major_groups.htm
+
+Raw SOC codes downloaded here: https://www.bls.gov/soc/2018/soc_structure_2018.xlsx
+
+Definitions downloaded from: https://www.bls.gov/soc/2018/soc_2018_definitions.pdf 
+
 
