@@ -351,6 +351,9 @@ split_titles <- function(title.text){
       }
     }
   }
+  if(grepl("^\\s*SEC[A-Z]*\\b\\s+TREAS[A-Z]*\\b$",
+           gsub("[[:punct:]]"," ", TitleTxt)))
+    return.list <- c("SECRETARY", "TREASURER")
   return(return.list)
 }
 

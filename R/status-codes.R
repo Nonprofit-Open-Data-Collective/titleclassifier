@@ -31,9 +31,12 @@ filter_sched_o <- function(title.text){
 filter_at_large <- function(title.text){
   TitleTxt <- title.text
   at.large.present <- grepl("\\bAT LARGE\\b",TitleTxt) #boolean flag
+  if(!at.large.present) 
+    at.large.present <- grepl("\\bAT LG\\b",TitleTxt) #variant
   
   if(at.large.present){
     TitleTxt <- gsub("\\bAT LARGE\\b", " ", TitleTxt)
+    TitleTxt <- gsub("\\bAT LG\\b", " ", TitleTxt)
   }
   
   returnVals <- c(TitleTxt, at.large.present) #title text and binary flag
@@ -228,8 +231,8 @@ categorize_miscellaneous <- function(comp.data){
                   "SIXTH","SEVENTH","EIGHTH","NINETH","TENTH")
     for(ordinal in ordinals){
       if(grepl(ordinal, TitleTxt)){
-        if(grepl(paste0("^",ordinal), TitleTxt))
-          comp.table$QUANTIFIER[i] <- ordinal
+        # if(grepl(paste0("^",ordinal), TitleTxt))
+        comp.table$QUANTIFIER[i] <- ordinal
         TitleTxt <- gsub(ordinal," ", TitleTxt)
       }
     }

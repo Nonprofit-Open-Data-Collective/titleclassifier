@@ -253,10 +253,10 @@ categorize_titles <- function( comp.data )
   d2$TRUST [ grepl( "GOVERNOR", d2$TitleTxt2) ] <- 1
   d2$TRUST [ grepl( "REGENT", d2$TitleTxt2) ] <- 1
   
-  d2$TRUST [ grepl( "EX-OFFICIO", d2$TitleTxt2) ] <- 1
+  d2$TRUST [ grepl( "^\\s*EX-OFFICIO\\s*$", d2$TitleTxt3) ] <- 1
   d2$TRUST [ grepl( "DIRECTOR AT LARGE", d2$TitleTxt2) ] <- 1
   d2$TRUST [ grepl( "PARLIAMENTARIAN", d2$TitleTxt2) ] <- 1
-  d2$TRUST [ grepl( "AT LARGE", d2$TitleTxt3) ] <- 1
+  d2$TRUST [ grepl( "^\\s*AT LARGE\\s*", d2$TitleTxt3) ] <- 1
   d2$TRUST [ grepl( "^\\s*EMERITUS\\s*$", d2$TitleTxt3) ] <- 1
   d2$TRUST [ grepl( "HONORARY DIRECTOR", d2$TitleTxt2) ] <- 1
   
