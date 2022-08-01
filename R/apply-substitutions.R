@@ -66,10 +66,12 @@ substitute_executive <- function(title.text){
 substitute_director <- function(title.text){
   TitleTxt <- title.text
   
-  TitleTxt <- gsub("\\bDIR[A-Z]*\\b", "DIRECTOR", TitleTxt)
-  TitleTxt <- gsub("\\bDI\\b","DIRECTOR", TitleTxt)
-  TitleTxt <- gsub("\\bDTR\\b","DIRECTOR", TitleTxt)
-  TitleTxt <- gsub("\\bDRECTOR\\b","DIRECTOR", TitleTxt)
+  if(!grepl("CEO", TitleTxt)){
+    TitleTxt <- gsub("\\bDIR[A-Z]*\\b", "DIRECTOR", TitleTxt)
+    TitleTxt <- gsub("\\bDI\\b","DIRECTOR", TitleTxt)
+    TitleTxt <- gsub("\\bDTR\\b","DIRECTOR", TitleTxt)
+    TitleTxt <- gsub("\\bDRECTOR\\b","DIRECTOR", TitleTxt)
+  }
   
   return(TitleTxt)
 }

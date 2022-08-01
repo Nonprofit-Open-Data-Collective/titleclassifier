@@ -2,7 +2,7 @@
 
 export(apply_substitutes)
 export(build_split_titles)
-export(categorize_titles)
+export(categorize_titles_new)
 export(clean_dates)
 export(format_comp_df)
 export(gen_status_codes)
