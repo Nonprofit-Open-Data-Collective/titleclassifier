@@ -2,7 +2,7 @@
 
 #assuming everything is uppercase
 #' @title
-#' identify titles
+#' identify dates
 #'
 #' @description
 #' returns T/F if a string contains a date 
@@ -113,65 +113,6 @@ convert_ordinal <- function(title.text){
   TitleTxt <- gsub("10TH","TENTH",TitleTxt)
   
   return(TitleTxt)
-}
-
-
-#' @title
-#' extract date function
-#' EXPERIMENTAL/DEPRECATED
-#'
-#' @description
-#' `extract_date` extracts the date information from an unfiltered title string,
-#' if present. It works by first checking parentheticals for numbers, then
-#' "XX/XX/XXXX" dates, then spelled out months. It extracts the nearby info using
-#' a flexible RegEx matching scheme. The function takes in a title text string
-#' and outputs a length 2 vector with the first element being the date string,
-#' and the second being the number of detected dates in the string. If there is
-#' no date present, the return vector has the first element NA and the second 0.
-extract_date <- function(title.text){
-  title <- toupper(title.text)
-  title <- gsub("\\.","",title)
-  returnDate <- c(NA,0)
-  
-  # Get what is inside the parentheses (only keep strings with #'s contained)
-  # k <- stringr::str_extract_all(title, "\\([^()]+\\)")[[1]]
-  # k <- substring(k, 2, nchar(k)-1)
-  # if(length(k) != 0){
-  #   if(!grepl("[[:digit:]]",k[1])) k <- character(0)
-  # }
-  
-  #numerical dates
-  # if(length(k) == 0){
-    # "/" as a delineator
-  k <- stringr::str_extract_all(title,"\\d+/\\d+(/\\d+)*\\b")[[1]]
-  if(length(k) == 0){
-    # "-" as a delineator
-    k <- stringr::str_extract_all(title,"\\d+-\\d+(-\\d+)*\\b")[[1]]
-  }
-  # }
-  
-  #spelt out months
-  if(length(k) == 0){
-    month.words <- c("JANUARY","JAN","FEBRUARY","FEB",
-                     "MARCH","MAR","APRIL","APR","MAY",
-                     "JUNE","JUN","JULY","JUL","AUGUST","AUG",
-                     "SEPTEMBER","SEPT","SEP","OCTOBER","OCT",
-                     "NOVEMBER","NOV","DECEMBER","DEC", "PARTIAL YEAR", "PARTIAL YR",
-                     "PART YEAR", "PART YR","MO", "MOS", "MONTH", "MONTHS")
-    for(word in month.words){
-      month <- paste0("\\b",word,"\\b")
-      k <- stringr::str_extract_all(title,month)[[1]]
-      if(length(k) != 0) break
-    }
-  }
-  
-  #formatting our return vector
-  if(length(k) > 0) {
-    returnDate[1] <- k[1]
-    returnDate[2] <- length(k)
-    # print(paste0(i," ", k[1]))
-  }
-  return(returnDate)
 }
 
 

@@ -280,10 +280,10 @@ standardize_qualifiers <- function(title.text){
   
   #alternate method (doing all mappings at once)
   status.mapping <- readRDS("data/status.mapping.RDS")
-  for(i in 1:length(status.mapping$VARIANT)){
-    word <- status.mapping$VARIANT[i]
+  for(i in 1:length(status.mapping$status.variant)){
+    word <- status.mapping$status.variant[i]
     if(word != "EX" && word != "END" && word != "NEW")
-      TitleTxt <- gsub(paste0("\\b",word,"\\b"),status.mapping$CANONICAL[i],
+      TitleTxt <- gsub(paste0("\\b",word,"\\b"),status.mapping$status.qualifier[i],
                        TitleTxt)
     else{
       TitleTxt <- gsub("\\bEX\\s","FORMER",TitleTxt)

@@ -38,6 +38,54 @@ categorize_ceo <- function(comp.data){
 }
 
 
+#' @title 
+#' categorize company leader function
+#' 
+#' @description 
+#' utilizes ceo and adds in president, chair, and managing director for those 
+#' without explicit/clear ceo positions
+categorize_company_leader <- function(comp.data){
+  d2 <- categorize_ceo(comp.data)
+  d2$Org.Leader <- 0
+  d2$Org.Leader[d2$CEO == 1] <- 1
+  aoc <- unique(d2$NAME.x[d2$Org.Leader == 1])
+
+  #presidents
+  pres.leadership <- c("PRESIDENT", "BOARD PRESIDENT", "PRESIDENT OF BOARD")
+  d2$Org.Leader[!d2$NAME.x %in% aoc && 
+                  ((grepl("PRESIDENT",d2$TitleTxt4) && 
+                      !grepl("VICE",d2$TitleTxt4)) ||
+                     d2$TitleTxt4[i] %in% pres.leadership)] <- 1
+  for(i in 1:length(d2$NAME.x)){
+    if(!(d2$NAME.x[i] %in% aoc)){
+      if((grepl("PRESIDENT",d2$TitleTxt4[i]) && !grepl("VICE",d2$TitleTxt4[i])) ||
+         d2$TitleTxt4[i] %in% pres.leadership){
+        d2$Org.Leader[i] <- 1
+      }
+    }
+  }
+  aoc <- unique(d2$NAME.x[d2$Org.Leader == 1])
+
+  #chairs and misc
+  chair.leadership <- c("CHAIR", "BOARD CHAIR",
+                        "MANAGING DIRECTOR", "CHAIR OF BOARD")
+  for(i in 1:length(d2$NAME.x)){
+    if(!(d2$NAME.x[i] %in% aoc)){
+      if(d2$TitleTxt4[i] %in% chair.leadership){
+        d2$Org.Leader[i] <- 1
+      }
+    }
+  }
+  aoc <- unique(d2$NAME.x[d2$Org.Leader == 1])
+  
+  return(d2)
+}
+
+
+categorize_cfo <- function(comp.data){
+  
+}
+
 
 #' @title 
 #' categorize titles function

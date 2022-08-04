@@ -34,12 +34,12 @@ format_comp_df <- function( comp.data ){
     rename(
       FilingId = OBJECT_ID, #numeric
       FilerEIN = EIN, #numeric
-      # FilerName1 = NAME,  #string
-      # FilerName = NAME.x, #string #different if reading Jesse's file
+      # FilerName1 = NAME,  #string (depends on the output from build_rdb_table)
       FormYr = TAXYR, #numeric
       FORMTYPE  = FORMTYPE, #990,990ez (no 990PF's for comp table)
       URL = URL, #string
-      PersonNm = F9_07_PZ_DTK_NAME, #string
+      # PersonNm = F9_07_PZ_DTK_NAME, #string
+      # PersonNm = NAME.x, #string #if working off of jesse's
       TitleTxt = F9_07_PZ_DTK_TITLE, #string
       AvgHrs = F9_07_PZ_DTK_AVE_HOURS_WEEK, #numeric
       TrustOrDir = F9_07_PC_DTK_POS_TRUSTEE_INDIV, #X or NA (should also consider institutional trustee)
@@ -73,6 +73,7 @@ format_comp_df <- function( comp.data ){
   
   #pre_clean call
   d2$TitleTxt <- pre_clean(d2$TitleTxt)
+  # d2$PersonNm <- pre_clean(d2$PersonNm)
   
   #converting empty checkboxes for title classification to empty string
   d2$TrustOrDir[ is.na(d2$TrustOrDir) ] <- ""
@@ -81,11 +82,14 @@ format_comp_df <- function( comp.data ){
   d2$HighComp[ is.na(d2$HighComp) ] <- ""
   d2$FmrOfficer[ is.na(d2$FmrOfficer) ] <- ""
   
+  #!!!if working from chunk building
+  # d2$F9_07_PZ_DTK_AVE_HOURS_WEEK_RLTD[is.na(d2$F9_07_PZ_DTK_AVE_HOURS_WEEK_RLTD)] <- 0
+  # d2$F9_07_EZ_COMP_BENF[is.na(d2$F9_07_EZ_COMP_BENF)] <- 0
+  # d2$F9_07_PC_DTK_POS_TRUSTEE_INST[is.na(d2$F9_07_PC_DTK_POS_TRUSTEE_INST)] <- 0
+  # 
+  
   #removing duplicate rows
   d3 <- unique(d2)
-  
-  #if working with Jesse's "title-test-run.csv" file
-  # d3 <- unique(subset(d2,select = FilerEIN:NTMAJ12))
   
   #returning a cleaned up dataset
   return( d3 )

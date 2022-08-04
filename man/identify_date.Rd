@@ -2,7 +2,7 @@
 % Please edit documentation in R/clean-dates.R
 \name{identify_date}
 \alias{identify_date}
-\title{identify titles}
+\title{identify dates}
 \usage{
 identify_date(title.text)
 }
