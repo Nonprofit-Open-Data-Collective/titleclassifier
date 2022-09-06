@@ -4,7 +4,7 @@
 \alias{substitute_systems}
 \title{substitute systems helper function}
 \usage{
-substitute_systems(title.text)
+substitute_systems(TitleTxt)
 }
 \description{
 condenses systems abbreviations to a standardized form

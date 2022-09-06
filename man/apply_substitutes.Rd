@@ -4,7 +4,7 @@
 \alias{apply_substitutes}
 \title{apply substitutes wrapper function}
 \usage{
-apply_substitutes(title.text)
+apply_substitutes(TitleTxt)
 }
 \description{
 apply custom dictionary of common abbreviations and misspellings

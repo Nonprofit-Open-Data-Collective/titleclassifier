@@ -9,6 +9,8 @@
 #' generate all the titles that contain a given word and output a dataframe 
 #' including the original raw title and its cleaned version
 #' this function works for individual words as well as word lists
+#' 
+#' @export
 get_title_dump <- function(comp.table, target.word){
   k <- 1
   cotitles <- data.frame(matrix(ncol = 2))

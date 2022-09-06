@@ -4,7 +4,7 @@
 \alias{substitute_president}
 \title{substitute president helper function}
 \usage{
-substitute_president(title.text)
+substitute_president(TitleTxt)
 }
 \description{
 condenses president abbreviations to a standardized form

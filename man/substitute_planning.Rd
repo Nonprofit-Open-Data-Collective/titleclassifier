@@ -4,7 +4,7 @@
 \alias{substitute_planning}
 \title{substitute planning helper function}
 \usage{
-substitute_planning(title.text)
+substitute_planning(TitleTxt)
 }
 \description{
 condenses planning abbreviations to a standardized form

@@ -4,7 +4,13 @@
 \alias{categorize_ceo}
 \title{categorize ceo function}
 \usage{
-categorize_ceo(comp.data)
+categorize_ceo(df)
+}
+\arguments{
+\item{df}{A compensation data frame.}
+}
+\value{
+Returns a data frame with a CEO boolean (1=CEO,0=other).
 }
 \description{
 categorizing ceo's and adding a flag

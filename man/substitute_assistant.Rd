@@ -4,7 +4,7 @@
 \alias{substitute_assistant}
 \title{substitute assistant helper function}
 \usage{
-substitute_assistant(title.text)
+substitute_assistant(TitleTxt)
 }
 \description{
 condenses assistant abbreviations to a standardized form

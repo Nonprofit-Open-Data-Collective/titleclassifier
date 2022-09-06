@@ -4,7 +4,7 @@
 \alias{substitute_enrollment}
 \title{substitute enrollment helper function}
 \usage{
-substitute_enrollment(title.text)
+substitute_enrollment(TitleTxt)
 }
 \description{
 condenses enrollment abbreviations to a standardized form

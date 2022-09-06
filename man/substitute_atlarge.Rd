@@ -4,7 +4,7 @@
 \alias{substitute_atlarge}
 \title{substitute at large helper function}
 \usage{
-substitute_atlarge(title.text)
+substitute_atlarge(TitleTxt)
 }
 \description{
 condenses at large abbreviations to a standardized form

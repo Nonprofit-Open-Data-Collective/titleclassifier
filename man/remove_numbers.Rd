@@ -4,7 +4,7 @@
 \alias{remove_numbers}
 \title{remove numbers helper function}
 \usage{
-remove_numbers(title.text)
+remove_numbers(TitleTxt)
 }
 \description{
 removing common numbers from title text

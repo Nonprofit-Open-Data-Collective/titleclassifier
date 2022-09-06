@@ -4,7 +4,7 @@
 \alias{substitute_representative}
 \title{substitute representative helper function}
 \usage{
-substitute_representative(title.text)
+substitute_representative(TitleTxt)
 }
 \description{
 condenses rep abbreviations to a standardized form

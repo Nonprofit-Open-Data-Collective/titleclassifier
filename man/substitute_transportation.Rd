@@ -4,7 +4,7 @@
 \alias{substitute_transportation}
 \title{substitute transportation helper function}
 \usage{
-substitute_transportation(title.text)
+substitute_transportation(TitleTxt)
 }
 \description{
 condenses transportation abbreviations to a standardized form

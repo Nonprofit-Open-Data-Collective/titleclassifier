@@ -4,7 +4,7 @@
 \alias{substitute_programs}
 \title{substitute programs helper function}
 \usage{
-substitute_programs(title.text)
+substitute_programs(TitleTxt)
 }
 \description{
 condenses programs abbreviations to a standardized form

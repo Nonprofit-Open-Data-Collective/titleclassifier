@@ -4,7 +4,7 @@
 \alias{substitute_governor}
 \title{substitute governor helper function}
 \usage{
-substitute_governor(title.text)
+substitute_governor(TitleTxt)
 }
 \description{
 condenses governor abbreviations to a standardized form

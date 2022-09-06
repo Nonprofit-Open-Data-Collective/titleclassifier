@@ -4,7 +4,7 @@
 \alias{substitute_officer}
 \title{substitute officer helper function}
 \usage{
-substitute_officer(title.text)
+substitute_officer(TitleTxt)
 }
 \description{
 condenses officer abbreviations to a standardized form

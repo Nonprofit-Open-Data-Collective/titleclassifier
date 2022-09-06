@@ -4,7 +4,7 @@
 \alias{substitute_senior}
 \title{substitute seniority helper function}
 \usage{
-substitute_senior(title.text)
+substitute_senior(TitleTxt)
 }
 \description{
 condenses senior/junior abbreviations to a standardized form

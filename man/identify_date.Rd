@@ -4,7 +4,7 @@
 \alias{identify_date}
 \title{identify dates}
 \usage{
-identify_date(title.text)
+identify_date(TitleTxt)
 }
 \description{
 returns T/F if a string contains a date

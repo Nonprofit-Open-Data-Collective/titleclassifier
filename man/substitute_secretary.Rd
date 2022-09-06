@@ -4,7 +4,7 @@
 \alias{substitute_secretary}
 \title{substitute secretary helper function}
 \usage{
-substitute_secretary(title.text)
+substitute_secretary(TitleTxt)
 }
 \description{
 condenses secretary abbreviations to a standardized form

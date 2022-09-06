@@ -4,7 +4,7 @@
 \alias{substitute_chair}
 \title{substitute chair helper function}
 \usage{
-substitute_chair(title.text)
+substitute_chair(TitleTxt)
 }
 \description{
 condenses chair abbreviations to a standardized form

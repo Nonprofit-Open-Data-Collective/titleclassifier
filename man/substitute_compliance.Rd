@@ -4,7 +4,7 @@
 \alias{substitute_compliance}
 \title{substitute compliance helper function}
 \usage{
-substitute_compliance(title.text)
+substitute_compliance(TitleTxt)
 }
 \description{
 condenses compliance abbreviations to a standardized form

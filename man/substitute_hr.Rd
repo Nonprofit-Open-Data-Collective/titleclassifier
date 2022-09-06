@@ -4,7 +4,7 @@
 \alias{substitute_hr}
 \title{substitute human resources helper function}
 \usage{
-substitute_hr(title.text)
+substitute_hr(TitleTxt)
 }
 \description{
 condenses hr abbreviations to a standardized form

@@ -4,7 +4,7 @@
 \alias{clean_conjunctions}
 \title{clean conjunctions function}
 \usage{
-clean_conjunctions(title.text)
+clean_conjunctions(TitleTxt)
 }
 \description{
 wrapper for cleaning conjunctions (all the standardizations come in here)

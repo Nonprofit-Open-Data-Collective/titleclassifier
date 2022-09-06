@@ -4,7 +4,7 @@
 \alias{convert_ordinal}
 \title{convert ordinal numbers function}
 \usage{
-convert_ordinal(title.text)
+convert_ordinal(TitleTxt)
 }
 \description{
 converts ordinal numbers (1st) to their alphabetic counterpart (first)

@@ -4,7 +4,7 @@
 \alias{substitute_strategy}
 \title{substitute strategy helper function}
 \usage{
-substitute_strategy(title.text)
+substitute_strategy(TitleTxt)
 }
 \description{
 condenses strategy abbreviations to a standardized form

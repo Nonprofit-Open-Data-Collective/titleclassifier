@@ -4,7 +4,7 @@
 \alias{substitute_operations}
 \title{substitute operations helper function}
 \usage{
-substitute_operations(title.text)
+substitute_operations(TitleTxt)
 }
 \description{
 condenses operations abbreviations to a standardized form

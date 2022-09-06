@@ -4,7 +4,7 @@
 \alias{standardize_and}
 \title{standardize "and" function}
 \usage{
-standardize_and(title.text)
+standardize_and(TitleTxt)
 }
 \description{
 detects whether “and” or & is a title separator

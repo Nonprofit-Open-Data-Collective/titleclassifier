@@ -4,7 +4,7 @@
 \alias{substitute_marketing}
 \title{substitute marketing helper function}
 \usage{
-substitute_marketing(title.text)
+substitute_marketing(TitleTxt)
 }
 \description{
 condenses marketing abbreviations to a standardized form

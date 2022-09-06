@@ -4,7 +4,7 @@
 \alias{substitute_admin}
 \title{substitute admin helper function}
 \usage{
-substitute_admin(title.text)
+substitute_admin(TitleTxt)
 }
 \description{
 condenses administration/administrator/administrating

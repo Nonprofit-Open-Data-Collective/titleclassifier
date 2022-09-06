@@ -4,7 +4,7 @@
 \alias{substitute_director}
 \title{substitute director helper functions}
 \usage{
-substitute_director(title.text)
+substitute_director(TitleTxt)
 }
 \description{
 condenses director abbreviations to a standardized form

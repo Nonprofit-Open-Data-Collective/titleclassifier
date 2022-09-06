@@ -4,7 +4,7 @@
 \alias{substitute_information}
 \title{substitute information helper function}
 \usage{
-substitute_information(title.text)
+substitute_information(TitleTxt)
 }
 \description{
 condenses info abbreviations to a standardized form

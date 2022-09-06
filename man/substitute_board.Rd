@@ -4,7 +4,7 @@
 \alias{substitute_board}
 \title{substitute board helper function}
 \usage{
-substitute_board(title.text)
+substitute_board(TitleTxt)
 }
 \description{
 condenses board abbreviations to a standardized form

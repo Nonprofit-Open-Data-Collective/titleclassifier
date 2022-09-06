@@ -4,7 +4,7 @@
 \alias{substitute_projects}
 \title{substitute projects helper function}
 \usage{
-substitute_projects(title.text)
+substitute_projects(TitleTxt)
 }
 \description{
 condenses projects abbreviations to a standardized form

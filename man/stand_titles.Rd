@@ -4,7 +4,7 @@
 \alias{stand_titles}
 \title{standardize title mapping function}
 \usage{
-stand_titles(title.text)
+stand_titles(TitleTxt)
 }
 \description{
 maps long names to abbreviations if CEO, COO, or CFO

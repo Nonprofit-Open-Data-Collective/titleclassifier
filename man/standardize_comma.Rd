@@ -4,7 +4,7 @@
 \alias{standardize_comma}
 \title{standardize comma function}
 \usage{
-standardize_comma(title.text)
+standardize_comma(TitleTxt)
 }
 \description{
 distinguish if comma is for separator, extraneous, or of

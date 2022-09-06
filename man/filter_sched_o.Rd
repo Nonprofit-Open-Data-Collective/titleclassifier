@@ -4,7 +4,7 @@
 \alias{filter_sched_o}
 \title{filter schedule o function}
 \usage{
-filter_sched_o(title.text)
+filter_sched_o(TitleTxt)
 }
 \description{
 add binary code for “see schedule o” comments and remove such text

@@ -4,7 +4,7 @@
 \alias{substitute_corresponding}
 \title{substitute corresponding helper function}
 \usage{
-substitute_corresponding(title.text)
+substitute_corresponding(TitleTxt)
 }
 \description{
 condenses corresponding abbreviations to a standardized form

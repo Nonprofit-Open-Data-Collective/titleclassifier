@@ -4,7 +4,7 @@
 \alias{standardize_qualifiers}
 \title{standardize qualifiers function}
 \usage{
-standardize_qualifiers(title.text)
+standardize_qualifiers(TitleTxt)
 }
 \description{
 combining all mappings to standardize future, former, current, and interim

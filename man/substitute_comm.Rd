@@ -4,7 +4,7 @@
 \alias{substitute_comm}
 \title{substitute comm helper functions}
 \usage{
-substitute_comm(title.text)
+substitute_comm(TitleTxt)
 }
 \description{
 condenses communication and committee abbreviations to a standardized form

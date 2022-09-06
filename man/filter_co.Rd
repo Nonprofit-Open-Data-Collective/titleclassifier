@@ -4,7 +4,7 @@
 \alias{filter_co}
 \title{filter co function}
 \usage{
-filter_co(title.text)
+filter_co(TitleTxt)
 }
 \description{
 removes co- text if present and creates flag

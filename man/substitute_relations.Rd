@@ -4,7 +4,7 @@
 \alias{substitute_relations}
 \title{substitute relations helper function}
 \usage{
-substitute_relations(title.text)
+substitute_relations(TitleTxt)
 }
 \description{
 condenses relations abbreviations to a standardized form

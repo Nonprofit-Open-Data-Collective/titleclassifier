@@ -4,7 +4,7 @@
 \alias{filter_ex_officio}
 \title{filter ex-officio function}
 \usage{
-filter_ex_officio(title.text)
+filter_ex_officio(TitleTxt)
 }
 \description{
 removes ex-officio text if present and creates flag

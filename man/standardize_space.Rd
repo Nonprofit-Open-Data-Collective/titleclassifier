@@ -4,7 +4,7 @@
 \alias{standardize_space}
 \title{standardize space function}
 \usage{
-standardize_space(title.text)
+standardize_space(TitleTxt)
 }
 \description{
 only really used with unmingle (otherwise it's too volatile)

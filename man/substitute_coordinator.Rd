@@ -4,7 +4,7 @@
 \alias{substitute_coordinator}
 \title{substitute coordinator helper function}
 \usage{
-substitute_coordinator(title.text)
+substitute_coordinator(TitleTxt)
 }
 \description{
 condenses coordinator abbreviations to a standardized form

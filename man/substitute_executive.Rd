@@ -4,7 +4,7 @@
 \alias{substitute_executive}
 \title{substitute executive helper function}
 \usage{
-substitute_executive(title.text)
+substitute_executive(TitleTxt)
 }
 \description{
 condenses executive abbreviations to a standardized form

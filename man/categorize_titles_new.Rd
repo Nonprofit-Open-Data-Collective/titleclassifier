@@ -6,7 +6,7 @@
 will be updated version
 will be a wrapper function}
 \usage{
-categorize_titles_new(comp.data)
+categorize_titles_new(df)
 }
 \description{
 categorizes the titles in comp.data

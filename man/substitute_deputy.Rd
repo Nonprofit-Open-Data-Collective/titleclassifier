@@ -4,7 +4,7 @@
 \alias{substitute_deputy}
 \title{substitute deputy helper function}
 \usage{
-substitute_deputy(title.text)
+substitute_deputy(TitleTxt)
 }
 \description{
 condenses deputy abbreviations to a standardized form

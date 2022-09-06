@@ -1,14 +1,14 @@
 #status codes
 
 
-#' @title 
-#' filter schedule o function
-#' 
+#' @title filter schedule o function
+#'
 #' @description 
 #' add binary code for “see schedule o” comments and remove such text
 #' also includes see attached and abbreviations of sched o
-filter_sched_o <- function(title.text){
-  TitleTxt <- title.text
+#' 
+#' @export
+filter_sched_o <- function(TitleTxt ){
   
   sched.o.present <- grepl("\\bSEE\\b.*",TitleTxt) #boolean flag
   
@@ -22,14 +22,14 @@ filter_sched_o <- function(title.text){
 }
 
 
-#' @title 
-#' filter at large function
-#' 
-#' 
+#' @title filter at large function
+#'
 #' @description 
 #' removes at large text if present and creates flag
-filter_at_large <- function(title.text){
-  TitleTxt <- title.text
+#' 
+#' @export
+filter_at_large <- function(TitleTxt ){
+
   at.large.present <- grepl("\\bAT LARGE\\b",TitleTxt) #boolean flag
   if(!at.large.present) 
     at.large.present <- grepl("\\bAT LG\\b",TitleTxt) #variant
@@ -45,14 +45,14 @@ filter_at_large <- function(title.text){
 }
 
 
-#' @title 
-#' filter as needed function
-#' 
+#' @title filter as needed function
 #' 
 #' @description 
 #' removes as needed text if present and creates flag
-filter_as_needed <- function(title.text){
-  TitleTxt <- title.text
+#' 
+#' @export
+filter_as_needed <- function(TitleTxt ){
+
   as.needed.present <- grepl("\\bAS NEEDED\\b",TitleTxt) #boolean flag
   
   if(as.needed.present){
@@ -65,14 +65,13 @@ filter_as_needed <- function(title.text){
 }
 
 
-#' @title 
-#' filter ex-officio function
-#' 
+#' @title filter ex-officio function
 #' 
 #' @description 
 #' removes ex-officio text if present and creates flag
-filter_ex_officio <- function(title.text){
-  TitleTxt <- title.text
+#' 
+#' @export
+filter_ex_officio <- function(TitleTxt ){
   
   #if ex-officio is just the title
   if(!is.na(TitleTxt) && TitleTxt == "EX-OFFICIO"){
@@ -90,15 +89,15 @@ filter_ex_officio <- function(title.text){
   return(returnVals)
 }
 
-#' @title 
-#' filter co function
-#' 
+#' @title filter co function
 #' 
 #' @description 
 #' removes co- text if present and creates flag
 #' co in this case means joint/together
-filter_co <- function(title.text){
-  TitleTxt <- title.text
+#' 
+#' @export
+filter_co <- function(TitleTxt ){
+
   co.present <- grepl("\\bCO-",TitleTxt) #boolean flag
   
   if(co.present){
@@ -110,15 +109,15 @@ filter_co <- function(title.text){
   return(returnVals)
 }
 
-#' @title 
-#' filter regional words function
-#' 
+#' @title filter regional words function
 #' 
 #' @description 
 #' removes regional word text if present and creates flag
-filter_regional <- function(title.text){
-  TitleTxt <- title.text
-  regional.words <- readRDS("data/regional.words.RDS")
+#' 
+#' @export
+filter_regional <- function(TitleTxt ){
+
+  # regional.words <- readRDS("data/regional.words.RDS")
   for(i in 1:length(regional.words$REGIONS)){
     word <- regional.words$REGIONS[i]
     if(word != "PA" && word != "AREA")
@@ -145,13 +144,14 @@ filter_regional <- function(title.text){
   return(TitleTxt)
 }
 
-#' @title 
-#' remove numbers helper function
+#' @title remove numbers helper function
 #' 
 #' @description 
 #' removing common numbers from title text
-remove_numbers <- function(title.text){
-  TitleTxt <- title.text
+#' 
+#' @export
+remove_numbers <- function(TitleTxt ){
+
   number.list <- c("ONE", "TWO", "THREE", "FOUR", "FIVE",
                   "SIX", "SEVEN", "EIGHT", "NINE", "TEN",
                   "ELEVEN", "TWELVE", "THIRTEEN", "FOURTEEN",
@@ -166,14 +166,14 @@ remove_numbers <- function(title.text){
 }
 
 
-#' @title 
-#' categorize miscellaneous wrapper function
-#' 
+#' @title categorize miscellaneous wrapper function
 #' 
 #' @description 
 #' categorizes, removes, and creates flags for:
 #' schedule o, as needed, at large, ex officio, and co
 #' also includes numericals and regionals
+#' 
+#' @export
 categorize_miscellaneous <- function(comp.data){
   comp.table <- comp.data
   
@@ -242,7 +242,7 @@ categorize_miscellaneous <- function(comp.data){
     if(grepl("REGIONAL",TitleTxt)){
       TitleTxt <- gsub("REGIONAL","", TitleTxt)
       comp.table$REGIONAL[i] <- 1
-      possible.regional.list <- readRDS("data/possible.regional.list.RDS")
+      # possible.regional.list <- readRDS("data/possible.regional.list.RDS")
       for(title in possible.regional.list){
         if(grepl(title,TitleTxt)) {
           TitleTxt <- paste0("REGIONAL ", title)
@@ -260,17 +260,16 @@ categorize_miscellaneous <- function(comp.data){
   return(comp.table)
 }
 
-#' @title 
-#' standardize qualifiers function
-#' 
+#' @title standardize qualifiers function
 #' 
 #' @description 
 #' combining all mappings to standardize future, former, current, and interim
 #' to their respective categories
 #' Note: current is just treated as a regular title 
 #' (currently, current is just thrown away with no flag, but that can be changed)
-standardize_qualifiers <- function(title.text){
-  TitleTxt <- title.text
+#' 
+#' @export
+standardize_qualifiers <- function(TitleTxt ){
   
   #method 1 (using helper functions)
   # TitleTxt <- standardize_former(TitleTxt)
@@ -279,7 +278,7 @@ standardize_qualifiers <- function(title.text){
   # TitleTxt <- standardize_current(TitleTxt)
   
   #alternate method (doing all mappings at once)
-  status.mapping <- readRDS("data/status.mapping.RDS")
+  # status.mapping <- readRDS("data/status.mapping.RDS")
   for(i in 1:length(status.mapping$status.variant)){
     word <- status.mapping$status.variant[i]
     if(word != "EX" && word != "END" && word != "NEW")
@@ -295,13 +294,13 @@ standardize_qualifiers <- function(title.text){
   return(TitleTxt)
 }
 
-#' @title 
-#' categorize qualifiers function
+#' @title categorize qualifiers function
 #' 
 #' @description 
 #' takes in a data frame and categorizes the role statuses
 #' future, former, interim, current (current is default, no status for that)
 #' 
+#' @export
 categorize_qualifiers <- function(comp.data){
   comp.table <- comp.data
   
@@ -358,8 +357,7 @@ categorize_qualifiers <- function(comp.data){
 
 
 
-#' @title 
-#' generate status codes wrapper function
+#' @title generate status codes wrapper function
 #' 
 #' @description  
 #' phase 4: remove all quantifiers and qualifiers
@@ -368,6 +366,7 @@ categorize_qualifiers <- function(comp.data){
 #' ordinal numbers, and role statuses (former, future, current, and interim)
 #' 
 #' roughly 5 minutes for 100,000 titles
+#' 
 #' @export
 gen_status_codes <- function(comp.data){
   time1 <- Sys.time()

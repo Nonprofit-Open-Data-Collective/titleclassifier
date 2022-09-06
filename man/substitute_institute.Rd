@@ -4,7 +4,7 @@
 \alias{substitute_institute}
 \title{substitute institute root helper function}
 \usage{
-substitute_institute(title.text)
+substitute_institute(TitleTxt)
 }
 \description{
 condenses institute/institutional abbreviations to a standardized form

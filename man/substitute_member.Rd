@@ -4,7 +4,7 @@
 \alias{substitute_member}
 \title{substitute member helper function}
 \usage{
-substitute_member(title.text)
+substitute_member(TitleTxt)
 }
 \description{
 condenses member abbreviations to a standardized form

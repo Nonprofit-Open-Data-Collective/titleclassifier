@@ -4,7 +4,7 @@
 \alias{substitute_technology}
 \title{substitute technology helper function}
 \usage{
-substitute_technology(title.text)
+substitute_technology(TitleTxt)
 }
 \description{
 condenses tech abbreviations to a standardized form

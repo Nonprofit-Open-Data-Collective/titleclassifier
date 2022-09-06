@@ -4,7 +4,7 @@
 \alias{substitute_treasurer}
 \title{substitute treasurer helper function}
 \usage{
-substitute_treasurer(title.text)
+substitute_treasurer(TitleTxt)
 }
 \description{
 condenses treasurer abbreviations to a standardized form

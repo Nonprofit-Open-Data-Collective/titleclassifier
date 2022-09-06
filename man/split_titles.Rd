@@ -4,7 +4,7 @@
 \alias{split_titles}
 \title{split titles wrapper function}
 \usage{
-split_titles(title.text)
+split_titles(TitleTxt)
 }
 \description{
 basically does the same as split compound titles, but is more standardized

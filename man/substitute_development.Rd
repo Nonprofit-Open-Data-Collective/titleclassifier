@@ -4,7 +4,7 @@
 \alias{substitute_development}
 \title{substitute development helper function}
 \usage{
-substitute_development(title.text)
+substitute_development(TitleTxt)
 }
 \description{
 condenses development abbreviations to a standardized form

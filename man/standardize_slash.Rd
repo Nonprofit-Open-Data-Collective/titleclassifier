@@ -4,7 +4,7 @@
 \alias{standardize_slash}
 \title{standardize slash function}
 \usage{
-standardize_slash(title.text)
+standardize_slash(TitleTxt)
 }
 \description{
 distinguish if slash is for separator or "of"

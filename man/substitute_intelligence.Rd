@@ -4,7 +4,7 @@
 \alias{substitute_intelligence}
 \title{substitute intelligence helper function}
 \usage{
-substitute_intelligence(title.text)
+substitute_intelligence(TitleTxt)
 }
 \description{
 condenses intel abbreviations to a standardized form

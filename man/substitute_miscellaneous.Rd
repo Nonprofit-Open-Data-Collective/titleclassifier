@@ -4,7 +4,7 @@
 \alias{substitute_miscellaneous}
 \title{substitute miscellaneous helper function}
 \usage{
-substitute_miscellaneous(title.text)
+substitute_miscellaneous(TitleTxt)
 }
 \description{
 substituting all the one's we missed/haven't generalized

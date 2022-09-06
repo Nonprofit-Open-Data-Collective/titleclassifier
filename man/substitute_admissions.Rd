@@ -4,7 +4,7 @@
 \alias{substitute_admissions}
 \title{substitute admissions helper function}
 \usage{
-substitute_admissions(title.text)
+substitute_admissions(TitleTxt)
 }
 \description{
 condenses admissions abbreviations to a standardized form

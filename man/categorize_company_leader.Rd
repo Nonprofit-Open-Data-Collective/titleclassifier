@@ -4,7 +4,7 @@
 \alias{categorize_company_leader}
 \title{categorize company leader function}
 \usage{
-categorize_company_leader(comp.data)
+categorize_company_leader(df)
 }
 \description{
 utilizes ceo and adds in president, chair, and managing director for those

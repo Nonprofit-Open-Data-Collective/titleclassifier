@@ -4,7 +4,7 @@
 \alias{substitute_exofficio}
 \title{substitute ex officio helper function}
 \usage{
-substitute_exofficio(title.text)
+substitute_exofficio(TitleTxt)
 }
 \description{
 condenses ex officio abbreviations to a standardized form

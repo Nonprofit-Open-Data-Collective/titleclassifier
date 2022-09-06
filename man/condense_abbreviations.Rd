@@ -4,7 +4,7 @@
 \alias{condense_abbreviations}
 \title{condense c-suite abbreviations function}
 \usage{
-condense_abbreviations(title.text)
+condense_abbreviations(TitleTxt)
 }
 \description{
 condenses spaced out c-suite abbreviations

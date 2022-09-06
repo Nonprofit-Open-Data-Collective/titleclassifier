@@ -4,7 +4,7 @@
 \alias{substitute_philanthropy}
 \title{substitute philanthropy helper function}
 \usage{
-substitute_philanthropy(title.text)
+substitute_philanthropy(TitleTxt)
 }
 \description{
 condenses philanthropy abbreviations to a standardized form

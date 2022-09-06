@@ -4,7 +4,7 @@
 \alias{unmingle}
 \title{unmingle function}
 \usage{
-unmingle(title.text)
+unmingle(TitleTxt)
 }
 \description{
 unmingles titles that are stuck together

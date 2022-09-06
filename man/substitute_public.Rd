@@ -4,7 +4,7 @@
 \alias{substitute_public}
 \title{substitute public helper function}
 \usage{
-substitute_public(title.text)
+substitute_public(TitleTxt)
 }
 \description{
 condenses public abbreviations to a standardized form

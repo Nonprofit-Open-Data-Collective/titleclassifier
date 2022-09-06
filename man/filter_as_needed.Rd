@@ -4,7 +4,7 @@
 \alias{filter_as_needed}
 \title{filter as needed function}
 \usage{
-filter_as_needed(title.text)
+filter_as_needed(TitleTxt)
 }
 \description{
 removes as needed text if present and creates flag

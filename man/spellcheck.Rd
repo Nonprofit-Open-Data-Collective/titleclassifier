@@ -4,7 +4,7 @@
 \alias{spellcheck}
 \title{spell check function}
 \usage{
-spellcheck(title.text)
+spellcheck(TitleTxt)
 }
 \description{
 correct small spelling mistakes

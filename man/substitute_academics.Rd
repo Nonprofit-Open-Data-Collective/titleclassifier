@@ -4,7 +4,7 @@
 \alias{substitute_academics}
 \title{substitute academics helper function}
 \usage{
-substitute_academics(title.text)
+substitute_academics(TitleTxt)
 }
 \description{
 condenses academics abbreviations to a standardized form

@@ -9,8 +9,10 @@
 #' assume our dates are already extracted
 #'
 #'& is separator, and is regular 
-standardize_and <- function(title.text){
-  TitleTxt <- title.text
+#'
+#' @export
+standardize_and <- function(TitleTxt){
+
   and_true <- FALSE # "and" not used as separator in raw
   amp_true <- TRUE # & used as separator in raw
   if(grepl("\\bAND\\b",TitleTxt)){
@@ -19,7 +21,7 @@ standardize_and <- function(title.text){
     for(i in 1:length(and_split)){
       testTitle <- apply_substitutes(and_split[i])
       titlePresent <- FALSE
-      likely.titles <- readRDS("data/likely.titles.RDS")
+      # likely.titles <- readRDS("data/likely.titles.RDS")
       for(title in likely.titles){
         if(grepl(title,testTitle))
           titlePresent <- TRUE
@@ -34,7 +36,7 @@ standardize_and <- function(title.text){
     for(i in 1:length(amp_split)){
       testTitle <- apply_substitutes(amp_split[i])
       titlePresent <- FALSE
-      likely.titles <- readRDS("data/likely.titles.RDS")
+      # likely.titles <- readRDS("data/likely.titles.RDS")
       for(title in likely.titles){
         if(grepl(title,testTitle))
           titlePresent <- TRUE
@@ -62,8 +64,10 @@ standardize_and <- function(title.text){
 #' 
 #' alternate way of standardize to is to check the date flag:
 #' if we detected a date, then likely the "to" should be an until
-standardize_to <- function(title.text){
-  TitleTxt <- title.text
+#'
+#' @export
+standardize_to <- function(TitleTxt){
+
   #if "to" is in inside parentheses, almost certainly it was part of a date
   if(grepl("\\(",TitleTxt) & grepl("\\)",TitleTxt)){
     paren <- stringr::str_extract_all(TitleTxt, "\\([^()]+\\)")[[1]]
@@ -96,8 +100,8 @@ standardize_to <- function(title.text){
 #' depending on context, we can add in "of" between vice president or director
 #' and its subject
 #'
-standardize_of <- function(title.text){
-  TitleTxt <- title.text
+#' @export
+standardize_of <- function(TitleTxt){
   
   #we replace all the as of's with since
   TitleTxt <- gsub("\\bAS OF\\b", "SINCE", TitleTxt)
@@ -118,9 +122,10 @@ standardize_of <- function(title.text){
 #' @description
 #' distinguish if comma is for separator, extraneous, or of
 #' we also deal with commas as "of"(e.g. VP, finance = VP of Finance)
-#' 
-standardize_comma <- function(title.text){
-  TitleTxt <- title.text
+#'
+#' @export
+standardize_comma <- function(TitleTxt){
+
   if(grepl(",",TitleTxt)){
     com_split <- unlist(strsplit(TitleTxt,","))
     com_true <- TRUE #comma used as a separator (defaulted to true)
@@ -128,7 +133,7 @@ standardize_comma <- function(title.text){
     for(i in 1:length(com_split)){
       testTitle <- apply_substitutes(com_split[i])
       titlePresent <- FALSE
-      likely.titles <- readRDS("data/likely.titles.RDS")
+      # likely.titles <- readRDS("data/likely.titles.RDS")
       for(title in likely.titles){
         if(grepl(title,testTitle))
           titlePresent <- TRUE
@@ -162,8 +167,10 @@ standardize_comma <- function(title.text){
 #' 
 #' @description 
 #' distinguish if slash is for separator or "of"
-standardize_slash <- function(title.text){
-  TitleTxt <- title.text
+#'
+#' @export
+standardize_slash <- function(TitleTxt){
+
   if(grepl("/",TitleTxt)){
     slash_split <- unlist(strsplit(TitleTxt,"/"))
     slash_true <- TRUE #slash used as a separator (defaulted to true)
@@ -171,7 +178,7 @@ standardize_slash <- function(title.text){
     for(i in 1:length(slash_split)){
       testTitle <- apply_substitutes(slash_split[i])
       titlePresent <- FALSE
-      likely.titles <- readRDS("data/likely.titles.RDS")
+      # likely.titles <- readRDS("data/likely.titles.RDS")
       for(title in likely.titles){
         if(grepl(title,testTitle))
           titlePresent <- TRUE
@@ -208,9 +215,10 @@ standardize_slash <- function(title.text){
 #' possible separators are & ; and \ (rarely used but sometimes)
 #' note: / and , already caught
 #' They all get mapped to &
-#' 
-standardize_separator <- function(title.text){
-  TitleTxt <- title.text
+#'
+#' @export
+standardize_separator <- function(TitleTxt){
+
   standard_separator <- "&"
   alternate_separators <- c(";", "\\\\", "/")
   for(separator in alternate_separators){
@@ -227,8 +235,10 @@ standardize_separator <- function(title.text){
 #'
 #' @description 
 #' wrapper for cleaning conjunctions (all the standardizations come in here)
-clean_conjunctions <- function(title.text){
-  TitleTxt <- title.text
+#'
+#' @export
+clean_conjunctions <- function(TitleTxt){
+
   TitleTxt <- standardize_and(TitleTxt)
   TitleTxt <- standardize_to(TitleTxt)
   TitleTxt <- standardize_of(TitleTxt)
@@ -256,8 +266,9 @@ clean_conjunctions <- function(title.text){
 #' @description 
 #' unmingles titles that are stuck together
 #' e.g. separates "executivedirector" into "executive director"
-unmingle <- function(title.text){
-  TitleTxt <- title.text
+#'
+#' @export
+unmingle <- function(TitleTxt){
   
   title.list <- unlist(strsplit(TitleTxt," "))
   for(i in 1:length(title.list)){
@@ -286,14 +297,16 @@ unmingle <- function(title.text){
 #' 
 #' @description 
 #' only really used with unmingle (otherwise it's too volatile)
-standardize_space <-function(title.text){
-  TitleTxt <- title.text
+#'
+#' @export
+standardize_space <-function(TitleTxt){
+
   space_split <- unlist(strsplit(TitleTxt," "))
   space_true <- TRUE #space used as a separator (defaulted to true)
   for(i in 1:length(space_split)){
     testTitle <- apply_substitutes(space_split[i])
     titlePresent <- FALSE
-    likely.titles <- readRDS("data/likely.titles.RDS")
+    # likely.titles <- readRDS("data/likely.titles.RDS")
     for(title in likely.titles){
       if(grepl(title,testTitle))
         titlePresent <- TRUE
@@ -304,7 +317,7 @@ standardize_space <-function(title.text){
   if(space_true) 
     TitleTxt <- gsub(" "," & ",TitleTxt)
   
-  #other wise do nothing
+  #otherwise do nothing
   return(TitleTxt)
 }
 
@@ -319,8 +332,8 @@ standardize_space <-function(title.text){
 #' 
 #' @export
 #' 
-split_titles <- function(title.text){
-  TitleTxt <- title.text
+split_titles <- function(TitleTxt){
+
   TitleTxt <- clean_conjunctions(TitleTxt)
   title.list <- unlist(strsplit(TitleTxt,"&"))
   return.list <- c()

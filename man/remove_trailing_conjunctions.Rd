@@ -4,7 +4,7 @@
 \alias{remove_trailing_conjunctions}
 \title{remove trailing conjunctions}
 \usage{
-remove_trailing_conjunctions(title.text)
+remove_trailing_conjunctions(TitleTxt)
 }
 \description{
 removes any trailing conjunctions (and, of, to)

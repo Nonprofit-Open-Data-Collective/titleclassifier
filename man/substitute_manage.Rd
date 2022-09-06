@@ -4,7 +4,7 @@
 \alias{substitute_manage}
 \title{substitute manage root helper function}
 \usage{
-substitute_manage(title.text)
+substitute_manage(TitleTxt)
 }
 \description{
 condenses management/manager/managing

@@ -4,7 +4,7 @@
 \alias{remove_date}
 \title{remove dates}
 \usage{
-remove_date(title.text)
+remove_date(TitleTxt)
 }
 \description{
 remove dates from raw title text

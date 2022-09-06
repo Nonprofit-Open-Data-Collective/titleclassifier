@@ -4,7 +4,7 @@
 \alias{substitute_business}
 \title{substitute business helper function}
 \usage{
-substitute_business(title.text)
+substitute_business(TitleTxt)
 }
 \description{
 condenses business abbreviations to a standardized form

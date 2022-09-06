@@ -4,7 +4,7 @@
 \alias{substitute_advancement}
 \title{substitute advancement helper function}
 \usage{
-substitute_advancement(title.text)
+substitute_advancement(TitleTxt)
 }
 \description{
 condenses advancement abbreviations to a standardized form

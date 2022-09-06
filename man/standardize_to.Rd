@@ -4,7 +4,7 @@
 \alias{standardize_to}
 \title{standardize "to" function}
 \usage{
-standardize_to(title.text)
+standardize_to(TitleTxt)
 }
 \description{
 detects whether to is part of a date or not

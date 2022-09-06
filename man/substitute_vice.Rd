@@ -4,7 +4,7 @@
 \alias{substitute_vice}
 \title{substitute vice helper function}
 \usage{
-substitute_vice(title.text)
+substitute_vice(TitleTxt)
 }
 \description{
 condenses vice president abbreviations to a standardized form

@@ -4,7 +4,7 @@
 \alias{substitute_finance}
 \title{substitute finance helper function}
 \usage{
-substitute_finance(title.text)
+substitute_finance(TitleTxt)
 }
 \description{
 condenses finance abbreviations to a standardized form

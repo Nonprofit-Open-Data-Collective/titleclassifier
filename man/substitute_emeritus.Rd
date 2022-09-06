@@ -4,7 +4,7 @@
 \alias{substitute_emeritus}
 \title{substitute emeritus helper function}
 \usage{
-substitute_emeritus(title.text)
+substitute_emeritus(TitleTxt)
 }
 \description{
 condenses emeritus abbreviations to a standardized form

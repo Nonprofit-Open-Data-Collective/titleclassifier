@@ -4,7 +4,7 @@
 \alias{filter_regional}
 \title{filter regional words function}
 \usage{
-filter_regional(title.text)
+filter_regional(TitleTxt)
 }
 \description{
 removes regional word text if present and creates flag

@@ -4,7 +4,7 @@
 \alias{fix_of}
 \title{fix "of" function}
 \usage{
-fix_of(title.text)
+fix_of(TitleTxt)
 }
 \description{
 inserts an "of" in between the title and subject if not present and needed

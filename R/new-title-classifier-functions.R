@@ -8,6 +8,8 @@ require(dplyr)
 #' @description
 #' gets rid of meaningless punctuation (like periods), 
 #' converts titles to uppercase
+#' 
+#' @export
 pre_clean <- function(title.text){
   TitleTxt <- title.text
   TitleTxt <- toupper(TitleTxt)
@@ -97,31 +99,7 @@ format_comp_df <- function( comp.data ){
 }
 
 
-#' @title
-#' clean dates wrapper function, takes in a data frame
-#'
-#' @description
-#' cleans the dates by first identifying date, setting a flag if it finds one,
-#' then removing the date if it is present
-#' 
-#' @export
-clean_dates <- function(comp.data){
-  comp.table <- comp.data
-  
-  comp.table$Date.Code <- 0
-  for(i in 1:length(comp.table$TitleTxt)) {
-    #asssume the table already formatted correctly
-    title <- convert_ordinal(comp.table$TitleTxt[i])
-    if(identify_date(title)){
-      comp.table$Date.Code[i] <- 1
-      comp.table$TitleTxt2[i] <- remove_date(title)
-    }
-    else{
-      comp.table$TitleTxt2[i] <- title
-    }
-  }
-  return(comp.table)
-}
+
 
 
 #' @title 
@@ -180,6 +158,8 @@ build_split_titles <- function(comp.data){
 #' i.e. titles cells without any titles in them
 #' #we skip over titles that may have had valuable info removed like emeritus or 
 #' at large
+#' 
+#' @export
 clean_empty_cells <- function(comp.data){
   time1 <- Sys.time()
   pdf <- data.frame(matrix(ncol = ncol(comp.data)))

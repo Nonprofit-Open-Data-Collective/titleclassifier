@@ -4,7 +4,7 @@
 \alias{standardize_of}
 \title{standardize "of" usage function}
 \usage{
-standardize_of(title.text)
+standardize_of(TitleTxt)
 }
 \description{
 detects whether “of” is a part of the title, or separator
