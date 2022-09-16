@@ -16,6 +16,9 @@ standardize_titles <- function(comp.data, title = "TitleTxt6"){
   # manipulations with google sheets
   #TitleTxt <- stand_titles(TitleTxt) #this will be replaced with the mapping
   
+  TitleTxt <- gsub("^\\s* | \\s*$", "", TitleTxt)
+  TitleTxt <- gsub( "\\s{2,}", " ", TitleTxt )
+  
   comp.data$TitleTxt7 <- TitleTxt
   
   print("standardize titles step complete")

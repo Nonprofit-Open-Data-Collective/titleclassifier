@@ -119,7 +119,7 @@ standardize_to <- function(TitleTxt){
   }
   
   #if "to" is at the end of a title, then it's likely also a date extraction
-  TitleTxt <- gsub("\\bTO\\b","UNTIL",TitleTxt)
+  TitleTxt <- gsub("\\bTO$","UNTIL",TitleTxt)
   
   return(TitleTxt)
 }
