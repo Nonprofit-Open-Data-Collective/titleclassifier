@@ -19,7 +19,7 @@ get_title_dump <- function(comp.table, target.word){
     if(length(target.word) == 1){
       if(grepl(target.word,title)){
         cotitles[k,1] <- title
-        cotitles[k,2] <- comp.table$TitleTxt4[i]
+        cotitles[k,2] <- comp.table$TitleTxt7[i]
         k <- k + 1
       }
     }
