@@ -1,6 +1,28 @@
-#apply-substitutions
+#Step 5: Standardize Spelling
 
 require(hunspell)
+
+# 05-standardize-spelling.R
+
+#' @title 
+#' standardize spelling wrapper function
+#'
+#' @description 
+#' apply custom dictionary of common abbreviations and misspellings 
+#' to standardize titles
+#' 
+#' @export
+standardize_spelling <- function(comp.data, title="TitleTxt4"){
+  TitleTxt = comp.data[[title]]
+  
+  TitleTxt <- apply_substitutes(TitleTxt)
+  
+  comp.data$TitleTxt5 <- TitleTxt
+  
+  print("standardize spelling step complete")
+  
+  return(comp.data)
+}
 
 #' @title 
 #' substitute vice helper function 
@@ -10,7 +32,7 @@ require(hunspell)
 #'
 #' @export
 substitute_vice <- function(TitleTxt){
-
+  
   TitleTxt <- gsub( "\\bE\\sV\\sPRESIDENT", "EXECUTIVE VICE PRESIDENT", TitleTxt )
   TitleTxt <- gsub( "\\bE\\sVICE", "EXECUTIVE VICE", TitleTxt )
   TitleTxt <- gsub( "\\bS\\sVICE", "SENIOR VICE", TitleTxt )
@@ -249,7 +271,7 @@ substitute_chair <- function(TitleTxt){
   
   TitleTxt <- gsub("\\bCHAI[A-Z]*\\b", "CHAIR", TitleTxt)
   TitleTxt <- gsub("\\bCHAIR PERSON\\b", "CHAIR", TitleTxt)
-
+  
   TitleTxt <- gsub("\\bCHA\\b", "CHAIR", TitleTxt)
   TitleTxt <- gsub("\\bCH\\b", "CHAIR", TitleTxt)
   TitleTxt <- gsub("\\bC\\b", "CHAIR", TitleTxt) #assume standalone c is chair
@@ -334,7 +356,7 @@ substitute_admin <- function(TitleTxt){
     TitleTxt <- gsub("\\bADMINISTRATIV\\b", "ADMINISTRATIVE", TitleTxt)
     return(TitleTxt)
   }
-
+  
   TitleTxt <- gsub("\\bADMIN[A-Z]*\\b", "ADMINISTRATION", TitleTxt)
   TitleTxt <- gsub("\\bADMI\\b", "ADMINISTRATION", TitleTxt)
   TitleTxt <- gsub("\\bADM\\b", "ADMINISTRATION", TitleTxt)
@@ -462,7 +484,7 @@ substitute_programs <- function(TitleTxt){
 substitute_projects <- function(TitleTxt){
   
   TitleTxt <- gsub("\\bPROJ[A-Z]*\\b", "PROJECTS", TitleTxt)
-
+  
   return(TitleTxt)  
 }
 
@@ -992,7 +1014,7 @@ substitute_miscellaneous <- function(TitleTxt){
   TitleTxt <- gsub("\\bTSTEE\\b", "TRUSTEE", TitleTxt)
   TitleTxt <- gsub("\\bTTEE\\b", "TRUSTEE", TitleTxt)
   TitleTxt <- gsub("\\bTRUSTE\\b", "TRUSTEE", TitleTxt)
-
+  
   
   #spelling corrections
   TitleTxt <- gsub("\\bCONTRUCTION\\b", "CONSTRUCTION", TitleTxt)
@@ -1039,7 +1061,7 @@ substitute_miscellaneous <- function(TitleTxt){
 #' 
 #' @export
 stand_titles <- function(TitleTxt){
-
+  
   #convert known c-suite positions into abbrev
   TitleTxt <- gsub( "CHIEF\\sEX[A-Z]*\\sO[A-Z]*\\b", "CEO", TitleTxt ) #executive
   TitleTxt <- gsub( "CHIEF\\sEX[A-Z]*$", "CEO", TitleTxt ) #executive
@@ -1088,15 +1110,13 @@ stand_titles <- function(TitleTxt){
 #' 
 #' @export
 fix_of <- function(TitleTxt){
-
+  
   # TitleTxt <- apply_substitutes(TitleTxt) #depending on order of op's
   titleMatch <- FALSE
   subjectMatch <- FALSE
   current.title <- NA
   titlePos <- 0
   if(!grepl("\\bOF\\b", TitleTxt)){
-    # possible.titles <- readRDS("data/possible.titles.RDS")
-    # likely.subjects <- readRDS("data/likely.subjects.RDS")
     for(title in possible.titles){
       if(grepl(title,TitleTxt)){
         titleMatch <- TRUE
@@ -1144,7 +1164,7 @@ spellcheck <- function(TitleTxt){
       else if(title == "TREASURER" && grepl("^\\s*T",TitleTxt) && TitleTxt != "TREASURER")
         TitleTxt <- "TREASURER"
       else if(title == "TRUSTEE" && grepl("^\\s*T",TitleTxt) && TitleTxt != "TRUSTEE"
-         && TitleTxt != "TRUSTEES")
+              && TitleTxt != "TRUSTEES")
         TitleTxt <- "TRUSTEE"
       else if(title == "MEMBER" && grepl("^\\s*M",TitleTxt) && TitleTxt != "MEMBER"
               && TitleTxt != "MEMBERSHIP")
@@ -1175,17 +1195,15 @@ remove_trailing_conjunctions <- function(TitleTxt){
 }
 
 
-
 #' @title 
-#' apply substitutes wrapper function
-#'
+#' apply substitutes function
+#' 
 #' @description 
-#' apply custom dictionary of common abbreviations and misspellings 
-#' to standardize titles
+#' subwrapper function for standardize spelling by applying all the substitutes
+#' on the titletxt vector (or singular string)
 #' 
 #' @export
-apply_substitutes <- function (TitleTxt){
-
+apply_substitutes <- function(TitleTxt){
   TitleTxt <- substitute_vice(TitleTxt)
   TitleTxt <- substitute_executive(TitleTxt)
   TitleTxt <- substitute_director(TitleTxt)
@@ -1258,10 +1276,7 @@ apply_substitutes <- function (TitleTxt){
   TitleTxt <- gsub("\\bOF AND\\b", "OF", TitleTxt)
   TitleTxt <- spellcheck(TitleTxt) #slows things down, but is useful
   
-  return( TitleTxt )
+  return(TitleTxt)
 }
-
-
-
 
 

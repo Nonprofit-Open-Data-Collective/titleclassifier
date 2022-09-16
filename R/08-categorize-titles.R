@@ -1,115 +1,25 @@
-#categorize titles
-#based on old title classification
+#Step 8: Categorize Titles
+#based on old title categorization schema 
+
+# 08-categorize-titles.R   
+
+
+
 require(dplyr)
 
 #' @title 
-#' categorize ceo function
-#' 
-#' @description 
-#' categorizing ceo's and adding a flag
-#'
-#' @param df A compensation data frame. 
-#'
-#' @return Returns a data frame with a CEO boolean (1=CEO,0=other). 
-#'
-#' @export
-categorize_ceo <- function(df){
-
-  df$CEO <- 0
-  
-  #ceo's (but not assistant or associate)
-  df$CEO [grepl("CEO",df$TitleTxt4)] <- 1
-  df$CEO [grepl("ASSOCIATE",df$TitleTxt4)] <- 0
-  df$CEO [grepl("ASSISTANT",df$TitleTxt4)] <- 0
-  
-  #exec dir
-  df$CEO [grepl("\\bEXECDIR[A-Z]*\\b",df$TitleTxt4)] <- 1
-  df$CEO [grepl("\\bEXDIR[A-Z]*\\b",df$TitleTxt4)] <- 1
-  
-  #president (if paid and working 40+ hours)
-  df$CEO [grepl("PRESIDENT",df$TitleTxt4) && df$AvgHrs >= 40 &&
-            df$TOT_COMP > 0 && !grepl("VICE", dfTitleTxt4)] <- 1
-  
-  #weird ones
-  df$CEO [agrepl("CHANCELLOR", df$TitleTxt4) && df$AvgHrs >= 40 &&
-            df$TOT_COMP > 0 && 
-            (df$Officer == "X" || df$FmrOfficer == "X")] <- 1
-  df$CEO [grepl("MANAGING DIRECTOR", df$TitleTxt4) && df$AvgHrs >= 40 &&
-            df$TOT_COMP > 0 && 
-            (df$Officer == "X" || df$FmrOfficer == "X")] <- 1
-  df$CEO [grepl("HEADMASTER", df$TitleTxt4) && df$AvgHrs >= 40 &&
-            df$TOT_COMP > 0 && 
-            (df$Officer == "X" || df$FmrOfficer == "X")] <- 1
-  return(df)
-}
-
-
-#' @title 
-#' categorize company leader function
-#' 
-#' @description 
-#' utilizes ceo and adds in president, chair, and managing director for those 
-#' without explicit/clear ceo positions
-#'
-#' @export
-categorize_company_leader <- function(df){
-
-  df <- categorize_ceo( df )
-  df$Org.Leader <- 0
-  df$Org.Leader[df$CEO == 1] <- 1
-  aoc <- unique(df$NAME.x[df$Org.Leader == 1])
-
-  #presidents
-  pres.leadership <- c("PRESIDENT", "BOARD PRESIDENT", "PRESIDENT OF BOARD")
-  df$Org.Leader[!df$NAME.x %in% aoc && 
-                  ((grepl("PRESIDENT",df$TitleTxt4) && 
-                      !grepl("VICE",df$TitleTxt4)) ||
-                     df$TitleTxt4[i] %in% pres.leadership)] <- 1
-  for(i in 1:length(df$NAME.x)){
-    if(!(df$NAME.x[i] %in% aoc)){
-      if((grepl("PRESIDENT",df$TitleTxt4[i]) && !grepl("VICE",df$TitleTxt4[i])) ||
-         df$TitleTxt4[i] %in% pres.leadership){
-        df$Org.Leader[i] <- 1
-      }
-    }
-  }
-  aoc <- unique(df$NAME.x[df$Org.Leader == 1])
-
-  #chairs and misc
-  chair.leadership <- c("CHAIR", "BOARD CHAIR",
-                        "MANAGING DIRECTOR", "CHAIR OF BOARD")
-  for(i in 1:length(df$NAME.x)){
-    if(!(df$NAME.x[i] %in% aoc)){
-      if(df$TitleTxt4[i] %in% chair.leadership){
-        df$Org.Leader[i] <- 1
-      }
-    }
-  }
-  aoc <- unique(df$NAME.x[df$Org.Leader == 1])
-  
-  return(df)
-}
-
-
-# 
-# categorize_cfo <- function(df){
-#   
-# }
-
-
-#' @title 
 #' categorize titles function
-#' will be updated version
-#' will be a wrapper function
+#' 
 #' 
 #' @description 
 #' categorizes the titles in comp.data 
-#' will work on titletxt4
+#' works on TitleTxt7
+#' wrapper function
 #' 
 #' @export
-categorize_titles_new <- function( df )
+categorize_titles <- function( comp.data )
 {
-  
+  df <- comp.data
   # Creates new Title Categories - These are NOT mutually exclusive.
   ## ------------------------------------------------------------------------
   
@@ -151,8 +61,8 @@ categorize_titles_new <- function( df )
   ## ------------------------------------------------------------------------
   
   df$CEO.Prob <- 0
-  df$CEO[ df$TitleTxt2 %in% all.titles$CEO.Clear] <- 1
-  df$CEO.Prob[ df$TitleTxt2 %in% all.titles$CEO.Prob] <- 1
+  df$CEO[ df$TitleTxt7 %in% all.titles$CEO.Clear] <- 1
+  df$CEO.Prob[ df$TitleTxt7 %in% all.titles$CEO.Prob] <- 1
   
   
   # TRUSTEE not CEO
@@ -175,8 +85,8 @@ categorize_titles_new <- function( df )
   df$CEO[ df$CEO.Prob == 1 & df$TrustOrDir == 0 & df$Officer == 1 ]   <- 1
   df$CEO[ df$CEO.Prob == 1 & df$TrustOrDir == 1 & df$Officer == 1 ] <- 1
   df$TRUST[ df$CEO.Prob == 1 & df$TrustOrDir == 1 & df$Officer == 1 ] <- 1
-  df$TRUST[ df$TitleTxt2 %in% all.titles$CEO.Board ] <- 1
-  df$CEO[ df$TitleTxt2 %in% all.titles$CEO.Board ] <- 1
+  df$TRUST[ df$TitleTxt7 %in% all.titles$CEO.Board ] <- 1
+  df$CEO[ df$TitleTxt7 %in% all.titles$CEO.Board ] <- 1
   df$MAN[ df$CEO.Prob == 1 & df$TrustOrDir == 0 & df$Officer == 0 & df$KeyEmpl == 1 ] <- 1
   df$MAN[ df$CEO.Prob == 1 & df$TrustOrDir == 0 & df$Officer == 0 & df$HighComp == 1 ] <- 1
   
@@ -186,15 +96,15 @@ categorize_titles_new <- function( df )
   # 
   ## ------------------------------------------------------------------------
   
-  df$CEO [ grepl( " CHIEF EXECUTIVE OFFICER ", df$TitleTxt2) ] <- 1
-  df$CEO [ grepl( " EXECUTIVE DIRECTOR ", df$TitleTxt2) ] <- 1
-  df$CEO [ grepl( " ASSISTANT EXECUTIVE DIRECTOR ", df$TitleTxt2) ] <- 0
+  df$CEO [ grepl( " CHIEF EXECUTIVE OFFICER ", df$TitleTxt7) ] <- 1
+  df$CEO [ grepl( " EXECUTIVE DIRECTOR ", df$TitleTxt7) ] <- 1
+  df$CEO [ grepl( " ASSISTANT EXECUTIVE DIRECTOR ", df$TitleTxt7) ] <- 0
   
   #new changes
-  df$CEO [ grepl( "CEO", df$TitleTxt2) ] <- 1
+  df$CEO [ grepl( "CEO", df$TitleTxt7) ] <- 1
   
   
-  # df$TitleTxt2[ df$CEO == 1 ] %>% table() %>% sort( decreasing=T ) %>% as.data.frame( ) %>% head( 20 ) %>% pander
+  # df$TitleTxt7[ df$CEO == 1 ] %>% table() %>% sort( decreasing=T ) %>% as.data.frame( ) %>% head( 20 ) %>% pander
   
   
   
@@ -209,10 +119,10 @@ categorize_titles_new <- function( df )
   # 
   ## ------------------------------------------------------------------------
   
-  df$TRUST [df$TitleTxt2 %in% all.titles$SCHOOL.HEAD & df$TrustOrDir == 1] <- 1
-  df$CEO [df$TitleTxt2 %in% all.titles$SCHOOL.HEAD & df$Officer == 1] <- 1
-  df$MAN [df$TitleTxt2 %in% all.titles$SCHOOL.HEAD & df$Officer == 0 & df$TrustOrDir == 0 & df$KeyEmpl == 1 ] <- 1
-  df$OTHER [df$TitleTxt2 %in% all.titles$SCHOOL.HEAD & df$Officer == 0 & df$TrustOrDir == 0 & df$KeyEmpl == 0 ] <- 1
+  df$TRUST [df$TitleTxt7 %in% all.titles$SCHOOL.HEAD & df$TrustOrDir == 1] <- 1
+  df$CEO [df$TitleTxt7 %in% all.titles$SCHOOL.HEAD & df$Officer == 1] <- 1
+  df$MAN [df$TitleTxt7 %in% all.titles$SCHOOL.HEAD & df$Officer == 0 & df$TrustOrDir == 0 & df$KeyEmpl == 1 ] <- 1
+  df$OTHER [df$TitleTxt7 %in% all.titles$SCHOOL.HEAD & df$Officer == 0 & df$TrustOrDir == 0 & df$KeyEmpl == 0 ] <- 1
   
   
   
@@ -230,23 +140,23 @@ categorize_titles_new <- function( df )
   
   df$CFO.Prob <- 0
   
-  df$CFO[ df$TitleTxt2 %in% all.titles$CFO.Clear] <- 1
-  df$CFO.Prob[ df$TitleTxt2 %in% all.titles$CFO.Prob] <- 1
+  df$CFO[ df$TitleTxt7 %in% all.titles$CFO.Clear] <- 1
+  df$CFO.Prob[ df$TitleTxt7 %in% all.titles$CFO.Prob] <- 1
   
   df$CFO   [ df$CFO.Prob == 1 & df$TrustOrDir == 1]   <- 0
   df$TRUST [ df$CFO.Prob == 1 & df$Officer == 1   ]   <- 1
   df$CFO   [ df$CFO.Prob == 1 & df$KeyEmpl == 1]      <- 1
   df$CFO   [ df$CFO.Prob == 1 & df$HighComp == 1]     <- 1
-  df$CFO   [ grepl( " CFO ", df$TitleTxt2) ]          <- 1
-  df$CFO   [ grepl( " CHIEF FINANCIAL OFFICER ", df$TitleTxt2) ]          <- 1
-  df$CFO   [ grepl( " FINANCE ", df$TitleTxt2) ]          <- 1
+  df$CFO   [ grepl( " CFO ", df$TitleTxt7) ]          <- 1
+  df$CFO   [ grepl( " CHIEF FINANCIAL OFFICER ", df$TitleTxt7) ]          <- 1
+  df$CFO   [ grepl( " FINANCE ", df$TitleTxt7) ]          <- 1
   
-  df$CFO   [ grepl( " CHIEF FINANCE OFFICER ", df$TitleTxt2) ]          <- 1
-  df$CFO   [ grepl( "CFO", df$TitleTxt2) ]          <- 1
+  df$CFO   [ grepl( " CHIEF FINANCE OFFICER ", df$TitleTxt7) ]          <- 1
+  df$CFO   [ grepl( "CFO", df$TitleTxt7) ]          <- 1
   
   df$TRUST[ df$CFO.Prob == 1 & df$TrustOrDir == 1 & df$Officer == 1] <- 1
   
-  # titles <- df$TitleTxt2[ df$CFO == 1]
+  # titles <- df$TitleTxt7[ df$CFO == 1]
   # table( titles ) %>% sort( decreasing=T ) %>% as.data.frame( ) %>% head( 20 ) %>% pander
   
   
@@ -255,13 +165,13 @@ categorize_titles_new <- function( df )
   # 
   ## ------------------------------------------------------------------------
   
-  df$Treasurer  [ df$TitleTxt2 %in% all.titles$Treasurer] <- 1
-  df$Treasurer  [ grepl( " TREASURER ", df$TitleTxt2) ]   <- 1
+  df$Treasurer  [ df$TitleTxt7 %in% all.titles$Treasurer] <- 1
+  df$Treasurer  [ grepl( " TREASURER ", df$TitleTxt7) ]   <- 1
   
-  df$Treasurer  [ grepl( "TREASURER", df$TitleTxt2) ]   <- 1
+  df$Treasurer  [ grepl( "TREASURER", df$TitleTxt7) ]   <- 1
   
   
-  # titles <- df$TitleTxt2[ df$Treasurer == 1]
+  # titles <- df$TitleTxt7[ df$Treasurer == 1]
   # table( titles ) %>% sort( decreasing=T ) %>% as.data.frame( ) %>% head( 20 ) %>% pander
   
   
@@ -270,14 +180,14 @@ categorize_titles_new <- function( df )
   # 
   ## ------------------------------------------------------------------------
   
-  df$DEP.CEO[ df$TitleTxt2 %in% all.titles$DEP.CEO ] <- 1
-  df$DEP.CEO[ df$TitleTxt2 %in% all.titles$DEP.CEO.Prob & df$Officer == 1 ] <- 1
+  df$DEP.CEO[ df$TitleTxt7 %in% all.titles$DEP.CEO ] <- 1
+  df$DEP.CEO[ df$TitleTxt7 %in% all.titles$DEP.CEO.Prob & df$Officer == 1 ] <- 1
   
-  #df[ df$TitleTxt2 %in% all.titles$DEP.CEO.Prob, ]
+  #df[ df$TitleTxt7 %in% all.titles$DEP.CEO.Prob, ]
   
-  df$MAN [ df$TitleTxt2 %in% all.titles$DEP.CEO.Prob  & df$Officer == 0 & (df$KeyEmpl == 1 | df$HighComp == 1 ) ] <- 1
+  df$MAN [ df$TitleTxt7 %in% all.titles$DEP.CEO.Prob  & df$Officer == 0 & (df$KeyEmpl == 1 | df$HighComp == 1 ) ] <- 1
   
-  # titles <- df$TitleTxt2[ df$DEP.CEO == 1]
+  # titles <- df$TitleTxt7[ df$DEP.CEO == 1]
   # table( titles ) %>% sort( decreasing=T ) %>% as.data.frame( ) %>% head( 20 ) %>% pander
   
   
@@ -287,13 +197,13 @@ categorize_titles_new <- function( df )
   # 
   ## ------------------------------------------------------------------------
   
-  df$SEC[ df$TitleTxt2 %in%  all.titles$SEC] <- 1
-  df$SEC [ grepl( " SECRETARY ", df$TitleTxt2) ] <- 1
-  df$SEC [ grepl( " SEC ", df$TitleTxt2) ] <- 1
+  df$SEC[ df$TitleTxt7 %in%  all.titles$SEC] <- 1
+  df$SEC [ grepl( " SECRETARY ", df$TitleTxt7) ] <- 1
+  df$SEC [ grepl( " SEC ", df$TitleTxt7) ] <- 1
   
-  df$SEC [ grepl( "SECRETARY", df$TitleTxt2) ] <- 1
+  df$SEC [ grepl( "SECRETARY", df$TitleTxt7) ] <- 1
   
-  # titles <- df$TitleTxt2[ df$SEC == 1]
+  # titles <- df$TitleTxt7[ df$SEC == 1]
   # table( titles ) %>% sort( decreasing=T ) %>% as.data.frame( ) %>% head( 20 ) %>% pander
   
   
@@ -305,14 +215,14 @@ categorize_titles_new <- function( df )
   
   # all.titles$COO.Prob
   
-  df$COO[ df$TitleTxt2 %in%  all.titles$COO] <- 1
-  df$COO[ df$TitleTxt2 %in%  all.titles$COO] <- 1
-  df$COO [ grepl( " OPERATIONS ", df$TitleTxt2) ] <- 1
-  df$COO [ grepl( " COO ", df$TitleTxt2) ] <- 1
+  df$COO[ df$TitleTxt7 %in%  all.titles$COO] <- 1
+  df$COO[ df$TitleTxt7 %in%  all.titles$COO] <- 1
+  df$COO [ grepl( " OPERATIONS ", df$TitleTxt7) ] <- 1
+  df$COO [ grepl( " COO ", df$TitleTxt7) ] <- 1
   
-  df$COO [ grepl( " OPERATING ", df$TitleTxt2) ] <- 1
+  df$COO [ grepl( " OPERATING ", df$TitleTxt7) ] <- 1
   
-  # titles <- df$TitleTxt2[ df$COO == 1]
+  # titles <- df$TitleTxt7[ df$COO == 1]
   # table( titles ) %>% sort( decreasing=T ) %>% as.data.frame( ) %>% head( 20 ) %>% pander
   
   
@@ -321,29 +231,30 @@ categorize_titles_new <- function( df )
   # 
   ## ------------------------------------------------------------------------
   
-  df$TRUST[ df$TitleTxt2 %in%  all.titles$TRUST] <- 1
-  df$TRUST [ grepl( " TRUSTEE ", df$TitleTxt2) ] <- 1
-  df$TRUST [ grepl( " TRUST ", df$TitleTxt2) ] <- 1
-  df$TRUST [ grepl( " BOARD MEMBER ", df$TitleTxt2) ] <- 1
-  df$TRUST [ grepl( "CHAIR", df$TitleTxt2) ] <- 1
+  df$TRUST[ df$TitleTxt7 %in%  all.titles$TRUST] <- 1
+  df$TRUST [ grepl( " TRUSTEE ", df$TitleTxt7) ] <- 1
+  df$TRUST [ grepl( " TRUST ", df$TitleTxt7) ] <- 1
+  df$TRUST [ grepl( " BOARD MEMBER ", df$TitleTxt7) ] <- 1
+  df$TRUST [ grepl( "CHAIR", df$TitleTxt7) ] <- 1
   df$TRUST [ df$TrustOrDir == 1 ] <- 1
   
-  df$TRUST [ grepl( "BOARD", df$TitleTxt2) ] <- 1
-  df$TRUST [ grepl( "TRUSTEE", df$TitleTxt2) ] <- 1
-  df$TRUST [ grepl( "MEMBER", df$TitleTxt2) ] <- 1
-  df$TRUST [ grepl( "COUNCIL", df$TitleTxt2) ] <- 1
-  df$TRUST [ grepl( "COMMITTEE", df$TitleTxt2) ] <- 1
-  df$TRUST [ grepl( "GOVERNOR", df$TitleTxt2) ] <- 1
-  df$TRUST [ grepl( "REGENT", df$TitleTxt2) ] <- 1
+  df$TRUST [ grepl( "BOARD", df$TitleTxt7) ] <- 1
+  df$TRUST [ grepl( "TRUSTEE", df$TitleTxt7) ] <- 1
+  df$TRUST [ grepl( "MEMBER", df$TitleTxt7) ] <- 1
+  df$TRUST [ grepl( "COUNCIL", df$TitleTxt7) ] <- 1
+  df$TRUST [ grepl( "COMMITTEE", df$TitleTxt7) ] <- 1
+  df$TRUST [ grepl( "GOVERNOR", df$TitleTxt7) ] <- 1
+  df$TRUST [ grepl( "REGENT", df$TitleTxt7) ] <- 1
   
-  df$TRUST [ grepl( "^\\s*EX-OFFICIO\\s*$", df$TitleTxt3) ] <- 1
-  df$TRUST [ grepl( "DIRECTOR AT LARGE", df$TitleTxt2) ] <- 1
-  df$TRUST [ grepl( "PARLIAMENTARIAN", df$TitleTxt2) ] <- 1
-  df$TRUST [ grepl( "^\\s*AT LARGE\\s*", df$TitleTxt3) ] <- 1
-  df$TRUST [ grepl( "^\\s*EMERITUS\\s*$", df$TitleTxt3) ] <- 1
-  df$TRUST [ grepl( "HONORARY DIRECTOR", df$TitleTxt2) ] <- 1
+  df$TRUST [ grepl( "^\\s*EX-OFFICIO\\s*$", df$TitleTxt5) ] <- 1
+  df$TRUST [ grepl( "DIRECTOR AT LARGE", df$TitleTxt7) ] <- 1
+  df$TRUST [ grepl( "^DIRECTOR$", df$TitleTxt7) ] <- 1
+  df$TRUST [ grepl( "PARLIAMENTARIAN", df$TitleTxt7) ] <- 1
+  df$TRUST [ grepl( "^\\s*AT LARGE\\s*", df$TitleTxt5) ] <- 1
+  df$TRUST [ grepl( "^\\s*EMERITUS\\s*$", df$TitleTxt5) ] <- 1
+  df$TRUST [ grepl( "HONORARY DIRECTOR", df$TitleTxt7) ] <- 1
   
-  # titles <- df$TitleTxt2[ df$TRUST == 1]
+  # titles <- df$TitleTxt7[ df$TRUST == 1]
   # table( titles ) %>% sort( decreasing=T ) %>% as.data.frame( ) %>% head( 20 ) %>% pander
   
   # 
@@ -351,13 +262,13 @@ categorize_titles_new <- function( df )
   # 
   ## ------------------------------------------------------------------------
   
-  df$HUM.RES[ df$TitleTxt2 %in%  all.titles$HUM.RES] <- 1
-  df$HUM.RES [ grepl( " HUMAN RESOURCES ", df$TitleTxt2) ] <- 1
-  df$HUM.RES [ grepl( " HUMAN RESOURCE ", df$TitleTxt2) ] <- 1
-  df$HUM.RES [ grepl( " STAFFING ", df$TitleTxt2) ] <- 1
+  df$HUM.RES[ df$TitleTxt7 %in%  all.titles$HUM.RES] <- 1
+  df$HUM.RES [ grepl( " HUMAN RESOURCES ", df$TitleTxt7) ] <- 1
+  df$HUM.RES [ grepl( " HUMAN RESOURCE ", df$TitleTxt7) ] <- 1
+  df$HUM.RES [ grepl( " STAFFING ", df$TitleTxt7) ] <- 1
   
   
-  # titles <- df$TitleTxt2[ df$HUM.RES == 1]
+  # titles <- df$TitleTxt7[ df$HUM.RES == 1]
   # table( titles ) %>% sort( decreasing=T ) %>% as.data.frame( ) %>% head( 20 ) %>% pander
   
   
@@ -366,18 +277,18 @@ categorize_titles_new <- function( df )
   # 
   ## ------------------------------------------------------------------------
   
-  df$COMM[ df$TitleTxt2 %in%  all.titles$COMM] <- 1
-  df$COMM [ grepl( " COMMUNICATION ", df$TitleTxt2) ] <- 1
-  df$COMM [ grepl( " COMMUNICATIONS ", df$TitleTxt2) ] <- 1
-  df$COMM [ grepl( " MARKETING ", df$TitleTxt2) ] <- 1
-  df$COMM [ grepl( " EXTERNAL AFFAIRS ", df$TitleTxt2) ] <- 1
-  df$COMM [ grepl( " PUBLIC AFFAIRS ", df$TitleTxt2) ] <- 1
-  df$COMM [ grepl( " EXTERNAL AFFAIRS ", df$TitleTxt2) ] <- 1
-  df$COMM [ grepl( " RELATIONS ", df$TitleTxt2) ] <- 1
+  df$COMM[ df$TitleTxt7 %in%  all.titles$COMM] <- 1
+  df$COMM [ grepl( " COMMUNICATION ", df$TitleTxt7) ] <- 1
+  df$COMM [ grepl( " COMMUNICATIONS ", df$TitleTxt7) ] <- 1
+  df$COMM [ grepl( " MARKETING ", df$TitleTxt7) ] <- 1
+  df$COMM [ grepl( " EXTERNAL AFFAIRS ", df$TitleTxt7) ] <- 1
+  df$COMM [ grepl( " PUBLIC AFFAIRS ", df$TitleTxt7) ] <- 1
+  df$COMM [ grepl( " EXTERNAL AFFAIRS ", df$TitleTxt7) ] <- 1
+  df$COMM [ grepl( " RELATIONS ", df$TitleTxt7) ] <- 1
   
-  df$COMM [ grepl( "PR", df$TitleTxt2) ] <- 1
+  df$COMM [ grepl( "PR", df$TitleTxt7) ] <- 1
   
-  # titles <- df$TitleTxt2[ df$COMM == 1]
+  # titles <- df$TitleTxt7[ df$COMM == 1]
   # table( titles ) %>% sort( decreasing=T ) %>% as.data.frame( ) %>% head( 20 ) %>% pander
   
   
@@ -385,9 +296,9 @@ categorize_titles_new <- function( df )
   # 
   ## ------------------------------------------------------------------------
   
-  df$MAN[ df$TitleTxt2 %in%  all.titles$MAN] <- 1
+  df$MAN[ df$TitleTxt7 %in%  all.titles$MAN] <- 1
   
-  # titles <- df$TitleTxt2[ df$MAN == 1]
+  # titles <- df$TitleTxt7[ df$MAN == 1]
   # table( titles ) %>% sort( decreasing=T ) %>% as.data.frame( ) %>% head( 20 ) %>% pander
   
   
@@ -397,17 +308,17 @@ categorize_titles_new <- function( df )
   # 
   ## ------------------------------------------------------------------------
   
-  df$TECH[ df$TitleTxt2 %in%  all.titles$TECH] <- 1
+  df$TECH[ df$TitleTxt7 %in%  all.titles$TECH] <- 1
   
-  df$TECH [ grepl( " CHIEF INFORMATION OFFICER ", df$TitleTxt2) ] <- 1
-  df$TECH [ grepl( " CIO ", df$TitleTxt2) ] <- 1
-  df$TECH [ grepl( " IT ", df$TitleTxt2) ] <- 1
-  df$TECH [ grepl( " INFORMATION ", df$TitleTxt2) ] <- 1
-  df$TECH [ grepl( " TECHNOLOGY ", df$TitleTxt2) ] <- 1
-  df$TECH [ grepl( " CDO ", df$TitleTxt2) ] <- 1
+  df$TECH [ grepl( " CHIEF INFORMATION OFFICER ", df$TitleTxt7) ] <- 1
+  df$TECH [ grepl( " CIO ", df$TitleTxt7) ] <- 1
+  df$TECH [ grepl( " IT ", df$TitleTxt7) ] <- 1
+  df$TECH [ grepl( " INFORMATION ", df$TitleTxt7) ] <- 1
+  df$TECH [ grepl( " TECHNOLOGY ", df$TitleTxt7) ] <- 1
+  df$TECH [ grepl( " CDO ", df$TitleTxt7) ] <- 1
   
   
-  # titles <- df$TitleTxt2[ df$TECH == 1]
+  # titles <- df$TitleTxt7[ df$TECH == 1]
   # table( titles ) %>% sort( decreasing=T ) %>% as.data.frame( ) %>% head( 20 ) %>% pander
   
   
@@ -416,14 +327,14 @@ categorize_titles_new <- function( df )
   # 
   ## ------------------------------------------------------------------------
   
-  df$DEV [ df$TitleTxt2 %in%  all.titles$DEV]       <- 1
-  df$DEV [ grepl( " DEVELOPMENT ", df$TitleTxt2) ]  <- 1
-  df$DEV [ grepl( " PHILANTHROPY ", df$TitleTxt2) ] <- 1
-  df$DEV [ grepl( " FUND ", df$TitleTxt2) ]         <- 1
-  df$DEV [ grepl( " FUNDRAISING ", df$TitleTxt2) ]  <- 1
-  df$DEV [ grepl( " MAJOR GIFTS ", df$TitleTxt2) ]  <- 1
+  df$DEV [ df$TitleTxt7 %in%  all.titles$DEV]       <- 1
+  df$DEV [ grepl( " DEVELOPMENT ", df$TitleTxt7) ]  <- 1
+  df$DEV [ grepl( " PHILANTHROPY ", df$TitleTxt7) ] <- 1
+  df$DEV [ grepl( " FUND ", df$TitleTxt7) ]         <- 1
+  df$DEV [ grepl( " FUNDRAISING ", df$TitleTxt7) ]  <- 1
+  df$DEV [ grepl( " MAJOR GIFTS ", df$TitleTxt7) ]  <- 1
   
-  # titles <- df$TitleTxt2[ df$DEV == 1]
+  # titles <- df$TitleTxt7[ df$DEV == 1]
   # table( titles ) %>% sort( decreasing=T ) %>% as.data.frame( ) %>% head( 20 ) %>% pander
   
   
@@ -432,11 +343,11 @@ categorize_titles_new <- function( df )
   # 
   ## ------------------------------------------------------------------------
   
-  df$OTHER [ df$TitleTxt2 %in%  all.titles$OTHER] <- 1
+  df$OTHER [ df$TitleTxt7 %in%  all.titles$OTHER] <- 1
   
-  df$OTHER [ grepl( "CLERK", df$TitleTxt2) ]  <- 1
-  df$OTHER [ grepl( "ADVISOR", df$TitleTxt2) ]  <- 1
-  # titles <- df$TitleTxt2[ df$OTHER == 1]
+  df$OTHER [ grepl( "CLERK", df$TitleTxt7) ]  <- 1
+  df$OTHER [ grepl( "ADVISOR", df$TitleTxt7) ]  <- 1
+  # titles <- df$TitleTxt7[ df$OTHER == 1]
   # table( titles ) %>% sort( decreasing=T ) %>% as.data.frame( ) %>% head( 20 ) %>% pander
   
   
@@ -446,16 +357,16 @@ categorize_titles_new <- function( df )
   # 
   ## ------------------------------------------------------------------------
   
-  df$PROJECT [ df$TitleTxt2 %in%  all.titles$PROJECT] <- 1
+  df$PROJECT [ df$TitleTxt7 %in%  all.titles$PROJECT] <- 1
   
-  df$PROJECT [ grepl( " PROJECT ", df$TitleTxt2) ]  <- 1
-  df$PROJECT [ grepl( " PROJECTS ", df$TitleTxt2) ]  <- 1
-  df$PROJECT [ grepl( " PROGRAM ", df$TitleTxt2) ] <- 1
-  df$PROJECT [ grepl( " PROGRAMS ", df$TitleTxt2) ] <- 1
+  df$PROJECT [ grepl( " PROJECT ", df$TitleTxt7) ]  <- 1
+  df$PROJECT [ grepl( " PROJECTS ", df$TitleTxt7) ]  <- 1
+  df$PROJECT [ grepl( " PROGRAM ", df$TitleTxt7) ] <- 1
+  df$PROJECT [ grepl( " PROGRAMS ", df$TitleTxt7) ] <- 1
   
   
   
-  # titles <- df$TitleTxt2[ df$PROJECT == 1]
+  # titles <- df$TitleTxt7[ df$PROJECT == 1]
   # table( titles ) %>% sort( decreasing=T ) %>% as.data.frame( ) %>% head( 20 ) %>% pander
   
   
@@ -465,15 +376,15 @@ categorize_titles_new <- function( df )
   # 
   ## ------------------------------------------------------------------------
   
-  df$LEGAL [ df$TitleTxt2 %in%  all.titles$LEGAL] <- 1
-  # titles <- df$TitleTxt2[ df$LEGAL == 1]
+  df$LEGAL [ df$TitleTxt7 %in%  all.titles$LEGAL] <- 1
+  # titles <- df$TitleTxt7[ df$LEGAL == 1]
   
-  df$LEGAL [ grepl( " COUNSEL ", df$TitleTxt2) ]  <- 1
-  df$LEGAL [ grepl( " ATTORNEY ", df$TitleTxt2) ]  <- 1
-  df$LEGAL [ grepl( " COMPLIANCE ", df$TitleTxt2) ] <- 1
-  df$LEGAL [ grepl( " POLICY ", df$TitleTxt2) ] <- 1
-  df$LEGAL [ grepl( " LEGAL ", df$TitleTxt2) ] <- 1
-  df$LEGAL [ grepl( " LITIGATION ", df$TitleTxt2) ] <- 1
+  df$LEGAL [ grepl( " COUNSEL ", df$TitleTxt7) ]  <- 1
+  df$LEGAL [ grepl( " ATTORNEY ", df$TitleTxt7) ]  <- 1
+  df$LEGAL [ grepl( " COMPLIANCE ", df$TitleTxt7) ] <- 1
+  df$LEGAL [ grepl( " POLICY ", df$TitleTxt7) ] <- 1
+  df$LEGAL [ grepl( " LEGAL ", df$TitleTxt7) ] <- 1
+  df$LEGAL [ grepl( " LITIGATION ", df$TitleTxt7) ] <- 1
   
   # table( titles ) %>% sort( decreasing=T ) %>% as.data.frame( ) %>% head( 20 ) %>% pander
   
@@ -483,18 +394,18 @@ categorize_titles_new <- function( df )
   # 
   ## ------------------------------------------------------------------------
   
-  df$FACILITIES [ df$TitleTxt2 %in%  all.titles$FACILITIES] <- 1
+  df$FACILITIES [ df$TitleTxt7 %in%  all.titles$FACILITIES] <- 1
   
-  df$FACILITIES [ grepl( " FACILITIES ", df$TitleTxt2) ]  <- 1
-  df$FACILITIES [ grepl( " MAINTENANCE ", df$TitleTxt2) ]  <- 1
-  df$FACILITIES [ grepl( " FIELD ", df$TitleTxt2) ] <- 1
-  df$FACILITIES [ grepl( " FIELDS ", df$TitleTxt2) ] <- 1
-  df$FACILITIES [ grepl( " FACILITY ", df$TitleTxt2) ] <- 1
+  df$FACILITIES [ grepl( " FACILITIES ", df$TitleTxt7) ]  <- 1
+  df$FACILITIES [ grepl( " MAINTENANCE ", df$TitleTxt7) ]  <- 1
+  df$FACILITIES [ grepl( " FIELD ", df$TitleTxt7) ] <- 1
+  df$FACILITIES [ grepl( " FIELDS ", df$TitleTxt7) ] <- 1
+  df$FACILITIES [ grepl( " FACILITY ", df$TitleTxt7) ] <- 1
   
-  df$FACILITIES [ grepl( " BUILDING ", df$TitleTxt2) ] <- 1
-  df$FACILITIES [ grepl( " BUILDINGS ", df$TitleTxt2) ] <- 1
+  df$FACILITIES [ grepl( " BUILDING ", df$TitleTxt7) ] <- 1
+  df$FACILITIES [ grepl( " BUILDINGS ", df$TitleTxt7) ] <- 1
   
-  # titles <- df$TitleTxt2[ df$FACILITIES == 1]
+  # titles <- df$TitleTxt7[ df$FACILITIES == 1]
   # table( titles ) %>% sort( decreasing=T ) %>% as.data.frame( ) %>% head( 20 ) %>% pander
   
   
@@ -504,16 +415,16 @@ categorize_titles_new <- function( df )
   # 
   ## ------------------------------------------------------------------------
   
-  df$ADMIN.SUP [ df$TitleTxt2 %in%  all.titles$ADMIN.SUP] <- 1
+  df$ADMIN.SUP [ df$TitleTxt7 %in%  all.titles$ADMIN.SUP] <- 1
   
-  df$ADMIN.SUP [ grepl( " SUPPORT ", df$TitleTxt2)  & grepl( " SERVICES ", df$TitleTxt2) ] <- 1
-  df$ADMIN.SUP [ grepl( " ADMINISTRATION ", df$TitleTxt2)  & grepl( " ASSISTANT ", df$TitleTxt2) ] <- 1
-  df$ADMIN.SUP [ grepl( " ADMINISTRATIVE ", df$TitleTxt2)  & grepl( " ASSISTANT ", df$TitleTxt2) ] <- 1
-  df$ADMIN.SUP [ grepl( " EXECUTIVE ", df$TitleTxt2)  & grepl( " ASSISTANT ", df$TitleTxt2) ] <- 1
+  df$ADMIN.SUP [ grepl( " SUPPORT ", df$TitleTxt7)  & grepl( " SERVICES ", df$TitleTxt7) ] <- 1
+  df$ADMIN.SUP [ grepl( " ADMINISTRATION ", df$TitleTxt7)  & grepl( " ASSISTANT ", df$TitleTxt7) ] <- 1
+  df$ADMIN.SUP [ grepl( " ADMINISTRATIVE ", df$TitleTxt7)  & grepl( " ASSISTANT ", df$TitleTxt7) ] <- 1
+  df$ADMIN.SUP [ grepl( " EXECUTIVE ", df$TitleTxt7)  & grepl( " ASSISTANT ", df$TitleTxt7) ] <- 1
   
-  df$ADMIN.SUP [ grepl( " ADMINISTRATOR ", df$TitleTxt2)  & grepl( " ASSISTANT ", df$TitleTxt2) ] <- 1
+  df$ADMIN.SUP [ grepl( " ADMINISTRATOR ", df$TitleTxt7)  & grepl( " ASSISTANT ", df$TitleTxt7) ] <- 1
   
-  # titles <- df$TitleTxt2[ df$ADMIN.SUP == 1]
+  # titles <- df$TitleTxt7[ df$ADMIN.SUP == 1]
   # table( titles ) %>% sort( decreasing=T ) %>% as.data.frame( ) %>% head( 20 ) %>% pander
   
   
@@ -522,10 +433,10 @@ categorize_titles_new <- function( df )
   # 
   ## ------------------------------------------------------------------------
   
-  df$MED.MAN [ df$TitleTxt2 %in%  all.titles$MED.MAN] <- 1
+  df$MED.MAN [ df$TitleTxt7 %in%  all.titles$MED.MAN] <- 1
   
   
-  # titles <- df$TitleTxt2[ df$MED.MAN == 1]
+  # titles <- df$TitleTxt7[ df$MED.MAN == 1]
   # table( titles ) %>% sort( decreasing=T ) %>% as.data.frame( ) %>% head( 20 ) %>% pander
   
   
@@ -534,16 +445,16 @@ categorize_titles_new <- function( df )
   # 
   ## ------------------------------------------------------------------------
   
-  df$HEALTH.HUM [ df$TitleTxt2 %in%  all.titles$HEALTH.HUM] <- 1
+  df$HEALTH.HUM [ df$TitleTxt7 %in%  all.titles$HEALTH.HUM] <- 1
   
-  df$HEALTH.HUM[ grepl( " CASE ", df$TitleTxt2)] <- 1
+  df$HEALTH.HUM[ grepl( " CASE ", df$TitleTxt7)] <- 1
   
-  df$HEALTH.HUM[ grepl( " SHELTER ", df$TitleTxt2)] <- 1
-  df$HEALTH.HUM[ grepl( " HOUSING ", df$TitleTxt2)] <- 1
-  df$HEALTH.HUM[ grepl( " SOCIAL WORKER ", df$TitleTxt2)] <- 1
+  df$HEALTH.HUM[ grepl( " SHELTER ", df$TitleTxt7)] <- 1
+  df$HEALTH.HUM[ grepl( " HOUSING ", df$TitleTxt7)] <- 1
+  df$HEALTH.HUM[ grepl( " SOCIAL WORKER ", df$TitleTxt7)] <- 1
   
   
-  # titles <- df$TitleTxt2[ df$HEALTH.HUM == 1]
+  # titles <- df$TitleTxt7[ df$HEALTH.HUM == 1]
   # table( titles ) %>% sort( decreasing=T ) %>% as.data.frame( ) %>% head( 20 ) %>% pander
   
   
@@ -551,9 +462,9 @@ categorize_titles_new <- function( df )
   # 
   ## ------------------------------------------------------------------------
   
-  df$TRAIN [ df$TitleTxt2 %in%  all.titles$TRAIN] <- 1
+  df$TRAIN [ df$TitleTxt7 %in%  all.titles$TRAIN] <- 1
   
-  # titles <- df$TitleTxt2[ df$TRAIN == 1]
+  # titles <- df$TitleTxt7[ df$TRAIN == 1]
   # table( titles ) %>% sort( decreasing=T ) %>% as.data.frame( ) %>% head( 20 ) %>% pander
   
   
@@ -561,9 +472,9 @@ categorize_titles_new <- function( df )
   # 
   ## ------------------------------------------------------------------------
   
-  df$ACADEMIC.MAN [ df$TitleTxt2 %in%  all.titles$ACADEMIC.MAN] <- 1
+  df$ACADEMIC.MAN [ df$TitleTxt7 %in%  all.titles$ACADEMIC.MAN] <- 1
   
-  # titles <- df$TitleTxt2[ df$ACADEMIC.MAN == 1]
+  # titles <- df$TitleTxt7[ df$ACADEMIC.MAN == 1]
   # table( titles ) %>% sort( decreasing=T ) %>% as.data.frame( ) %>% head( 20 ) %>% pander
   
   
@@ -571,9 +482,9 @@ categorize_titles_new <- function( df )
   # 
   ## ------------------------------------------------------------------------
   
-  df$DEP.HEAD [ df$TitleTxt2 %in%  all.titles$DEP.HEAD] <- 1
+  df$DEP.HEAD [ df$TitleTxt7 %in%  all.titles$DEP.HEAD] <- 1
   
-  # titles <- df$TitleTxt2[ df$DEP.HEAD == 1]
+  # titles <- df$TitleTxt7[ df$DEP.HEAD == 1]
   # table( titles ) %>% sort( decreasing=T ) %>% as.data.frame( ) %>% head( 20 ) %>% pander
   
   
@@ -581,9 +492,9 @@ categorize_titles_new <- function( df )
   # 
   ## ------------------------------------------------------------------------
   
-  df$PROFESIONAL [ df$TitleTxt2 %in%  all.titles$PROFESIONAL] <- 1
+  df$PROFESIONAL [ df$TitleTxt7 %in%  all.titles$PROFESIONAL] <- 1
   
-  # titles <- df$TitleTxt2[ df$PROFESIONAL == 1]
+  # titles <- df$TitleTxt7[ df$PROFESIONAL == 1]
   # table( titles ) %>% sort( decreasing=T ) %>% as.data.frame( ) %>% head( 20 ) %>% pander
   
   
@@ -592,9 +503,9 @@ categorize_titles_new <- function( df )
   # 
   ## ------------------------------------------------------------------------
   
-  df$OTHER.PROF [ df$TitleTxt2 %in%  all.titles$OTHER.PROF] <- 1
+  df$OTHER.PROF [ df$TitleTxt7 %in%  all.titles$OTHER.PROF] <- 1
   
-  # titles <- df$TitleTxt2[ df$OTHER.PROF == 1]
+  # titles <- df$TitleTxt7[ df$OTHER.PROF == 1]
   # table( titles ) %>% sort( decreasing=T ) %>% as.data.frame( ) %>% head( 20 ) %>% pander
   
   
@@ -602,9 +513,9 @@ categorize_titles_new <- function( df )
   # 
   ## ------------------------------------------------------------------------
   
-  df$ACADEMIC.PROF [ df$TitleTxt2 %in%  all.titles$ACADEMIC.PROF] <- 1
+  df$ACADEMIC.PROF [ df$TitleTxt7 %in%  all.titles$ACADEMIC.PROF] <- 1
   
-  # titles <- df$TitleTxt2[ df$ACADEMIC.PROF == 1]
+  # titles <- df$TitleTxt7[ df$ACADEMIC.PROF == 1]
   # table( titles ) %>% sort( decreasing=T ) %>% as.data.frame( ) %>% head( 20 ) %>% pander
   
   
@@ -612,9 +523,9 @@ categorize_titles_new <- function( df )
   # 
   ## ------------------------------------------------------------------------
   
-  df$MED.PROF [ df$TitleTxt2 %in%  all.titles$MED.PROF] <- 1
+  df$MED.PROF [ df$TitleTxt7 %in%  all.titles$MED.PROF] <- 1
   
-  # titles <- df$TitleTxt2[ df$MED.PROF == 1]
+  # titles <- df$TitleTxt7[ df$MED.PROF == 1]
   # table( titles ) %>% sort( decreasing=T ) %>% as.data.frame( ) %>% head( 20 ) %>% pander
   
   
@@ -624,56 +535,56 @@ categorize_titles_new <- function( df )
   
   # " CHIEF PARTY "
   
-  df$CEO [ grepl( " CHIEF PARTY ", df$TitleTxt2) & df$Officer == 1 ] <- 1
-  df$TRUST [ grepl( " CHIEF PARTY ", df$TitleTxt2) & df$FmrOfficer == 1  ] <- 1
-  df$MAN [ grepl( " CHIEF PARTY ", df$TitleTxt2) & df$Officer == 0  & df$FmrOfficer == 0 & df$KeyEmpl == 1] <- 1
-  df$OTHER [ grepl( " CHIEF PARTY ", df$TitleTxt2) & df$Officer == 0  & df$FmrOfficer == 0 & df$KeyEmpl ==  0] <- 1
+  df$CEO [ grepl( " CHIEF PARTY ", df$TitleTxt7) & df$Officer == 1 ] <- 1
+  df$TRUST [ grepl( " CHIEF PARTY ", df$TitleTxt7) & df$FmrOfficer == 1  ] <- 1
+  df$MAN [ grepl( " CHIEF PARTY ", df$TitleTxt7) & df$Officer == 0  & df$FmrOfficer == 0 & df$KeyEmpl == 1] <- 1
+  df$OTHER [ grepl( " CHIEF PARTY ", df$TitleTxt7) & df$Officer == 0  & df$FmrOfficer == 0 & df$KeyEmpl ==  0] <- 1
   
   
-  df$OTHER [ grepl( " FORMER KEY EMPLOYEE ", df$TitleTxt2) ] <- 1
-  df$OTHER [ grepl( " ASSOCIATE PROFESSOR ", df$TitleTxt2) ] <- 1
-  df$MAN [ grepl( " FORMER DIRECTOR ", df$TitleTxt2) ] <- 1
-  df$OTHER [ grepl( " ASSISTANT PROFESSOR ", df$TitleTxt2) ] <- 1
-  df$MAN [ grepl( " FORMER VICE PRESIDENT ", df$TitleTxt2) ] <- 1
-  df$DEP.HEAD [ grepl( " DIRECTOR OF NURSING ", df$TitleTxt2) ] <- 1
-  df$DEP.HEAD [ grepl( " VICE PRESIDENT PROFESSIONAL SERVICES ", df$TitleTxt2) ] <- 1
-  df$DEP.HEAD [ grepl( " CHIEF PROFESSIONAL OFFICER ", df$TitleTxt2) ] <- 1
+  df$OTHER [ grepl( " FORMER KEY EMPLOYEE ", df$TitleTxt7) ] <- 1
+  df$OTHER [ grepl( " ASSOCIATE PROFESSOR ", df$TitleTxt7) ] <- 1
+  df$MAN [ grepl( " FORMER DIRECTOR ", df$TitleTxt7) ] <- 1
+  df$OTHER [ grepl( " ASSISTANT PROFESSOR ", df$TitleTxt7) ] <- 1
+  df$MAN [ grepl( " FORMER VICE PRESIDENT ", df$TitleTxt7) ] <- 1
+  df$DEP.HEAD [ grepl( " DIRECTOR OF NURSING ", df$TitleTxt7) ] <- 1
+  df$DEP.HEAD [ grepl( " VICE PRESIDENT PROFESSIONAL SERVICES ", df$TitleTxt7) ] <- 1
+  df$DEP.HEAD [ grepl( " CHIEF PROFESSIONAL OFFICER ", df$TitleTxt7) ] <- 1
   
-  df$OTHER [ grepl( " LAW PROFESSOR ", df$TitleTxt2) & df$TrustOrDir == 0 ] <- 1
-  df$TRUST [ grepl( " LAW PROFESSOR ", df$TitleTxt2) & df$TrustOrDir == 1] <- 1
+  df$OTHER [ grepl( " LAW PROFESSOR ", df$TitleTxt7) & df$TrustOrDir == 0 ] <- 1
+  df$TRUST [ grepl( " LAW PROFESSOR ", df$TitleTxt7) & df$TrustOrDir == 1] <- 1
   
-  df$CEO [ grepl( " FORMER HEAD SCHOOL ", df$TitleTxt2) & df$Officer == 1 ] <- 1
-  df$TRUST [ grepl( " FORMER HEAD SCHOOL ", df$TitleTxt2) & df$FmrOfficer == 1  ] <- 1
-  df$MAN [ grepl( " FORMER HEAD SCHOOL ", df$TitleTxt2) & df$Officer == 0  & df$FmrOfficer == 0 ] <- 1
+  df$CEO [ grepl( " FORMER HEAD SCHOOL ", df$TitleTxt7) & df$Officer == 1 ] <- 1
+  df$TRUST [ grepl( " FORMER HEAD SCHOOL ", df$TitleTxt7) & df$FmrOfficer == 1  ] <- 1
+  df$MAN [ grepl( " FORMER HEAD SCHOOL ", df$TitleTxt7) & df$Officer == 0  & df$FmrOfficer == 0 ] <- 1
   
   
   
-  df$CEO [ grepl( " CEO FORMER ", df$TitleTxt2) ] <- 1
-  df$MAN [ grepl( " DEAN PROFESSOR ", df$TitleTxt2) ] <- 1
-  df$MAN [ grepl( " FORMER EXECUTIVE VICE PRESIDENT ", df$TitleTxt2) ] <- 1
-  df$DEP.CEO [ grepl( " ASSISTANT CEO ", df$TitleTxt2) ] <- 1
+  df$CEO [ grepl( " CEO FORMER ", df$TitleTxt7) ] <- 1
+  df$MAN [ grepl( " DEAN PROFESSOR ", df$TitleTxt7) ] <- 1
+  df$MAN [ grepl( " FORMER EXECUTIVE VICE PRESIDENT ", df$TitleTxt7) ] <- 1
+  df$DEP.CEO [ grepl( " ASSISTANT CEO ", df$TitleTxt7) ] <- 1
   
-  df$OTHER [ grepl( " PHARMACY ", df$TitleTxt2) ] <- 1
-  df$OTHER [ grepl( " PHARMACY ", df$TitleTxt2) ] <- 1
+  df$OTHER [ grepl( " PHARMACY ", df$TitleTxt7) ] <- 1
+  df$OTHER [ grepl( " PHARMACY ", df$TitleTxt7) ] <- 1
   
-  df$MAN [ grepl( " REGIONAL MANAGER ", df$TitleTxt2) ] <- 1
-  df$DEP.HEAD [ grepl( " RN CASE MANAGER ", df$TitleTxt2) ] <- 1
+  df$MAN [ grepl( " REGIONAL MANAGER ", df$TitleTxt7) ] <- 1
+  df$DEP.HEAD [ grepl( " RN CASE MANAGER ", df$TitleTxt7) ] <- 1
   
-  df$OTHER [ grepl( " SOCIAL WORKER ", df$TitleTxt2) & df$TrustOrDir == 0 ] <- 1
-  df$TRUST [ grepl( " SOCIAL WORKER ", df$TitleTxt2) & df$TrustOrDir == 1] <- 1
+  df$OTHER [ grepl( " SOCIAL WORKER ", df$TitleTxt7) & df$TrustOrDir == 0 ] <- 1
+  df$TRUST [ grepl( " SOCIAL WORKER ", df$TitleTxt7) & df$TrustOrDir == 1] <- 1
   
-  df$DEP.HEAD [ grepl( " VICE PRESIDENT PATIENT CARE CNO ", df$TitleTxt2) ] <- 1
+  df$DEP.HEAD [ grepl( " VICE PRESIDENT PATIENT CARE CNO ", df$TitleTxt7) ] <- 1
   
-  df$OTHER [ grepl( " CONCERTMASTER ", df$TitleTxt2) ] <- 1
-  df$OTHER [ grepl( " CONCERTMASTER ", df$TitleTxt2) ] <- 1
+  df$OTHER [ grepl( " CONCERTMASTER ", df$TitleTxt7) ] <- 1
+  df$OTHER [ grepl( " CONCERTMASTER ", df$TitleTxt7) ] <- 1
   
-  df$CEO [ grepl( " HS PRINCIPAL ", df$TitleTxt2) & df$Officer == 1 ] <- 1
-  df$TRUST [ grepl( " HS PRINCIPAL ", df$TitleTxt2) & df$FmrOfficer == 1  ] <- 1
-  df$MAN [ grepl( " HS PRINCIPAL ", df$TitleTxt2) & df$Officer == 0  & df$FmrOfficer == 0 ] <- 1
+  df$CEO [ grepl( " HS PRINCIPAL ", df$TitleTxt7) & df$Officer == 1 ] <- 1
+  df$TRUST [ grepl( " HS PRINCIPAL ", df$TitleTxt7) & df$FmrOfficer == 1  ] <- 1
+  df$MAN [ grepl( " HS PRINCIPAL ", df$TitleTxt7) & df$Officer == 0  & df$FmrOfficer == 0 ] <- 1
   
-  df$MAN [ grepl( " SENIOR MANAGER ", df$TitleTxt2) ] <- 1
-  df$DEP.HEAD [ grepl( " VICE PRESIDENT CAO ", df$TitleTxt2) ] <- 1
-  df$LEGAL [ grepl( " VICE PRESIDENT LEGAL ", df$TitleTxt2) ] <- 1
+  df$MAN [ grepl( " SENIOR MANAGER ", df$TitleTxt7) ] <- 1
+  df$DEP.HEAD [ grepl( " VICE PRESIDENT CAO ", df$TitleTxt7) ] <- 1
+  df$LEGAL [ grepl( " VICE PRESIDENT LEGAL ", df$TitleTxt7) ] <- 1
   
   
   
@@ -690,6 +601,7 @@ categorize_titles_new <- function( df )
   cat("\nAfter Standardizing, cleaning, and categorizing all of the 50 most Common titles, we Categorized ", sum(df$Catagorized), " of ", nrow(df) , " titles. \n"  )
   cat("This accounted for ", sum(df$Catagorized)/nrow(df), " of the Observations\n")
   
+  print("categorize titles step complete")
   
   
   
@@ -837,8 +749,8 @@ categorize_titles_new <- function( df )
   
   df$C.Level <- 0
   
-  df$C.Level [ grepl( " C[A-Z]O ", df$TitleTxt2) ] <- 1
-  df$C.Level [ grepl( " CHIEF ", df$TitleTxt2) ] <- 1
+  df$C.Level [ grepl( " C[A-Z]O ", df$TitleTxt7) ] <- 1
+  df$C.Level [ grepl( " CHIEF ", df$TitleTxt7) ] <- 1
   df$C.Level [ df$Officer == 1 ] <- 1
   
   
@@ -890,3 +802,97 @@ categorize_titles_new <- function( df )
   return( df )
   
 }
+
+#' @title 
+#' categorize ceo function
+#' 
+#' @description 
+#' categorizing ceo's and adding a flag
+#'
+#' @param df A compensation data frame. 
+#'
+#' @return Returns a data frame with a CEO boolean (1=CEO,0=other). 
+#'
+#' @export
+categorize_ceo <- function(df){
+  
+  df$CEO <- 0
+  
+  #ceo's (but not assistant or associate)
+  df$CEO [grepl("CEO",df$TitleTxt7)] <- 1
+  df$CEO [grepl("ASSOCIATE",df$TitleTxt7)] <- 0
+  df$CEO [grepl("ASSISTANT",df$TitleTxt7)] <- 0
+  
+  #exec dir
+  df$CEO [grepl("\\bEXECDIR[A-Z]*\\b",df$TitleTxt7)] <- 1
+  df$CEO [grepl("\\bEXDIR[A-Z]*\\b",df$TitleTxt7)] <- 1
+  
+  #president (if paid and working 40+ hours)
+  df$CEO [grepl("PRESIDENT",df$TitleTxt7) && df$AvgHrs >= 40 &&
+            df$TOT_COMP > 0 && !grepl("VICE", dfTitleTxt7)] <- 1
+  
+  #weird ones
+  df$CEO [agrepl("CHANCELLOR", df$TitleTxt7) && df$AvgHrs >= 40 &&
+            df$TOT_COMP > 0 && 
+            (df$Officer == "X" || df$FmrOfficer == "X")] <- 1
+  df$CEO [grepl("MANAGING DIRECTOR", df$TitleTxt7) && df$AvgHrs >= 40 &&
+            df$TOT_COMP > 0 && 
+            (df$Officer == "X" || df$FmrOfficer == "X")] <- 1
+  df$CEO [grepl("HEADMASTER", df$TitleTxt7) && df$AvgHrs >= 40 &&
+            df$TOT_COMP > 0 && 
+            (df$Officer == "X" || df$FmrOfficer == "X")] <- 1
+  return(df)
+}
+
+
+#' @title 
+#' categorize company leader function
+#' 
+#' @description 
+#' utilizes ceo and adds in president, chair, and managing director for those 
+#' without explicit/clear ceo positions
+#'
+#' @export
+categorize_company_leader <- function(df){
+  
+  df <- categorize_ceo( df )
+  df$Org.Leader <- 0
+  df$Org.Leader[df$CEO == 1] <- 1
+  aoc <- unique(df$NAME.x[df$Org.Leader == 1])
+  
+  #presidents
+  pres.leadership <- c("PRESIDENT", "BOARD PRESIDENT", "PRESIDENT OF BOARD")
+  df$Org.Leader[!df$NAME.x %in% aoc && 
+                  ((grepl("PRESIDENT",df$TitleTxt7) && 
+                      !grepl("VICE",df$TitleTxt7)) ||
+                     df$TitleTxt7[i] %in% pres.leadership)] <- 1
+  for(i in 1:length(df$NAME.x)){
+    if(!(df$NAME.x[i] %in% aoc)){
+      if((grepl("PRESIDENT",df$TitleTxt7[i]) && !grepl("VICE",df$TitleTxt7[i])) ||
+         df$TitleTxt7[i] %in% pres.leadership){
+        df$Org.Leader[i] <- 1
+      }
+    }
+  }
+  aoc <- unique(df$NAME.x[df$Org.Leader == 1])
+  
+  #chairs and misc
+  chair.leadership <- c("CHAIR", "BOARD CHAIR",
+                        "MANAGING DIRECTOR", "CHAIR OF BOARD")
+  for(i in 1:length(df$NAME.x)){
+    if(!(df$NAME.x[i] %in% aoc)){
+      if(df$TitleTxt7[i] %in% chair.leadership){
+        df$Org.Leader[i] <- 1
+      }
+    }
+  }
+  aoc <- unique(df$NAME.x[df$Org.Leader == 1])
+  
+  return(df)
+}
+
+
+# 
+# categorize_cfo <- function(df){
+#   
+# }

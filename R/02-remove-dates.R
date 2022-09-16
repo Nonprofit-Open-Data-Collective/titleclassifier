@@ -1,11 +1,36 @@
+#Step 2: Remove Dates
+
+# 02-remove-dates.R
 date.words <- 
-c( "JANUARY","JAN","FEBRUARY","FEB",
-   "MARCH","MAR","APRIL","APR","MAY",
-   "JUNE","JUN","JULY","JUL","AUGUST","AUG",
-   "SEPTEMBER","SEPT","SEP","OCTOBER","OCT",
-   "NOVEMBER","NOV","DECEMBER","DEC", "PARTIAL YEAR", "PARTIAL YR",
-   "PART YEAR", "PART-YEAR", "YR", "YEAR",
-   "PART YR","MO", "MOS", "MONTH", "MONTHS" )
+  c( "JANUARY","JAN","FEBRUARY","FEB",
+     "MARCH","MAR","APRIL","APR","MAY",
+     "JUNE","JUN","JULY","JUL","AUGUST","AUG",
+     "SEPTEMBER","SEPT","SEP","OCTOBER","OCT",
+     "NOVEMBER","NOV","DECEMBER","DEC", "PARTIAL YEAR", "PARTIAL YR",
+     "PART YEAR", "PART-YEAR", "YR", "YEAR",
+     "PART YR","MO", "MOS", "MONTH", "MONTHS" )
+
+#' @title
+#' remove/clean dates wrapper function, takes in a data frame
+#'
+#' @description
+#' cleans the dates by first identifying date, setting a flag if it finds one,
+#' then removing the date if it is present
+#' 
+#' @export
+remove_dates <- function( comp.data )
+{
+  title <- convert_ordinal( comp.data$TitleTxt )
+  has.date <- identify_date( title )
+  title <- remove_date( title )
+  
+  # 1 if date was removed from title, 0 otherwise
+  comp.data$Date.x <- ifelse( has.date, 1, 0 )
+  comp.data$TitleTxt2 <- title 
+  
+  print("remove dates step complete")
+  return( comp.data )
+}
 
 
 
@@ -18,7 +43,7 @@ c( "JANUARY","JAN","FEBRUARY","FEB",
 #'
 #' @export
 convert_ordinal <- function(TitleTxt){
-
+  
   #substitute ordinal numbers
   TitleTxt <- gsub("1ST","FIRST",TitleTxt)
   TitleTxt <- gsub("2ND","SECOND",TitleTxt)
@@ -46,29 +71,19 @@ convert_ordinal <- function(TitleTxt){
 identify_date <- function(TitleTxt)
 {
   #mm/dd/yyyy format
-  # k <- stringr::str_extract_all( TitleTxt, "\\d+/\\d+(/\\d+)*\\b" )[[1]][1]
   format1 <- stringr::str_extract( TitleTxt, "\\d+/\\d+(/\\d+)*\\b" )
   
   #mm-dd-yyyy format
-  # k <- stringr::str_extract_all(TitleTxt,"\\d+-\\d+(-\\d+)*\\b")[[1]][1]
   format2 <- stringr::str_extract(TitleTxt,"\\d+-\\d+(-\\d+)*\\b")
   
   #date strings
   date <- paste0( "\\b", date.words, "\\b", collapse="|" )
   format3 <- grepl( date, TitleTxt )
-
+  
   has.date <- !is.na(format1) | !is.na(format2) | format3
   
   return( has.date ) 
 }
-
-
-
-# create a binary flag for cases that contain dates 
-# gen_date_code <- function(title.text){
-#   
-# }
-
 
 
 
@@ -92,7 +107,7 @@ remove_date <- function(TitleTxt)
   date <- paste0( "\\b", date.words, "\\b", collapse="|" )
   
   TitleTxt <- gsub( date, "", TitleTxt )
-
+  
   #remove miscellaneous digits still lying around
   TitleTxt <- gsub("\\d[A-Z]*\\s", " ", TitleTxt)
   TitleTxt <- gsub("\\d", " ", TitleTxt)
@@ -102,28 +117,6 @@ remove_date <- function(TitleTxt)
   TitleTxt <- gsub( "\\s{2,}", " ", TitleTxt)
   
   return(TitleTxt)
-}
-
-
-#' @title
-#' clean dates wrapper function, takes in a data frame
-#'
-#' @description
-#' cleans the dates by first identifying date, setting a flag if it finds one,
-#' then removing the date if it is present
-#' 
-#' @export
-clean_dates <- function( comp.data )
-{
-  title <- convert_ordinal( comp.data$TitleTxt )
-  has.date <- identify_date( title )
-  title <- remove_date( title )
-  
-  # 1 if date was removed from title, 0 otherwise
-  comp.data$Date.Code <- ifelse( has.date, 1, 0 )
-  comp.data$TitleTxt <- title 
-  
-  return( comp.data )
 }
 
 
