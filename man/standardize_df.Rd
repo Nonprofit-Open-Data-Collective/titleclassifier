@@ -4,7 +4,11 @@
 \alias{standardize_df}
 \title{Standardize the compensation table data frame (from 990 form, Part VII, Table 01)}
 \usage{
-standardize_df(comp.data, ORG_NAME = "NAME", name = "F9_07_PZ_DTK_NAME")
+standardize_df(
+  comp.data,
+  ORG_NAME = "NAME",
+  PersonNm = "F9_07_COMP_DTK_NAME_PERS"
+)
 }
 \description{
 \code{standardize_df} returns a processed data frame with renamed column titles
