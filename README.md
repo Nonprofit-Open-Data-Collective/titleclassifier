@@ -4,16 +4,16 @@ An R package to assign raw nonprofit executive titles from Form 990 Part VII to 
 
 ## Process
 
-<p align = "center">
+<p>
 <b>
 High level overview of procedural flow
 </b>
 </p>
 </br>
 
-<p align = "center">
+
 <img width="357" alt="image" src="https://user-images.githubusercontent.com/40209975/182947784-f13ee7ba-d622-477a-9ce2-43534807fd1f.png">
-</p>
+
 
 
 
