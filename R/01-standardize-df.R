@@ -14,8 +14,19 @@ require(dplyr) #should we port this to somewhere else?
 #' returns a data frame with understandable information about DTK individuals.
 #'
 #' @export
-standardize_df <- function(comp.data, ORG_NAME = "NAME", name = "F9_07_PZ_DTK_NAME"){
+standardize_df <- function(comp.data, ORG_NAME = "NAME", PersonNm = "F9_07_COMP_DTK_NAME_PERS"){
+
   
+ [1] "OBJECT_ID"                        "EIN"                             
+ [3] "NAME"                             "TAXYR"                           
+ [5] "FORMTYPE"                         "URL"                             
+ [7] ""         "F9_07_COMP_DTK_TITLE"            
+ [9] "F9_07_COMP_DTK_AVE_HOUR_WEEK"     "F9_07_COMP_DTK_AVE_HOUR_WEEK_RL" 
+[11] "" ""        
+[13] ""          ""        
+[15] ""          ""   
+[17] "F9_07_COMP_DTK_POS_INST_TRUST_X"  ""  
+[19] "F9_07_COMP_DTK_EMPL_BEN"          ""   
   d2 <-
     comp.data %>%
     rename(
@@ -25,18 +36,18 @@ standardize_df <- function(comp.data, ORG_NAME = "NAME", name = "F9_07_PZ_DTK_NA
       FormYr = TAXYR, #numeric
       FORMTYPE  = FORMTYPE, #990,990ez (no 990PF's for comp table)
       URL = URL, #string
-      PersonNm = all_of(name),
+      # PersonNm = all_of(name),
       # PersonNm = NAME.x, #string #if working off of jesse's
-      TitleTxt = F9_07_PZ_DTK_TITLE, #string
-      AvgHrs = F9_07_PZ_DTK_AVE_HOURS_WEEK, #numeric
-      TrustOrDir = F9_07_PC_DTK_POS_TRUSTEE_INDIV, #X or NA (should also consider institutional trustee)
-      Officer = F9_07_PC_DTK_POS_OFFICER,  #X or NA
-      RptCmpOrg = F9_07_PZ_COMP_DIRECT,   #numeric
-      RptCmpRltd = F9_07_PZ_COMP_RELATED,  #numeric
-      OtherComp = F9_07_PZ_COMP_OTHER,  #numeric
-      KeyEmpl = F9_07_PC_DTK_POS_KEY_EMPLOYEE, #X or NA
-      HighComp = F9_07_PC_DTK_POS_HIGH_COMP_EMP, #X or NA (should only be 1)
-      FmrOfficer = F9_07_PC_DTK_POS_FORMER)   #X or NA (sparse)
+      TitleTxt   = F9_07_COMP_DTK_TITL, #string
+      AvgHrs     = F9_07_COMP_DTK_AVE_HOUR_WEEK, #numeric
+      TrustOrDir = F9_07_COMP_DTK_POS_INDIV_TRUST_X, #X or NA (should also consider institutional trustee)
+      Officer    = F9_07_COMP_DTK_POS_OFF_X,  #X or NA
+      RptCmpOrg  = F9_07_COMP_DTK_COMP_ORG,   #numeric
+      RptCmpRltd = F9_07_COMP_DTK_COMP_RLTD,  #numeric
+      OtherComp  = F9_07_COMP_DTK_COMP_OTH,  #numeric
+      KeyEmpl    = F9_07_COMP_DTK_POS_KEY_EMPL_X, #X or NA
+      HighComp   = F9_07_COMP_DTK_POS_HIGH_COMP_X, #X or NA (should only be 1)
+      FmrOfficer = F9_07_COMP_DTK_POS_FORMER_X)   #X or NA (sparse)
   
   #converting all compensation fields to numeric if not already
   d2$RptCmpOrg  <- as.numeric( d2$RptCmpOrg )
@@ -44,9 +55,9 @@ standardize_df <- function(comp.data, ORG_NAME = "NAME", name = "F9_07_PZ_DTK_NA
   d2$OtherComp  <- as.numeric( d2$OtherComp )
   
   #if compensation field is NA, translate that to 0
-  d2$RptCmpOrg[ is.na(d2$RptCmpOrg) ]   <- 0
-  d2$RptCmpRltd[ is.na(d2$RptCmpRltd) ] <- 0
-  d2$OtherComp[ is.na(d2$OtherComp) ]   <- 0
+  d2$RptCmpOrg[  is.na(d2$RptCmpOrg)  ]  <- 0
+  d2$RptCmpRltd[ is.na(d2$RptCmpRltd) ]  <- 0
+  d2$OtherComp[  is.na(d2$OtherComp)  ]  <- 0
   
   #sum up all compensations for total comp column
   d2$TotalComp <- d2$RptCmpOrg + d2$RptCmpRltd + d2$OtherComp
@@ -60,13 +71,13 @@ standardize_df <- function(comp.data, ORG_NAME = "NAME", name = "F9_07_PZ_DTK_NA
   
   #pre_clean call
   d2$TitleTxt <- pre_clean(d2$TitleTxt)
-  # d2$PersonNm <- pre_clean(d2$PersonNm)
+  # d2$PersonNm <- pre_clean( d2$PersonNm )
   
   #converting empty checkboxes for title classification to empty string
   d2$TrustOrDir[ is.na(d2$TrustOrDir) ] <- ""
-  d2$Officer[ is.na(d2$Officer) ] <- ""
-  d2$KeyEmpl[ is.na(d2$KeyEmpl) ] <- ""
-  d2$HighComp[ is.na(d2$HighComp) ] <- ""
+  d2$Officer[    is.na(d2$Officer)    ] <- ""
+  d2$KeyEmpl[    is.na(d2$KeyEmpl)    ] <- ""
+  d2$HighComp[   is.na(d2$HighComp)   ] <- ""
   d2$FmrOfficer[ is.na(d2$FmrOfficer) ] <- ""
   
   #removing duplicate rows
