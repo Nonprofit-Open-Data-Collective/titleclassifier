@@ -28,7 +28,7 @@ standardize_df <- function( comp.data, ORG_NAME = "NAME", PersonNm = "F9_07_COMP
       URL = URL, #string
       # PersonNm = all_of(name),
       # PersonNm = NAME.x, #string #if working off of jesse's
-      TitleTxt   = F9_07_COMP_DTK_TITL, #string
+      TitleTxt   = F9_07_COMP_DTK_TITLE, #string
       AvgHrs     = F9_07_COMP_DTK_AVE_HOUR_WEEK, #numeric
       TrustOrDir = F9_07_COMP_DTK_POS_INDIV_TRUST_X, #X or NA (should also consider institutional trustee)
       Officer    = F9_07_COMP_DTK_POS_OFF_X,  #X or NA
