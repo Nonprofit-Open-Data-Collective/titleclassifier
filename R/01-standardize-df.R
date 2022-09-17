@@ -14,19 +14,9 @@ require(dplyr) #should we port this to somewhere else?
 #' returns a data frame with understandable information about DTK individuals.
 #'
 #' @export
-standardize_df <- function(comp.data, ORG_NAME = "NAME", PersonNm = "F9_07_COMP_DTK_NAME_PERS"){
+standardize_df <- function( comp.data, ORG_NAME = "NAME", PersonNm = "F9_07_COMP_DTK_NAME_PERS" )
+{
 
-  
- [1] "OBJECT_ID"                        "EIN"                             
- [3] "NAME"                             "TAXYR"                           
- [5] "FORMTYPE"                         "URL"                             
- [7] ""         "F9_07_COMP_DTK_TITLE"            
- [9] "F9_07_COMP_DTK_AVE_HOUR_WEEK"     "F9_07_COMP_DTK_AVE_HOUR_WEEK_RL" 
-[11] "" ""        
-[13] ""          ""        
-[15] ""          ""   
-[17] "F9_07_COMP_DTK_POS_INST_TRUST_X"  ""  
-[19] "F9_07_COMP_DTK_EMPL_BEN"          ""   
   d2 <-
     comp.data %>%
     rename(
@@ -98,7 +88,8 @@ standardize_df <- function(comp.data, ORG_NAME = "NAME", PersonNm = "F9_07_COMP_
 #' converts titles to uppercase form
 #' 
 #' @export
-pre_clean <- function(title.text){
+pre_clean <- function(title.text)
+{
   TitleTxt <- title.text
   TitleTxt <- toupper(TitleTxt)
   TitleTxt <- gsub("\\.","",TitleTxt)
