@@ -19,7 +19,12 @@ High level overview of procedural flow
 
 
 ```r
-df %>% 
+library( titleclassifier )
+library( dplyr )
+
+data( tinypartvii )  # sample of 10,000 orgs
+
+tinypartvii %>% 
   standardize_df() %>% 
   remove_dates() %>% 
   standardize_conj() %>% 
