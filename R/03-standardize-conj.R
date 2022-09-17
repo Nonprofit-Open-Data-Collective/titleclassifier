@@ -210,26 +210,26 @@ standardize_slash <- function(TitleTxt){
   
   if(grepl("/",TitleTxt)){
     slash_split <- unlist(strsplit(TitleTxt,"/"))
-    slash_true <- TRUE #slash used as a separator (defaulted to true)
-    slash_eq_of <- FALSE #slash used as of (i.e. vp, finance)
+    slash_true  <- TRUE   #slash used as a separator (defaulted to true)
+    slash_eq_of <- FALSE   #slash used as of (i.e. vp, finance)
     for(i in 1:length(slash_split)){
       testTitle <- apply_substitutes(slash_split[i])
       titlePresent <- FALSE
       # likely.titles <- readRDS("data/likely.titles.RDS")
-      for(title in likely.titles){
-        if(grepl(title,testTitle))
+      for( title in likely.titles ){
+        if( grepl( title, testTitle ) )
           titlePresent <- TRUE
-        if((grepl("CHAIR",testTitle) | grepl("VICE PRESIDENT", testTitle) | 
-            grepl("DIRECTOR", testTitle) | grepl("DEAN", testTitle) |
-            grepl("TRUSTEE", testTitle) | grepl("MANAGER", testTitle) |
-            grepl("CEO", testTitle) | grepl("SECRETARY", testTitle)) & i == 1)
+        if( ( grepl( "CHAIR", testTitle )    |  grepl( "VICE PRESIDENT", testTitle ) | 
+              grepl( "DIRECTOR", testTitle ) |  grepl( "DEAN", testTitle )  |
+              grepl( "TRUSTEE", testTitle )  |  grepl( "MANAGER", testTitle )  |
+              grepl( "CEO", testTitle )      |  grepl( "SECRETARY", testTitle ) ) & i == 1 )
           slash_eq_of <- TRUE
       }
-      slash_true <- (slash_true & titlePresent)
+      slash_true <- ( slash_true & titlePresent )
     }
     #slash as separator
     if(slash_true) 
-      TitleTxt <- gsub("/"," & ",TitleTxt)
+      TitleTxt <- gsub( "/", " & ", TitleTxt )
     
     #substitute first occurrence of / --> "of" (to be fixed in fix_of)
     else if(slash_eq_of) 
