@@ -11,17 +11,21 @@
 #' 
 #' @export
 standardize_titles <- function(comp.data, title = "TitleTxt6"){
-  TitleTxt = comp.data[[title]]
+  
+  # MOVED TO SPELLING STEP
+  # TitleTxt = comp.data[[title]]
+  # TitleTxt <- gsub("^\\s* | \\s*$", "", TitleTxt)
+  # TitleTxt <- gsub( "\\s{2,}", " ", TitleTxt )
+  # comp.data[[title]] <- TitleTxt
   
   # manipulations with google sheets
   #TitleTxt <- stand_titles(TitleTxt) #this will be replaced with the mapping
-  
-  TitleTxt <- gsub("^\\s* | \\s*$", "", TitleTxt)
-  TitleTxt <- gsub( "\\s{2,}", " ", TitleTxt )
-  
-  comp.data$TitleTxt7 <- TitleTxt
+  googlesheets4::gs4_deauth()
+  df.standard <- googlesheets4::read_sheet( "1iYEY2HYDZTV0uvu35UuwdgAUQNKXSyab260pPPutP1M", sheet="title-standardization", range="A:B" )
+  comp.data <- merge( comp.data, df.standard, by.x=title, by.y="title.variant", all.x=T )
+
+  # comp.data$TitleTxt7 <- TitleTxt
   
   print("standardize titles step complete")
-  
   return(comp.data)
 }
