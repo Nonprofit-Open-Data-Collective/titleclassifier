@@ -18,18 +18,19 @@ date.words <-
 #' then removing the date if it is present
 #' 
 #' @export
-remove_dates <- function( comp.data )
+remove_dates <- function( df, title="F9_07_COMP_DTK_TITLE" )
 {
-  title <- convert_ordinal( comp.data$TitleTxt )
-  has.date <- identify_date( title )
-  title <- remove_date( title )
+  x <- df[[ title ]]
+  x <- convert_ordinal( x )
+  has.date <- identify_date( x )
+  x <- remove_date( x )
   
   # 1 if date was removed from title, 0 otherwise
-  comp.data$Date.x <- ifelse( has.date, 1, 0 )
-  comp.data$TitleTxt2 <- title 
+  df$date.x <- ifelse( has.date, 1, 0 )
+  df$TitleTxt2 <- x 
   
   print("remove dates step complete")
-  return( comp.data )
+  return( df )
 }
 
 
