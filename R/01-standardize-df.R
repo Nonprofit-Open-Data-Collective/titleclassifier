@@ -14,70 +14,77 @@ require(dplyr) #should we port this to somewhere else?
 #' returns a data frame with understandable information about DTK individuals.
 #'
 #' @export
-standardize_df <- function( comp.data, ORG_NAME = "NAME", PersonNm = "F9_07_COMP_DTK_NAME_PERS" )
+standardize_df <- function( df, title="F9_07_COMP_DTK_TITLE", form.type="FORMTYPE",
+                            ave.hours="F9_07_COMP_DTK_AVE_HOUR_WEEK", ave.hours.rltd="F9_07_COMP_DTK_AVE_HOUR_WEEK_RL", 
+                            comp.base="F9_07_COMP_DTK_COMP_ORG", comp.benefits="F9_07_COMP_DTK_EMPL_BEN", 
+                            comp.related="F9_07_COMP_DTK_COMP_RLTD", comp.other="F9_07_COMP_DTK_COMP_OTH",
+                            trustee.ind="F9_07_COMP_DTK_POS_INDIV_TRUST_X", trustee.inst="F9_07_COMP_DTK_POS_INST_TRUST_X", 
+                            officer="F9_07_COMP_DTK_POS_OFF_X", key.employee="F9_07_COMP_DTK_POS_KEY_EMPL_X", 
+                            high.comp.ind="F9_07_COMP_DTK_POS_HIGH_COMP_X", former="F9_07_COMP_DTK_POS_FORMER_X" )
 {
 
-  d2 <-
-    comp.data %>%
-    rename(
-      FilingId = OBJECT_ID, #numeric
-      FilerEIN = EIN, #numeric
-      FilerName = all_of(ORG_NAME),  #string (depends on the output from build_rdb_table)
-      FormYr = TAXYR, #numeric
-      FORMTYPE  = FORMTYPE, #990,990ez (no 990PF's for comp table)
-      URL = URL, #string
-      # PersonNm = all_of(name),
-      # PersonNm = NAME.x, #string #if working off of jesse's
-      TitleTxt   = F9_07_COMP_DTK_TITLE, #string
-      AvgHrs     = F9_07_COMP_DTK_AVE_HOUR_WEEK, #numeric
-      TrustOrDir = F9_07_COMP_DTK_POS_INDIV_TRUST_X, #X or NA (should also consider institutional trustee)
-      Officer    = F9_07_COMP_DTK_POS_OFF_X,  #X or NA
-      RptCmpOrg  = F9_07_COMP_DTK_COMP_ORG,   #numeric
-      RptCmpRltd = F9_07_COMP_DTK_COMP_RLTD,  #numeric
-      OtherComp  = F9_07_COMP_DTK_COMP_OTH,  #numeric
-      KeyEmpl    = F9_07_COMP_DTK_POS_KEY_EMPL_X, #X or NA
-      HighComp   = F9_07_COMP_DTK_POS_HIGH_COMP_X, #X or NA (should only be 1)
-      FmrOfficer = F9_07_COMP_DTK_POS_FORMER_X)   #X or NA (sparse)
-  
-  #converting all compensation fields to numeric if not already
-  d2$RptCmpOrg  <- as.numeric( d2$RptCmpOrg )
-  d2$RptCmpRltd <- as.numeric( d2$RptCmpRltd )
-  d2$OtherComp  <- as.numeric( d2$OtherComp )
-  
-  #if compensation field is NA, translate that to 0
-  d2$RptCmpOrg[  is.na(d2$RptCmpOrg)  ]  <- 0
-  d2$RptCmpRltd[ is.na(d2$RptCmpRltd) ]  <- 0
-  d2$OtherComp[  is.na(d2$OtherComp)  ]  <- 0
-  
-  #sum up all compensations for total comp column
-  d2$TotalComp <- d2$RptCmpOrg + d2$RptCmpRltd + d2$OtherComp
-  
-  #converting average hours worked per week field to numeric if not already
-  d2$AvgHrs <- as.numeric( d2$AvgHrs )
-  d2$AvgHrs[ is.na(d2$AvgHrs) ]   <- 0
-  
+  #### TITLE
+
+  TitleTxt <- df[[ title ]]
+  df$TITLE_RAW <- TitleTxt
+
   #converting missing titles to an empty string
-  d2$TitleTxt[ is.na(d2$TitleTxt) ] <- ""
+  TitleTxt[ is.na(TitleTxt) ] <- ""
   
   #pre_clean call
-  d2$TitleTxt <- pre_clean(d2$TitleTxt)
-  # d2$PersonNm <- pre_clean( d2$PersonNm )
+  TitleTxt <- pre_clean(TitleTxt)
+
+  df[[ title ]] <- TitleTxt
+
+
+  #### HOURS
+
+  x1 <- df[[ ave.hours ]]
+  x2 <- df[[ ave.hours.rltd ]]
+  x1 <- to_numeric(x1)
+  x2 <- to_numeric(x2)
+
+  df$TOT.HOURS <- x1 + x2
+  df[[ ave.hours ]] <- x1
+  df[[ ave.hours.rltd ]] <- x2
+
+
+  #### COMPENSATION
+
+  c.base  <- df[[ comp.base ]]
+  c.ben   <- df[[ comp.benefits ]]
+  c.rltd  <- df[[ comp.related ]]
+  c.other <- df[[ comp.other ]]
+
+
+  #converting all compensation fields to numeric if not already
+  c.base  <- to_numeric( c.base )
+  c.ben   <- to_numeric( c.ben )
+  c.rltd  <- to_numeric( c.rltd )
+  c.other <- to_numeric( c.other )
   
-  #converting empty checkboxes for title classification to empty string
-  d2$TrustOrDir[ is.na(d2$TrustOrDir) ] <- ""
-  d2$Officer[    is.na(d2$Officer)    ] <- ""
-  d2$KeyEmpl[    is.na(d2$KeyEmpl)    ] <- ""
-  d2$HighComp[   is.na(d2$HighComp)   ] <- ""
-  d2$FmrOfficer[ is.na(d2$FmrOfficer) ] <- ""
-  
-  #removing duplicate rows
-  d3 <- unique(d2)
-  
-  #returning a cleaned up dataset
+  #sum up all compensations for total comp column
+  df$TOT.COMP <- c.base + c.ben + c.rltd + c.other
+
+
+  #### CHECKBOXES
+
+  formtype <- df[[ form.type ]]
+
+  df[[ trustee.ind ]]        <- to_boole( df[[ trustee.ind ]], formtype ) 
+  df[[ trustee.inst ]]       <- to_boole( df[[ trustee.inst ]], formtype )
+  df[[ officer ]]            <- to_boole( df[[ officer ]], formtype )
+  df[[ key.employee ]]       <- to_boole( df[[ key.employee ]], formtype )
+  df[[ high.comp.ind ]]      <- to_boole( df[[ high.comp.ind ]], formtype )
+  df[[ former ]]             <- to_boole( df[[ former ]], formtype )
+
+  #### RETURN CLEAN DF
   print("standardize df step complete")
-  return( d3 )
+  return( df )
   
 }
+
+
 
 
 #' @title
@@ -88,10 +95,38 @@ standardize_df <- function( comp.data, ORG_NAME = "NAME", PersonNm = "F9_07_COMP
 #' converts titles to uppercase form
 #' 
 #' @export
-pre_clean <- function(title.text)
+pre_clean <- function( x )
 {
-  TitleTxt <- title.text
-  TitleTxt <- toupper(TitleTxt)
-  TitleTxt <- gsub("\\.","",TitleTxt)
-  return(TitleTxt)
+  x <- toupper(x)
+  x <- gsub("\\.","", x )
+  return( x )
 }
+
+to_numeric <- function( x )
+{
+  x <- gsub( "[^0-9.]", "", x )
+  x <- as.numeric(x)
+  x[ is.na(x) ] <- 0
+  return(x)
+}
+
+
+to_boole <- function( x, form.type )
+{
+  x <- trimws( x )
+  x <- toupper( x )
+  # CHECKBOX YES
+  x[ x == "TRUE" ] <- 1
+  x[ x == "X" ] <- 1
+  x[ x == "YES" ] <- 1
+  # CHECKBOX NO
+  x[ x == "FALSE" ] <- 0
+  x[ x == "NO" ] <- 0
+  x[ x == "" ] <- 0
+  # CONDITIONAL ON FORMTYPE
+  x[ is.na(x) ] <- 0
+  x <- as.numeric(x)
+  x <- ifelse( form.type == "990EZ", NA, x )
+  return(x)
+}
+
