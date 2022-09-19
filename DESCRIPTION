@@ -14,7 +14,8 @@ Encoding: UTF-8
 LazyData: true
 Imports:
   dplyr,
-  hunspell
+  hunspell,
+  googlesheets4
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.0
 
