@@ -4,7 +4,7 @@
 \alias{remove_dates}
 \title{remove/clean dates wrapper function, takes in a data frame}
 \usage{
-remove_dates(comp.data)
+remove_dates(df, title = "F9_07_COMP_DTK_TITLE")
 }
 \description{
 cleans the dates by first identifying date, setting a flag if it finds one,

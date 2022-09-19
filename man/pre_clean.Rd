@@ -4,7 +4,7 @@
 \alias{pre_clean}
 \title{pre cleaning function}
 \usage{
-pre_clean(title.text)
+pre_clean(x)
 }
 \description{
 gets rid of meaningless punctuation (like periods),

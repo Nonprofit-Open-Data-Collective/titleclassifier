@@ -5,9 +5,21 @@
 \title{Standardize the compensation table data frame (from 990 form, Part VII, Table 01)}
 \usage{
 standardize_df(
-  comp.data,
-  ORG_NAME = "NAME",
-  PersonNm = "F9_07_COMP_DTK_NAME_PERS"
+  df,
+  title = "F9_07_COMP_DTK_TITLE",
+  form.type = "FORMTYPE",
+  ave.hours = "F9_07_COMP_DTK_AVE_HOUR_WEEK",
+  ave.hours.rltd = "F9_07_COMP_DTK_AVE_HOUR_WEEK_RL",
+  comp.base = "F9_07_COMP_DTK_COMP_ORG",
+  comp.benefits = "F9_07_COMP_DTK_EMPL_BEN",
+  comp.related = "F9_07_COMP_DTK_COMP_RLTD",
+  comp.other = "F9_07_COMP_DTK_COMP_OTH",
+  trustee.ind = "F9_07_COMP_DTK_POS_INDIV_TRUST_X",
+  trustee.inst = "F9_07_COMP_DTK_POS_INST_TRUST_X",
+  officer = "F9_07_COMP_DTK_POS_OFF_X",
+  key.employee = "F9_07_COMP_DTK_POS_KEY_EMPL_X",
+  high.comp.ind = "F9_07_COMP_DTK_POS_HIGH_COMP_X",
+  former = "F9_07_COMP_DTK_POS_FORMER_X"
 )
 }
 \description{
