@@ -16,6 +16,8 @@ standardize_spelling <- function(comp.data, title="TitleTxt4"){
   TitleTxt = comp.data[[title]]
   
   TitleTxt <- apply_substitutes(TitleTxt)
+  TitleTxt <- gsub("^\\s* | \\s*$", "", TitleTxt)
+  TitleTxt <- gsub( "\\s{2,}", " ", TitleTxt )
   
   comp.data$TitleTxt5 <- TitleTxt
   
