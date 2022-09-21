@@ -87,6 +87,9 @@ standardize_and <- function(TitleTxt){
   if(and_true) TitleTxt <- gsub("\\bAND\\b","&",TitleTxt)
   if(!amp_true) TitleTxt <- gsub("&", " AND ", TitleTxt)
   
+  TitleTxt <- gsub( "&"," & ",TitleTxt ) 
+  TitleTxt <- gsub( "  "," ",TitleTxt ) # replace double space with single
+  
   return(TitleTxt)
 }
 
