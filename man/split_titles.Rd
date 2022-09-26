@@ -2,17 +2,13 @@
 % Please edit documentation in R/04-split-titles.R
 \name{split_titles}
 \alias{split_titles}
-\title{split titles function}
+\title{split titles wrapper function}
 \usage{
-split_titles(comp.data, title = "TitleTxt3")
+split_titles(df, title = "TitleTxt3")
 }
 \description{
-wrapper function:
-splitting titles and returning a new data frame
-it will be applied on a data frame
+creates a flag for a split, and then builds out a new data frame
+(combining it back together) later --> should run much faster
 
-simply splitting on "&"
-assuming it's already cleaned well
-
-runtime on 100,000 titles ~ 45 minutes
+runtime compared to old code is about several magnitudes faster than before
 }
