@@ -21,12 +21,16 @@ date.words <-
 remove_dates <- function( df, title="F9_07_COMP_DTK_TITLE" )
 {
   x <- df[[ title ]]
-  x <- convert_ordinal( x )
-  has.date <- identify_date( x )
-  x <- remove_date( x )
   
-  # 1 if date was removed from title, 0 otherwise
+  # replace 1st, 2nd, etc with first, second...
+  x <- convert_ordinal( x )
+  
+  # flag cases that had dates: 
+  # date.x = 1 if date was removed from title, 0 otherwise
+  has.date <- identify_date( x )
   df$date.x <- ifelse( has.date, 1, 0 )
+  
+  x <- remove_date( x )
   df$TitleTxt2 <- x 
   
   print("remove dates step complete")
