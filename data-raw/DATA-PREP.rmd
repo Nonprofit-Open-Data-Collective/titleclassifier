@@ -168,6 +168,30 @@ save( df.standard, file="../data/former-words.rda" )
 ```
 
 
+### Domain & Hierarchy Taxonomy 
+
+```{r}
+# googlesheets4::gs4_deauth()
+google.id <- "1iYEY2HYDZTV0uvu35UuwdgAUQNKXSyab260pPPutP1M"
+d.taxonomy <- 
+  googlesheets4::read_sheet(  google.id,
+                              sheet="title-taxonomy", range="A:T",
+                              col_types = "c" )  # c = character
+
+
+# fix: empty cells interpreted as NA by googlesheets4
+d.taxonomy[ is.na( d.taxonomy ) ] <- ""
+
+d.taxonomy
+```
+
+
+```{r}
+write.csv( d.taxonomy, "title-taxonomy.csv" )
+save( d.taxonomy, file="../data/title-taxonomy.rda" )
+```
+
+
 
 ### Position Status
 
