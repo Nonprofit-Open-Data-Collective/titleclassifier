@@ -21,7 +21,11 @@ standardize_titles <- function(comp.data, title = "TitleTxt6"){
   # manipulations with google sheets
   #TitleTxt <- stand_titles(TitleTxt) #this will be replaced with the mapping
   googlesheets4::gs4_deauth()
-  df.standard <- googlesheets4::read_sheet( "1iYEY2HYDZTV0uvu35UuwdgAUQNKXSyab260pPPutP1M", sheet="title-standardization", range="A:B" )
+  df.standard <- googlesheets4::read_sheet( "1iYEY2HYDZTV0uvu35UuwdgAUQNKXSyab260pPPutP1M", 
+                                            sheet="title-standardization", range="A:B",
+                                            col_types = "c" )  # c = character
+  df.standard[ is.na( df.standard ) ] <- ""
+  df.standard <- unique( df.standard )
   comp.data <- merge( comp.data, df.standard, by.x=title, by.y="title.variant", all.x=T )
 
   # comp.data$TitleTxt7 <- TitleTxt

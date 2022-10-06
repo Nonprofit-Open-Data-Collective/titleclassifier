@@ -20,7 +20,10 @@ require(dplyr)
 categorize_titles <- function( comp.data )
 {
   googlesheets4::gs4_deauth()
-  d.map <- googlesheets4::read_sheet( "1iYEY2HYDZTV0uvu35UuwdgAUQNKXSyab260pPPutP1M", sheet="title-mapping-xiaofei", range="A:T" )
+  d.map <- googlesheets4::read_sheet( "1iYEY2HYDZTV0uvu35UuwdgAUQNKXSyab260pPPutP1M", 
+                                      sheet="title-mapping-xiaofei", range="A:T",
+                                      col_types = "c" )  # c = character
+  d.map[ is.na( d.map ) ] <- ""
   comp.data <- merge( comp.data, d.map, by.x="title.standard", by.y="title.standard", all.x=T )
   return( comp.data )
 }

@@ -1,0 +1,720 @@
+---
+title: 'Package Demo'
+output: 
+  html_document:
+    theme: readable
+    df_print: paged
+    highlight: tango
+    toc: true
+    self_contained: true
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set( echo = TRUE, message=F, warning=F, fig.width=10 )
+
+library( dplyr )
+library( pander )
+```
+
+
+ 
+
+
+```{r, eval=F, echo=F}
+### UPDATE PACKAGE
+
+library(devtools)
+
+# step 1
+# usethis::create_package( "titleclassifier" )
+
+# step 2 move R script to montyhall/R folder
+# after completing documentation fields 
+
+# step 3
+setwd( "titleclassifier" )
+devtools::document()
+
+# step 4
+setwd( ".." )
+devtools::install( "titleclassifier" ) 
+```
+
+
+
+
+
+# titleclassifier Package Overview
+
+An R package to assign raw nonprofit executive titles from Form 990 Part VII to a well-structured title taxonomy.
+
+
+## Example Challenges
+
+```{r, echo=F}
+raw.titles <-
+c("PROGRAMS COCHAIR, RESEARCH COCHAIR", "FIN SECY / TREASURER PAST", 
+"RECORDING SECY PAST", "WARDEN PAST", "CONDUCTOR PAST", "FINANCIAL SECRETARY/TREASU -PAST", 
+"VICE PRESIDENT - NEW AND PAST", "TREASURER - NEW AND PAST", 
+"WARDEN - NEW AND PAST", "FINANCIAL SEC'Y - PAST", "VICE - PRES - PAST", 
+"FIN SEC'Y/ TREASURER - PAST", "BOARD CHAIR, FINANCE COMMITTEE", 
+"TREASURER, DIRECTOR, FINANCE COMMITTEE", "FIN'L SECRETARY/TREASURER - PAST", 
+"LOWER DIV COORDINAT", "UPPER DIV COORDINATE", "SCOREMASTER", 
+"SNACK BAR COORDINAT", "SPONSOR/FUND COORDIN", "Director ER", 
+"Physician ER", "FINANCIAL SECRETARY/TREASURE - PAST", "Vice Chairp", 
+"Ovation Executive Director", "TRUSTEE;CLERK;CHAIR-ORTHO DEPT", 
+"TRUSTEE; BOARD CHAIR; PHYSICIAN", "FMR REGIONAL MEDICAL DIR.; PHYSICIAN", 
+"MANAGER/TREASURER (RESIGNED)", "ACTING INTERIM MANAGER", "DIR; MHP VP STRAT INTG SVCS", 
+"PRESIDENT - MERCY HEALTH MUSKEGON", "CFO - MICHIGAN REGION", 
+"VICE PRESIDENT/CLERK AS OF 9/18", "CLERK (THROUGH 9/18)", "Chief Development, Marketing & Communications Officer", 
+"Chairman - Outgoing", "Treasurer- Outgoing", "Director- Outgoing", 
+"Director- Incoming", "SOFTBALL VICE PRES", "BOARD MEMBER - JOINED 1/17", 
+"BOARD MEMBER - RESIGNED 9/", "SEC-TREAS/BUSINESS AGENT - PAST", 
+"PRESIDENT & CEO (THROUGH MAY 2018)", "PERFORMANCE IMPROVEMENT CHAIR", 
+"1ST LIEUTENANT GOVERNOR", "2ND LIEUTENANT GOVERNOR", "EXECUTIVE ATRISTIC DIRECTOR", 
+"SVP/CHIEF DEV. OFFICER BALLAD", "EVP & CFO BALLAD/TREASURER", 
+"SVP COMM. HEALTH & SYST. ADV. BALLAD", "Staff paster", "V.CHAIRMAN OF THE BOARD", 
+"FIN DIRECTOR (OUTGOING)", "FMR UNION TRSTE", "CEO, (THROUGH 9/14/18)", 
+"DIRECTOR: IMMEDIATE PAST PRESIDENT", "DIRECTOR; TRINITY SVP", 
+"Board Member Left 3/31/201", "Board Chairman Arrived 1/1", "Financial/Recording Secretary", 
+"HRPS DIR/SHRM PRES & CEO/SHRMF DIR", "EXECUTIVE DIRECTOR/SHRM SVP", 
+"LEG AFFAIRS/SHRM SR ADV, GOV AFFAIRS", "LIAISON/SHRM SR SPEC, GLOB MOBILITY", 
+"EXCHANGE PGMS & MKTG/SHRM GLOBAL", "AECURITY TASK FORCE CHAIR", 
+"EXECUTIVE DIRECTOR (AFTER JULY 2018)", "CHIEF FINANCIAL OFFICER (AFTER JULY 2018)", 
+"DIRECTOR (THRU 05/08/18)", "DIRECTOR (FROM 05/08/18)", "TRUSTEE (through Jan 2018)", 
+"ACS BOARD OF GOV", "COUNCILOR/ACS BOARD OF GOV", "ACS BOARD OF GOVERNORS", 
+"MASQIC LIAISON/ACS BOARD O", "ACS SPECIALTY SOCIETY GOVE", "REP - ACS COMMISSION ON CANCER", 
+"Dir. of Help Program", "Dir. of Youth Program", "TREASRUER/SEC", 
+"BOARD MEMCER", "EXEC COMMANDER", "DIR OF IND REL", "Asst Sec and Treasurer", 
+"ENGINEER SUP", "EXEUTIVE BOARD", "Treasurer & Executive board m", 
+"1ST LIEUTIENT", "2ND LIEUTIENT", "SECRETARY,TREASURER,VICE-PRESIDENT", 
+"EXECUTIVE DIR/SECRETARY/TR", "Registrar / CORI", "In Town Director, Coed", 
+"Kickstarters","Equipment Coordinator & Social Media, WebSite", 
+"RUGBY", "FIRST VP-ADULT COMP", "SECOND VP-JUNIOR COMP", "Sec-resign 2/21", 
+"INFORMATION OFFICE", "FINANCIAL SEC AND TREASURER", "MARKETING/ C", 
+"Executive Director and Registered Agent", "BILLINGSLEA", "FORMER PRESIDENT/ TRUSTEE", 
+"BOARD MEMBER/OUTREACH COORDINATOR", "BOARD MEMBER/WEB DESIGN", 
+"WEB MAINTENANCE", "PRESIDENT/TRAVELING DIRECTOR", "VICE PRESIDENT/IN-HOUSE CO DIRECTOR", 
+"IN-HOUSE CO-DIRECTOR", "CO-TRAVELING DIRECTOR", "PAST PRESIDENT THRU 6.18", 
+"SECRETARY, PROGRAMS/EDUCAT")
+
+raw.titles %>% head(20)
+```
+
+
+
+# Demo of *titleclassifier* Package
+
+
+## Installation
+
+```{r, eval=F}
+devtools::install_github( 'nonprofit-open-data-collective/titleclassifier' )
+```
+
+After installation complete without errors load the package. 
+
+```{r}
+library( titleclassifier )    # title classifier package 
+library( dplyr )              # data wrangling
+library( pander )             # nicely formatted output
+```
+
+
+## Demo Data 
+
+The package includes some IRS 990 Part VII data for development and demonstration purposes. 
+
+```{r}
+data( tinypartvii ) # 10,000 rows of part vii data
+
+head( tinypartvii ) %>% pander()
+```
+
+**Data Dictionary:**
+
+* OBJECT_ID
+* EIN", 
+* NAME", 
+* TAXYR", 
+* FORMTYPE", 
+* URL", 
+* F9_07_COMP_DTK_NAME_PERS", 
+* F9_07_COMP_DTK_TITLE", 
+* F9_07_COMP_DTK_AVE_HOUR_WEEK", 
+* F9_07_COMP_DTK_AVE_HOUR_WEEK_RL", 
+* F9_07_COMP_DTK_POS_INDIV_TRUST_X", 
+* F9_07_COMP_DTK_POS_OFF_X", 
+* F9_07_COMP_DTK_COMP_ORG", 
+* F9_07_COMP_DTK_COMP_RLTD", 
+* F9_07_COMP_DTK_COMP_OTH", 
+* F9_07_COMP_DTK_POS_KEY_EMPL_X", 
+* F9_07_COMP_DTK_POS_INST_TRUST_X", 
+* F9_07_COMP_DTK_POS_HIGH_COMP_X", 
+* F9_07_COMP_DTK_EMPL_BEN", 
+* F9_07_COMP_DTK_POS_FORMER_X
+
+
+
+
+## Necessary Data
+
+
+The following internal datasets are used by functions within the package for mapping and disambiguation purposes:
+
+
+[we need to describe these]
+
+- all-titles.rda: 
+- former-words.rda: 
+- future-words.rda: 
+- interim-words.rda: 
+- likely-subjects.rda: 
+- likely-titles.rda: 
+- possible-regional-list.rda: 
+- possible-titles.rda: 
+- regional-words.rda: 
+- status-mapping.rda: 
+
+The package includes additional data that is used by functions for cleaning and assignment processes. 
+
+**NOTE:** We need to export these: 
+
+```{r, eval=F}
+data( former.words  ) %>% head() %>% pander()
+```
+
+
+These data are imported into the package via Google Sheets: 
+
+[reference google sheet cases]
+
+
+
+## Title Cleaning Process
+
+There are approximately 100 meaningful titles in a sparse taxonomy of key leadership positions disclosed on the Directors, Trustees, and Key Employees section of the 990 forms. The title field appears as raw text, however, so there are no constraints on what nonprofits can write in the field. As a result, there are over 900,000 unique strings in the database. 
+
+
+```{r, echo=F}
+
+na_to_space <- function(x)
+{
+  x[ is.na(x) ] <- ""
+  return(x)
+}
+
+reorder_df <- function( df )
+{
+  new.order <- 
+    c("F9_07_COMP_DTK_NAME_PERS", "TITLE_RAW","TOT.HOURS", "TOT.COMP",
+      "title.standard", "TitleTxt6", "TitleTxt5", 
+      "TitleTxt4",  "TitleTxt3", "TitleTxt2", 
+      "OBJECT_ID", "EIN", "NAME", 
+      "TAXYR", "FORMTYPE", "URL", "F9_07_COMP_DTK_TITLE", 
+      "F9_07_COMP_DTK_AVE_HOUR_WEEK", "F9_07_COMP_DTK_AVE_HOUR_WEEK_RL", 
+      "F9_07_COMP_DTK_POS_INDIV_TRUST_X", "F9_07_COMP_DTK_POS_OFF_X", 
+      "F9_07_COMP_DTK_COMP_ORG", "F9_07_COMP_DTK_COMP_RLTD", "F9_07_COMP_DTK_COMP_OTH", 
+      "F9_07_COMP_DTK_POS_KEY_EMPL_X", "F9_07_COMP_DTK_POS_INST_TRUST_X", 
+      "F9_07_COMP_DTK_POS_HIGH_COMP_X", "F9_07_COMP_DTK_EMPL_BEN", 
+      "F9_07_COMP_DTK_POS_FORMER_X",  
+      "date.x",  "Num.Title", "SCHED.O", "SCHED.AT.LARGE", "AS.NEEDED", "EX.OFFICIO", 
+      "CO", "REGIONAL", "FUTURE", "FORMER", "INTERIM", "domain.category", 
+      "domainl.label", "soc.label", "major.group", "minor.group", "broad.group", 
+      "detailed.occupation", "emp", "ceo", "c.level", "dir.vp", "mgr", 
+      "spec", "board", "pres", "vp", "sec", "treas", "com")
+  
+  df <- 
+    df[ new.order ] %>% 
+    rename( PNAME = F9_07_COMP_DTK_NAME_PERS ) %>% 
+    arrange( -TOT.HOURS, EIN, TITLE_RAW ) # %>% 
+    # mutate( domain.category = na_to_space( domain.category ),
+    #         domainl.label = na_to_space( domainl.label ),
+    #         soc.label = na_to_space( soc.label ),
+    #         major.group = na_to_space( major.group ),
+    #         minor.group = na_to_space( minor.group ),
+    #         broad.group = na_to_space( broad.group ),
+    #         detailed.occupation = na_to_space( detailed.occupation ),
+    #         emp = na_to_space( emp ),
+    #         ceo = na_to_space( ceo ),
+    #         c.level = na_to_space( c.level ),
+    #         dir.vp = na_to_space( dir.vp ),
+    #         mgr = na_to_space( mgr ),
+    #         spec = na_to_space( spec ),
+    #         board = na_to_space( board ),
+    #         pres = na_to_space( pres ),
+    #         vp = na_to_space( vp ),
+    #         sec = na_to_space( sec ),
+    #         treas = na_to_space( treas ),
+    #         com = na_to_space( com ) )
+
+  df$REGIONAL <- as.numeric( df$REGIONAL)
+  df$FUTURE <- as.numeric( df$FUTURE )
+  df$FORMER <- as.numeric( df$FORMER )
+  df$INTERIM <- as.numeric( df$INTERIM )
+
+  return( df )
+}
+```
+
+```{r, eval=T}
+# create sample of 100 observations for testing
+set.seed( 1234 )
+df.sample <- sample_n( titleclassifier::tinypartvii, 100 )
+
+df <- 
+  df.sample %>% 
+  standardize_df() %>% 
+  remove_dates() %>% 
+  standardize_conj() %>%   # condition has length > 1
+  split_titles() %>% 
+  standardize_spelling() %>%   # condition has length > 1
+  gen_status_codes() %>% 
+  standardize_titles() %>%
+  categorize_titles() 
+
+df <- reorder_df( df )
+df
+```
+
+
+
+```{r, echo=F}
+df <- lapply( df, as.character )
+write.csv( x=as.data.frame(df), file="PACKAGE-DEMO.csv", row.names=F )
+```
+
+#### Problem cases: 
+
+Why is this one split? 
+
+```{r}
+# df[ df$F9_07_COMP_DTK_NAME_PERS == "Pat L Wheeler" , ]
+
+
+# These need to be unique otherwise duplicates columns 
+# PRESIDENT --> CEO
+# PRESIDENT --> BOARD PRESIDENT 
+
+googlesheets4::gs4_deauth()
+df.standard <- googlesheets4::read_sheet( "1iYEY2HYDZTV0uvu35UuwdgAUQNKXSyab260pPPutP1M", 
+                                          sheet="title-standardization", range="A:B",
+                                          col_types = "c" )  # c = character
+  
+length( df.standard$title.variant )
+length( unique( df.standard$title.variant ))
+
+nrow( df.standard )
+# [1] 713
+df.standard <- unique( df.standard )
+nrow( df.standard )
+# [1] 696
+
+# PROBLEM CASES
+df.standard %>% 
+  group_by( title.variant ) %>% 
+  filter( n() > 1 ) %>% 
+  arrange( title.variant )
+```
+
+Why are these cases uncoded? 
+
+```{r}
+keep <- c("PNAME", "TOT.HOURS", "TOT.COMP", "TITLE_RAW", 
+          "title.standard", "TitleTxt6", "TitleTxt5" )
+  
+df[ is.na( df$title.standard) , keep ]
+```
+Spacing is problematic - causing merges to break on some cases like PRESIDENT & CEO. 
+
+```{r}
+df2 <- df[ is.na( df$title.standard) , keep ]
+df2$TitleTxt6
+#  [1] "VICE PRESIDENT OF COMMUNICATIONS LEADERSHIP" "BOARD MEMBER TREASURER AND CFO"             
+#  [3] "VICE PRESIDENT OF SHARED SERVICES"           "CHIEF MEDICAL OFFICER"                      
+#  [5] " EXECUTIVE"                                  " EXECUTIVE"                                 
+#  [7] "SHOW ANNOUNCER"                              "PRESIDENT "                                 
+#  [9] "ASSISTANT VICE PRESIDENT BASEBALL"           "BOARD OF DIRECTOR"                          
+# [11] " PRESIDENT"                                  " CEO"                                       
+# [13] "  PRESIDENT"                                 "BOARD CHAIR "                               
+# [15] "HH  CHAIR"                                   "RECORDER"                                   
+# [17] "DIRECTOR "                                   " PRESIDENT"                                 
+# [19] "STEWARD" 
+```
+
+* add chief medical officer
+* how to code "executive" 
+  - CEO? 
+  - if CEO exists, code as VP? 
+* create generic "VICE PRESIDENT OF" category for cases that don't fit into current domains? 
+  - many of these just need title variants: VP OF COMMS & LEADERSHIP --> VP OF COMMS 
+
+
+### 01 Standardize DF
+
+
+```{r}
+df <- 
+  df.sample %>% 
+  standardize_df() 
+
+head( df )
+```
+
+
+### 02 Remove Dates
+
+Many titles include dates to signify the start or end of the period that a person holds a position. For example:
+
+* Executive Director until March 2020 
+* Executive Director starting March 2020 
+
+```
+remove_dates()
+¦
++-- convert_ordinal()
++-- identify_date() 
++-- remove_date()
+```
+
+#### Function Demo 
+
+```{r}
+df <- 
+  df.sample %>% 
+  standardize_df() %>% 
+  remove_dates() 
+
+df$TitleTxt2
+```
+
+
+### 03 Standardize Conjugations 
+
+Convert all conjugations within titles to consistent formats. 
+
+```
+standardize_conj( title = "TitleTxt2" )
+¦
++-- standardize_and()
++-- standardize_to()
++-- standardize_of()
++-- standardize_comma()
++-- standardize_slash()
++-- standardize_and() #repeated bc of possible standardization changes
++-- standardize_separator()
+```
+
+#### Function Demo 
+
+```{r, warning=F}
+df <- 
+  df.sample %>% 
+  standardize_df() %>% 
+  remove_dates() %>% 
+  standardize_conj() 
+
+df[ c("TITLE_RAW","TitleTxt2","TitleTxt3") ]
+```
+
+
+
+
+### 04 Split Titles
+
+
+```
+split_titles()
+¦
++-- split_title()
+¦
+¦   +-- unmingle()
+¦
+¦       +-- check_hunspell()
+¦       +-- standardize_space()
+```
+
+#### Function Demo 
+
+
+```{r}
+df <- 
+  df.sample %>% 
+  standardize_df() %>% 
+  remove_dates() %>% 
+  standardize_conj() %>%  
+  split_titles() 
+
+df[ c("F9_07_COMP_DTK_NAME_PERS","Num.Title","TITLE_RAW","TitleTxt3","TitleTxt4") ] %>% 
+  dplyr::rename( PNAME = F9_07_COMP_DTK_NAME_PERS ) %>%
+  group_by( PNAME ) %>% 
+  mutate( N=max(Num.Title) ) %>% 
+  dplyr::arrange( desc(N), PNAME )
+```
+
+
+### 05 Standardize Spelling
+
+
+[ change "substitute_" to "fix_" in function names ? ]
+
+
+```
+standardize_spelling()
+¦
++-- apply_substitutes()
+¦   +-- substitute_vice()  
+¦   +-- substitute_executive(TitleTxt)
+¦   +-- substitute_director(TitleTxt)
+¦   +-- substitute_operations(TitleTxt)
+¦   +-- substitute_assistant(TitleTxt)
+¦   +-- substitute_president(TitleTxt)
+¦   +-- substitute_secretary(TitleTxt)
+¦   +-- substitute_treasurer(TitleTxt)
+¦   +-- substitute_finance(TitleTxt)
+¦   +-- substitute_senior(TitleTxt)
+¦   +-- substitute_development(TitleTxt)
+¦   +-- substitute_chair(TitleTxt)
+¦   +-- substitute_officer(TitleTxt)
+¦   +-- substitute_admin(TitleTxt)
+¦   +-- substitute_coordinator(TitleTxt)
+¦   +-- substitute_strategy(TitleTxt) #strategy/strategic
+¦   +-- substitute_hr(TitleTxt)
+¦   +-- substitute_manage(TitleTxt) #management/managing/manager
+¦   +-- substitute_programs(TitleTxt) #programs/programming
+¦   +-- substitute_projects(TitleTxt)
+¦   +-- substitute_public(TitleTxt)
+¦   +-- substitute_business(TitleTxt)
+¦   +-- substitute_comm(TitleTxt) #communication/committee
+¦   +-- substitute_information(TitleTxt)
+¦   +-- substitute_intelligence(TitleTxt)
+¦   +-- substitute_technology(TitleTxt)
+¦   +-- substitute_institute(TitleTxt) #institute/institutional
+¦   +-- substitute_academics(TitleTxt) #academics/academy
+¦   +-- substitute_marketing(TitleTxt)
+¦   +-- substitute_advancement(TitleTxt)
+¦   +-- substitute_philanthropy(TitleTxt)
+¦   +-- substitute_systems(TitleTxt)
+¦   +-- substitute_general(TitleTxt)
+¦   +-- substitute_planning(TitleTxt) #planning/planned
+¦   +-- substitute_compliance(TitleTxt)
+¦   +-- substitute_enrollment(TitleTxt)
+¦   +-- substitute_admissions(TitleTxt)
+¦   +-- substitute_deputy(TitleTxt)
+¦   +-- substitute_corresponding(TitleTxt) #correspondent/corresponding
+¦   +-- substitute_emeritus(TitleTxt)
+¦   +-- substitute_relations(TitleTxt)
+¦   +-- substitute_representative(TitleTxt)
+¦   +-- substitute_board(TitleTxt)
+¦   +-- substitute_transportation(TitleTxt)
+¦   +-- substitute_exofficio(TitleTxt)
+¦   +-- substitute_atlarge(TitleTxt)
+¦   +-- substitute_member(TitleTxt)
+¦   +-- substitute_governor(TitleTxt)
+¦   +-- condense_abbreviations(TitleTxt) 
+¦   +-- substitute_miscellaneous(TitleTxt)
+¦   +-- remove_trailing_conjunctions(TitleTxt)
+¦   +-- stand_titles(TitleTxt)
+¦   +-- fix_of(TitleTxt)
+¦   +-- spellcheck(TitleTxt) #slows things down, but is useful
+
+```
+
+#### Function Demo 
+
+```{r}
+df <- 
+  df.sample %>% 
+  standardize_df() %>% 
+  remove_dates() %>% 
+  standardize_conj() %>%   
+  split_titles() %>% 
+  standardize_spelling() 
+
+df[ c("TitleTxt4","TitleTxt5") ] %>% 
+  filter( TitleTxt4 != TitleTxt5 )
+```
+
+**NOTES:**
+
+VICE PRESIDENT MEMBERSHIP --> VICE PRESIDENT OF MEMBERSHPIP? 
+VICE PRESIDENT VOLUNTEERS --> VICE PRESIDENT OF VOLUNTEERS?
+
+Inspect all to see if there are cases where spelling was not corrected and it should be. 
+
+```{r}
+df[ c("TitleTxt4","TitleTxt5") ] 
+```
+
+
+
+### 06 Generate Status Codes 
+
+```
+gen_status_codes()
+¦
++-- categorize_miscellaneous()
+¦   
+¦   +-- identify_sched_o()
+¦   +-- identify_at_large()
+¦   +-- identify_as_needed()
+¦   +-- identify_ex_officio
+¦   +-- identify_co
+¦   +-- filter_regional
+¦   +-- remove_numbers
+¦
++-- categorize_qualifiers()
+¦   +-- standardize_qualifiers()  
+
+```
+
+
+#### Assets 
+
+```{r, eval=F}
+
+# print lists of words
+# used for status mapping 
+former-words.rda: 
+future-words.rda: 
+interim-words.rda: 
+regional-words.rda: 
+possible-regional-list.rda: 
+
+# is this used still?   
+status-mapping.rda:
+```
+
+
+#### Function Demo 
+
+```{r}
+df <- 
+  df.sample %>% 
+  standardize_df() %>% 
+  remove_dates() %>% 
+  standardize_conj() %>%   
+  split_titles() %>% 
+  standardize_spelling() %>%   
+  gen_status_codes() 
+
+df[ c("TitleTxt5","TitleTxt6") ]
+```
+
+
+Status codes: 
+
+```{r}
+df$REGIONAL    <- as.numeric( df$REGIONAL)
+df$FUTURE      <- as.numeric( df$FUTURE )
+df$FORMER      <- as.numeric( df$FORMER )
+df$INTERIM     <- as.numeric( df$INTERIM )
+  
+keep <- 
+  c("Num.Title", "TITLE_RAW", "TitleTxt6", 
+    "date.x", "SCHED.O", "SCHED.AT.LARGE", 
+    "AS.NEEDED", "EX.OFFICIO", "CO",  
+    "REGIONAL",  "FUTURE", "FORMER", "INTERIM" )
+
+df[ keep ]
+```
+
+**NOTES:**
+
+Make all status code boolean. 
+
+
+
+
+### 07 Standardize Titles 
+
+Map all of the current titles onto a standardized list. 
+
+```
+standardize_titles()
+```
+
+#### Assets
+
+```{r}
+googlesheets4::gs4_deauth()
+df.standard <- googlesheets4::read_sheet( "1iYEY2HYDZTV0uvu35UuwdgAUQNKXSyab260pPPutP1M", 
+                                          sheet="title-standardization", range="A:B",
+                                          col_types = "c" )  # c = character
+
+df.standard <- df.standard[ c("title.standard","title.variant") ] 
+
+df.standard %>% 
+  unique( ) %>% 
+  arrange( title.standard, title.variant )
+```
+
+
+#### Function Demo 
+
+```{r}
+df <- 
+  df.sample %>% 
+  standardize_df() %>% 
+  remove_dates() %>% 
+  standardize_conj() %>%   # condition has length > 1
+  split_titles() %>% 
+  standardize_spelling() %>%   # condition has length > 1
+  gen_status_codes() %>% 
+  standardize_titles() 
+
+df[ c("TITLE_RAW","TitleTxt6","title.standard")]
+```
+
+
+### 08 Categorize Titles 
+
+Apply the category codes for domain and status hierarchies to the standardized versions of the title. 
+
+```
+categorize_titles()
+```
+
+#### Function Demo 
+
+```{r}
+df <- 
+  df.sample %>% 
+  standardize_df() %>% 
+  remove_dates() %>% 
+  standardize_conj() %>%   # condition has length > 1
+  split_titles() %>% 
+  standardize_spelling() %>%   # condition has length > 1
+  gen_status_codes() %>% 
+  standardize_titles() %>%
+  categorize_titles()
+
+reorder_df( df )
+```
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+
+td{ padding: 6px 10px 6px 10px } 
+th{ text-align: left; } 
+h1, h3, h4 { color: #995c00; }
+h1,h2 { margin-top:50px; }
+body{
+     font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+     font-size:calc(1.5em + 0.25vw);
+     font-weight:300;line-height:1.65;
+     margin-left:20%;
+     margin-right:20% }
+     
+</style>

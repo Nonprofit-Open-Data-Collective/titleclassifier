@@ -47,10 +47,9 @@ identify_sched_o <- function(TitleTxt){
 #' 
 #' @export
 identify_at_large <- function(TitleTxt){
-  at.large.present <- grepl("\\bAT LARGE\\b",TitleTxt) #boolean flag
-  if(!at.large.present) 
-    at.large.present <- grepl("\\bAT LG\\b",TitleTxt) #variant
-  
+  at.large.1 <- grepl("\\bAT LARGE\\b",TitleTxt) #boolean flag
+  at.large.2 <- grepl("\\bAT LG\\b",TitleTxt)    #variant
+  at.large.present <- at.large.1 | at.large.2
   return(at.large.present)
 }
 
@@ -72,12 +71,14 @@ identify_as_needed <- function(TitleTxt){
 #' 
 #' @export
 identify_ex_officio <- function(TitleTxt){
-  #if ex-officio is just the title
-  if(!is.na(TitleTxt) && TitleTxt == "EX-OFFICIO"){
-    return(FALSE)
-  }
+
+  condition.01 <- grepl( "\\bEX-OFFICIO\\b", TitleTxt )  # contains ex-officio
+  condition.02 <- TitleTxt == "EX-OFFICIO"  # is exactly ex-officio and no other ttles
   
-  return(grepl("\\bEX-OFFICIO\\b",TitleTxt))
+  # needs to contain ex-officio but can't be the only title 
+  is.ex.officio <- condition.01 & ! condition.02
+  
+  return( is.ex.officio )
 }
 
 #' @title identify co- function
@@ -278,6 +279,7 @@ categorize_qualifiers <- function(comp.data, title = "TitleTxt6"){
     comp.table$FUTURE <- 0 #most likely = from until
   }
   
+  TitleTxt <- trimws( TitleTxt )
   comp.table$TitleTxt6 <- TitleTxt
   
   return(comp.table)
