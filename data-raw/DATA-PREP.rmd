@@ -1,0 +1,331 @@
+---
+title: 'Data Preparation'
+output: 
+  html_document:
+    theme: readable
+    df_print: paged
+    highlight: tango
+    toc: true
+    self_contained: true
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set( echo = TRUE, message=F, warning=F, fig.width=10 )
+
+library( dplyr )
+library( pander )
+library( titleclassifier )
+```
+
+
+
+
+
+# Data Assets
+
+
+The following internal datasets are used by functions within the package for mapping and disambiguation purposes:
+
+**Disambiguation Lists:**
+
+- likely.subjects: used in **fix_of()**  
+- likely.titles: used in **???()**  
+- possible.titles: used in **???()** 
+
+
+- all.titles: ARE WE STILL USING THIS? (from old title mapping function)
+
+PLEASE UPDATE THESE TOO: 
+
+https://github.com/Nonprofit-Open-Data-Collective/titleclassifier/edit/main/R/data.R
+
+
+
+**Status Words:** 
+
+Titles are often accompanied by some adjective describing a temporary or temporal period in which the person holds the title. These phrases are removed from the titles and flags are created for each. 
+
+These are used in the gen_status_codes() step: 
+
+https://github.com/Nonprofit-Open-Data-Collective/titleclassifier/blob/main/R/06-gen-status-codes.R
+
+- former.words
+- future.words
+- interim.words
+- regional.words
+- possible.regional-list 
+
+
+**Demo Data:**
+
+Sample datasets for development and testing purposes: 
+
+- tinypartvii
+- rawtitles
+
+
+
+ 
+
+
+For example, the **former.word** objects are used to create the "former" flag to designate that an individual is a former or outgoing status in her/his position:
+
+
+```{r, eval=F}
+data( former.words ) %>% head() 
+```
+
+## Internal Data Objects 
+
+
+Import from raw version (list stored in .R file in data-raw?), preview, then save an .rda version in the data folder. 
+
+### Likely Titles 
+
+```{r}
+likely.titles <- 
+c("PRESIDENT", "CEO", "DIRECTOR\\b", "CHAIR", "TRUSTEE\\b", "TREASURER", 
+"SECRETARY", "OFFICER", "COUNSEL", "FOUNDER", "PUBLISHER", "EDITOR\\b", 
+"MEMBER\\b", "\\bCOO\\b", "CFO", "MANAGER", "\\bCTO\\b", "ADMINISTRATOR", 
+"\\bCRO\\b", "CURATOR", "TEACHER", "CLERK", "CONTROLLER", "LIAISON", 
+"INSTRUCTOR", "GENERAL", "COMPTROLLER", "HISTORIAN", "ADVISOR", 
+"ARTISTIC", "KEEPER", "CHOREOGRAPHER", "EXECUTIVE\\s*$", "CHAPLAIN", 
+"\\bCMO\\b", "WEBMASTER", "ASSISTANT\\s*$", "DEAN", "GOVERNOR", 
+"SERGEANT", "\\bCAO\\b", "^\\bCHIEF\\b$", "WARDEN", "MASTER", 
+"MATRON", "CONDUCTOR", "REPRESENTATIVE", "COORDINATOR", "ACCOUNTANT"
+)
+```
+
+```{r}
+dump( "likely.titles", file="likely-titles.R" )
+save( likely.titles, file="../data/likely-titles.rda" )
+```
+
+
+### Likely Subjects
+
+Used in the **fix_of()** function: 
+
+https://github.com/Nonprofit-Open-Data-Collective/titleclassifier/blob/main/R/05-standardize-spelling.R
+
+
+```{r}
+likely.subjects <- 
+c("OPERATIONS", "FINANCE", "ADMINISTRATION", "MANAGEMENT", "EXHIBIT", 
+"PUBLICITY", "ACTIVITIES", "BUILDING", "EDUCATION", "MARKETING", 
+"STRATEGY", "SALES", "ENSHRINEMENT", "ADVANCEMENT", "FUNDRAISING", 
+"COMMUNICATION", "PRODUCT", "CONSULTING", "TECHNOLOGY", "DEVELOPMENT", 
+"GROUNDS", "\\bART", "MUSIC", "ENGINEERING", "BUSINESS", "DESIGN", 
+"EXPERIENCE", "CULTURE", "\\bLAB", "AFFAIR", "BRANDING", "INTERNAL", 
+"PUBLIC", "EXTERNAL", "PROMOTION", "HUMAN RESOURCES", "LEGAL", 
+"RESEARCH", "TRANSPORTATION", "FELLOWSHIP", "FOUNDATION", "EVENT", 
+"COLLECTION", "SCHOOL", "ASSOCIATION", "RADIO", "TV", "COMMITTEE", 
+"MEMBERSHIP")
+
+```
+
+```{r}
+dump( "likely.subjects", file="likely-subjects.R" )
+save( likely.subjects, file="../data/likely-subjects.rda" )
+```
+
+
+## Google Sheets Data Objects 
+
+These data are imported into the package via tables in a shared public Google Sheet: 
+
+https://docs.google.com/spreadsheets/d/1iYEY2HYDZTV0uvu35UuwdgAUQNKXSyab260pPPutP1M/edit?usp=sharing
+
+These can be edited online and re-imported to update the title parsing functions. 
+
+
+
+### Standardized Titles 
+
+```{r}
+googlesheets4::gs4_deauth()
+df.standard <- googlesheets4::read_sheet( "1iYEY2HYDZTV0uvu35UuwdgAUQNKXSyab260pPPutP1M", 
+                                          sheet="title-standardization", range="A:B",
+                                          col_types = "c" )  # c = character
+
+# fix: empty cells interpreted as NA by googlesheets4
+df.standard[ is.na( df.standard ) ] <- ""
+df.standard <- unique( df.standard )
+
+df.standard %>% 
+  select( title.standard, title.variant ) %>% 
+  group_by( title.standard ) %>% 
+  mutate( variants=n() ) %>% 
+  arrange( -variants, title.standard ) %>% 
+  pander()
+```
+
+
+```{r}
+write.csv( df.standard, "title-standard-v.csv" )
+save( df.standard, file="../data/former-words.rda" )
+```
+
+
+
+### Position Status
+
+Many titles include qualifiers about the time-frame of the position.  
+
+```{r}
+
+df.status <- googlesheets4::read_sheet( "1iYEY2HYDZTV0uvu35UuwdgAUQNKXSyab260pPPutP1M", 
+                                          sheet="status-codes", range="A:B",
+                                          col_types = "c" )  # c = character
+
+head( df.status )
+
+table( df.status$status.qualifier )
+```
+
+#### REGION 
+
+```{r}
+# how do we go from 
+
+df.region <- filter( df.status, status.qualifier == "regional" )
+
+regional.words <- df.region$status.variant %>% unique()
+
+regional.words
+```
+
+
+[ if it is a list with formatting save as R file instead of csv ]
+
+```{r}
+dump( list="regional.words", file="regional-words.R" )
+save( regional.words, file="../data/regional-words.rda" )
+```
+
+
+**possible.region.list**
+
+```{r}
+possible.regional.list <- 
+c("VICE PRESIDENT", "PRESIDENT", "BOARD MEMBER", "COUNCIL MEMBER", 
+"MEMBER", "REPRESENTATIVE", "COORDINATOR", "CEO", "DIRECTOR", 
+"MANAGER", "TRUSTEE", "CHAIR", "LIAISON")
+```
+
+```{r}
+dump( list="possible.regional.list", file="possible-regional-list.R" )
+save( possible.regional.list, file="../data/possible-regional-list.rda" )
+```
+
+
+#### FORMER
+
+```{r, eval=F, echo=F}
+# how do we go from 
+
+df.former <- filter( df.status, status.qualifier == "FORMER" )
+
+former.words <- df.former$status.variant %>% unique()
+  
+# to this: ???
+
+former.words <- 
+  c( "\\bFORMER\\b", "\\bPAST\\b", "\\bEMERITUS\\b", "\\bUNTIL\\b", 
+     "\\bTIL\\b", "\\bLEFT\\b", "\\bLEAVING\\b", "\\bTERM ENDED\\b", 
+     "\\bTERM END\\b", "\\bTERM EXPIRED\\b", "\\bEXPIRED\\b", "\\bENDED\\b", 
+     "\\bEND$", "\\bEXPIRE\\b", "\\bENDING\\b", "\\bRETIRED\\b", "\\bRETIRING\\b", 
+     "\\bRESIGN\\b", "\\bRESIGNING\\b", "\\bRESIGNED\\b", "\\bCEASED\\b", 
+     "\\bPRIOR\\b", "\\bPREVIOUS\\b", "\\bTHRU\\b", "\\bTHROUGH\\b", 
+     "\\bOUTGOING\\b", "\\bEX\\s", "\\bEX$", "\\bTHR\\b", "\\bROLLED OFF\\b"
+  )
+
+```
+
+
+```{r}
+# fine if you 
+former.words <- 
+  c( "\\bFORMER\\b", "\\bPAST\\b", "\\bEMERITUS\\b", "\\bUNTIL\\b", 
+     "\\bTIL\\b", "\\bLEFT\\b", "\\bLEAVING\\b", "\\bTERM ENDED\\b", 
+     "\\bTERM END\\b", "\\bTERM EXPIRED\\b", "\\bEXPIRED\\b", "\\bENDED\\b", 
+     "\\bEND$", "\\bEXPIRE\\b", "\\bENDING\\b", "\\bRETIRED\\b", "\\bRETIRING\\b", 
+     "\\bRESIGN\\b", "\\bRESIGNING\\b", "\\bRESIGNED\\b", "\\bCEASED\\b", 
+     "\\bPRIOR\\b", "\\bPREVIOUS\\b", "\\bTHRU\\b", "\\bTHROUGH\\b", 
+     "\\bOUTGOING\\b", "\\bEX\\s", "\\bEX$", "\\bTHR\\b", "\\bROLLED OFF\\b"
+  )
+```
+
+
+
+```{r}
+dump( list="former.words", file="former-words.R" )
+save( former.words, file="../data/former-words.rda" )
+```
+
+
+#### INTERIM 
+
+
+ 
+## Demo Data 
+
+The package includes some IRS 990 Part VII data for development and demonstration purposes. 
+
+
+
+**Data Dictionary:**
+
+* OBJECT_ID - id of the xml object storing return data 
+* URL - online location of the raw XML form from which data was derived
+* EIN - employee identification number 
+* NAME - organization's name 
+* TAXYR - tax year of the data 
+* FORMTYPE - type of IRS 990 form completed (990 or 990EZ)
+* F9_07_COMP_DTK_NAME_PERS - director, trustee or key employee name 
+* F9_07_COMP_DTK_TITLE - title 
+* F9_07_COMP_DTK_AVE_HOUR_WEEK - hours worked per week over tax period  
+* F9_07_COMP_DTK_AVE_HOUR_WEEK_RL - hours worked for a related entity 
+* F9_07_COMP_DTK_COMP_ORG - direct compensation from the nonprofit (salary or wages) 
+* F9_07_COMP_DTK_COMP_RLTD - compensated received from a related entity 
+* F9_07_COMP_DTK_COMP_OTH - other compensation amount received (bonus, fringe)
+* F9_07_COMP_DTK_EMPL_BEN - compensation amount in benefits 
+* F9_07_COMP_DTK_POS_FORMER_X - checkbox designating former status 
+* F9_07_COMP_DTK_POS_HIGH_COMP_X - highly-compensated individual checkbox
+* F9_07_COMP_DTK_POS_OFF_X - officer checkbox 
+* F9_07_COMP_DTK_POS_INDIV_TRUST_X - individual trustee checkbox 
+* F9_07_COMP_DTK_POS_KEY_EMPL_X - key employee checkbox 
+* F9_07_COMP_DTK_POS_INST_TRUST_X - institutional trustee checkbox 
+
+
+
+```{r}
+data( tinypartvii ) # 10,000 rows of part vii data
+head( tinypartvii )
+```
+
+
+
+
+
+
+
+
+
+
+
+<style>
+
+td{ padding: 6px 10px 6px 10px } 
+th{ text-align: left; } 
+h1, h3, h4 { color: #995c00; }
+h1,h2, h3 { margin-top:50px; }
+body{
+     font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+     font-size:calc(1.5em + 0.25vw);
+     font-weight:300;line-height:1.65;
+     margin-left:20%;
+     margin-right:20% }
+     
+</style>

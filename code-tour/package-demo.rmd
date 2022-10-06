@@ -129,7 +129,7 @@ The package includes some IRS 990 Part VII data for development and demonstratio
 ```{r}
 data( tinypartvii ) # 10,000 rows of part vii data
 
-head( tinypartvii ) %>% pander()
+head( tinypartvii )
 ```
 
 **Data Dictionary:**
@@ -182,7 +182,7 @@ The package includes additional data that is used by functions for cleaning and 
 **NOTE:** We need to export these: 
 
 ```{r, eval=F}
-data( former.words  ) %>% head() %>% pander()
+data( former.words  ) %>% head() 
 ```
 
 
@@ -219,7 +219,7 @@ reorder_df <- function( df )
       "F9_07_COMP_DTK_POS_KEY_EMPL_X", "F9_07_COMP_DTK_POS_INST_TRUST_X", 
       "F9_07_COMP_DTK_POS_HIGH_COMP_X", "F9_07_COMP_DTK_EMPL_BEN", 
       "F9_07_COMP_DTK_POS_FORMER_X",  
-      "date.x",  "Num.Title", "SCHED.O", "SCHED.AT.LARGE", "AS.NEEDED", "EX.OFFICIO", 
+      "date.x",  "Num.Titles", "SCHED.O", "SCHED.AT.LARGE", "AS.NEEDED", "EX.OFFICIO", 
       "CO", "REGIONAL", "FUTURE", "FORMER", "INTERIM", "domain.category", 
       "domainl.label", "soc.label", "major.group", "minor.group", "broad.group", 
       "detailed.occupation", "emp", "ceo", "c.level", "dir.vp", "mgr", 
@@ -281,8 +281,8 @@ df
 
 
 ```{r, echo=F}
-df <- lapply( df, as.character )
-write.csv( x=as.data.frame(df), file="PACKAGE-DEMO.csv", row.names=F )
+df <- lapply( df, as.character ) %>% as.data.frame()
+write.csv( df, file="PACKAGE-DEMO.csv", row.names=F )
 ```
 
 #### Problem cases: 
@@ -315,7 +315,8 @@ nrow( df.standard )
 df.standard %>% 
   group_by( title.variant ) %>% 
   filter( n() > 1 ) %>% 
-  arrange( title.variant )
+  arrange( title.variant ) %>% 
+  pander()
 ```
 
 Why are these cases uncoded? 
@@ -326,10 +327,13 @@ keep <- c("PNAME", "TOT.HOURS", "TOT.COMP", "TITLE_RAW",
   
 df[ is.na( df$title.standard) , keep ]
 ```
+
 Spacing is problematic - causing merges to break on some cases like PRESIDENT & CEO. 
 
+
+
 ```{r}
-df2 <- df[ is.na( df$title.standard) , keep ]
+df2 <- df[ is.na( df$title.standard ) , keep ]
 df2$TitleTxt6
 #  [1] "VICE PRESIDENT OF COMMUNICATIONS LEADERSHIP" "BOARD MEMBER TREASURER AND CFO"             
 #  [3] "VICE PRESIDENT OF SHARED SERVICES"           "CHIEF MEDICAL OFFICER"                      
@@ -386,7 +390,7 @@ df <-
   standardize_df() %>% 
   remove_dates() 
 
-df$TitleTxt2
+paste0( df$TITLE_RAW, "    -->    ", df$TitleTxt2 ) %>% knitr::kable()
 ```
 
 
@@ -415,7 +419,7 @@ df <-
   remove_dates() %>% 
   standardize_conj() 
 
-df[ c("TITLE_RAW","TitleTxt2","TitleTxt3") ]
+df[ c("TITLE_RAW","TitleTxt2","TitleTxt3") ]  %>% knitr::kable()
 ```
 
 
@@ -435,8 +439,9 @@ split_titles()
 ¦       +-- standardize_space()
 ```
 
-#### Function Demo 
 
+
+#### Function Demo 
 
 ```{r}
 df <- 
@@ -446,12 +451,14 @@ df <-
   standardize_conj() %>%  
   split_titles() 
 
-df[ c("F9_07_COMP_DTK_NAME_PERS","Num.Title","TITLE_RAW","TitleTxt3","TitleTxt4") ] %>% 
+df[ c("F9_07_COMP_DTK_NAME_PERS","Num.Titles","TITLE_RAW","TitleTxt4","TitleTxt3") ] %>% 
   dplyr::rename( PNAME = F9_07_COMP_DTK_NAME_PERS ) %>%
   group_by( PNAME ) %>% 
-  mutate( N=max(Num.Title) ) %>% 
+  mutate( N=max(Num.Titles) ) %>% 
   dplyr::arrange( desc(N), PNAME )
 ```
+
+
 
 
 ### 05 Standardize Spelling
@@ -544,7 +551,7 @@ VICE PRESIDENT VOLUNTEERS --> VICE PRESIDENT OF VOLUNTEERS?
 Inspect all to see if there are cases where spelling was not corrected and it should be. 
 
 ```{r}
-df[ c("TitleTxt4","TitleTxt5") ] 
+df[ c("TitleTxt4","TitleTxt5") ] %>% knitr::kable() 
 ```
 
 
@@ -612,7 +619,7 @@ df$FORMER      <- as.numeric( df$FORMER )
 df$INTERIM     <- as.numeric( df$INTERIM )
   
 keep <- 
-  c("Num.Title", "TITLE_RAW", "TitleTxt6", 
+  c("Num.Titles", "TITLE_RAW", "TitleTxt6", 
     "date.x", "SCHED.O", "SCHED.AT.LARGE", 
     "AS.NEEDED", "EX.OFFICIO", "CO",  
     "REGIONAL",  "FUTURE", "FORMER", "INTERIM" )
@@ -709,7 +716,7 @@ reorder_df( df )
 td{ padding: 6px 10px 6px 10px } 
 th{ text-align: left; } 
 h1, h3, h4 { color: #995c00; }
-h1,h2 { margin-top:50px; }
+h1,h2, h3 { margin-top:50px; }
 body{
      font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
      font-size:calc(1.5em + 0.25vw);

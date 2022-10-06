@@ -77,7 +77,7 @@ identify_split_num <- function(x){
   TitleTxt[grepl("^\\s*SEC[A-Z]*\\s*TREAS[A-Z]*\\b$", TitleTxt)] <-
     "SECRETARY & TREASURER"
   
-  return(str_count(TitleTxt,"&")+1)
+  return( stringr::str_count(TitleTxt,"&")+1 )
 }
 
 
