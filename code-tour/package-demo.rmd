@@ -128,32 +128,31 @@ The package includes some IRS 990 Part VII data for development and demonstratio
 
 ```{r}
 data( tinypartvii ) # 10,000 rows of part vii data
-
 head( tinypartvii )
 ```
 
 **Data Dictionary:**
 
-* OBJECT_ID
-* EIN", 
-* NAME", 
-* TAXYR", 
-* FORMTYPE", 
-* URL", 
-* F9_07_COMP_DTK_NAME_PERS", 
-* F9_07_COMP_DTK_TITLE", 
-* F9_07_COMP_DTK_AVE_HOUR_WEEK", 
-* F9_07_COMP_DTK_AVE_HOUR_WEEK_RL", 
-* F9_07_COMP_DTK_POS_INDIV_TRUST_X", 
-* F9_07_COMP_DTK_POS_OFF_X", 
-* F9_07_COMP_DTK_COMP_ORG", 
-* F9_07_COMP_DTK_COMP_RLTD", 
-* F9_07_COMP_DTK_COMP_OTH", 
-* F9_07_COMP_DTK_POS_KEY_EMPL_X", 
-* F9_07_COMP_DTK_POS_INST_TRUST_X", 
-* F9_07_COMP_DTK_POS_HIGH_COMP_X", 
-* F9_07_COMP_DTK_EMPL_BEN", 
-* F9_07_COMP_DTK_POS_FORMER_X
+* **OBJECT_ID** - id of the xml object storing return data 
+* **URL** - online location of the raw XML form from which data was derived
+* **EIN** - employee identification number 
+* **NAME** - organization's name 
+* **TAXYR** - tax year of the data 
+* **FORMTYPE** - type of IRS 990 form completed (990 or 990EZ)
+* **F9_07_COMP_DTK_NAME_PERS** - director, trustee or key employee name 
+* **F9_07_COMP_DTK_TITLE** - title 
+* **F9_07_COMP_DTK_AVE_HOUR_WEEK** - hours worked per week over tax period  
+* **F9_07_COMP_DTK_AVE_HOUR_WEEK_RL** - hours worked for a related entity 
+* **F9_07_COMP_DTK_COMP_ORG** - direct compensation from the nonprofit (salary or wages) 
+* **F9_07_COMP_DTK_COMP_RLTD** - compensated received from a related entity 
+* **F9_07_COMP_DTK_COMP_OTH** - other compensation amount received (bonus, fringe)
+* **F9_07_COMP_DTK_EMPL_BEN** - compensation amount in benefits 
+* **F9_07_COMP_DTK_POS_FORMER_X** - checkbox designating former status 
+* **F9_07_COMP_DTK_POS_HIGH_COMP_X** - highly-compensated individual checkbox
+* **F9_07_COMP_DTK_POS_OFF_X** - officer checkbox 
+* **F9_07_COMP_DTK_POS_INDIV_TRUST_X** - individual trustee checkbox 
+* **F9_07_COMP_DTK_POS_KEY_EMPL_X** - key employee checkbox 
+* **F9_07_COMP_DTK_POS_INST_TRUST_X** - institutional trustee checkbox 
 
 
 
@@ -161,21 +160,45 @@ head( tinypartvii )
 ## Necessary Data
 
 
+
 The following internal datasets are used by functions within the package for mapping and disambiguation purposes:
 
+**Disambiguation Lists:**
 
-[we need to describe these]
+- likely.subjects: used in **fix_of()**  
+- likely.titles: used in **???()**  
+- possible.titles: used in **???()** 
 
-- all-titles.rda: 
-- former-words.rda: 
-- future-words.rda: 
-- interim-words.rda: 
-- likely-subjects.rda: 
-- likely-titles.rda: 
-- possible-regional-list.rda: 
-- possible-titles.rda: 
-- regional-words.rda: 
-- status-mapping.rda: 
+
+- all.titles: ARE WE STILL USING THIS? (from old title mapping function)
+
+PLEASE UPDATE THESE TOO: 
+
+https://github.com/Nonprofit-Open-Data-Collective/titleclassifier/edit/main/R/data.R
+
+
+
+**Status Words:** 
+
+Titles are often accompanied by some adjective describing a temporary or temporal period in which the person holds the title. These phrases are removed from the titles and flags are created for each. 
+
+These are used in the gen_status_codes() step: 
+
+https://github.com/Nonprofit-Open-Data-Collective/titleclassifier/blob/main/R/06-gen-status-codes.R
+
+- former.words
+- future.words
+- interim.words
+- regional.words
+- possible.regional-list 
+
+
+**Demo Data:**
+
+Sample datasets for development and testing purposes: 
+
+- tinypartvii
+- rawtitles
 
 The package includes additional data that is used by functions for cleaning and assignment processes. 
 
