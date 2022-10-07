@@ -217,11 +217,10 @@ df.region <- filter( df.status, status.qualifier == "regional" )
 
 regional.words <- df.region$status.variant %>% unique()
 
-regional.words
+sort( regional.words )
 ```
 
 
-[ if it is a list with formatting save as R file instead of csv ]
 
 ```{r}
 dump( list="regional.words", file="regional-words.R" )
@@ -269,7 +268,7 @@ former.words <-
 
 
 ```{r}
-# fine if you 
+ 
 former.words <- 
   c( "\\bFORMER\\b", "\\bPAST\\b", "\\bEMERITUS\\b", "\\bUNTIL\\b", 
      "\\bTIL\\b", "\\bLEFT\\b", "\\bLEAVING\\b", "\\bTERM ENDED\\b", 
@@ -301,26 +300,26 @@ The package includes some IRS 990 Part VII data for development and demonstratio
 
 **Data Dictionary:**
 
-* OBJECT_ID - id of the xml object storing return data 
-* URL - online location of the raw XML form from which data was derived
-* EIN - employee identification number 
-* NAME - organization's name 
-* TAXYR - tax year of the data 
-* FORMTYPE - type of IRS 990 form completed (990 or 990EZ)
-* F9_07_COMP_DTK_NAME_PERS - director, trustee or key employee name 
-* F9_07_COMP_DTK_TITLE - title 
-* F9_07_COMP_DTK_AVE_HOUR_WEEK - hours worked per week over tax period  
-* F9_07_COMP_DTK_AVE_HOUR_WEEK_RL - hours worked for a related entity 
-* F9_07_COMP_DTK_COMP_ORG - direct compensation from the nonprofit (salary or wages) 
-* F9_07_COMP_DTK_COMP_RLTD - compensated received from a related entity 
-* F9_07_COMP_DTK_COMP_OTH - other compensation amount received (bonus, fringe)
-* F9_07_COMP_DTK_EMPL_BEN - compensation amount in benefits 
-* F9_07_COMP_DTK_POS_FORMER_X - checkbox designating former status 
-* F9_07_COMP_DTK_POS_HIGH_COMP_X - highly-compensated individual checkbox
-* F9_07_COMP_DTK_POS_OFF_X - officer checkbox 
-* F9_07_COMP_DTK_POS_INDIV_TRUST_X - individual trustee checkbox 
-* F9_07_COMP_DTK_POS_KEY_EMPL_X - key employee checkbox 
-* F9_07_COMP_DTK_POS_INST_TRUST_X - institutional trustee checkbox 
+* **OBJECT_ID** - id of the xml object storing return data 
+* **URL** - online location of the raw XML form from which data was derived
+* **EIN** - employee identification number 
+* **NAME** - organization's name 
+* **TAXYR** - tax year of the data 
+* **FORMTYPE** - type of IRS 990 form completed (990 or 990EZ)
+* **F9_07_COMP_DTK_NAME_PERS** - director, trustee or key employee name 
+* **F9_07_COMP_DTK_TITLE** - title 
+* **F9_07_COMP_DTK_AVE_HOUR_WEEK** - hours worked per week over tax period  
+* **F9_07_COMP_DTK_AVE_HOUR_WEEK_RL** - hours worked for a related entity 
+* **F9_07_COMP_DTK_COMP_ORG** - direct compensation from the nonprofit (salary or wages) 
+* **F9_07_COMP_DTK_COMP_RLTD** - compensated received from a related entity 
+* **F9_07_COMP_DTK_COMP_OTH** - other compensation amount received (bonus, fringe)
+* **F9_07_COMP_DTK_EMPL_BEN** - compensation amount in benefits 
+* **F9_07_COMP_DTK_POS_FORMER_X** - checkbox designating former status 
+* **F9_07_COMP_DTK_POS_HIGH_COMP_X** - highly-compensated individual checkbox
+* **F9_07_COMP_DTK_POS_OFF_X** - officer checkbox 
+* **F9_07_COMP_DTK_POS_INDIV_TRUST_X** - individual trustee checkbox 
+* **F9_07_COMP_DTK_POS_KEY_EMPL_X** - key employee checkbox 
+* **F9_07_COMP_DTK_POS_INST_TRUST_X** - institutional trustee checkbox 
 
 
 
