@@ -19,12 +19,19 @@ require(dplyr)
 #' @export
 categorize_titles <- function( comp.data )
 {
+  
   googlesheets4::gs4_deauth()
-  d.taxonomy <- googlesheets4::read_sheet( "1iYEY2HYDZTV0uvu35UuwdgAUQNKXSyab260pPPutP1M", 
-                                      sheet="title-mapping-xiaofei", range="A:T",
-                                      col_types = "c" )  # c = character
+  google.id <- "1iYEY2HYDZTV0uvu35UuwdgAUQNKXSyab260pPPutP1M"
+  d.taxonomy <- 
+    googlesheets4::read_sheet(  google.id,
+                                sheet="title-taxonomy", range="A:T",
+                                col_types = "c" )  # c = character
   d.taxonomy[ is.na( d.taxonomy ) ] <- ""
-  comp.data <- merge( comp.data, d.taxonomy, by.x="title.standard", by.y="title.standard", all.x=T )
+  
+  comp.data <- merge( comp.data, d.taxonomy, 
+                     by.x="title.standard", by.y="title.standard", 
+                     all.x=T )
+  
   return( comp.data )
 }
 
