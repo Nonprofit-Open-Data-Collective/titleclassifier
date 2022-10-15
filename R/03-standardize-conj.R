@@ -18,12 +18,16 @@ standardize_conj <- function(comp.data, title = "TitleTxt2"){
   TitleTxt <- standardize_slash(TitleTxt)
   TitleTxt <- standardize_and(TitleTxt) #repeated bc of possible standardization changes
   TitleTxt <- standardize_separator(TitleTxt)
-  while(grepl("\\bAND AND\\b",TitleTxt))
-    TitleTxt <- gsub("\\bAND AND\\b", "AND", TitleTxt)
-  while(grepl("\\OF OF\\b",TitleTxt))
-    TitleTxt <- gsub("\\bOF OF\\b", "OF", TitleTxt)
-  while(grepl("\\TO TO\\b",TitleTxt))
-    TitleTxt <- gsub("\\bTO TO\\b", "TO", TitleTxt)
+  TitleTxt <- standardize_and(TitleTxt)
+  
+  for(i in 1:5){
+  TitleTxt <- ifelse(grepl("\\bAND AND\\b",TitleTxt), 
+                     gsub("\\bAND AND\\b", "AND", TitleTxt), TitleTxt)
+  TitleTxt <- ifelse(grepl("\\OF OF\\b",TitleTxt), 
+                     gsub("\\bOF OF\\b", "OF", TitleTxt), TitleTxt)
+  TitleTxt <- ifelse(grepl("\\TO TO\\b",TitleTxt), 
+                     gsub("\\bTO TO\\b", "OF", TitleTxt), TitleTxt)
+  }
   
   #"the" can safely be removed
   TitleTxt <- gsub("\\bTHE\\b", "", TitleTxt)
@@ -54,9 +58,39 @@ standardize_conj <- function(comp.data, title = "TitleTxt2"){
 #' @export
 standardize_and <- function(TitleTxt){
   
-  and_true <- FALSE # "and" not used as separator in raw
-  amp_true <- TRUE # & used as separator in raw
-  if(grepl("\\bAND\\b",TitleTxt)){
+  # "and" not used as separator in raw
+  and_true <- ifelse(grepl("\\bAND\\b",TitleTxt),
+                     unlist(lapply(TitleTxt, and_helper)),FALSE)
+  
+  # & used as separator in raw
+  amp_true <- ifelse(grepl("&",TitleTxt), 
+                     unlist(lapply(TitleTxt, amp_helper)),TRUE)
+  
+  TitleTxt <- ifelse(and_true, gsub("\\bAND\\b","&",TitleTxt), TitleTxt)
+  TitleTxt <- ifelse(!amp_true, gsub("&", " AND ", TitleTxt), TitleTxt)
+  
+  TitleTxt <- gsub( "&"," & ",TitleTxt ) 
+  TitleTxt <- gsub( "  "," ",TitleTxt ) # replace double space with single
+  
+  return(TitleTxt)
+}
+
+#' @title 
+#' and standardization helper function
+#' 
+#' @description 
+#' operates on a singular title level
+#' splits it, checks that if both/all sub titles are valid titles, 
+#' then returns a boolean whether and was used as a title separator
+#' later lapply-ed for standardize_and usage
+#' 
+#' as opposed to & its default is false
+#' 
+#' @export
+and_helper <- function(x){
+  TitleTxt <- x
+  and_true <- FALSE
+  if(grepl("\\bAND\\b", TitleTxt)){
     and_split <- unlist(strsplit(TitleTxt,"\\bAND\\b"))
     and_true <- TRUE
     for(i in 1:length(and_split)){
@@ -69,8 +103,26 @@ standardize_and <- function(TitleTxt){
       and_true <- and_true & titlePresent
     }
   }
-  
-  if(grepl("&",TitleTxt)){
+  return(and_true)
+}
+
+
+#' @title 
+#' ampersand standardization helper function
+#' 
+#' @description 
+#' operates on a singular title level
+#' splits it, checks that if both/all sub titles are valid titles, 
+#' then returns a boolean whether and was used as a title separator
+#' later lapply-ed for standardize_and usage
+#' 
+#' as opposed to and, its default is true
+#' 
+#' @export
+amp_helper <- function(x){
+  TitleTxt <- x
+  amp_true <- TRUE
+  if(grepl("&", TitleTxt)){
     amp_split <- unlist(strsplit(TitleTxt,"&"))
     amp_true <- TRUE
     for(i in 1:length(amp_split)){
@@ -83,14 +135,7 @@ standardize_and <- function(TitleTxt){
       amp_true <- amp_true & titlePresent
     }
   }
-  
-  if(and_true) TitleTxt <- gsub("\\bAND\\b","&",TitleTxt)
-  if(!amp_true) TitleTxt <- gsub("&", " AND ", TitleTxt)
-  
-  TitleTxt <- gsub( "&"," & ",TitleTxt ) 
-  TitleTxt <- gsub( "  "," ",TitleTxt ) # replace double space with single
-  
-  return(TitleTxt)
+  return(amp_true)
 }
 
 
@@ -111,6 +156,25 @@ standardize_and <- function(TitleTxt){
 standardize_to <- function(TitleTxt){
   
   #if "to" is in inside parentheses, almost certainly it was part of a date
+  TitleTxt <- ifelse(grepl("\\(",TitleTxt) & grepl("\\)",TitleTxt), 
+                     unlist(lapply(TitleTxt, to_helper)),TitleTxt)
+  
+  #if "to" is at the end of a title, then it's likely also a date extraction
+  TitleTxt <- gsub("\\bTO\\s*$","UNTIL",TitleTxt)
+  
+  return(TitleTxt)
+}
+
+#' @title 
+#' standardize to helper function
+#' 
+#' @description 
+#' does what standardize to but on a singular level
+#' checks for to in between parentheticals and replaces with until
+#' 
+#' @export
+to_helper <- function(x){
+  TitleTxt <- x
   if(grepl("\\(",TitleTxt) & grepl("\\)",TitleTxt)){
     paren <- stringr::str_extract_all(TitleTxt, "\\([^()]+\\)")[[1]]
     if(length(paren) >= 1) {
@@ -120,11 +184,8 @@ standardize_to <- function(TitleTxt){
         TitleTxt <- gsub("\\bTO\\b","UNTIL",TitleTxt)
     }
   }
-  
-  #if "to" is at the end of a title, then it's likely also a date extraction
-  TitleTxt <- gsub("\\bTO\\s*$","UNTIL",TitleTxt)
-  
   return(TitleTxt)
+  
 }
 
 
@@ -148,8 +209,8 @@ standardize_of <- function(TitleTxt){
   TitleTxt <- gsub("\\bAS OF\\b", "SINCE", TitleTxt)
   #if nothing after "of", then remove entirely
   TitleTxt <- gsub("\\bOF$", "", TitleTxt) 
-  if(grepl("\\bFOR\\b",TitleTxt) & !grepl("\\bFOR$",TitleTxt))
-    TitleTxt <- gsub("\\bFOR\\b", "OF", TitleTxt)
+  TitleTxt <- ifelse(grepl("\\bFOR\\b",TitleTxt) & !grepl("\\bFOR$",TitleTxt),
+                     gsub("\\bFOR\\b", "OF", TitleTxt), TitleTxt)
   
   #replace vp- with vp,
   TitleTxt <- gsub("VP\\s*-","VP,", TitleTxt)
@@ -166,7 +227,31 @@ standardize_of <- function(TitleTxt){
 #'
 #' @export
 standardize_comma <- function(TitleTxt){
+  type <- ifelse(grepl(",", TitleTxt), unlist(lapply(TitleTxt, comma_helper)),2)
   
+  #comma as separator
+  TitleTxt <- ifelse(type == 0, gsub(","," &",TitleTxt), TitleTxt) 
+  
+  #substitute first occurrence of , --> "of", (will be caught in fix_of)
+  #"VP, Sales, marketing, and partnerships"
+  TitleTxt <- ifelse(type == 1, gsub(",", " ", TitleTxt), TitleTxt)
+  
+  TitleTxt <- ifelse(type == 2, gsub(",", " AND ", TitleTxt), TitleTxt)
+  
+  return(TitleTxt)
+}
+
+#' @title 
+#' standardize comma helper function
+#' 
+#' @description 
+#' returns 0,1,2 depending on whether a comma is used as a title separator,
+#' word separator, or just extraneous
+#' operates on the atomic vector level
+#' 
+#' @export
+comma_helper <- function(x){
+  TitleTxt <- x
   if(grepl(",",TitleTxt)){
     com_split <- unlist(strsplit(TitleTxt,","))
     com_true <- TRUE #comma used as a separator (defaulted to true)
@@ -186,21 +271,14 @@ standardize_comma <- function(TitleTxt){
       }
       com_true <- (com_true & titlePresent)
     }
-    #comma as separator
-    if(com_true) 
-      TitleTxt <- gsub(","," &",TitleTxt)
-    
-    #substitute first occurence of , --> "of", (will be caught in fix_of)
-    #"VP, Sales, marketing, and partnerships"
-    else if(com_eq_of) 
-      TitleTxt <- gsub(",", " ", TitleTxt) 
-    
-    #extraneous comma is treated as "and"
-    else 
-      TitleTxt <- gsub(",", " AND ", TitleTxt)
+    if(com_true) return(0)
+    else if(com_eq_of) return(1)
   }
-  return(TitleTxt)
+  else return(2)
+  
 }
+
+
 
 #' @title 
 #' standardize slash function
@@ -211,6 +289,32 @@ standardize_comma <- function(TitleTxt){
 #' @export
 standardize_slash <- function(TitleTxt){
   
+  slash_type = ifelse(grepl("/",TitleTxt), unlist(lapply(TitleTxt, slash_helper)), 2)
+  
+  #slash as separator
+  TitleTxt <- ifelse(slash_type == 0, gsub("/"," &",TitleTxt), TitleTxt) 
+  
+  #substitute first occurrence of / --> "of" (to be fixed in fix_of)
+  TitleTxt <- ifelse(slash_type == 1, gsub("/", " ", TitleTxt), TitleTxt)
+  
+  #extraneous slash is treated as "AND"
+  TitleTxt <- ifelse(slash_type == 2, gsub("/", " AND ", TitleTxt), TitleTxt)
+  
+  return(TitleTxt)
+}
+
+#' @title 
+#' standardize slash helper function
+#' 
+#' @description 
+#' returns 0,1,2 depending on whether a slash is used as a title separator,
+#' word separator, or just extraneous
+#' operates on the atomic vector level
+#' 
+#' @export
+slash_helper <- function(x){
+  TitleTxt <- x
+  
   if(grepl("/",TitleTxt)){
     slash_split <- unlist(strsplit(TitleTxt,"/"))
     slash_true  <- TRUE   #slash used as a separator (defaulted to true)
@@ -218,7 +322,6 @@ standardize_slash <- function(TitleTxt){
     for(i in 1:length(slash_split)){
       testTitle <- apply_substitutes(slash_split[i])
       titlePresent <- FALSE
-      # likely.titles <- readRDS("data/likely.titles.RDS")
       for( title in likely.titles ){
         if( grepl( title, testTitle ) )
           titlePresent <- TRUE
@@ -230,20 +333,13 @@ standardize_slash <- function(TitleTxt){
       }
       slash_true <- ( slash_true & titlePresent )
     }
-    #slash as separator
-    if(slash_true) 
-      TitleTxt <- gsub( "/", " & ", TitleTxt )
-    
-    #substitute first occurrence of / --> "of" (to be fixed in fix_of)
-    else if(slash_eq_of) 
-      TitleTxt <- gsub("/", " ", TitleTxt) 
-    
-    #extraneous slash is treated as "AND"
-    else 
-      TitleTxt <- gsub("/", " AND ", TitleTxt)
+    if(slash_true) return(0)
+    else if(slash_eq_of) return(1)
   }
-  return(TitleTxt)
+  else return(2)
+  
 }
+
 
 
 
