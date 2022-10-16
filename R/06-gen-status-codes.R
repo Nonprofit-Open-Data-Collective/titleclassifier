@@ -99,8 +99,8 @@ identify_co <- function(TitleTxt){
 #' 
 #' @export
 filter_regional <- function(TitleTxt ){
-  for(i in 1:length(regional.words$REGIONS)){
-    word <- regional.words$REGIONS[i]
+  for(i in 1:length(regional.words)){
+    word <- regional.words[i]
     if(word != "PA" && word != "AREA")
       TitleTxt <- gsub(paste0("\\b",word,"\\b"),"REGIONAL",
                        TitleTxt)
