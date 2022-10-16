@@ -106,16 +106,16 @@ filter_regional <- function(TitleTxt ){
                        TitleTxt)
     else{
       if(word == "PA"){
-        if(grepl("^\\bPA\\b", TitleTxt))
-          TitleTxt <- gsub("^\\bPA\\b","PAST",
+        TitleTxt <- ifelse(grepl("^\\bPA\\b", TitleTxt), 
+                           gsub("^\\bPA\\b","PAST", TitleTxt), 
                            TitleTxt)
-        else if(!grepl("IMMED", TitleTxt))
-          TitleTxt <- gsub(paste0("\\b",word,"\\b"),"REGIONAL",
+        TitleTxt <- ifelse(!grepl("IMMED", TitleTxt), 
+                           gsub(paste0("\\b",word,"\\b"),"REGIONAL", TitleTxt),
                            TitleTxt)
       }
       else if(word == "AREA"){
-        if(!grepl("REPRESENTATIVE",TitleTxt))
-          TitleTxt <- gsub(paste0("\\b",word,"\\s[A-Z]+\\b$"),"REGIONAL",
+        TitleTxt <- ifelse(!grepl("REPRESENTATIVE",TitleTxt), 
+                           gsub(paste0("\\b",word,"\\s[A-Z]+\\b$"),"REGIONAL", TitleTxt),
                            TitleTxt)
         TitleTxt <- gsub(paste0("\\b",word,"\\b"),"REGIONAL",
                          TitleTxt)
@@ -165,43 +165,32 @@ categorize_miscellaneous <- function(comp.data, title = "TitleTxt5"){
   comp.table <- comp.data
   TitleTxt <- comp.table[[title]]
   
-  comp.table$SCHED.O <- 0
-  if(identify_sched_o(TitleTxt)){
-    TitleTxt <- gsub("\\bSEE\\b.*", " ", TitleTxt)
-    comp.table$SCHED.O <- 1
-  }
+  comp.table$SCHED.O <- ifelse(identify_sched_o(TitleTxt), 1, 0)
+  TitleTxt <- ifelse(identify_sched_o(TitleTxt), 
+                     gsub("\\bSEE\\b.*", " ", TitleTxt), TitleTxt)
   
-  comp.table$SCHED.O <- 0
-  if(identify_at_large(TitleTxt)){
-    TitleTxt <- gsub("\\bAT LARGE\\b", " ", TitleTxt)
-    TitleTxt <- gsub("\\bAT LG\\b", " ", TitleTxt)
-    comp.table$AT.LARGE <- 1
-  }
+  comp.table$SCHED.O <- ifelse(identify_at_large(TitleTxt), 1, 0)
+  TitleTxt <- ifelse(identify_at_large(TitleTxt), 
+                     gsub("\\bAT LARGE\\b", " ", TitleTxt), TitleTxt)
+  TitleTxt <- ifelse(identify_at_large(TitleTxt), 
+                     gsub("\\bAT LG\\b", " ", TitleTxt), TitleTxt)
   
-  comp.table$AS.NEEDED <- 0
-  if(identify_as_needed(TitleTxt)){
-    TitleTxt <- gsub("\\bAS NEEDED\\b", " ", TitleTxt)
-    comp.table$AS.NEEDED <- 1;
-  }
+  comp.table$AS.NEEDED <- ifelse(identify_as_needed(TitleTxt), 1, 0)
+  TitleTxt <- ifelse(identify_as_needed(TitleTxt), 
+                     gsub("\\bAS NEEDED\\b", " ", TitleTxt), TitleTxt)
   
-  comp.table$EX.OFFICIO <- 0
-  if(identify_ex_officio(TitleTxt)){
-    TitleTxt <- gsub("\\EX-OFFICIO\\b", " ", TitleTxt)
-    comp.table$EX.OFFICIO <- 1
-  }
+  comp.table$EX.OFFICIO <- ifelse(identify_ex_officio(TitleTxt), 1, 0)
+  TitleTxt <- ifelse(identify_ex_officio(TitleTxt), 
+                     gsub("\\EX-OFFICIO\\b", " ", TitleTxt), TitleTxt)
   
-  comp.table$CO <- 0
-  if(identify_co(TitleTxt)){
-    TitleTxt <- gsub("\\bCO-", " ", TitleTxt)
-    comp.table$CO <- 1
-  }
+  comp.table$CO <- ifelse(identify_co(TitleTxt), 1, 0)
+  TitleTxt <- ifelse(identify_co(TitleTxt), 
+                     gsub("\\bCO-", " ", TitleTxt), TitleTxt)
   
   #filter quantifiers (aka ordinals)
   for(ordinal in ordinals){
-    if(grepl(ordinal, TitleTxt)){
-      comp.table$QUANTIFIER <- ordinal
-      TitleTxt <- gsub(ordinal," ", TitleTxt)
-    }
+    TitleTxt <- ifelse(grepl(ordinal, TitleTxt), 
+                       gsub(ordinal," ", TitleTxt), TitleTxt)
   }
   
   #filter regionals
