@@ -5,5 +5,5 @@
 \alias{likely.titles}
 \title{Helper data list.}
 \description{
-Used in the...
+Used in the \code{standardize_conj} step with recognizing compound titles
 }

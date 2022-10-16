@@ -5,5 +5,5 @@
 \alias{possible.titles}
 \title{Helper data list.}
 \description{
-Used in the...
+Used in the \code{fix_of()} function
 }
