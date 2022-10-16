@@ -171,7 +171,7 @@ categorize_miscellaneous <- function(comp.data, title = "TitleTxt5"){
     comp.table$SCHED.O <- 1
   }
   
-  comp.table$SCHED.AT.LARGE <- 0
+  comp.table$SCHED.O <- 0
   if(identify_at_large(TitleTxt)){
     TitleTxt <- gsub("\\bAT LARGE\\b", " ", TitleTxt)
     TitleTxt <- gsub("\\bAT LG\\b", " ", TitleTxt)
