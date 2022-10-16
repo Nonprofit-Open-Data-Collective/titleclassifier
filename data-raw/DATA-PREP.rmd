@@ -30,17 +30,8 @@ The following internal datasets are used by functions within the package for map
 **Disambiguation Lists:**
 
 - likely.subjects: used in **fix_of()**  
-- likely.titles: used in **???()**  
-- possible.titles: used in **???()** 
-
-
-- all.titles: ARE WE STILL USING THIS? (from old title mapping function)
-
-PLEASE UPDATE THESE TOO: 
-
-https://github.com/Nonprofit-Open-Data-Collective/titleclassifier/edit/main/R/data.R
-
-
+- likely.titles: used in **standardize_conj()** and its helper functions  
+- possible.titles: used in **fix_of()** 
 
 **Status Words:** 
 
@@ -81,31 +72,9 @@ data( former.words ) %>% head()
 
 Import from raw version (list stored in .R file in data-raw?), preview, then save an .rda version in the data folder. 
 
-### Likely Titles 
-
-```{r}
-likely.titles <- 
-c("PRESIDENT", "CEO", "DIRECTOR\\b", "CHAIR", "TRUSTEE\\b", "TREASURER", 
-"SECRETARY", "OFFICER", "COUNSEL", "FOUNDER", "PUBLISHER", "EDITOR\\b", 
-"MEMBER\\b", "\\bCOO\\b", "CFO", "MANAGER", "\\bCTO\\b", "ADMINISTRATOR", 
-"\\bCRO\\b", "CURATOR", "TEACHER", "CLERK", "CONTROLLER", "LIAISON", 
-"INSTRUCTOR", "GENERAL", "COMPTROLLER", "HISTORIAN", "ADVISOR", 
-"ARTISTIC", "KEEPER", "CHOREOGRAPHER", "EXECUTIVE\\s*$", "CHAPLAIN", 
-"\\bCMO\\b", "WEBMASTER", "ASSISTANT\\s*$", "DEAN", "GOVERNOR", 
-"SERGEANT", "\\bCAO\\b", "^\\bCHIEF\\b$", "WARDEN", "MASTER", 
-"MATRON", "CONDUCTOR", "REPRESENTATIVE", "COORDINATOR", "ACCOUNTANT"
-)
-```
-
-```{r}
-dump( "likely.titles", file="likely-titles.R" )
-save( likely.titles, file="../data/likely-titles.rda" )
-```
-
-
 ### Likely Subjects
 
-Used in the **fix_of()** function: 
+Used in the **fix_of()** function as the likely subject of a possible title: 
 
 https://github.com/Nonprofit-Open-Data-Collective/titleclassifier/blob/main/R/05-standardize-spelling.R
 
@@ -128,6 +97,50 @@ c("OPERATIONS", "FINANCE", "ADMINISTRATION", "MANAGEMENT", "EXHIBIT",
 ```{r}
 dump( "likely.subjects", file="likely-subjects.R" )
 save( likely.subjects, file="../data/likely-subjects.rda" )
+```
+
+
+### Likely Titles 
+
+Used in the **standardize_conj** step and its helper functions specifically: 
+
+https://github.com/Nonprofit-Open-Data-Collective/titleclassifier/blob/main/R/03-standardize-conj.R
+
+```{r}
+likely.titles <- 
+c("PRESIDENT", "CEO", "DIRECTOR\\b", "CHAIR", "TRUSTEE\\b", "TREASURER", 
+"SECRETARY", "OFFICER", "COUNSEL", "FOUNDER", "PUBLISHER", "EDITOR\\b", 
+"MEMBER\\b", "\\bCOO\\b", "CFO", "MANAGER", "\\bCTO\\b", "ADMINISTRATOR", 
+"\\bCRO\\b", "CURATOR", "TEACHER", "CLERK", "CONTROLLER", "LIAISON", 
+"INSTRUCTOR", "GENERAL", "COMPTROLLER", "HISTORIAN", "ADVISOR", 
+"ARTISTIC", "KEEPER", "CHOREOGRAPHER", "EXECUTIVE\\s*$", "CHAPLAIN", 
+"\\bCMO\\b", "WEBMASTER", "ASSISTANT\\s*$", "DEAN", "GOVERNOR", 
+"SERGEANT", "\\bCAO\\b", "^\\bCHIEF\\b$", "WARDEN", "MASTER", 
+"MATRON", "CONDUCTOR", "REPRESENTATIVE", "COORDINATOR", "ACCOUNTANT"
+)
+```
+
+```{r}
+dump( "likely.titles", file="likely-titles.R" )
+save( likely.titles, file="../data/likely-titles.rda" )
+```
+
+### Possible Titles 
+
+Used in the **fix_of()** function as the possible title of a likely subject: 
+
+https://github.com/Nonprofit-Open-Data-Collective/titleclassifier/blob/main/R/05-standardize-spelling.R
+
+```{r}
+possible.titles <- 
+c("VICE PRESIDENT", "DIRECTOR", "CHAIR", "DEAN", "TRUSTEE", "CEO", "SECRETARY",
+  "MANAGER","MEMBER"        
+)
+```
+
+```{r}
+dump( "possible.titles", file="possible-titles.R" )
+save( possible.titles, file="../data/possible-titles.rda" )
 ```
 
 

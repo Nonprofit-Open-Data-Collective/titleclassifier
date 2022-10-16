@@ -1,0 +1,3 @@
+possible.titles <-
+c("VICE PRESIDENT", "DIRECTOR", "CHAIR", "DEAN", "TRUSTEE", "CEO", 
+"SECRETARY", "MANAGER", "MEMBER")

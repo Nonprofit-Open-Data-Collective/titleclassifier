@@ -31,14 +31,14 @@ NULL
 #' @docType data
 #' @title Helper data list.  
 #'
-#' @description Used in the...   
+#' @description Used in the `standardize_conj` step with recognizing compound titles   
 NULL 
 
 #' @name possible.titles
 #' @docType data
 #' @title Helper data list.   
 #'
-#' @description Used in the...  
+#' @description Used in the `fix_of()` function  
 NULL 
 
 ###
