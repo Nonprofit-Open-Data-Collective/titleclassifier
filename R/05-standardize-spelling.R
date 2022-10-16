@@ -79,8 +79,8 @@ substitute_executive <- function(TitleTxt){
   TitleTxt <- gsub("\\bEXC[A-Z]*\\b", "EXECUTIVE",TitleTxt)
   
   #ex officio
-  if(!grepl("\\bEX O", TitleTxt) & !grepl("\\bEX-O", TitleTxt)) 
-    gsub("\\bEX\\b","EXECUTIVE", TitleTxt)
+  TitleTxt <- ifelse(!grepl("\\bEX O", TitleTxt) & !grepl("\\bEX-O", TitleTxt),
+         gsub("\\bEX\\b","EXECUTIVE", TitleTxt), TitleTxt)
   
   return(TitleTxt)
 }
@@ -93,13 +93,14 @@ substitute_executive <- function(TitleTxt){
 #'
 #' @export
 substitute_director <- function(TitleTxt){
-  
-  if(!grepl("CEO", TitleTxt)){
-    TitleTxt <- gsub("\\bDIR[A-Z]*\\b", "DIRECTOR", TitleTxt)
-    TitleTxt <- gsub("\\bDI\\b","DIRECTOR", TitleTxt)
-    TitleTxt <- gsub("\\bDTR\\b","DIRECTOR", TitleTxt)
-    TitleTxt <- gsub("\\bDRECTOR\\b","DIRECTOR", TitleTxt)
-  }
+  TitleTxt <- ifelse(!grepl("CEO", TitleTxt),
+                     gsub("\\bDIR[A-Z]*\\b", "DIRECTOR", TitleTxt), TitleTxt)
+  TitleTxt <- ifelse(!grepl("CEO", TitleTxt),
+                     gsub("\\bDI\\b","DIRECTOR", TitleTxt), TitleTxt)
+  TitleTxt <- ifelse(!grepl("CEO", TitleTxt),
+                     gsub("\\bDTR\\b","DIRECTOR", TitleTxt), TitleTxt)
+  TitleTxt <- ifelse(!grepl("CEO", TitleTxt),
+                     gsub("\\bDRECTOR\\b","DIRECTOR", TitleTxt), TitleTxt)
   
   return(TitleTxt)
 }
@@ -114,12 +115,9 @@ substitute_director <- function(TitleTxt){
 #' @export
 substitute_operations <- function(TitleTxt){
   
-  if(grepl("\\bOPERATIN",TitleTxt)){
-    gsub("\\bOPERATIN\\b", "OPERATING", TitleTxt)
-    return(TitleTxt)
-  }
-  
-  TitleTxt <- gsub("\\bOP[A-Z]*\\b", "OPERATIONS", TitleTxt)
+  TitleTxt <- ifelse(grepl("\\bOPERATIN",TitleTxt),
+                     gsub("\\bOPERATIN\\b", "OPERATING", TitleTxt),
+                     gsub("\\bOP[A-Z]*\\b", "OPERATIONS", TitleTxt))
   return(TitleTxt)
 }
 
@@ -137,10 +135,11 @@ substitute_assistant <- function(TitleTxt){
   TitleTxt <- gsub( "\\bASS\\s*T\\b", "ASSISTANT", TitleTxt)
   TitleTxt <- gsub( "^\\s*A\\b", "ASSISTANT", TitleTxt)
   
-  if(!grepl("\\bASSOCIATI[A-Z]*\\b", TitleTxt)){ #skip association
-    TitleTxt <- gsub( "\\bASSOC[A-Z]*\\b", "ASSOCIATE", TitleTxt)
-    TitleTxt <- gsub( "\\bASSC[A-Z]*\\b", "ASSOCIATE", TitleTxt)
-  }
+  #skipping association
+  TitleTxt <- ifelse(!grepl("\\bASSOCIATI[A-Z]*\\b", TitleTxt), 
+                     gsub( "\\bASSOC[A-Z]*\\b", "ASSOCIATE", TitleTxt), TitleTxt)
+  TitleTxt <- ifelse(!grepl("\\bASSOCIATI[A-Z]*\\b", TitleTxt), 
+                     gsub( "\\bASSC[A-Z]*\\b", "ASSOCIATE", TitleTxt), TitleTxt)
   return(TitleTxt)
   
 }
@@ -154,13 +153,16 @@ substitute_assistant <- function(TitleTxt){
 #'
 #' @export
 substitute_president <- function(TitleTxt){
+  presidingCheck <- ifelse(grepl("PRESIDING", TitleTxt), FALSE, TRUE)
   
-  if(grepl("PRESIDING", TitleTxt)) return(TitleTxt)
-  
-  TitleTxt <- gsub("\\bPRESI[A-Z]*\\b", "PRESIDENT", TitleTxt)
-  TitleTxt <- gsub("\\bPRES\\b", "PRESIDENT", TitleTxt)
-  TitleTxt <- gsub("\\bPRE\\b", "PRESIDENT", TitleTxt)
-  TitleTxt <- gsub("^\\bP\\b$", "PRESIDENT", TitleTxt) #standalone only
+  TitleTxt <- ifelse(presidingCheck, 
+                     gsub("\\bPRESI[A-Z]*\\b", "PRESIDENT", TitleTxt), TitleTxt)
+  TitleTxt <- ifelse(presidingCheck, 
+                     gsub("\\bPRES\\b", "PRESIDENT", TitleTxt), TitleTxt)
+  TitleTxt <- ifelse(presidingCheck, 
+                     gsub("\\bPRE\\b", "PRESIDENT", TitleTxt), TitleTxt)
+  TitleTxt <- ifelse(presidingCheck, 
+                     gsub("^\\bP\\b$", "PRESIDENT", TitleTxt), TitleTxt)
   
   return(TitleTxt)
 }
@@ -325,13 +327,12 @@ condense_abbreviations <- function(TitleTxt){
 #' @export
 substitute_officer <- function(TitleTxt){
   
-  if(grepl("OFFICE ", TitleTxt)) return(TitleTxt)
-  if(grepl("\\bEX O", TitleTxt) | grepl("\\bEX-O", TitleTxt)) 
-    return(TitleTxt)
+  noReplaceCheck <- ifelse(grepl("OFFICE ", TitleTxt) | 
+                             grepl("\\bEX O", TitleTxt) | 
+                             grepl("\\bEX-O", TitleTxt), FALSE, TRUE)
+  TitleTxt <- ifelse(noReplaceCheck, 
+                     gsub("\\bOFF[A-Z]*\\b", "OFFICER", TitleTxt), TitleTxt)
   
-  
-  if(!grepl("ROLLED", TitleTxt)) #preventing "rolled off"
-    TitleTxt <- gsub("\\bOFF[A-Z]*\\b", "OFFICER", TitleTxt)
   TitleTxt <- gsub("\\bOFCR\\b", "OFFICER", TitleTxt)
   
   return(TitleTxt)
@@ -348,21 +349,31 @@ substitute_officer <- function(TitleTxt){
 substitute_admin <- function(TitleTxt){
   
   #administrator
-  if(grepl("\\bADMINISTRATO", TitleTxt)){
-    TitleTxt <- gsub("\\bADMINISTRATO\\b", "ADMINISTRATOR", TitleTxt)
-    return(TitleTxt)
-  }
+  TitleTxt <- ifelse(grepl("\\bADMINISTRATO", TitleTxt),
+                     gsub("\\bADMINISTRATO\\b", "ADMINISTRATOR", TitleTxt),
+                     TitleTxt)
   
   #administrative
-  if(grepl("\\bADMINISTRATIV", TitleTxt)){
-    TitleTxt <- gsub("\\bADMINISTRATIV\\b", "ADMINISTRATIVE", TitleTxt)
-    return(TitleTxt)
-  }
+  TitleTxt <- ifelse(grepl("\\bADMINISTRATIV", TitleTxt), 
+                      gsub("\\bADMINISTRATIV\\b", "ADMINISTRATIVE", TitleTxt),
+                      TitleTxt)
   
-  TitleTxt <- gsub("\\bADMIN[A-Z]*\\b", "ADMINISTRATION", TitleTxt)
-  TitleTxt <- gsub("\\bADMI\\b", "ADMINISTRATION", TitleTxt)
-  TitleTxt <- gsub("\\bADM\\b", "ADMINISTRATION", TitleTxt)
-  TitleTxt <- gsub("\\bADMN\\b", "ADMINISTRATION", TitleTxt)
+  adminCheck <- ifelse(grepl("\\bADMINISTRATOR", TitleTxt) | 
+                         grepl("\\bADMINISTRATIVE", TitleTxt), FALSE, TRUE)
+  
+  
+  TitleTxt <- ifelse(adminCheck,
+                     gsub("\\bADMIN[A-Z]*\\b", "ADMINISTRATION", TitleTxt),
+                     TitleTxt)
+  TitleTxt <- ifelse(adminCheck,
+                     gsub("\\bADMI\\b", "ADMINISTRATION", TitleTxt),
+                     TitleTxt)
+  TitleTxt <- ifelse(adminCheck,
+                     gsub("\\bADM\\b", "ADMINISTRATION", TitleTxt),
+                     TitleTxt)
+  TitleTxt <- ifelse(adminCheck,
+                     gsub("\\bADMN\\b", "ADMINISTRATION", TitleTxt),
+                     TitleTxt)
   
   return(TitleTxt)
 }
@@ -465,13 +476,12 @@ substitute_manage <- function(TitleTxt){
 #' @export
 substitute_programs <- function(TitleTxt){
   
-  if(grepl("\\bPROGRAMMI", TitleTxt)){
-    TitleTxt <- gsub("\\bPROGRAMMI[A-Z]*\\b", "PROGRAMMING", TitleTxt)
-    return(TitleTxt)
-  }
+  TitleTxt <- ifelse(grepl("\\bPROGRAMMI", TitleTxt), 
+                     gsub("\\bPROGRAMMI[A-Z]*\\b", "PROGRAMMING", TitleTxt), TitleTxt)
   
   #everything else = programs
-  TitleTxt <- gsub("\\bPROG[A-Z]*\\b", "PROGRAMS", TitleTxt)
+  TitleTxt <- ifelse(!grepl("\\bPROGRAMMING", TitleTxt), 
+                     gsub("\\bPROG[A-Z]*\\b", "PROGRAMS", TitleTxt), TitleTxt)
   
   return(TitleTxt)
 }
@@ -531,8 +541,12 @@ substitute_business <- function(TitleTxt){
 #' @export
 substitute_comm <- function(TitleTxt){
   
+  #TitleT
+  
   #communication
-  TitleTxt <- gsub("\\bCOMMU[A-Z]*\\b", "COMMUNICATIONS", TitleTxt)
+  TitleTxt <- ifelse(!grepl("COMMUNIT", TitleTxt), 
+                     gsub("\\bCOMMU[A-Z]*\\b", "COMMUNICATIONS", TitleTxt),
+                     TitleTxt)
   TitleTxt <- gsub("\\bCOMMS\\b", "COMMUNICATIONS", TitleTxt)
   
   #committee
@@ -597,11 +611,13 @@ substitute_technology <- function(TitleTxt){
 #' @export
 substitute_institute <- function(TitleTxt){
   
-  if(grepl("\\bINSTITUTIONA", TitleTxt)){
-    TitleTxt <- gsub("\\bINSTITUTIONA\\b", "INSTITUTIONAL", TitleTxt)
-    return(TitleTxt)
-  }
-  TitleTxt <- gsub("\\bINSTI[A-Z]*\\b", "INSTITUTE", TitleTxt)
+  TitleTxt <- ifelse(grepl("\\bINSTITUTIONA", TitleTxt), 
+                     gsub("\\bINSTITUTIONA\\b", "INSTITUTIONAL", TitleTxt),
+                     TitleTxt)
+  
+  TitleTxt <- ifelse(!grepl("INSTITUTIONAL", TitleTxt), 
+                     gsub("\\bINSTI[A-Z]*\\b", "INSTITUTE", TitleTxt),
+                     TitleTxt)
   TitleTxt <- gsub("\\bINST\\s", "INSTITUTIONAL ", TitleTxt)
   
   TitleTxt <- gsub("\\bINSTRUC[A-Z]*\\b","INSTRUCTOR", TitleTxt)
@@ -695,8 +711,9 @@ substitute_systems <- function(TitleTxt){
 #' @export
 substitute_general <- function(TitleTxt){
   
-  if(grepl("GENEALOG",TitleTxt)) return(TitleTxt) #skipping genealogist
-  TitleTxt <- gsub("\\bGEN[A-Z]*\\b", "GENERAL", TitleTxt)
+  TitleTxt <- ifelse(!grepl("GENEALOG",TitleTxt),
+                     gsub("\\bGEN[A-Z]*\\b", "GENERAL", TitleTxt),
+                     TitleTxt)
   
   return(TitleTxt)
 }
@@ -781,8 +798,9 @@ substitute_deputy <- function(TitleTxt){
 #' @export
 substitute_corresponding <- function(TitleTxt){
   
-  if(grepl("CORRESPONDENT", TitleTxt)) return(TitleTxt)
-  TitleTxt <- gsub("\\bCORR[A-Z]*\\b", "CORRESPONDING", TitleTxt)
+  TitleTxt <- ifelse(!grepl("CORRESPONDENT", TitleTxt), 
+                     gsub("\\bCORR[A-Z]*\\b", "CORRESPONDING", TitleTxt),
+                     TitleTxt)
   
   return(TitleTxt)
 }
@@ -796,8 +814,9 @@ substitute_corresponding <- function(TitleTxt){
 #' @export
 substitute_emeritus <- function(TitleTxt){
   
-  if(grepl("EMPLOYEE",TitleTxt)) return(TitleTxt)
-  TitleTxt <- gsub("\\bEM[A-Z]*\\b", "EMERITUS", TitleTxt)
+  TitleTxt <- ifelse(!grepl("EMPLOYEE",TitleTxt), 
+                     gsub("\\bEM[A-Z]*\\b", "EMERITUS", TitleTxt),
+                     TitleTxt)
   
   return(TitleTxt)
 }
@@ -934,12 +953,11 @@ substitute_governor <- function(TitleTxt){
   TitleTxt <- gsub("\\bGOVT\\b", "GOVERNMENT", TitleTxt)
   TitleTxt <- gsub("\\bGOV'T\\b", "GOVERNMENT", TitleTxt)
   
-  if(grepl("GOVERNANCE", TitleTxt)) return(TitleTxt)
-  else if(grepl("GOVERNMENT", TitleTxt)) return(TitleTxt)
-  else if(grepl("GOVERNING", TitleTxt)) return(TitleTxt)
-  
-  TitleTxt <- gsub("\\bGOV[A-Z]*\\b", "GOVERNOR", TitleTxt)
-  
+  TitleTxt <- ifelse(!grepl("GOVERNANCE", TitleTxt) & 
+                       grepl("GOVERNMENT", TitleTxt) & 
+                       grepl("GOVERNING", TitleTxt), 
+                     gsub("\\bGOV[A-Z]*\\b", "GOVERNOR", TitleTxt),
+                     TitleTxt)
   return(TitleTxt)
 }
 
@@ -1034,22 +1052,37 @@ substitute_miscellaneous <- function(TitleTxt){
   TitleTxt <- gsub("\\bDIRECTOR EXECUTIVE\\b", "EXECUTIVE DIRECTOR", TitleTxt)
   
   #heuristics (won't be much use until we get rid of role statuses)
-  if(grepl("^\\s*VICE\\s*$",TitleTxt)) TitleTxt <- "VICE PRESIDENT" #standalone vice is likely vp
-  else if(grepl("^\\s*PR\\s*$",TitleTxt)) TitleTxt <- "PRESIDENT" #standalone pr is likely pres
-  else if(grepl("^\\s*EX\\s*$",TitleTxt)) TitleTxt <- "EXECUTIVE" #standalone ex is likely exec
-  else if(grepl("\\bT\\b", TitleTxt)) TitleTxt <- gsub("\\bT\\b","TRUSTEE",TitleTxt)
-  #standalone t is likely trustee,#but could be treasurer
-  else if(grepl("\\bEXECUTIVE V\\b", TitleTxt)) 
-    TitleTxt <- gsub("\\bEXECUTIVE V\\b","EXECUTIVE VICE PRESIDENT", TitleTxt)
-  else if(grepl("\\bCE$",TitleTxt)) TitleTxt <- gsub("\\bCE$","CEO",TitleTxt) #ceo misspelling
-  else if (grepl("\\bCF$",TitleTxt)) TitleTxt <- gsub("\\bCF$","CFO",TitleTxt)
-  else if(grepl("^EXECUTIVE OFFICER$",TitleTxt)) TitleTxt <- "CEO"
-  else if(grepl("^AT\\s*LARGE$",TitleTxt)) TitleTxt <- "DIRECTOR" #at large sub
-  else if(grepl("^N/A$",TitleTxt) | grepl("^N\\s*A$",TitleTxt) | 
-          grepl("^\\s*$",TitleTxt))
-    TitleTxt <- NA
-  # NA could be north america but most likely null value
   
+  TitleTxt <- ifelse(grepl("^\\s*VICE\\s*$",TitleTxt), "VICE PRESIDENT", TitleTxt)
+  #standalone vice is likely vp
+  
+  TitleTxt <- ifelse(grepl("^\\s*PR\\s*$",TitleTxt), "PRESIDENT", TitleTxt)
+  #standalone pr is likely pres
+  
+  TitleTxt <- ifelse(grepl("^\\s*EX\\s*$",TitleTxt), "EXECUTIVE", TitleTxt)
+  #standalone ex is likely exec
+  
+  TitleTxt <- ifelse(grepl("\\bT\\b", TitleTxt), gsub("\\bT\\b","TRUSTEE",TitleTxt), TitleTxt)
+  #standalone t is likely trustee, but could be treasurer
+  
+  TitleTxt <- ifelse(grepl("\\bEXECUTIVE V\\b", TitleTxt),
+                     gsub("\\bEXECUTIVE V\\b","EXECUTIVE VICE PRESIDENT", TitleTxt),
+                     TitleTxt)
+  
+  TitleTxt <- ifelse(grepl("\\bCE$",TitleTxt), gsub("\\bCE$","CEO",TitleTxt), TitleTxt)
+  #ceo misspelling
+  
+  TitleTxt <- ifelse(grepl("\\bCF$",TitleTxt), gsub("\\bCF$","CFO",TitleTxt), TitleTxt)
+  
+  TitleTxt <- ifelse(grepl("^EXECUTIVE OFFICER$",TitleTxt), "CEO", TitleTxt)
+  
+  TitleTxt <- ifelse(grepl("^AT\\s*LARGE$",TitleTxt), "DIRECTOR", TitleTxt) 
+  #at large sub
+  
+  TitleTxt <- ifelse(grepl("^N/A$",TitleTxt) | grepl("^N\\s*A$",TitleTxt) | 
+                       grepl("^\\s*$",TitleTxt),
+                     "", TitleTxt)
+
   return(TitleTxt)
 }
 
@@ -1114,10 +1147,28 @@ stand_titles <- function(TitleTxt){
 fix_of <- function(TitleTxt){
   
   # TitleTxt <- apply_substitutes(TitleTxt) #depending on order of op's
+  
+  ofMatch <- ifelse(!grepl("\\bOF\\b", TitleTxt), 
+                    unlist(lapply(TitleTxt,of_title_helper)), FALSE)
+  TitleTxt <- ifelse(!is.na(ofMatch), ofMatch, TitleTxt)
+  TitleTxt <- gsub( "\\s{2,}", " ", TitleTxt)
+  return(TitleTxt)
+}
+
+#' @title 
+#' fix of helper function
+#' 
+#' @description 
+#' finds instances where of should be in the title and replaces as necessary
+#' 
+#' @export
+of_title_helper <- function(x){
   titleMatch <- FALSE
   subjectMatch <- FALSE
   current.title <- NA
   titlePos <- 0
+  TitleTxt <- x
+  
   if(!grepl("\\bOF\\b", TitleTxt)){
     for(title in possible.titles){
       if(grepl(title,TitleTxt)){
@@ -1136,11 +1187,11 @@ fix_of <- function(TitleTxt){
       }
     }
   }
-  if(titleMatch & subjectMatch){
+  if(titleMatch & subjectMatch) {
     TitleTxt <- sub(current.title, paste0(current.title, " OF "), TitleTxt)
-    TitleTxt <- gsub( "\\s{2,}", " ", TitleTxt)
+    return(TitleTxt)
   }
-  return(TitleTxt)
+  return(NA)
 }
 
 
@@ -1276,7 +1327,7 @@ apply_substitutes <- function(TitleTxt){
   
   TitleTxt <- fix_of(TitleTxt)
   TitleTxt <- gsub("\\bOF AND\\b", "OF", TitleTxt)
-  TitleTxt <- spellcheck(TitleTxt) #slows things down, but is useful
+  # TitleTxt <- spellcheck(TitleTxt) #slows things down, but is useful
   
   return(TitleTxt)
 }
