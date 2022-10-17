@@ -2,27 +2,19 @@
 
 An R package to assign raw nonprofit executive titles from Form 990 Part VII to a well-structured title taxonomy. 
 
-## Process
 
-<p>
-<b>
-High level overview of procedural flow
-</b>
-</p>
-</br>
+## Use
 
-
-<img width="357" alt="image" src="https://user-images.githubusercontent.com/40209975/182947784-f13ee7ba-d622-477a-9ce2-43534807fd1f.png">
-
-
-
+```r
+devtools::install_github( 'nonprofit-open-data-collective/titleclassifier' )
+```
 
 
 ```r
 library( titleclassifier )
 library( dplyr )
 
-data( tinypartvii )  # sample of 10,000 orgs
+data( tinypartvii )  # sample of part vii for 10,000 orgs
 
 tinypartvii %>% 
   standardize_df() %>% 
@@ -36,10 +28,21 @@ tinypartvii %>%
 ```
 
 
+## Process
+
+<p><b>   High level overview of procedural flow    </b></p>
+
+<br>
+
+<img width="357" alt="image" src="https://user-images.githubusercontent.com/40209975/182947784-f13ee7ba-d622-477a-9ce2-43534807fd1f.png">
+
+<br>
 
 The expected input comes from the [rdb_build_function scripts](https://github.com/Nonprofit-Open-Data-Collective/irs990efile), specifically applied to the Form 990 Part VII section of XML-formatted e-filings. What is generated from that build function is a relational table with raw title, compensation, and other information.
 
 The output is another relational table with cleaned titles and specific flags for title classification. Individuals with multiple titles are split onto separate rows, and the table can be filtered to find specific positions. 
+
+
 
 ### Steps in detail:
 
@@ -78,6 +81,7 @@ Date cleaning methodology
 </p>
 </br>
 
+
 ```r
 #example date cleaning
 
@@ -91,6 +95,7 @@ if(isDatePresent) {
 
 #this is basically how the clean_dates function works but on the relational table as a whole
 ```
+
 
 #### 3. Clean conjunctions
 
@@ -107,6 +112,8 @@ Conjunction cleaning order of operations
 </br>
 
 With the **standardize_and** function, the method checks the substrings on each side of the "and", and if there is a recognizable title on each side, then the "and" is converted into "&", which is our delineator for fields with multiple titles. Otherwise, the "and" is left alone. 
+
+
 ```r
 # "and" examples
 title1 <- "CEO AND BOARD PRESIDENT"
@@ -117,6 +124,8 @@ standardize_and(title2) # "VP OF FINANCE AND ADMINISTRATION"
 ```
 
 With the **standardize_to** function, the method checks if "to" is at the end of the title (in which case it was part of a date description) in which case it converts the "to" to "until". If the "to" is not at the end of the title, the method then checks if the substring on the left is a recognizable title, in which case it leaves it alone. In all other cases also the "to" is left alone. 
+
+
 ```r
 # "to" examples
 title1 <- "DIRECTOR TO"
@@ -127,6 +136,8 @@ standardize_to(title2) # "LIAISON TO BOARD OF TRUSTEES"
 ```
 
 With the **standardize_of** function, the method checks if "of" is part of an "as of" phrasing, in which case it converts "as of" to "since". If that is not the case, yet "of" is at the end of the title, the "of" is removed. Otherwise, the "of" is treated the same way as "to" by checking the left side substring. Additionally, all instances of "for" are replaced with "of", and "VP-" is replaced with "VP OF"
+
+
 ```r
 # "of" examples
 title1 <- "VICE PRESIDENT AS OF"
@@ -141,6 +152,7 @@ standardize_of(title4) # "VICE PRESIDENT OF ADMINISTRATION"
 ```
 
 With the **standardize_comma** function, the method checks for the different meanings that the comma can represent. If a comma is used as a title delineator, it is replaced with "&" (same procedure as standardize_and). If it is used in place of "of" (same procedure as standardize_to), the comma is replaced with "of". For titles with multiple commas, this only applies to the first instance of the symbol. Any extraneous commas are replaced with "and". 
+
 ```r
 # comma examples
 title1 <- "SECRETARY, TREASURER"
@@ -155,6 +167,7 @@ standardize_comma(title4) # "FINANCE AND ADMINISTRATION"
 ```
 
 With the **standardize_slash** function, the method checks for the different meanings that the slash can represent. The slash is treated the same way as the comma; thus, when it is used as a delineator it is replaced with "&", when used like "of" it is replaced with "of", and when used extraneously it is replaced with "and". 
+
 ```r
 # slash examples
 title1 <- "SECRETARY/TREASURER"
@@ -167,6 +180,7 @@ standardize_slash(title3) # "SENIOR VICE PRESIDENT OF FINANCE AND ADMINISTRATION
 ```
 
 Finally, the **standardize_separator** function standardizes all other miscellaneous symbols that are used as a separator. As previously mentioned, the "&" is the main symbol used to delineate titles, but ";" and "\" can also be used. As such, those symbols are replaced by "&" to make title splitting more straightforward. The other common title separators ("," and "/") have already been dealt with. 
+
 ```r
 # separator examples
 title1 <- "CEO & CFO"
