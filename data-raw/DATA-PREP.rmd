@@ -1,5 +1,5 @@
 ---
-title: 'Data Preparation'
+title: 'Data Preparation File'
 output: 
   html_document:
     theme: readable
@@ -12,34 +12,46 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set( echo = TRUE, message=F, warning=F, fig.width=10 )
-
-library( dplyr )
-library( pander )
-library( titleclassifier )
 ```
 
 
+```{r}
+library( titleclassifier )
+library( dplyr )
+library( pander )
 
+raw.url <- "https://raw.githubusercontent.com/Nonprofit-Open-Data-Collective/titleclassifier/main/data-raw/"
+```
+
+
+This file updates all of the RDA objects in the package **data** folder. 
 
 
 # Data Assets
 
+The following dictionary objects were created to assist with cleaning raw title strings: 
 
-The following internal datasets are used by functions within the package for mapping and disambiguation purposes:
+* [former.words](https://raw.githubusercontent.com/Nonprofit-Open-Data-Collective/titleclassifier/main/data-raw/former-words.R): synonyms for "former" 
+* [interim.words](https://raw.githubusercontent.com/Nonprofit-Open-Data-Collective/titleclassifier/main/data-raw/interim-words.R)
+* [regional.words](https://raw.githubusercontent.com/Nonprofit-Open-Data-Collective/titleclassifier/main/data-raw/regional-words.R): common regions used for identifying regional qualifiers in titles like "Vice President of REGION-X" 
+* [possible.region.list](https://raw.githubusercontent.com/Nonprofit-Open-Data-Collective/titleclassifier/main/data-raw/possible-regional-list.R): titles that might have regional designations   
+* [likely.subjects](https://raw.githubusercontent.com/Nonprofit-Open-Data-Collective/titleclassifier/main/data-raw/likely-subjects.R)
+* [likely.titles](https://raw.githubusercontent.com/Nonprofit-Open-Data-Collective/titleclassifier/main/data-raw/likely-titles.R)
+* [possible.titles](https://raw.githubusercontent.com/Nonprofit-Open-Data-Collective/titleclassifier/main/data-raw/possible-titles.R)                    
+
 
 **Disambiguation Lists:**
 
 - likely.subjects: used in **fix_of()**  
-- likely.titles: used in **standardize_conj()** and its helper functions  
 - possible.titles: used in **fix_of()** 
+- likely.titles: used in **standardize_conj()** and its helper functions  
 
-**Status Words:** 
 
-Titles are often accompanied by some adjective describing a temporary or temporal period in which the person holds the title. These phrases are removed from the titles and flags are created for each. 
+**Position Status Words:** 
 
-These are used in the gen_status_codes() step: 
+Titles are often accompanied by some adjective describing a temporary or temporal period in which the person holds the title. These phrases are removed from the titles and flags are created for each. Note that status here describes time, not hierarchy. 
 
-https://github.com/Nonprofit-Open-Data-Collective/titleclassifier/blob/main/R/06-gen-status-codes.R
+These lists are primarily used in [gen_status_codes()](https://github.com/Nonprofit-Open-Data-Collective/titleclassifier/blob/main/R/06-gen-status-codes.R):
 
 - former.words
 - future.words
@@ -47,64 +59,85 @@ https://github.com/Nonprofit-Open-Data-Collective/titleclassifier/blob/main/R/06
 - regional.words
 - possible.regional-list 
 
-
-**Demo Data:**
-
-Sample datasets for development and testing purposes: 
-
-- tinypartvii
-- rawtitles
-
-
-
- 
+<a href="https://docs.google.com/spreadsheets/d/1iYEY2HYDZTV0uvu35UuwdgAUQNKXSyab260pPPutP1M/edit#gid=145854139" class="button"> STATUS DICTIONARY </a>
 
 
 For example, the **former.word** objects are used to create the "former" flag to designate that an individual is a former or outgoing status in her/his position:
 
 
-```{r, eval=F}
-data( former.words ) %>% head() 
+```{r, eval=T}
+former.words %>% head() 
 ```
+
+**Demo Data:**
+
+Sample datasets for development and testing purposes: 
+
+- raw.titles: character vector of 1,000 titles
+- tinypartvii: data frame with all DTK members of 10,000 nonprofits 
+ 
+
+```{r}
+head( raw.titles )
+```
+
+```{r}
+head( tinypartvii )
+```
+
+
+<br><hr><br>
+
+
+
+
 
 ## Internal Data Objects 
 
+Internal data objects are stored on GitHub. 
 
-Import from raw version (list stored in .R file in data-raw?), preview, then save an .rda version in the data folder. 
+To update these, edit the object file on GitHub then run this script (RMD file). It imports the current values from GitHub and saves new RDA files in the data folder of the package. 
+
 
 ### Likely Subjects
 
 Used in the **fix_of()** function as the likely subject of a possible title: 
 
-https://github.com/Nonprofit-Open-Data-Collective/titleclassifier/blob/main/R/05-standardize-spelling.R
+
+<a href="https://github.com/Nonprofit-Open-Data-Collective/titleclassifier/blob/main/R/05-standardize-spelling.R" class="button"> fix_of() FUNCTION </a>
+
+
+<a href="https://github.com/Nonprofit-Open-Data-Collective/titleclassifier/blob/main/data-raw/likely-subjects.R" class="button"> EDIT OBJECT </a>
 
 
 ```{r}
-likely.subjects <- 
-c("OPERATIONS", "FINANCE", "ADMINISTRATION", "MANAGEMENT", "EXHIBIT", 
-"PUBLICITY", "ACTIVITIES", "BUILDING", "EDUCATION", "MARKETING", 
-"STRATEGY", "SALES", "ENSHRINEMENT", "ADVANCEMENT", "FUNDRAISING", 
-"COMMUNICATION", "PRODUCT", "CONSULTING", "TECHNOLOGY", "DEVELOPMENT", 
-"GROUNDS", "\\bART", "MUSIC", "ENGINEERING", "BUSINESS", "DESIGN", 
-"EXPERIENCE", "CULTURE", "\\bLAB", "AFFAIR", "BRANDING", "INTERNAL", 
-"PUBLIC", "EXTERNAL", "PROMOTION", "HUMAN RESOURCES", "LEGAL", 
-"RESEARCH", "TRANSPORTATION", "FELLOWSHIP", "FOUNDATION", "EVENT", 
-"COLLECTION", "SCHOOL", "ASSOCIATION", "RADIO", "TV", "COMMITTEE", 
-"MEMBERSHIP")
-
+dput( likely.subjects )
 ```
 
+
+**Update Internal Package Object**
+
 ```{r}
-dump( "likely.subjects", file="likely-subjects.R" )
+# current GitHub version
+source( paste0( raw.url, "likely-subjects.R" ) ) 
 save( likely.subjects, file="../data/likely-subjects.rda" )
 ```
 
 
+<br><hr><br>
+
+
+
+
+
 ### Likely Titles 
 
-Used in the **standardize_conj** step and its helper functions specifically: 
+Used in the **standardize_conj()** step and its helper functions specifically: 
 
-https://github.com/Nonprofit-Open-Data-Collective/titleclassifier/blob/main/R/03-standardize-conj.R
+
+<a href="https://github.com/Nonprofit-Open-Data-Collective/titleclassifier/blob/main/R/03-standardize-conj.R" class="button"> standardize_conj() FUNCTION </a>
+
+<a href="https://github.com/Nonprofit-Open-Data-Collective/titleclassifier/blob/main/data-raw/likely-titles.R" class="button"> EDIT OBJECT </a>
 
 ```{r}
 likely.titles <- 
@@ -120,10 +153,20 @@ c("PRESIDENT", "CEO", "DIRECTOR\\b", "CHAIR", "TRUSTEE\\b", "TREASURER",
 )
 ```
 
+
+
+
 ```{r}
-dump( "likely.titles", file="likely-titles.R" )
+# current GitHub version
+source( paste0( raw.url, "likely-titles.R" ) ) 
 save( likely.titles, file="../data/likely-titles.rda" )
 ```
+
+<br><hr><br>
+
+
+
+
 
 ### Possible Titles 
 
@@ -143,6 +186,14 @@ dump( "possible.titles", file="possible-titles.R" )
 save( possible.titles, file="../data/possible-titles.rda" )
 ```
 
+<br><hr><br>
+
+
+
+
+
+
+
 
 ## Google Sheets Data Objects 
 
@@ -150,11 +201,20 @@ These data are imported into the package via tables in a shared public Google Sh
 
 https://docs.google.com/spreadsheets/d/1iYEY2HYDZTV0uvu35UuwdgAUQNKXSyab260pPPutP1M/edit?usp=sharing
 
-These can be edited online and re-imported to update the title parsing functions. 
 
+**Note** that these objects are read from Google Sheets in real time while running the package, so there
+
+These can be edited online to update the title parsing functions. 
+
+- [ ] Add an option to read from a local file if users have a custom table they prefer. 
+
+
+<br><hr><br>
 
 
 ### Standardized Titles 
+
+<a href="https://docs.google.com/spreadsheets/d/1iYEY2HYDZTV0uvu35UuwdgAUQNKXSyab260pPPutP1M/edit#gid=1464446536" class="button"> SPREADSHEET </a>
 
 ```{r}
 googlesheets4::gs4_deauth()
@@ -171,14 +231,19 @@ df.standard %>%
   group_by( title.standard ) %>% 
   mutate( variants=n() ) %>% 
   arrange( -variants, title.standard ) %>% 
+  head()
   pander()
 ```
 
 
 ```{r}
-write.csv( df.standard, "title-standard-v.csv" )
+write.csv( df.standard, "google-sheets-backup/title-standard-v.csv" )
 save( df.standard, file="../data/former-words.rda" )
 ```
+
+
+
+<br><hr><br>
 
 
 ### Domain & Hierarchy Taxonomy 
@@ -200,9 +265,13 @@ d.taxonomy
 
 
 ```{r}
-write.csv( d.taxonomy, "title-taxonomy.csv" )
+write.csv( d.taxonomy, "google-sheets-backup/title-taxonomy.csv" )
 save( d.taxonomy, file="../data/title-taxonomy.rda" )
 ```
+
+<br><hr><br>
+
+
 
 
 
@@ -221,7 +290,8 @@ head( df.status )
 table( df.status$status.qualifier )
 ```
 
-#### REGION 
+<br><hr><br>
+
 
 ```{r}
 # how do we go from 
@@ -232,6 +302,10 @@ regional.words <- df.region$status.variant %>% unique()
 
 sort( regional.words )
 ```
+
+
+#### REGION 
+
 
 
 
@@ -304,6 +378,12 @@ save( former.words, file="../data/former-words.rda" )
 #### INTERIM 
 
 
+```{r}
+c("\\bINTERIM\\b", "\\bINT\\b", "\\bACTING\\b", "\\bTEMPORARY\\b", 
+"\\bTEMP\\b")
+```
+
+
  
 ## Demo Data 
 
@@ -353,15 +433,110 @@ head( tinypartvii )
 
 <style>
 
+.button {
+  background-color: white;
+  color: black;
+  border: 2px solid #008CBA;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 12px;
+  width: 200px;
+}
+
+.button {
+  transition-duration: 0.4s;
+}
+
+.button:hover {
+  background-color: #008CBA; 
+  color: white;
+}
+
 td{ padding: 6px 10px 6px 10px } 
 th{ text-align: left; } 
-h1, h3, h4 { color: #995c00; }
-h1,h2, h3 { margin-top:50px; }
+
 body{
      font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
      font-size:calc(1.5em + 0.25vw);
      font-weight:300;line-height:1.65;
+     -webkit-font-smoothing:antialiased;
+     -moz-osx-font-smoothing:grayscale;
      margin-left:20%;
-     margin-right:20% }
+     margin-right:20%} 
+
+#TOC {
+  margin-top:30px;
+  margin-bottom:80px }
+  
+ 
+a{
+  color:darkred;
+  text-decoration:inherit;
+  transition:color .2s} 
+  
+a.selected,a:hover{color:#949494} 
+article a,b,strong,th{font-weight:400} 
+
+h1{
+  font-size:2.85em; 
+  margin-top:100px !important;
+  margin-bottom:30px;
+  color:#153243;
+  font-weight: 700;
+  font-style: normal;
+  font-family: "Quarto A", "Quarto B", Georgia, Times, "Times New Roman", "Microsoft YaHei New", "Microsoft Yahei", serif;
+  line-height: 1.125;
+  letter-spacing: 0.025em;
+} 
+  
+h2,h3,h4,h5,h6{
+  font-weight:300;
+  margin-top:60px !important;
+  margin-bottom:30px;} 
+  
+p.caption {
+    text-align: center;
+    font-style: italic;
+    margin-bottom:30px;
+}
+
+
+
+
+pre{
+  background:#f7f7f7;
+  color:black;
+  border-radius:2px;
+  font-size:.7em;
+  margin:1.5em 0;
+  padding:.8em 1.2em;
+  white-space:pre-wrap;
+  margin-top:30px;
+  margin-bottom:40px 
+}
+
+
+p code{
+  background:#cccccc; */
+  opacity:.5;
+  border-radius:4px;
+  font-size:.8em;
+  margin:0 .1em;
+  padding:.2em .4em
+} 
+  
+table{
+  border-spacing:1px;
+  /* box-shadow:0px 0px 0px 1px rgba(148,148,148,0.16) inset */
+  margin-top:80px;
+  margin-bottom:100px !important;
+  margin-left: auto;
+  margin-right: auto;
+  align:center
+} 
+
      
 </style>
