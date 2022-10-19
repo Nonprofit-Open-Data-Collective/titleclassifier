@@ -59,7 +59,7 @@ These lists are primarily used in [gen_status_codes()](https://github.com/Nonpro
 - regional.words
 - possible.regional-list 
 
-<a href="https://docs.google.com/spreadsheets/d/1iYEY2HYDZTV0uvu35UuwdgAUQNKXSyab260pPPutP1M/edit#gid=145854139" class="button"> STATUS DICTIONARY </a>
+<a href="https://docs.google.com/spreadsheets/d/1iYEY2HYDZTV0uvu35UuwdgAUQNKXSyab260pPPutP1M/edit#gid=145854139" class="button"> STATUS CROSSWALK </a>
 
 
 For example, the **former.word** objects are used to create the "former" flag to designate that an individual is a former or outgoing status in her/his position:
@@ -125,6 +125,7 @@ save( likely.subjects, file="../data/likely-subjects.rda" )
 
 
 <br><hr><br>
+
 
 
 
@@ -214,7 +215,7 @@ These can be edited online to update the title parsing functions.
 
 ### Standardized Titles 
 
-<a href="https://docs.google.com/spreadsheets/d/1iYEY2HYDZTV0uvu35UuwdgAUQNKXSyab260pPPutP1M/edit#gid=1464446536" class="button"> SPREADSHEET </a>
+<a href="https://docs.google.com/spreadsheets/d/1iYEY2HYDZTV0uvu35UuwdgAUQNKXSyab260pPPutP1M/edit#gid=1464446536" class="button"> VIEW SHEET </a>
 
 ```{r}
 googlesheets4::gs4_deauth()
@@ -231,14 +232,14 @@ df.standard %>%
   group_by( title.standard ) %>% 
   mutate( variants=n() ) %>% 
   arrange( -variants, title.standard ) %>% 
-  head()
+  head() %>% 
   pander()
 ```
 
 
 ```{r}
-write.csv( df.standard, "google-sheets-backup/title-standard-v.csv" )
-save( df.standard, file="../data/former-words.rda" )
+write.csv( df.standard, "google-sheets-backup/standard-titles.csv" )
+save( df.standard, file="../data/standard-titles.rda" )
 ```
 
 
@@ -247,6 +248,9 @@ save( df.standard, file="../data/former-words.rda" )
 
 
 ### Domain & Hierarchy Taxonomy 
+
+<a href="https://docs.google.com/spreadsheets/d/1iYEY2HYDZTV0uvu35UuwdgAUQNKXSyab260pPPutP1M/edit#gid=756762038" class="button"> VIEW SHEET </a>
+
 
 ```{r}
 # googlesheets4::gs4_deauth()
@@ -293,41 +297,10 @@ table( df.status$status.qualifier )
 <br><hr><br>
 
 
-```{r}
-# how do we go from 
 
-df.region <- filter( df.status, status.qualifier == "regional" )
-
-regional.words <- df.region$status.variant %>% unique()
-
-sort( regional.words )
-```
+[ How many objects do we need here??? One for each? Or one table? ]
 
 
-#### REGION 
-
-
-
-
-```{r}
-dump( list="regional.words", file="regional-words.R" )
-save( regional.words, file="../data/regional-words.rda" )
-```
-
-
-**possible.region.list**
-
-```{r}
-possible.regional.list <- 
-c("VICE PRESIDENT", "PRESIDENT", "BOARD MEMBER", "COUNCIL MEMBER", 
-"MEMBER", "REPRESENTATIVE", "COORDINATOR", "CEO", "DIRECTOR", 
-"MANAGER", "TRUSTEE", "CHAIR", "LIAISON")
-```
-
-```{r}
-dump( list="possible.regional.list", file="possible-regional-list.R" )
-save( possible.regional.list, file="../data/possible-regional-list.rda" )
-```
 
 
 #### FORMER
@@ -383,6 +356,55 @@ c("\\bINTERIM\\b", "\\bINT\\b", "\\bACTING\\b", "\\bTEMPORARY\\b",
 "\\bTEMP\\b")
 ```
 
+
+
+
+
+
+#### REGION 
+
+```{r}
+# how do we go from 
+
+df.region <- filter( df.status, status.qualifier == "regional" )
+
+regional.words <- df.region$status.variant %>% unique()
+
+sort( regional.words )
+```
+
+
+
+
+
+
+
+```{r}
+dump( list="regional.words", file="regional-words.R" )
+save( regional.words, file="../data/regional-words.rda" )
+```
+
+
+**possible.region.list**
+
+```{r}
+possible.regional.list <- 
+c("VICE PRESIDENT", "PRESIDENT", "BOARD MEMBER", "COUNCIL MEMBER", 
+"MEMBER", "REPRESENTATIVE", "COORDINATOR", "CEO", "DIRECTOR", 
+"MANAGER", "TRUSTEE", "CHAIR", "LIAISON")
+```
+
+```{r}
+dump( list="possible.regional.list", file="possible-regional-list.R" )
+save( possible.regional.list, file="../data/possible-regional-list.rda" )
+```
+
+
+
+
+
+
+<br><hr><br>
 
  
 ## Demo Data 
@@ -473,7 +495,7 @@ body{
   
  
 a{
-  color:darkred;
+  color:#008CBA;
   text-decoration:inherit;
   transition:color .2s} 
   
@@ -495,7 +517,9 @@ h1{
 h2,h3,h4,h5,h6{
   font-weight:300;
   margin-top:60px !important;
-  margin-bottom:30px;} 
+  margin-bottom:30px;
+  color:#008CBA;
+} 
   
 p.caption {
     text-align: center;
