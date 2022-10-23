@@ -28,12 +28,14 @@ categorize_titles <- function( comp.data )
                                 col_types = "c" )  # c = character
   d.taxonomy[ is.na( d.taxonomy ) ] <- ""
   
+  
   comp.data <- merge( comp.data, d.taxonomy, 
                      by.x="title.standard", by.y="title.standard", 
                      all.x=T )
   
   return( comp.data )
 }
+
 
 
 # categorize_titles <- function( comp.data )

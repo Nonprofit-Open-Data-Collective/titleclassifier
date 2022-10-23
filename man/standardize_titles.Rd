@@ -4,7 +4,13 @@
 \alias{standardize_titles}
 \title{standardize titles function}
 \usage{
-standardize_titles(comp.data, title = "TitleTxt6")
+standardize_titles(
+  comp.data,
+  title = "TitleTxt6",
+  hours = "TOT.HOURS",
+  pay = "TOT.COMP",
+  officer = "F9_07_COMP_DTK_POS_OFF_X"
+)
 }
 \description{
 TODO not written yet, but we will generate the standardizations using the dynamic google sheets

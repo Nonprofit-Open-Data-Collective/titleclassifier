@@ -1207,20 +1207,20 @@ of_title_helper <- function(x){
 #' @export
 spellcheck <- function(TitleTxt){
   
-  if(!grepl("\\s",TitleTxt) && !is.na(TitleTxt) &&
-     (grepl("^\\s*P",TitleTxt) || grepl("^\\s*T",TitleTxt) || 
+  if(!grepl("\\s",TitleTxt) & !is.na(TitleTxt) &
+     (grepl("^\\s*P",TitleTxt) | grepl("^\\s*T",TitleTxt) | 
       grepl("^\\s*M",TitleTxt))){
     suggested.titles <- hunspell::hunspell_suggest(TitleTxt)[[1]]
     for(title in suggested.titles){
-      if((title == "PRESIDENT" && grepl("^\\s*P",TitleTxt) && TitleTxt != "PRESIDENT"))
+      if((title == "PRESIDENT" & grepl("^\\s*P",TitleTxt) & TitleTxt != "PRESIDENT"))
         TitleTxt <- "PRESIDENT"
-      else if(title == "TREASURER" && grepl("^\\s*T",TitleTxt) && TitleTxt != "TREASURER")
+      else if(title == "TREASURER" & grepl("^\\s*T",TitleTxt) & TitleTxt != "TREASURER")
         TitleTxt <- "TREASURER"
-      else if(title == "TRUSTEE" && grepl("^\\s*T",TitleTxt) && TitleTxt != "TRUSTEE"
-              && TitleTxt != "TRUSTEES")
+      else if(title == "TRUSTEE" & grepl("^\\s*T",TitleTxt) & TitleTxt != "TRUSTEE"
+              & TitleTxt != "TRUSTEES")
         TitleTxt <- "TRUSTEE"
-      else if(title == "MEMBER" && grepl("^\\s*M",TitleTxt) && TitleTxt != "MEMBER"
-              && TitleTxt != "MEMBERSHIP")
+      else if(title == "MEMBER" & grepl("^\\s*M",TitleTxt) & TitleTxt != "MEMBER"
+              & TitleTxt != "MEMBERSHIP")
         TitleTxt <- "MEMBER"
     }
   }

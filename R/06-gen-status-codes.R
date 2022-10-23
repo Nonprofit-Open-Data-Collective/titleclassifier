@@ -101,7 +101,7 @@ identify_co <- function(TitleTxt){
 filter_regional <- function(TitleTxt ){
   for(i in 1:length(regional.words)){
     word <- regional.words[i]
-    if(word != "PA" && word != "AREA")
+    if(word != "PA" & word != "AREA")
       TitleTxt <- gsub(paste0("\\b",word,"\\b"),"REGIONAL",
                        TitleTxt)
     else{
@@ -221,7 +221,7 @@ standardize_qualifiers <- function(TitleTxt ){
   #alternate method (doing all mappings at once)
   for(i in 1:length(status.mapping$status.variant)){
     word <- status.mapping$status.variant[i]
-    if(word != "EX" && word != "END" && word != "NEW")
+    if(word != "EX" & word != "END" & word != "NEW")
       TitleTxt <- gsub(paste0("\\b",word,"\\b"),status.mapping$status.qualifier[i],
                        TitleTxt)
     else{
@@ -264,7 +264,7 @@ categorize_qualifiers <- function(comp.data, title = "TitleTxt6"){
   TitleTxt <- gsub("CURRENT","", TitleTxt)
   
   #some sanity checks (we default to former if both former and future checked)
-  if(comp.table$FUTURE == 1 && comp.table$FORMER == 1){
+  if(comp.table$FUTURE == 1 & comp.table$FORMER == 1){
     comp.table$FUTURE <- 0 #most likely = from until
   }
   
