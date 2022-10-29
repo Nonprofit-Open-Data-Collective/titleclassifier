@@ -33,9 +33,63 @@ categorize_titles <- function( comp.data )
                      by.x="title.standard", by.y="title.standard", 
                      all.x=T )
   
+  comp.data <- add_flags(comp.data) 
+  #relatively slow step as we have to do subset orderings
+  
+  print("categorize titles step complete")
+  
   return( comp.data )
 }
 
+#' @title 
+#' add flags function
+#' 
+#' 
+#' @description 
+#' adds helpful subsetting flags in comp dataset
+#' like pay rank, hour rank, etc.
+#' 
+#' @export
+add_flags <- function(comp.data){
+  df <- comp.data[order(comp.data$X),]
+  df$pay_rank <- NA
+  df$hour_rank <- NA
+  df$has_leader <- NA
+  no_leader <- 0
+  for(ein in unique(df$EIN)){
+    temp <- df[df$EIN == ein,]
+    has_leader <- FALSE
+    df <- df[(nrow(temp)+1):nrow(df),]
+    
+    #pay rank
+    temp <- temp[order(-temp$TOT.COMP),]
+    for(i in 1:nrow(temp)){
+      temp$pay_rank[i] = i
+      if(!has_leader) {
+        has_leader <- ((temp$title.standard[i] == "CEO") | has_leader)
+        if(is.na(has_leader)) has_leader = FALSE
+      }
+    }
+    #hour rank
+    temp <- temp[order(-temp$TOT.HOURS),]
+    for(i in 1:nrow(temp)){
+      temp$hour_rank[i] = i
+      if(!has_leader) {
+        has_leader <- (grepl("BOARD PRESIDENT", temp$title.standard[i]) | has_leader)
+        if(is.na(has_leader)) has_leader = FALSE
+      }
+    }
+    temp$has_leader <- has_leader
+    if(!has_leader) no_leader <- no_leader + 1
+    df <- rbind(df, temp)
+  }
+  
+  perc.with.ceo <- 100 * (length(unique(df$EIN))-no_leader) / length(unique(df$EIN))
+  
+  print(paste0(perc.with.ceo, "% of total organizations classified with a CEO"))
+  
+  return(df)
+}
 
 
 # categorize_titles <- function( comp.data )
