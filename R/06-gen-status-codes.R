@@ -264,9 +264,8 @@ categorize_qualifiers <- function(comp.data, title = "TitleTxt6"){
   TitleTxt <- gsub("CURRENT","", TitleTxt)
   
   #some sanity checks (we default to former if both former and future checked)
-  if(comp.table$FUTURE == 1 & comp.table$FORMER == 1){
-    comp.table$FUTURE <- 0 #most likely = from until
-  }
+  comp.table$FUTURE <- ifelse(comp.table$FUTURE == 1 & comp.table$FORMER == 1, 
+                              0, comp.table$FUTURE) #most likely from...until
   
   TitleTxt <- trimws( TitleTxt )
   comp.table$TitleTxt6 <- TitleTxt
