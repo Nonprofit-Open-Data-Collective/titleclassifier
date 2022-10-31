@@ -51,14 +51,25 @@ categorize_titles <- function( comp.data )
 #' 
 #' @export
 add_flags <- function(comp.data){
+  
+  #reordering dataset by EIN classification (to allow for easier subgroupings)
   df <- comp.data[order(comp.data$EIN),]
+  
+  #adding pay rank, hour rank, and has_leader flags
   df$pay_rank <- NA
   df$hour_rank <- NA
   df$has_leader <- NA
+  
+  #count of org's without defined leadership (i.e. no CEO, no board president)
   no_leader <- 0
   for(ein in unique(df$EIN)){
-    temp <- df[df$EIN == ein,]
+    
     has_leader <- FALSE
+    
+    #subselecting individual organizations
+    temp <- df[df$EIN == ein,]
+    
+    #removing the occurrences of the organization
     df <- df[(nrow(temp)+1):nrow(df),]
     
     #pay rank
@@ -70,6 +81,7 @@ add_flags <- function(comp.data){
         if(is.na(has_leader)) has_leader = FALSE
       }
     }
+    
     #hour rank
     temp <- temp[order(-temp$TOT.HOURS),]
     for(i in 1:nrow(temp)){
@@ -79,13 +91,18 @@ add_flags <- function(comp.data){
         if(is.na(has_leader)) has_leader = FALSE
       }
     }
+    
+    #has_leader 
+    #it's integrated into the hour and wage rank for efficiency
     temp$has_leader <- has_leader
     if(!has_leader) no_leader <- no_leader + 1
+    
+    #rebinding the subsetted organization back to the data frame
     df <- rbind(df, temp)
   }
   
+  #calculating percentage of org's with defined leadership
   perc.with.ceo <- 100 * (length(unique(df$EIN))-no_leader) / length(unique(df$EIN))
-  
   print(paste0(perc.with.ceo, "% of total organizations classified with a CEO"))
   
   return(df)
