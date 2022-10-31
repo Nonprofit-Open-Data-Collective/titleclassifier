@@ -14,7 +14,9 @@ devtools::install_github( 'nonprofit-open-data-collective/titleclassifier' )
 library( titleclassifier )
 library( dplyr )
 
-data( tinypartvii )  # sample of part vii for 10,000 orgs
+data( tinypartvii )       # sample of form 990 part vii for 10,000 orgs
+
+start_time <- Sys.time()  # benchmark runtime
 
 tinypartvii %>% 
   standardize_df() %>% 
@@ -25,6 +27,10 @@ tinypartvii %>%
   gen_status_codes() %>% 
   standardize_titles() %>%
   categorize_titles() ->     df.coded
+  
+
+end_time <- Sys.time()    # runtime
+end_time - start_time
 ```
 
 
