@@ -51,7 +51,7 @@ categorize_titles <- function( comp.data )
 #' 
 #' @export
 add_flags <- function(comp.data){
-  df <- comp.data[order(comp.data$X),]
+  df <- comp.data[order(comp.data$EIN),]
   df$pay_rank <- NA
   df$hour_rank <- NA
   df$has_leader <- NA
