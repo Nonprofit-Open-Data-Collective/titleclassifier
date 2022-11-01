@@ -33,8 +33,7 @@ categorize_titles <- function( comp.data )
                      by.x="title.standard", by.y="title.standard", 
                      all.x=T )
   
-  comp.data <- add_flags(comp.data) 
-  #relatively slow step as we have to do subset orderings
+  comp.data <- add_features( df=comp.data ) 
   
   print("categorize titles step complete")
   
@@ -42,71 +41,154 @@ categorize_titles <- function( comp.data )
 }
 
 #' @title 
-#' add flags function
+#' engineer new features from existing fields
 #' 
 #' 
 #' @description 
-#' adds helpful subsetting flags in comp dataset
-#' like pay rank, hour rank, etc.
+#' adds helpful context fields in comp dataset
+#' like pay rank, hour rank, counts of types of employees, etc.
 #' 
 #' @export
-add_flags <- function(comp.data){
-  
-  #reordering dataset by EIN classification (to allow for easier subgroupings)
-  df <- comp.data[order(comp.data$EIN),]
-  
-  #adding pay rank, hour rank, and has_leader flags
-  df$pay_rank <- NA
-  df$hour_rank <- NA
-  df$has_leader <- NA
-  
-  #count of org's without defined leadership (i.e. no CEO, no board president)
-  no_leader <- 0
-  for(ein in unique(df$EIN)){
-    
-    has_leader <- FALSE
-    
-    #subselecting individual organizations
-    temp <- df[df$EIN == ein,]
-    
-    #removing the occurrences of the organization
-    df <- df[(nrow(temp)+1):nrow(df),]
-    
-    #pay rank
-    temp <- temp[order(-temp$TOT.COMP),]
-    for(i in 1:nrow(temp)){
-      temp$pay_rank[i] = i
-      if(!has_leader) {
-        has_leader <- ((temp$title.standard[i] == "CEO") | has_leader)
-        if(is.na(has_leader)) has_leader = FALSE
-      }
+add_features <- function( df )
+{
+
+    df$Multiple.Titles  <- as.numeric( df$Multiple.Titles )
+    df$FORMER           <- as.numeric( df$FORMER )
+    df$INTERIM          <- as.numeric( df$INTERIM ) 
+    df$REGIONAL         <- as.numeric( df$REGIONAL )
+
+    to_boolean <- function(x)
+    {
+      x[ x == "X" | x == "x" ] <- 1
+      x[ x == "" ] <- 0
+      x <- as.numeric(x)
+      return(x)
     }
+
+    these <- c("emp", "board",
+               "ceo", "c.level", "dir.vp", 
+               "mgr", "spec", "pres", "vp", 
+               "sec", "treas", "com" )
+
+    df[ these ] <- 
+      df[these] %>% 
+      lapply( to_boolean )
+
+    # weight people w multiple titles
+    df <- 
+      df %>% 
+      dplyr::group_by( OBJECT_ID, F9_07_COMP_DTK_NAME_PERS ) %>% 
+      dplyr::mutate( tot.titles = max(Num.Titles, na.rm=T ),
+                     emp2 = ifelse( sum(emp)>0, emp/sum(emp), 0 ),
+                     board2 = ifelse( sum(board)>0, board/sum(board), 0 )  ) %>%
+      ungroup()  
+
+
+    # RECALCULATE HOURS AND PAY W RELATED ORGS SEPARATED
+
+    hours1 <-  as.numeric( df$F9_07_COMP_DTK_AVE_HOUR_WEEK )
+    hours2 <-  as.numeric( df$F9_07_COMP_DTK_AVE_HOUR_WEEK_RL )
+
+    df$TOT.HOURS <- hours1
+    df$TOT.HOURS.TOT <- hours1 + hours2
+
+    pay1 <-  as.numeric( df$F9_07_COMP_DTK_COMP_ORG )
+    pay2 <-  as.numeric( df$F9_07_COMP_DTK_COMP_RLTD ) 
+    pay3 <-  as.numeric( df$F9_07_COMP_DTK_COMP_OTH ) 
+    pay4 <-  as.numeric( df$F9_07_COMP_DTK_EMPL_BEN ) 
+
+    pay1[ is.na(pay1) ] <- 0
+    pay2[ is.na(pay2) ] <- 0
+    pay3[ is.na(pay3) ] <- 0
+    pay4[ is.na(pay4) ] <- 0
+
+    df$TOT.COMP <- pay1 + pay3 + pay4
+    df$TOT.COMP.TOT <- pay1 + pay2 + pay3 + pay4
+
+
+
+    df$tot.comp2 <- df$TOT.COMP
+    df$tot.comp2[ df$Num.Titles > 1 ] <- NA
+    df$tot.hours2 <- df$TOT.HOURS
+    df$tot.hours2[ df$Num.Titles > 1 ] <- NA
+
+    df <- 
+      df %>%
+      dplyr::group_by( EIN ) %>% 
+      dplyr::mutate( num.dtk = n() - sum( Num.Titles > 1, na.rm=T ),
+                     num.titles = n(),
+                     num.emp = sum( emp2, na.rm=T ),  # weights people w multiple titles
+                     num.ceos = sum( ceo, na.rm=T ),
+                     num.clevel = sum( ceo, na.rm=T ) + sum( c.level, na.rm=T ),
+                     num.dirvp = sum( dir.vp, na.rm=T ),
+                     num.mgr = sum( mgr, na.rm=T ),
+                     num.spec = sum( spec, na.rm=T ),
+                     num.board = sum( board2, na.rm=T ),  # weights people w multiple titles
+                     num.pres = sum( pres, na.rm=T ),
+                     num.vp = sum( vp, na.rm=T ),
+                     num.treas = sum( treas, na.rm=T ),
+                     num.sec = sum( sec, na.rm=T ),
+                     num.com = sum( com, na.rm=T ),
+                     num.paid = sum( tot.comp2 > 0, na.rm=T ),  # don't double-count multiple titles
+                     num.fte = sum( tot.hours2 >= 40, na.rm=T ),
+                     num.fte.30h = sum( tot.hours2 >= 30, na.rm=T ),
+                     num.pte = sum( tot.hours2 > 9 & tot.hours2 < 30, na.rm=T ),                   
+                     pay.rank = dense_rank( -TOT.COMP ),
+                     pay.pct.of.max = TOT.COMP / max( TOT.COMP, na.rm=T ),
+                     pay.pct.of.tot = TOT.COMP / sum( tot.comp2, na.rm=T ),  # don't double-count multiple titles
+                     hours.rank = dense_rank( -TOT.HOURS ),
+                     hours.pct.of.max = TOT.HOURS / max( TOT.HOURS, na.rm=T )  ) %>% 
+      ungroup() %>% 
+      as.data.frame()
     
-    #hour rank
-    temp <- temp[order(-temp$TOT.HOURS),]
-    for(i in 1:nrow(temp)){
-      temp$hour_rank[i] = i
-      if(!has_leader) {
-        has_leader <- (grepl("BOARD PRESIDENT", temp$title.standard[i]) | has_leader)
-        if(is.na(has_leader)) has_leader = FALSE
-      }
-    }
-    
-    #has_leader 
-    #it's integrated into the hour and wage rank for efficiency
-    temp$has_leader <- has_leader
-    if(!has_leader) no_leader <- no_leader + 1
-    
-    #rebinding the subsetted organization back to the data frame
-    df <- rbind(df, temp)
-  }
-  
-  #calculating percentage of org's with defined leadership
-  perc.with.ceo <- 100 * (length(unique(df$EIN))-no_leader) / length(unique(df$EIN))
-  print(paste0(perc.with.ceo, "% of total organizations classified with a CEO"))
-  
-  return(df)
+
+    new.order <- 
+    c("NAME", "EIN", "TAXYR", "FORMTYPE", 
+      "F9_07_COMP_DTK_NAME_PERS", "F9_07_COMP_DTK_TITLE",  
+      "Multiple.Titles", "Num.Titles", "tot.titles", 
+
+      "TITLE_RAW", "title.standard", 
+      "TOT.HOURS", "TOT.HOURS.TOT",  "hours.rank", "hours.pct.of.max",  
+      "TOT.COMP", "TOT.COMP.TOT",  
+      "pay.rank", "pay.pct.of.max", "pay.pct.of.tot",
+
+      # "hour_rank", "pay_rank", "has_leader", 
+
+      "num.dtk", "num.titles", 
+      "num.paid", "num.fte", "num.fte.30h", "num.pte",  
+
+      "TitleTxt7", "TitleTxt6", "TitleTxt5", "TitleTxt4", 
+      "TitleTxt3", "TitleTxt2", 
+
+      "F9_07_COMP_DTK_POS_INDIV_TRUST_X", "F9_07_COMP_DTK_POS_INST_TRUST_X", 
+      "F9_07_COMP_DTK_POS_OFF_X", "F9_07_COMP_DTK_POS_KEY_EMPL_X", 
+      "F9_07_COMP_DTK_POS_HIGH_COMP_X", "F9_07_COMP_DTK_POS_FORMER_X", 
+      "F9_07_COMP_DTK_AVE_HOUR_WEEK", "F9_07_COMP_DTK_AVE_HOUR_WEEK_RL", 
+      "F9_07_COMP_DTK_COMP_ORG", "F9_07_COMP_DTK_COMP_RLTD", 
+      "F9_07_COMP_DTK_COMP_OTH", "F9_07_COMP_DTK_EMPL_BEN", 
+
+      "FORMER", "INTERIM", "FUTURE", "AS.NEEDED", 
+      "EX.OFFICIO", "CO", "REGIONAL", "date.x", "SCHED.O", 
+
+      "domain.category", "domainl.label", "soc.label", 
+      "major.group", "minor.group", "broad.group", "detailed.occupation",
+
+      "emp", "num.emp", "board", "num.board", 
+
+      "ceo", "c.level", "dir.vp", "mgr", "spec",
+      "num.ceos", "num.clevel", "num.dirvp", "num.mgr", "num.spec", 
+
+      "pres", "vp", "sec", "treas", "com",
+      "num.pres", "num.vp", "num.treas", "num.sec", "num.com", 
+
+      "URL", "OBJECT_ID"  )
+
+      df <- df[ new.order ]
+
+   return( df )
+
 }
+
 
 
 # categorize_titles <- function( comp.data )
