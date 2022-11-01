@@ -23,7 +23,7 @@ standardize_titles <- function(comp.data, title = "TitleTxt6",
   # manipulations with google sheets
   googlesheets4::gs4_deauth()
   df.standard <- googlesheets4::read_sheet( "1iYEY2HYDZTV0uvu35UuwdgAUQNKXSyab260pPPutP1M", 
-                                            sheet="title-standardization", range="A:B",
+                                            sheet="title-standardization", range="A:C",
                                             col_types = "c" )  # c = character
   df.standard[ is.na( df.standard ) ] <- ""
   df.standard <- unique( df.standard )
