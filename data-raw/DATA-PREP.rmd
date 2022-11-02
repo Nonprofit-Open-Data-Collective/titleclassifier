@@ -411,7 +411,7 @@ save( possible.regional.list, file="../data/possible-regional-list.rda" )
 
 The package includes some IRS 990 Part VII data for development and demonstration purposes. 
 
-
+![](img/part-vii.png)
 
 **Data Dictionary:**
 
