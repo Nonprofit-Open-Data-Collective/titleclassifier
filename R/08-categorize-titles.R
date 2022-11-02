@@ -10,7 +10,6 @@ require(dplyr)
 #' @title 
 #' categorize titles function
 #' 
-#' 
 #' @description 
 #' categorizes the titles in comp.data 
 #' works on TitleTxt7
@@ -45,7 +44,6 @@ categorize_titles <- function( comp.data )
 
 #' @title 
 #' engineer new features from existing fields
-#' 
 #' 
 #' @description 
 #' adds helpful context fields in comp dataset
@@ -191,7 +189,6 @@ add_features <- function( df )
 
 #' @title 
 #' rename variables in the dataset
-#' 
 #' 
 #' @description 
 #' simplify variable names 

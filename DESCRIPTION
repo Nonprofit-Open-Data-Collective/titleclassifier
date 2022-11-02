@@ -17,6 +17,4 @@ Imports:
   hunspell,
   googlesheets4
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.0
-
-
+RoxygenNote: 7.2.1

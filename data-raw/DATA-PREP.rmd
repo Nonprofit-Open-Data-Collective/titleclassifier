@@ -26,10 +26,9 @@ raw.url <- "https://raw.githubusercontent.com/Nonprofit-Open-Data-Collective/tit
 
 This file updates all of the RDA objects in the package **data** folder. 
 
+It also contains documentation about the various lists of title components and dictionaries that were created to assist with the cleaning and disambiguation of raw title strings. 
 
-# Data Assets
-
-The following dictionary objects were created to assist with cleaning raw title strings: 
+**Lists Used for Cleaning**
 
 * [former.words](https://raw.githubusercontent.com/Nonprofit-Open-Data-Collective/titleclassifier/main/data-raw/former-words.R): synonyms for "former" 
 * [interim.words](https://raw.githubusercontent.com/Nonprofit-Open-Data-Collective/titleclassifier/main/data-raw/interim-words.R)
@@ -69,21 +68,51 @@ For example, the **former.word** objects are used to create the "former" flag to
 former.words %>% head() 
 ```
 
-**Demo Data:**
 
-Sample datasets for development and testing purposes: 
 
-- raw.titles: character vector of 1,000 titles
-- tinypartvii: data frame with all DTK members of 10,000 nonprofits 
- 
+
+## Demo Data 
+
+The package includes some IRS 990 Part VII data for development and demonstration purposes. 
+
+![](img/part-vii.png)
+
+**Data Dictionary:**
+
+* **OBJECT_ID** - id of the xml object storing return data 
+* **URL** - online location of the raw XML form from which data was derived
+* **EIN** - employee identification number 
+* **NAME** - organization's name 
+* **TAXYR** - tax year of the data 
+* **FORMTYPE** - type of IRS 990 form completed (990 or 990EZ)
+* **F9_07_COMP_DTK_NAME_PERS** - director, trustee or key employee name 
+* **F9_07_COMP_DTK_TITLE** - title 
+* **F9_07_COMP_DTK_AVE_HOUR_WEEK** - hours worked per week over tax period (scope PZ) 
+* **F9_07_COMP_DTK_AVE_HOUR_WEEK_RL** - hours worked for a related entity (scope PC)
+* **F9_07_COMP_DTK_COMP_ORG** - direct compensation from the nonprofit; salary or wages (scope PZ) 
+* **F9_07_COMP_DTK_COMP_RLTD** - compensated received from a related entity (scope PC)
+* **F9_07_COMP_DTK_COMP_OTH** - other compensation amount received; bonus or fringe (scope PC)
+* **F9_07_COMP_DTK_EMPL_BEN** - compensation amount in benefits (scope EZ)
+* **F9_07_COMP_DTK_POS_FORMER_X** - checkbox designating former status (scope PC)
+* **F9_07_COMP_DTK_POS_HIGH_COMP_X** - highly-compensated individual checkbox (scope PC)
+* **F9_07_COMP_DTK_POS_OFF_X** - officer checkbox (scope PC)
+* **F9_07_COMP_DTK_POS_INDIV_TRUST_X** - individual trustee checkbox (scope PC) 
+* **F9_07_COMP_DTK_POS_KEY_EMPL_X** - key employee checkbox (scope PC)
+* **F9_07_COMP_DTK_POS_INST_TRUST_X** - institutional trustee checkbox (scope PC) 
+
+See [F9-P07-T01-COMPENSATION](https://nonprofit-open-data-collective.github.io/irs990efile/data-dictionary/data-dictionary.html#f990-part-07-table-00-dir-trust-key) for more details.
+
+```{r}
+data( tinypartvii ) # 10,000 rows of part vii data
+head( tinypartvii )
+```
+
+There's also a vector with some raw titles for testing purposes:
 
 ```{r}
 head( raw.titles )
 ```
 
-```{r}
-head( tinypartvii )
-```
 
 
 <br><hr><br>
@@ -407,41 +436,6 @@ save( possible.regional.list, file="../data/possible-regional-list.rda" )
 <br><hr><br>
 
  
-## Demo Data 
-
-The package includes some IRS 990 Part VII data for development and demonstration purposes. 
-
-![](img/part-vii.png)
-
-**Data Dictionary:**
-
-* **OBJECT_ID** - id of the xml object storing return data 
-* **URL** - online location of the raw XML form from which data was derived
-* **EIN** - employee identification number 
-* **NAME** - organization's name 
-* **TAXYR** - tax year of the data 
-* **FORMTYPE** - type of IRS 990 form completed (990 or 990EZ)
-* **F9_07_COMP_DTK_NAME_PERS** - director, trustee or key employee name 
-* **F9_07_COMP_DTK_TITLE** - title 
-* **F9_07_COMP_DTK_AVE_HOUR_WEEK** - hours worked per week over tax period  
-* **F9_07_COMP_DTK_AVE_HOUR_WEEK_RL** - hours worked for a related entity 
-* **F9_07_COMP_DTK_COMP_ORG** - direct compensation from the nonprofit (salary or wages) 
-* **F9_07_COMP_DTK_COMP_RLTD** - compensated received from a related entity 
-* **F9_07_COMP_DTK_COMP_OTH** - other compensation amount received (bonus, fringe)
-* **F9_07_COMP_DTK_EMPL_BEN** - compensation amount in benefits 
-* **F9_07_COMP_DTK_POS_FORMER_X** - checkbox designating former status 
-* **F9_07_COMP_DTK_POS_HIGH_COMP_X** - highly-compensated individual checkbox
-* **F9_07_COMP_DTK_POS_OFF_X** - officer checkbox 
-* **F9_07_COMP_DTK_POS_INDIV_TRUST_X** - individual trustee checkbox 
-* **F9_07_COMP_DTK_POS_KEY_EMPL_X** - key employee checkbox 
-* **F9_07_COMP_DTK_POS_INST_TRUST_X** - institutional trustee checkbox 
-
-
-
-```{r}
-data( tinypartvii ) # 10,000 rows of part vii data
-head( tinypartvii )
-```
 
 
 
