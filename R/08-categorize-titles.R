@@ -33,7 +33,10 @@ categorize_titles <- function( comp.data )
                      by.x="title.standard", by.y="title.standard", 
                      all.x=T )
   
-  comp.data <- add_features( df=comp.data ) 
+  comp.data <- 
+    comp.data %>% 
+    add_features() %>% 
+    simplify_varnames()
   
   print("categorize titles step complete")
   
@@ -172,6 +175,8 @@ add_features <- function( df )
 
       "domain.category", "domainl.label", "soc.label", 
       "major.group", "minor.group", "broad.group", "detailed.occupation",
+      
+      "strata",
 
       "emp", "num.emp", "board", "num.board", 
 
@@ -190,6 +195,79 @@ add_features <- function( df )
 }
 
 
+
+
+#' @title 
+#' rename variables in the dataset
+#' 
+#' 
+#' @description 
+#' simplify variable names 
+#' 
+#' @export
+simplify_varnames <- function( df )
+{
+
+  df <- 
+    df %>% 
+    dplyr::rename(  
+           org.name = NAME,
+           ein = EIN, 
+           taxyr = TAXYR, 
+           formtype = FORMTYPE, 
+           dtk.name = F9_07_COMP_DTK_NAME_PERS, 
+           multiple.titles = Multiple.Titles, 
+           title.count = Num.Titles, 
+           title.tot = tot.titles,
+           dtk.title = F9_07_COMP_DTK_TITLE, 
+           title.raw = TITLE_RAW, 
+           tot.hours = TOT.HOURS,
+           tot.hours.tot = TOT.HOURS.TOT, 
+           # hours.rank, 
+           # hours.pct.of.max, 
+           tot.comp = TOT.COMP, 
+           tot.comp.tot = TOT.COMP.TOT, 
+           # pay.rank, pay.pct.of.max, pay.pct.of.tot, 
+           # num.dtk, num.titles, num.paid,  
+           # num.fte, num.fte.30h, num.pte, 
+           title.v7 = TitleTxt7, 
+           title.v6 = TitleTxt6, 
+           title.v5 = TitleTxt5, 
+           title.v4 = TitleTxt4, 
+           title.v3 = TitleTxt3, 
+           title.v2 = TitleTxt2, 
+           dtk.indiv.trustee.x = F9_07_COMP_DTK_POS_INDIV_TRUST_X, 
+           dtk.inst.trustee.x = F9_07_COMP_DTK_POS_INST_TRUST_X, 
+           dtk.officer.x = F9_07_COMP_DTK_POS_OFF_X, 
+           dtk.key.empl.x = F9_07_COMP_DTK_POS_KEY_EMPL_X, 
+           dtk.high.comp.x = F9_07_COMP_DTK_POS_HIGH_COMP_X, 
+           dtk.former.x = F9_07_COMP_DTK_POS_FORMER_X, 
+           dtk.hours = F9_07_COMP_DTK_AVE_HOUR_WEEK, 
+           dtk.hours.rltd = F9_07_COMP_DTK_AVE_HOUR_WEEK_RL, 
+           dtk.comp = F9_07_COMP_DTK_COMP_ORG, 
+           dtk.comp.rltd = F9_07_COMP_DTK_COMP_RLTD, 
+           dtk.comp.oth = F9_07_COMP_DTK_COMP_OTH, 
+           dtk.comp.ben = F9_07_COMP_DTK_EMPL_BEN, 
+           former.x = FORMER, 
+           interim.x = INTERIM, 
+           future.x = FUTURE, 
+           as.needed.x = AS.NEEDED, 
+           ex.officio.x = EX.OFFICIO, 
+           co.x = CO,
+           region.x = REGIONAL, 
+           # date.x, 
+           sched.o.x = SCHED.O, 
+           # domain.category, domainl.label, soc.label, 
+           # major.group, minor.group, broad.group, detailed.occupation, 
+           # emp, num.emp, board, num.board, ceo, c.level, dir.vp, 
+           # mgr, spec, num.ceos, num.clevel, num.dirvp, num.mgr, 
+           # num.spec, pres, vp, sec, treas, com, num.pres, 
+           # num.vp, num.treas, num.sec, num.com, 
+           url = URL, 
+           object.id = OBJECT_ID )
+
+   return( df )
+}
 
 # categorize_titles <- function( comp.data )
 # {
