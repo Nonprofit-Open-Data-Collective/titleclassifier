@@ -60,14 +60,6 @@ add_features <- function( df )
     df$INTERIM          <- as.numeric( df$INTERIM ) 
     df$REGIONAL         <- as.numeric( df$REGIONAL )
 
-    to_boolean <- function(x)
-    {
-      x[ x == "X" | x == "x" ] <- 1
-      x[ x == "" ] <- 0
-      x <- as.numeric(x)
-      return(x)
-    }
-
     these <- c("emp", "board",
                "ceo", "c.level", "dir.vp", 
                "mgr", "spec", "pres", "vp", 
@@ -75,7 +67,7 @@ add_features <- function( df )
 
     df[ these ] <- 
       df[these] %>% 
-      lapply( to_boolean )
+      lapply( to_boolean )  # to_boolean is in utilities.R
 
     # weight people w multiple titles
     df <- 
