@@ -25,10 +25,9 @@ remove_dates <- function( df, title="F9_07_COMP_DTK_TITLE" )
   # replace 1st, 2nd, etc with first, second...
   x <- convert_ordinal( x )
   
-  # flag cases that had dates: 
+  # flag cases that have dates: 
   # date.x = 1 if date was removed from title, 0 otherwise
-  has.date <- identify_date( x )
-  df$date.x <- ifelse( has.date, 1, 0 )
+  df$DATE.X <- identify_dates( x )
   
   x <- remove_date( x )
   df$TitleTxt2 <- x 
@@ -77,41 +76,42 @@ convert_ordinal <- function(TitleTxt){
 #' identify dates
 #'
 #' @description
-#' returns T/F if a string contains a date 
+#' returns boolean: 1 if a string contains a date 
 #'
 #' @export
-identify_date <- function(TitleTxt)
+identify_dates <- function(TitleTxt)
 {
   
   # 'YY format: e.g. TRUSTEE (TO APR '19)
-  TitleTxt <- gsub( "'[[:digit:]]{2}\\b", "", TitleTxt )
+  format1 <- grepl( "'[[:digit:]]{2}\\b", TitleTxt )
   
   # YY-YY format: e.g. DIRECTOR (17-18)
-  TitleTxt <- gsub( "\\b[[:digit:]]{2}-[[:digit:]]{2}\\b", "", TitleTxt )
+  format2 <- grepl( "\\b[[:digit:]]{2}-[[:digit:]]{2}\\b", TitleTxt )
   
   #mm/dd/yyyy format
-  format1 <- stringr::str_extract( TitleTxt, "\\d+/\\d+(/\\d+)*\\b" )
+  format3 <- grepl( "\\d+/\\d+(/\\d+)*\\b", TitleTxt )
   
   #mm-dd-yyyy format
-  format2 <- stringr::str_extract(TitleTxt,"\\d+-\\d+(-\\d+)*\\b")
+  format4 <- grepl( "\\d+-\\d+(-\\d+)*\\b", TitleTxt )
   
   #date strings
   date <- paste0( "\\b", date.words, "\\b", collapse="|" )
-  format3 <- grepl( date, TitleTxt )
+  format5 <- grepl( date, TitleTxt )
   
-  has.date <- !is.na(format1) | !is.na(format2) | format3
+  has.date <- format1 | format2 | format3 | format4 | format5
+  is.date <- ifelse( has.date, 1, 0 )
   
-  return( has.date ) 
+  return( is.date ) 
 }
 
 
 
 # remove dates from raw title text 
 #' @title
-#' remove dates
+#' remove date
 #'
 #' @description
-#' remove dates from raw title text
+#' removes date from raw title text
 #'
 #' @export
 remove_date <- function(TitleTxt)
@@ -133,7 +133,6 @@ remove_date <- function(TitleTxt)
   
   #date strings
   date <- paste0( "\\b", date.words, "\\b", collapse="|" )
-  
   TitleTxt <- gsub( date, "", TitleTxt )
   
   #remove miscellaneous digits still lying around
@@ -143,7 +142,6 @@ remove_date <- function(TitleTxt)
   #remove starting and leading spaces and excess spacing
   TitleTxt <- gsub("^\\s* | \\s*$", "", TitleTxt)
   TitleTxt <- gsub( "\\s{2,}", " ", TitleTxt)
-  
   
   return(TitleTxt)
 }
