@@ -240,7 +240,7 @@ flag_and_keep <- function( df, title="TitleTxt6", s.code )
 standardize_status <- function( x, s.code )
 {
   search.terms <- get_variantes( s.code )
-  # delete all variants
+  # replace all variants with the standardized version
   x <- gsub( search.terms, s.code, x )
   return( x )
 }
