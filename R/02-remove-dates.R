@@ -1,14 +1,14 @@
 #Step 2: Remove Dates
 
 # 02-remove-dates.R
-date.words <- 
-  c( "JANUARY","JAN","FEBRUARY","FEB",
-     "MARCH","MAR","APRIL","APR","MAY",
-     "JUNE","JUN","JULY","JUL","AUGUST","AUG",
-     "SEPTEMBER","SEPT","SEP","OCTOBER","OCT",
-     "NOVEMBER","NOV","DECEMBER","DEC", "PARTIAL YEAR", "PARTIAL YR",
-     "PART YEAR", "PART-YEAR", "YR", "YEAR",
-     "PART YR","MO", "MOS", "MONTH", "MONTHS" )
+# date.words <- 
+#   c( "JANUARY","JAN","FEBRUARY","FEB",
+#      "MARCH","MAR","APRIL","APR","MAY",
+#      "JUNE","JUN","JULY","JUL","AUGUST","AUG",
+#      "SEPTEMBER","SEPT","SEP","OCTOBER","OCT",
+#      "NOVEMBER","NOV","DECEMBER","DEC", "PARTIAL YEAR", "PARTIAL YR",
+#      "PART YEAR", "PART-YEAR", "YR", "YEAR",
+#      "PART YR","MO", "MOS", "MONTH", "MONTHS" )
 
 #' @title
 #' remove/clean dates wrapper function, takes in a data frame
@@ -32,6 +32,13 @@ remove_dates <- function( df, title="F9_07_COMP_DTK_TITLE" )
   
   x <- remove_date( x )
   df$TitleTxt2 <- x 
+  
+  # clean up empty parentheses
+  # "CFO ()"
+  x <- gsub( "\\(\\s{0,3}\\)", "", x )
+  x <- gsub( "\\b\\(", "", x )
+  x <- gsub( "\\)\\b", "", x )
+  x <- trimws(x)
   
   print("remove dates step complete")
   return( df )
@@ -75,6 +82,13 @@ convert_ordinal <- function(TitleTxt){
 #' @export
 identify_date <- function(TitleTxt)
 {
+  
+  # 'YY format: e.g. TRUSTEE (TO APR '19)
+  TitleTxt <- gsub( "'[[:digit:]]{2}\\b", "", TitleTxt )
+  
+  # YY-YY format: e.g. DIRECTOR (17-18)
+  TitleTxt <- gsub( "\\b[[:digit:]]{2}-[[:digit:]]{2}\\b", "", TitleTxt )
+  
   #mm/dd/yyyy format
   format1 <- stringr::str_extract( TitleTxt, "\\d+/\\d+(/\\d+)*\\b" )
   
@@ -102,6 +116,15 @@ identify_date <- function(TitleTxt)
 #' @export
 remove_date <- function(TitleTxt)
 {
+  ## \\d = digit
+  ## \\s = space
+  
+  # 'YY format: e.g. TRUSTEE (TO APR '19)
+  TitleTxt <- gsub( "'[[:digit:]]{2}\\b", "", TitleTxt )
+  
+  # YY-YY format: e.g. DIRECTOR (17-18)
+  TitleTxt <- gsub( "\\b[[:digit:]]{2}-[[:digit:]]{2}\\b", "", TitleTxt )
+  
   #mm/dd/yyyy format
   TitleTxt <- gsub( "\\d+/\\d+(/\\d+)*\\b", "", TitleTxt )
   
@@ -120,6 +143,7 @@ remove_date <- function(TitleTxt)
   #remove starting and leading spaces and excess spacing
   TitleTxt <- gsub("^\\s* | \\s*$", "", TitleTxt)
   TitleTxt <- gsub( "\\s{2,}", " ", TitleTxt)
+  
   
   return(TitleTxt)
 }
