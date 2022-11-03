@@ -72,6 +72,12 @@ gen_status_codes <- function(comp.data, title="TitleTxt5"){
     flag_and_keep(   title, df.status, s.code="REGIONAL"   )  %>%   
     flag_and_keep(   title, df.status, s.code="EX OFFICIO" )
 
+  
+  # sanity check: (we default to former 
+  ## if both former and future checked it's likely 'from...until':
+  ## code as FORMER
+  comp.data$FUTURE.X[ comp.data$FUTURE.X == 1 & comp.table$FORMER.X == 1 ] <- 0 
+
   return( comp.data )
 
 }
