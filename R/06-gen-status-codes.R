@@ -2,6 +2,134 @@
 
 # 06-gen-status-codes.R
 
+
+
+##########
+##########   UPDATE THESE 
+##########
+
+
+#' @title generate status codes wrapper function
+#' 
+#' @description  
+#' remove all quantifiers and qualifiers
+#' we create flags for all of the qualifiers too
+#' the qualifiers include: schedule o, at large, as needed, ex officio, co,
+#' ordinal numbers, and role statuses (former, future, current, and interim)
+#' 
+#' roughly 5 minutes for 100,000 titles
+#' 
+#' TODO pull from the google sheets
+#' 
+#' @export
+gen_status_codes <- function(comp.data, title="TitleTxt5"){
+{
+  
+  TitleTxt <- comp.data[[title]]
+
+  # no flag for current
+  TitleTxt <- gsub( "\\bCURRENT\\b", "", TitleTxt )
+
+  # edge cases - standardize first
+  TitleTxt <- gsub( "\\bEX\\s", "FORMER", TitleTxt )
+  TitleTxt <- gsub( "\\bEX$",   "FORMER", TitleTxt )
+  TitleTxt <- gsub( "\\bEND$",  "FORMER", TitleTxt )
+  TitleTxt <- gsub( "\\bNEW$",  "FORMER", TitleTxt )
+
+  # flag but don't remove co- titles
+  comp.data$CO.X <- grepl( "\\bCO-", TitleTxt )
+
+  # remove numbers
+  numbers <- paste0( "\\b", number.list, "\\b", collapse="|" )
+  TitleTxt <- gsub( numbers, "", TitleTxt ) 
+  TitleTxt <- gsub( "\\s{2,}", " ", TitleTxt )
+  
+  # use TitleTxt6 moving forward b/c
+  # passing the df through flag steps
+  title <- "TitleTxt6"
+  comp.data[[title]] <- TitleTxt
+  
+  # load current status codes from google sheets
+  googlesheets4::gs4_deauth()
+  df.status <- googlesheets4::read_sheet( "1iYEY2HYDZTV0uvu35UuwdgAUQNKXSyab260pPPutP1M", 
+                                          sheet="status-codes", range="A:B",
+                                          col_types = "c" )  # c = character
+
+  # don't remove 'regional' because 
+  # it changes the title meaning
+  
+  # drop ex-officio? 
+  # sometimes is only title
+  
+  comp.data <- 
+    comp.data %>% 
+    flag_and_remove( title, df.status, s.code="FORMER"     )  %>% 
+    flag_and_remove( title, df.status, s.code="FOUNDER"    )  %>%
+    flag_and_remove( title, df.status, s.code="FUTURE"     )  %>%
+    flag_and_remove( title, df.status, s.code="INTERIM"    )  %>%
+    flag_and_remove( title, df.status, s.code="SCHEDULE O" )  %>%  
+    flag_and_remove( title, df.status, s.code="AT LARGE"   )  %>%  
+    flag_and_keep(   title, df.status, s.code="REGIONAL"   )  %>%   
+    flag_and_keep(   title, df.status, s.code="EX OFFICIO" )
+
+  return( comp.data )
+
+}
+
+
+number.list <- c("ONE", "TWO", "THREE", "FOUR", "FIVE",
+                 "SIX", "SEVEN", "EIGHT", "NINE", "TEN",
+                 "ELEVEN", "TWELVE", "THIRTEEN", "FOURTEEN",
+                 "FIFTEEN", "SIXTEEN", "SEVENTEEN", "EIGHTEEN",
+                 "NINETEEN", "TWENTY", "THIRTY", "FORTY","FIFTY",
+                 "SIXTY", "SEVENTY", "EIGHTY", "NINETY",
+                 "FIRST","SECOND","THIRD","FOURTH","FIFTH",
+                 "SIXTH","SEVENTH","EIGHTH","NINETH","TENTH")
+
+
+flag_and_remove <- function( df, title="TitleTxt6", df.status, s.code="FORMER" )
+{
+  # collapse all variants into regex OR statement 
+  x <- df[[title]]
+  v <- df.status$status.variant[ df.status$status.qualifier == s.code ]
+  search.terms <- paste0( "\\b", v, "\\b", collapse="|" )
+  # create a flag if there are any matches
+  df[ paste0( gsub(" ",".",s.code), ".X" ) ] <- grepl( search.terms, x )
+  # delete all variants
+  x <- gsub( search.terms, "", x )
+  df[[title]] <- x
+  return( df )
+}
+
+flag_and_keep <- function( df, title="TitleTxt6", df.status, s.code )
+{
+  # collapse all variants into regex OR statement 
+  x <- df[[title]]
+  v <- df.status$status.variant[ df.status$status.qualifier == s.code ]
+  search.terms <- paste0( "\\b", v, "\\b", collapse="|" )
+  # create a flag if there are any matches
+  df[ paste0( gsub(" ",".",s.code), ".X" ) ] <- grepl( search.terms, x )
+  # replace variants with status code
+  x <- gsub( search.terms, s.code, x )
+  df[[title]] <- x
+  return( df )
+}
+
+
+##########
+##########   UPDATE THESE 
+##########
+
+
+
+
+
+
+
+
+
+
+
 #' @title generate status codes wrapper function
 #' 
 #' @description  
