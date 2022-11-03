@@ -1242,7 +1242,7 @@ fix_of <- function(TitleTxt){
   # TitleTxt <- apply_substitutes(TitleTxt) #depending on order of op's
   
   ofMatch <- ifelse(!grepl("\\bOF\\b", TitleTxt), 
-                    unlist(lapply(TitleTxt,of_title_helper)), FALSE)
+                    unlist(lapply(TitleTxt,of_title_helper)), NA)
   TitleTxt <- ifelse(!is.na(ofMatch), ofMatch, TitleTxt)
   TitleTxt <- gsub( "\\s{2,}", " ", TitleTxt)
   return(TitleTxt)
