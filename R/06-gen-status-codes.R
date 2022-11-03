@@ -16,7 +16,8 @@
 #' TODO pull from the google sheets
 #' 
 #' @export
-gen_status_codes <- function(comp.data, title="TitleTxt5"){
+gen_status_codes <- function( comp.data, title="TitleTxt5" )
+{
   
   TitleTxt <- comp.data[[title]]
 
@@ -50,14 +51,14 @@ gen_status_codes <- function(comp.data, title="TitleTxt5"){
   
   comp.data <- 
     comp.data %>% 
-    flag_and_remove( title, df.status, s.code="FORMER"     )  %>% 
-    flag_and_remove( title, df.status, s.code="FOUNDER"    )  %>%
-    flag_and_remove( title, df.status, s.code="FUTURE"     )  %>%
-    flag_and_remove( title, df.status, s.code="INTERIM"    )  %>%
-    flag_and_remove( title, df.status, s.code="SCHED O" )  %>%  
-    flag_and_remove( title, df.status, s.code="AT LARGE"   )  %>%  
-    flag_and_keep(   title, df.status, s.code="REGIONAL"   )  %>%   
-    flag_and_keep(   title, df.status, s.code="EX OFFICIO" )
+    flag_and_remove(  s.code="FORMER"     )  %>% 
+    flag_and_remove(  s.code="FOUNDER"    )  %>%
+    flag_and_remove(  s.code="FUTURE"     )  %>%
+    flag_and_remove(  s.code="INTERIM"    )  %>%
+    flag_and_remove(  s.code="SCHED O"    )  %>%  
+    flag_and_remove(  s.code="AT LARGE"   )  %>%  
+    flag_and_keep(    s.code="REGIONAL"   )  %>%   
+    flag_and_keep(    s.code="EX OFFICIO" )
 
   
   ##  sanity check:  
