@@ -78,6 +78,8 @@ gen_status_codes <- function(comp.data, title="TitleTxt5"){
   ## code as FORMER
   comp.data$FUTURE.X[ comp.data$FUTURE.X == 1 & comp.data$FORMER.X == 1 ] <- 0 
 
+  print("generate status codes step complete")
+
   return( comp.data )
 
 }
