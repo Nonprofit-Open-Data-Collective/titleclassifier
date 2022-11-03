@@ -5,8 +5,19 @@
 \title{generate status codes wrapper function}
 \usage{
 gen_status_codes(comp.data, title = "TitleTxt5")
+
+gen_status_codes(comp.data, title = "TitleTxt5")
 }
 \description{
+remove all quantifiers and qualifiers
+we create flags for all of the qualifiers too
+the qualifiers include: schedule o, at large, as needed, ex officio, co,
+ordinal numbers, and role statuses (former, future, current, and interim)
+
+roughly 5 minutes for 100,000 titles
+
+TODO pull from the google sheets
+
 remove all quantifiers and qualifiers
 we create flags for all of the qualifiers too
 the qualifiers include: schedule o, at large, as needed, ex officio, co,

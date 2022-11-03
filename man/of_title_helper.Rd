@@ -2,7 +2,7 @@
 % Please edit documentation in R/05-standardize-spelling.R
 \name{of_title_helper}
 \alias{of_title_helper}
-\title{fix of helper function}
+\title{standardize titles \emph{something} 'of' \emph{something}}
 \usage{
 of_title_helper(x)
 }

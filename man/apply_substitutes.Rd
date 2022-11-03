@@ -2,7 +2,7 @@
 % Please edit documentation in R/05-standardize-spelling.R
 \name{apply_substitutes}
 \alias{apply_substitutes}
-\title{apply substitutes function}
+\title{apply fix spelling function}
 \usage{
 apply_substitutes(TitleTxt)
 }
