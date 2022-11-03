@@ -112,9 +112,9 @@ gen_status_codes <- function(comp.data, title="TitleTxt5"){
 #' @export
 flag_and_remove <- function( df, title="TitleTxt6", s.code="FORMER" )
 {
-  df <- add_status_flag( df, title, search.terms, s.code )
+  df <- add_status_flag( df, title, s.code )
   x <- df[[title]]
-  df[[title]] <- remove_status( x, search.terms, s.code )
+  df[[title]] <- remove_status( x, s.code )
   return( df )
 }
 
@@ -216,12 +216,11 @@ remove_status <- function( x, s.code )
 #' @param s.code Any of the unique status.qualifier strings from df.status (e.g. "REGIONAL")
 #' 
 #' @export
-flag_and_keep <- function( df, title="TitleTxt6", df.status, s.code )
+flag_and_keep <- function( df, title="TitleTxt6", s.code )
 {
-  search.terms <- get_variantes( s.code )
-  df <- add_status_flag( df, title, search.terms, s.code )
+  df <- add_status_flag( df, title, s.code )
   x <- df[[title]]
-  df[[title]] <- standardize_status( x, search.terms, s.code )
+  df[[title]] <- standardize_status( x, s.code )
   return( df )
 }
 
