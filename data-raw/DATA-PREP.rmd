@@ -32,7 +32,7 @@ This file updates all of the RDA objects in the package **data** folder.
 
 It also contains documentation about the various lists of title components and dictionaries that were created to assist with the cleaning and disambiguation of raw title strings. 
 
-**Lists Used for Cleaning**
+#### Lists Used for Cleaning
 
 * [date.words](https://github.com/Nonprofit-Open-Data-Collective/titleclassifier/blob/main/data-raw/date-words.R)
 * [number.words](https://github.com/Nonprofit-Open-Data-Collective/titleclassifier/blob/main/data-raw/number-words.R) 
@@ -41,16 +41,25 @@ It also contains documentation about the various lists of title components and d
 * [possible.titles](https://github.com/Nonprofit-Open-Data-Collective/titleclassifier/blob/main/data-raw/possible-titles.R)                    
 
 
-**Disambiguation Lists:**
+#### Disambiguation Lists:
 
 - likely.subjects: used in **fix_of()**  
 - possible.titles: used in **fix_of()** 
 - likely.titles: used in **standardize_conj()** and its helper functions  
 
 
-**Temporary Status:** 
+#### Temporary Status:
 
-Titles are often accompanied by some adjective describing a **temporary or temporal period** in which the person holds the title (*former, future, interim, etc.*). For example, the **former.word** objects are used to create the "former" flag to designate that an individual is a former or outgoing status in her/his position:
+Titles are often accompanied by some adjective describing a **temporary or temporal period** in which the person holds the title (*former, future, interim, etc.*). 
+
+
+* [former.words](https://raw.githubusercontent.com/Nonprofit-Open-Data-Collective/titleclassifier/main/data-raw/former-words.R): synonyms for "former" 
+* [interim.words](https://raw.githubusercontent.com/Nonprofit-Open-Data-Collective/titleclassifier/main/data-raw/interim-words.R)
+- future.words
+* [regional.words](https://raw.githubusercontent.com/Nonprofit-Open-Data-Collective/titleclassifier/main/data-raw/regional-words.R): common regions used for identifying regional qualifiers in titles like "Vice President of REGION-X" 
+* [possible.region.list](https://raw.githubusercontent.com/Nonprofit-Open-Data-Collective/titleclassifier/main/data-raw/possible-regional-list.R): titles that might have regional designations 
+
+For example, the **former.word** objects are used to create the "former" flag to designate that an individual is a former or outgoing status in her/his position:
 
 
 ```{r, eval=T, echo=F}
@@ -60,11 +69,7 @@ former.words %>% head()
 These phrases are removed from the titles and flags are created for each. Note that status here describes time, not hierarchy. They are used in [gen_status_codes()](https://github.com/Nonprofit-Open-Data-Collective/titleclassifier/blob/main/R/06-gen-status-codes.R):
 
 
-* [former.words](https://raw.githubusercontent.com/Nonprofit-Open-Data-Collective/titleclassifier/main/data-raw/former-words.R): synonyms for "former" 
-* [interim.words](https://raw.githubusercontent.com/Nonprofit-Open-Data-Collective/titleclassifier/main/data-raw/interim-words.R)
-- future.words
-* [regional.words](https://raw.githubusercontent.com/Nonprofit-Open-Data-Collective/titleclassifier/main/data-raw/regional-words.R): common regions used for identifying regional qualifiers in titles like "Vice President of REGION-X" 
-* [possible.region.list](https://raw.githubusercontent.com/Nonprofit-Open-Data-Collective/titleclassifier/main/data-raw/possible-regional-list.R): titles that might have regional designations 
+<br><hr><br>
 
 
 ### Updating Data
@@ -78,6 +83,9 @@ There are two types of lists:
 (2) Tables stored in the Google Sheet created for this project: https://docs.google.com/spreadsheets/d/1iYEY2HYDZTV0uvu35UuwdgAUQNKXSyab260pPPutP1M/edit?usp=sharing. 
 
 These tables are edited directly in the Google Sheet, and they are read into the package dynamically each time it is run. 
+
+
+<br><hr><br>
 
 
 

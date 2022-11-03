@@ -1762,7 +1762,8 @@ Status</a></li>
 <p>It also contains documentation about the various lists of title
 components and dictionaries that were created to assist with the
 cleaning and disambiguation of raw title strings.</p>
-<p><strong>Lists Used for Cleaning</strong></p>
+<div id="lists-used-for-cleaning" class="section level4">
+<h4>Lists Used for Cleaning</h4>
 <ul>
 <li><a href="https://github.com/Nonprofit-Open-Data-Collective/titleclassifier/blob/main/data-raw/date-words.R">date.words</a></li>
 <li><a href="https://github.com/Nonprofit-Open-Data-Collective/titleclassifier/blob/main/data-raw/number-words.R">number.words</a></li>
@@ -1770,7 +1771,9 @@ cleaning and disambiguation of raw title strings.</p>
 <li><a href="https://github.com/Nonprofit-Open-Data-Collective/titleclassifier/blob/main/data-raw/likely-titles.R">likely.titles</a></li>
 <li><a href="https://github.com/Nonprofit-Open-Data-Collective/titleclassifier/blob/main/data-raw/possible-titles.R">possible.titles</a></li>
 </ul>
-<p><strong>Disambiguation Lists:</strong></p>
+</div>
+<div id="disambiguation-lists" class="section level4">
+<h4>Disambiguation Lists:</h4>
 <ul>
 <li>likely.subjects: used in <strong>fix_of()</strong><br />
 </li>
@@ -1778,18 +1781,12 @@ cleaning and disambiguation of raw title strings.</p>
 <li>likely.titles: used in <strong>standardize_conj()</strong> and its
 helper functions</li>
 </ul>
-<p><strong>Temporary Status:</strong></p>
+</div>
+<div id="temporary-status" class="section level4">
+<h4>Temporary Status:</h4>
 <p>Titles are often accompanied by some adjective describing a
 <strong>temporary or temporal period</strong> in which the person holds
-the title (<em>former, future, interim, etc.</em>). For example, the
-<strong>former.word</strong> objects are used to create the “former”
-flag to designate that an individual is a former or outgoing status in
-her/his position:</p>
-<pre><code>## [1] &quot;\\bFORMER\\b&quot;   &quot;\\bPAST\\b&quot;     &quot;\\bEMERITUS\\b&quot; &quot;\\bUNTIL\\b&quot;   
-## [5] &quot;\\bTIL\\b&quot;      &quot;\\bLEFT\\b&quot;</code></pre>
-<p>These phrases are removed from the titles and flags are created for
-each. Note that status here describes time, not hierarchy. They are used
-in <a href="https://github.com/Nonprofit-Open-Data-Collective/titleclassifier/blob/main/R/06-gen-status-codes.R">gen_status_codes()</a>:</p>
+the title (<em>former, future, interim, etc.</em>).</p>
 <ul>
 <li><a href="https://raw.githubusercontent.com/Nonprofit-Open-Data-Collective/titleclassifier/main/data-raw/former-words.R">former.words</a>:
 synonyms for “former”</li>
@@ -1801,6 +1798,18 @@ common regions used for identifying regional qualifiers in titles like
 <li><a href="https://raw.githubusercontent.com/Nonprofit-Open-Data-Collective/titleclassifier/main/data-raw/possible-regional-list.R">possible.region.list</a>:
 titles that might have regional designations</li>
 </ul>
+<p>For example, the <strong>former.word</strong> objects are used to
+create the “former” flag to designate that an individual is a former or
+outgoing status in her/his position:</p>
+<pre><code>## [1] &quot;\\bFORMER\\b&quot;   &quot;\\bPAST\\b&quot;     &quot;\\bEMERITUS\\b&quot; &quot;\\bUNTIL\\b&quot;   
+## [5] &quot;\\bTIL\\b&quot;      &quot;\\bLEFT\\b&quot;</code></pre>
+<p>These phrases are removed from the titles and flags are created for
+each. Note that status here describes time, not hierarchy. They are used
+in <a href="https://github.com/Nonprofit-Open-Data-Collective/titleclassifier/blob/main/R/06-gen-status-codes.R">gen_status_codes()</a>:</p>
+<br>
+<hr>
+<p><br></p>
+</div>
 <div id="updating-data" class="section level3">
 <h3>Updating Data</h3>
 <p>This guide is an overview on how to update these lists and
@@ -1816,6 +1825,9 @@ folder).</p></li>
 </ol>
 <p>These tables are edited directly in the Google Sheet, and they are
 read into the package dynamically each time it is run.</p>
+<br>
+<hr>
+<p><br></p>
 </div>
 </div>
 <div id="demo-data" class="section level2">
