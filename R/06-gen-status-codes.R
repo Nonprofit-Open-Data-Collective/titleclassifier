@@ -60,9 +60,9 @@ gen_status_codes <- function(comp.data, title="TitleTxt5"){
     flag_and_keep(   title, df.status, s.code="EX OFFICIO" )
 
   
-  # sanity check: (we default to former 
-  ## if both former and future checked it's likely 'from...until':
-  ## code as FORMER
+  ##  sanity check:  
+  ##  if FORMER.X and FUTURE.X both checked 
+  ##  it's likely 'from...until': recode as FORMER.X only
   comp.data$FUTURE.X[ comp.data$FUTURE.X == 1 & comp.data$FORMER.X == 1 ] <- 0 
 
   print("generate status codes step complete")
