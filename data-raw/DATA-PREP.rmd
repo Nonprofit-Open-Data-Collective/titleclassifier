@@ -15,6 +15,8 @@ knitr::opts_chunk$set( echo = TRUE, message=F, warning=F, fig.width=10 )
 ```
 
 
+## Load Packages
+
 ```{r}
 library( titleclassifier )
 library( dplyr )
@@ -23,6 +25,8 @@ library( pander )
 raw.url <- "https://raw.githubusercontent.com/Nonprofit-Open-Data-Collective/titleclassifier/main/data-raw/"
 ```
 
+
+## Overview 
 
 This file updates all of the RDA objects in the package **data** folder. 
 
@@ -46,11 +50,15 @@ It also contains documentation about the various lists of title components and d
 
 **Temporary Status:** 
 
-Titles are often accompanied by some adjective describing a **temporary or temporal period** in which the person holds the title (*former, future, interim, etc.*). 
+Titles are often accompanied by some adjective describing a **temporary or temporal period** in which the person holds the title (*former, future, interim, etc.*). For example, the **former.word** objects are used to create the "former" flag to designate that an individual is a former or outgoing status in her/his position:
 
-These phrases are removed from the titles and flags are created for each. Note that status here describes time, not hierarchy. 
 
-These lists are primarily used in [gen_status_codes()](https://github.com/Nonprofit-Open-Data-Collective/titleclassifier/blob/main/R/06-gen-status-codes.R):
+```{r, eval=T, echo=F}
+former.words %>% head() 
+```
+
+These phrases are removed from the titles and flags are created for each. Note that status here describes time, not hierarchy. They are used in [gen_status_codes()](https://github.com/Nonprofit-Open-Data-Collective/titleclassifier/blob/main/R/06-gen-status-codes.R):
+
 
 * [former.words](https://raw.githubusercontent.com/Nonprofit-Open-Data-Collective/titleclassifier/main/data-raw/former-words.R): synonyms for "former" 
 * [interim.words](https://raw.githubusercontent.com/Nonprofit-Open-Data-Collective/titleclassifier/main/data-raw/interim-words.R)
@@ -58,15 +66,18 @@ These lists are primarily used in [gen_status_codes()](https://github.com/Nonpro
 * [regional.words](https://raw.githubusercontent.com/Nonprofit-Open-Data-Collective/titleclassifier/main/data-raw/regional-words.R): common regions used for identifying regional qualifiers in titles like "Vice President of REGION-X" 
 * [possible.region.list](https://raw.githubusercontent.com/Nonprofit-Open-Data-Collective/titleclassifier/main/data-raw/possible-regional-list.R): titles that might have regional designations 
 
-<a href="https://docs.google.com/spreadsheets/d/1iYEY2HYDZTV0uvu35UuwdgAUQNKXSyab260pPPutP1M/edit#gid=145854139" class="button"> STATUS CROSSWALK </a>
 
+### Updating Data
 
-For example, the **former.word** objects are used to create the "former" flag to designate that an individual is a former or outgoing status in her/his position:
+This guide is an overview on how to update these lists and dictionaries used in data cleaning steps. 
 
+There are two types of lists:
 
-```{r, eval=T}
-former.words %>% head() 
-```
+(1) Text files (.R extensions) on GitHub in the [**raw data folder**](https://github.com/Nonprofit-Open-Data-Collective/titleclassifier/tree/main/data-raw). These files can be edited directly on GitHub, then after saving changes this file is run to refresh the rda data objects used by functions in the package (rda objects in the data folder). 
+
+(2) Tables stored in the Google Sheet created for this project: https://docs.google.com/spreadsheets/d/1iYEY2HYDZTV0uvu35UuwdgAUQNKXSyab260pPPutP1M/edit?usp=sharing. 
+
+These tables are edited directly in the Google Sheet, and they are read into the package dynamically each time it is run. 
 
 
 
@@ -268,7 +279,8 @@ https://github.com/Nonprofit-Open-Data-Collective/titleclassifier/blob/main/R/05
 
 ```{r}
 possible.titles <- 
-c("VICE PRESIDENT", "DIRECTOR", "CHAIR", "DEAN", "TRUSTEE", "CEO", "SECRETARY",
+c("VICE PRESIDENT", "DIRECTOR", "CHAIR", 
+  "DEAN", "TRUSTEE", "CEO", "SECRETARY",
   "MANAGER","MEMBER"        
 )
 ```
@@ -376,6 +388,9 @@ save( d.taxonomy, file="../data/title-taxonomy.rda" )
 
 Many titles include qualifiers about the time-frame of the position.  
 
+<a href="https://docs.google.com/spreadsheets/d/1iYEY2HYDZTV0uvu35UuwdgAUQNKXSyab260pPPutP1M/edit#gid=145854139" class="button"> VIEW SHEET </a>
+
+
 ```{r}
 
 df.status <- 
@@ -409,7 +424,7 @@ former.words
 ```
 
 
-```{r, eval=F}
+```{r, eval=F, echo=F}
 # OLD - DO WE NEED THESE? 
 former.words <- 
   c( "\\bFORMER\\b", "\\bPAST\\b", "\\bEMERITUS\\b", "\\bUNTIL\\b", 
@@ -588,7 +603,8 @@ h2 {
 } 
 
 h3,h4,h5,h6{
-  color:#153243;
+  color:#008CBA;
+  font-family: "Quarto A", "Quarto B", Georgia, Times, "Times New Roman", "Microsoft YaHei New", "Microsoft Yahei", serif;
 }
 
   

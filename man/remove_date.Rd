@@ -2,10 +2,10 @@
 % Please edit documentation in R/02-remove-dates.R
 \name{remove_date}
 \alias{remove_date}
-\title{remove dates}
+\title{remove date}
 \usage{
 remove_date(TitleTxt)
 }
 \description{
-remove dates from raw title text
+removes date from raw title text
 }
