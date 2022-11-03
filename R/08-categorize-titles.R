@@ -160,8 +160,8 @@ add_features <- function( df )
       "F9_07_COMP_DTK_COMP_ORG", "F9_07_COMP_DTK_COMP_RLTD", 
       "F9_07_COMP_DTK_COMP_OTH", "F9_07_COMP_DTK_EMPL_BEN", 
 
-      "FORMER", "INTERIM", "FUTURE", "AS.NEEDED", 
-      "EX.OFFICIO", "CO", "REGIONAL", "date.x", "SCHED.O", 
+      "FORMER.X", "INTERIM.X", "FUTURE.X", "AT.LARGE.X", 
+      "EX.OFFICIO.X", "CO.X", "REGIONAL.X", "date.x", "SCHED.O.X", 
 
       "domain.category", "domainl.label", "soc.label", 
       "major.group", "minor.group", "broad.group", "detailed.occupation",
