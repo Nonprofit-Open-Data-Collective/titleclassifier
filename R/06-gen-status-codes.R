@@ -105,6 +105,8 @@ flag_and_remove <- function( df, title="TitleTxt6", df.status, s.code="FORMER" )
   df[ paste0( gsub(" ",".",s.code), ".X" ) ] <- grepl( search.terms, x )
   # delete all variants
   x <- gsub( search.terms, "", x )
+  # keep status code if it's the full title
+  x[ trimws(x) == "" ] <- s.code
   df[[title]] <- x
   return( df )
 }
