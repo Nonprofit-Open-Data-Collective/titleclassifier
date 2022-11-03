@@ -29,16 +29,8 @@ remove_dates <- function( df, title="F9_07_COMP_DTK_TITLE" )
   # date.x = 1 if date was removed from title, 0 otherwise
   df$DATE.X <- identify_dates( x )
   
-  x <- remove_date( x )
-  df$TitleTxt2 <- x 
-  
-  # clean up empty parentheses
-  # "CFO ()"
-  x <- gsub( "\\(\\s{0,3}\\)", "", x )
-  x <- gsub( "\\b\\(", "", x )
-  x <- gsub( "\\)\\b", "", x )
-  x <- trimws(x)
-  
+  df$TitleTxt2 <- remove_date( x )
+
   print("remove dates step complete")
   return( df )
 }
@@ -142,6 +134,17 @@ remove_date <- function(TitleTxt)
   #remove starting and leading spaces and excess spacing
   TitleTxt <- gsub("^\\s* | \\s*$", "", TitleTxt)
   TitleTxt <- gsub( "\\s{2,}", " ", TitleTxt)
+  
+  # clean up empty parentheses
+  # "CFO ()"
+  x <- gsub( "\\(\\s{0,3}\\)", "", x )
+  x <- gsub( "\\b\\(", "", x )
+  x <- gsub( "\\)\\b", "", x )
+  x <- trimws(x)
+  
+  # clean up trailing hashes
+  x <- gsub( "-$", "", x )
+  x <- trimws(x)
   
   return(TitleTxt)
 }
