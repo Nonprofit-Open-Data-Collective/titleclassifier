@@ -23,7 +23,6 @@
 #' 
 #' @export
 gen_status_codes <- function(comp.data, title="TitleTxt5"){
-{
   
   TitleTxt <- comp.data[[title]]
 
@@ -124,18 +123,6 @@ flag_and_keep <- function( df, title="TitleTxt6", df.status, s.code )
   df[[title]] <- x
   return( df )
 }
-
-
-##########
-##########   UPDATE THESE 
-##########
-
-
-
-
-
-
-
 
 
 
@@ -380,6 +367,7 @@ standardize_qualifiers <- function(TitleTxt ){
 #' 
 #' @export
 categorize_qualifiers <- function(comp.data, title = "TitleTxt6"){
+  
   comp.table <- comp.data
   
   TitleTxt <- comp.table[[title]]
@@ -408,6 +396,7 @@ categorize_qualifiers <- function(comp.data, title = "TitleTxt6"){
   TitleTxt <- trimws( TitleTxt )
   comp.table$TitleTxt6 <- TitleTxt
   
-  return(comp.table)
+  return(comp.table);
 }
+
 
