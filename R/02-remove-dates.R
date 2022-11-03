@@ -137,14 +137,14 @@ remove_date <- function(TitleTxt)
   
   # clean up empty parentheses
   # "CFO ()"
-  x <- gsub( "\\(\\s{0,3}\\)", "", x )
-  x <- gsub( "\\b\\(", "", x )
-  x <- gsub( "\\)\\b", "", x )
-  x <- trimws(x)
+  TitleTxt <- gsub( "\\(\\s{0,3}\\)", "", TitleTxt )
+  TitleTxt <- gsub( "\\b\\(", "", TitleTxt )
+  TitleTxt <- gsub( "\\)\\b", "", TitleTxt )
+  TitleTxt <- trimws(TitleTxt)
   
   # clean up trailing hashes
-  x <- gsub( "-$", "", x )
-  x <- trimws(x)
+  TitleTxt <- gsub( "-$", "", TitleTxt )
+  TitleTxt <- trimws(TitleTxt)
   
   return(TitleTxt)
 }
