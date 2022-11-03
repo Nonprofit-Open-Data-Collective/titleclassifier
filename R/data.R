@@ -20,6 +20,14 @@ NULL
 ### DISAMBIGUATION DATA
 ###
 
+
+#' @name date.words
+#' @docType data
+#' @title Helper data list.  
+#'
+#' @description Used in the `remove_dates` step to identify and remove dates from titles.   
+NULL 
+
 #' @name number.words
 #' @docType data
 #' @title Helper data list.  
