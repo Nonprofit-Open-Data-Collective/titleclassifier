@@ -20,6 +20,13 @@ NULL
 ### DISAMBIGUATION DATA
 ###
 
+#' @name number.words
+#' @docType data
+#' @title Helper data list.  
+#'
+#' @description Used in the `gen_status_codes` step to remove numbers from titles.   
+NULL 
+
 #' @name likely.subjects
 #' @docType data
 #' @title Helper data list.  
