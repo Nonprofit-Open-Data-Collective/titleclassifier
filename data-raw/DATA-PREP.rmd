@@ -30,13 +30,11 @@ It also contains documentation about the various lists of title components and d
 
 **Lists Used for Cleaning**
 
-* [former.words](https://raw.githubusercontent.com/Nonprofit-Open-Data-Collective/titleclassifier/main/data-raw/former-words.R): synonyms for "former" 
-* [interim.words](https://raw.githubusercontent.com/Nonprofit-Open-Data-Collective/titleclassifier/main/data-raw/interim-words.R)
-* [regional.words](https://raw.githubusercontent.com/Nonprofit-Open-Data-Collective/titleclassifier/main/data-raw/regional-words.R): common regions used for identifying regional qualifiers in titles like "Vice President of REGION-X" 
-* [possible.region.list](https://raw.githubusercontent.com/Nonprofit-Open-Data-Collective/titleclassifier/main/data-raw/possible-regional-list.R): titles that might have regional designations   
-* [likely.subjects](https://raw.githubusercontent.com/Nonprofit-Open-Data-Collective/titleclassifier/main/data-raw/likely-subjects.R)
-* [likely.titles](https://raw.githubusercontent.com/Nonprofit-Open-Data-Collective/titleclassifier/main/data-raw/likely-titles.R)
-* [possible.titles](https://raw.githubusercontent.com/Nonprofit-Open-Data-Collective/titleclassifier/main/data-raw/possible-titles.R)                    
+* [date.words](https://github.com/Nonprofit-Open-Data-Collective/titleclassifier/blob/main/data-raw/date-words.R)
+* [number.words](https://github.com/Nonprofit-Open-Data-Collective/titleclassifier/blob/main/data-raw/number-words.R) 
+* [likely.subjects](https://github.com/Nonprofit-Open-Data-Collective/titleclassifier/blob/main/data-raw/likely-subjects.R)
+* [likely.titles](https://github.com/Nonprofit-Open-Data-Collective/titleclassifier/blob/main/data-raw/likely-titles.R)
+* [possible.titles](https://github.com/Nonprofit-Open-Data-Collective/titleclassifier/blob/main/data-raw/possible-titles.R)                    
 
 
 **Disambiguation Lists:**
@@ -46,17 +44,19 @@ It also contains documentation about the various lists of title components and d
 - likely.titles: used in **standardize_conj()** and its helper functions  
 
 
-**Position Status Words:** 
+**Temporary Status:** 
 
-Titles are often accompanied by some adjective describing a temporary or temporal period in which the person holds the title. These phrases are removed from the titles and flags are created for each. Note that status here describes time, not hierarchy. 
+Titles are often accompanied by some adjective describing a **temporary or temporal period** in which the person holds the title (*former, future, interim, etc.*). 
+
+These phrases are removed from the titles and flags are created for each. Note that status here describes time, not hierarchy. 
 
 These lists are primarily used in [gen_status_codes()](https://github.com/Nonprofit-Open-Data-Collective/titleclassifier/blob/main/R/06-gen-status-codes.R):
 
-- former.words
+* [former.words](https://raw.githubusercontent.com/Nonprofit-Open-Data-Collective/titleclassifier/main/data-raw/former-words.R): synonyms for "former" 
+* [interim.words](https://raw.githubusercontent.com/Nonprofit-Open-Data-Collective/titleclassifier/main/data-raw/interim-words.R)
 - future.words
-- interim.words
-- regional.words
-- possible.regional-list 
+* [regional.words](https://raw.githubusercontent.com/Nonprofit-Open-Data-Collective/titleclassifier/main/data-raw/regional-words.R): common regions used for identifying regional qualifiers in titles like "Vice President of REGION-X" 
+* [possible.region.list](https://raw.githubusercontent.com/Nonprofit-Open-Data-Collective/titleclassifier/main/data-raw/possible-regional-list.R): titles that might have regional designations 
 
 <a href="https://docs.google.com/spreadsheets/d/1iYEY2HYDZTV0uvu35UuwdgAUQNKXSyab260pPPutP1M/edit#gid=145854139" class="button"> STATUS CROSSWALK </a>
 
@@ -126,6 +126,68 @@ head( raw.titles )
 Internal data objects are stored on GitHub. 
 
 To update these, edit the object file on GitHub then run this script (RMD file). It imports the current values from GitHub and saves new RDA files in the data folder of the package. 
+
+
+
+
+### Dates (as text)
+
+Used in the **remove_dates()** function to clean titles. 
+
+
+<a href="https://github.com/Nonprofit-Open-Data-Collective/titleclassifier/blob/main/R/02-remove-dates.R" class="button"> fix_of() FUNCTION </a>
+
+
+<a href="https://github.com/Nonprofit-Open-Data-Collective/titleclassifier/blob/main/data-raw/date-words.R" class="button"> EDIT OBJECT </a>
+
+
+```{r}
+dput( date.words )
+```
+
+
+**Update Internal Package Object**
+
+```{r}
+# current GitHub version
+source( paste0( raw.url, "date-words.R" ) ) 
+save( date.words, file="../data/date-words.rda" )
+```
+
+
+
+
+
+### Numbers (as text)
+
+Used in the **gen_status_codes()** function to clean titles. 
+
+
+<a href="https://github.com/Nonprofit-Open-Data-Collective/titleclassifier/blob/main/R/06-gen-status-codes.R" class="button"> fix_of() FUNCTION </a>
+
+
+<a href="https://github.com/Nonprofit-Open-Data-Collective/titleclassifier/blob/main/data-raw/number-words.R" class="button"> EDIT OBJECT </a>
+
+
+```{r}
+dput( number.words )
+```
+
+
+**Update Internal Package Object**
+
+```{r}
+# current GitHub version
+source( paste0( raw.url, "number-words.R" ) ) 
+save( number.words, file="../data/number-words.rda" )
+```
+
+
+
+
+
+
+
 
 
 ### Likely Subjects
@@ -273,6 +335,8 @@ save( df.standard, file="../data/standard-titles.rda" )
 
 
 
+
+
 <br><hr><br>
 
 
@@ -314,50 +378,39 @@ Many titles include qualifiers about the time-frame of the position.
 
 ```{r}
 
-df.status <- googlesheets4::read_sheet( "1iYEY2HYDZTV0uvu35UuwdgAUQNKXSyab260pPPutP1M", 
-                                          sheet="status-codes", range="A:B",
-                                          col_types = "c" )  # c = character
-
-head( df.status )
+df.status <- 
+  googlesheets4::read_sheet( "1iYEY2HYDZTV0uvu35UuwdgAUQNKXSyab260pPPutP1M", 
+                              sheet="status-codes", 
+                              range="A:B",
+                              col_types = "c" )  # c = character
 
 table( df.status$status.qualifier )
 ```
+
+```{r}
+head( df.status )
+```
+
 
 <br><hr><br>
 
 
 
-[ How many objects do we need here??? One for each? Or one table? ]
 
 
 
 
 #### FORMER
 
-```{r, eval=F, echo=F}
-# how do we go from 
-
-df.former <- filter( df.status, status.qualifier == "FORMER" )
-
-former.words <- df.former$status.variant %>% unique()
-  
-# to this: ???
-
-former.words <- 
-  c( "\\bFORMER\\b", "\\bPAST\\b", "\\bEMERITUS\\b", "\\bUNTIL\\b", 
-     "\\bTIL\\b", "\\bLEFT\\b", "\\bLEAVING\\b", "\\bTERM ENDED\\b", 
-     "\\bTERM END\\b", "\\bTERM EXPIRED\\b", "\\bEXPIRED\\b", "\\bENDED\\b", 
-     "\\bEND$", "\\bEXPIRE\\b", "\\bENDING\\b", "\\bRETIRED\\b", "\\bRETIRING\\b", 
-     "\\bRESIGN\\b", "\\bRESIGNING\\b", "\\bRESIGNED\\b", "\\bCEASED\\b", 
-     "\\bPRIOR\\b", "\\bPREVIOUS\\b", "\\bTHRU\\b", "\\bTHROUGH\\b", 
-     "\\bOUTGOING\\b", "\\bEX\\s", "\\bEX$", "\\bTHR\\b", "\\bROLLED OFF\\b"
-  )
-
+```{r, eval=T}
+df <- filter( df.status, status.qualifier == "FORMER" )
+former.words <- df$status.variant %>% unique()
+former.words
 ```
 
 
-```{r}
- 
+```{r, eval=F}
+# OLD - DO WE NEED THESE? 
 former.words <- 
   c( "\\bFORMER\\b", "\\bPAST\\b", "\\bEMERITUS\\b", "\\bUNTIL\\b", 
      "\\bTIL\\b", "\\bLEFT\\b", "\\bLEAVING\\b", "\\bTERM ENDED\\b", 
@@ -380,12 +433,32 @@ save( former.words, file="../data/former-words.rda" )
 #### INTERIM 
 
 
-```{r}
-c("\\bINTERIM\\b", "\\bINT\\b", "\\bACTING\\b", "\\bTEMPORARY\\b", 
-"\\bTEMP\\b")
+```{r, eval=T}
+df <- filter( df.status, status.qualifier == "INTERIM" )
+interim.words <- df$status.variant %>% unique()
+interim.words
 ```
 
 
+
+#### FUTURE 
+
+
+```{r, eval=T}
+df <- filter( df.status, status.qualifier == "FUTURE" )
+future.words <- df$status.variant %>% unique()
+future.words
+```
+
+
+#### PARTIAL YEAR 
+
+
+```{r, eval=T}
+df <- filter( df.status, status.qualifier == "PARTIAL" )
+partial.words <- df$status.variant %>% unique()
+partial.words
+```
 
 
 
@@ -401,11 +474,6 @@ regional.words <- df.region$status.variant %>% unique()
 
 sort( regional.words )
 ```
-
-
-
-
-
 
 
 ```{r}
@@ -514,6 +582,15 @@ h2,h3,h4,h5,h6{
   margin-bottom:30px;
   color:#008CBA;
 } 
+
+h2 {
+  color:#008CBA;
+} 
+
+h3,h4,h5,h6{
+  color:#153243;
+}
+
   
 p.caption {
     text-align: center;
