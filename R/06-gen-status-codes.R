@@ -170,7 +170,7 @@ get_variants <- function( s.code )
 add_status_flag <- function( df, title, s.code )
 {
   x <- df[[title]]
-  search.terms <- get_variantes( s.code )
+  search.terms <- get_variants( s.code )
   # create a flag if there are any matches
   df[ paste0( gsub(" ",".",s.code), ".X" ) ] <- grepl( search.terms, x )
   return( df )
@@ -193,7 +193,7 @@ add_status_flag <- function( df, title, s.code )
 #' @export
 remove_status <- function( x, s.code )
 {
-  search.terms <- get_variantes( s.code )
+  search.terms <- get_variants( s.code )
   # delete all variants
   x <- gsub( search.terms, "", x )
   # keep status code if it's the full title
@@ -241,7 +241,7 @@ flag_and_keep <- function( df, title="TitleTxt6", s.code )
 #' @export
 standardize_status <- function( x, s.code )
 {
-  search.terms <- get_variantes( s.code )
+  search.terms <- get_variants( s.code )
   # replace all variants with the standardized version
   x <- gsub( search.terms, s.code, x )
   return( x )
