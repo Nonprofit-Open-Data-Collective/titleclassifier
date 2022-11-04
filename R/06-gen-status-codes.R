@@ -69,6 +69,9 @@ gen_status_codes <- function( comp.data, title="TitleTxt5" )
 
   x <- comp.data[[title]]
   
+  # remove double regionals
+  x <- gsub( "REGIONAL REGIONAL", "REGIONAL", x )
+  
   # clean up empty parentheses
   x <- gsub(  "\\(\\s{0,3}\\)",  "",  x )
   x <- gsub(  "\\b\\(",          "",  x )
