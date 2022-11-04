@@ -400,7 +400,7 @@ Many titles include qualifiers about the time-frame of the position.
 
 
 ```{r}
-
+# googlesheets4::gs4_deauth()
 df.status <- 
   googlesheets4::read_sheet( "1iYEY2HYDZTV0uvu35UuwdgAUQNKXSyab260pPPutP1M", 
                               sheet="status-codes", 
@@ -489,12 +489,8 @@ partial.words
 #### REGION 
 
 ```{r}
-# how do we go from 
-
-df.region <- filter( df.status, status.qualifier == "regional" )
-
-regional.words <- df.region$status.variant %>% unique()
-
+df <- filter( df.status, status.qualifier == "REGIONAL" )
+regional.words <- df$status.variant %>% unique()
 sort( regional.words )
 ```
 

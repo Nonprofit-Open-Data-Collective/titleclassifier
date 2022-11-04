@@ -1801,8 +1801,7 @@ titles that might have regional designations</li>
 <p>For example, the <strong>former.word</strong> objects are used to
 create the “former” flag to designate that an individual is a former or
 outgoing status in her/his position:</p>
-<pre><code>## [1] &quot;\\bFORMER\\b&quot;   &quot;\\bPAST\\b&quot;     &quot;\\bEMERITUS\\b&quot; &quot;\\bUNTIL\\b&quot;   
-## [5] &quot;\\bTIL\\b&quot;      &quot;\\bLEFT\\b&quot;</code></pre>
+<pre><code>## [1] &quot;CEASED&quot;   &quot;DECEASED&quot; &quot;EMERITUS&quot; &quot;END&quot;      &quot;ENDED&quot;    &quot;ENDING&quot;</code></pre>
 <p>These phrases are removed from the titles and flags are created for
 each. Note that status here describes time, not hierarchy. They are used
 in <a href="https://github.com/Nonprofit-Open-Data-Collective/titleclassifier/blob/main/R/06-gen-status-codes.R">gen_status_codes()</a>:</p>
@@ -2059,32 +2058,32 @@ VIEW SHEET </a></p>
 <tr class="odd">
 <td align="center">BOARD MEMBER</td>
 <td align="center">AD HOC</td>
-<td align="center">118</td>
+<td align="center">120</td>
 </tr>
 <tr class="even">
 <td align="center">BOARD MEMBER</td>
 <td align="center">ADJUNCT TRUSTEE</td>
-<td align="center">118</td>
+<td align="center">120</td>
 </tr>
 <tr class="odd">
 <td align="center">BOARD MEMBER</td>
 <td align="center">ADMINISTRATION COMMITTEE</td>
-<td align="center">118</td>
+<td align="center">120</td>
 </tr>
 <tr class="even">
 <td align="center">BOARD MEMBER</td>
 <td align="center">ADVANCEMENT BOARD</td>
-<td align="center">118</td>
+<td align="center">120</td>
 </tr>
 <tr class="odd">
 <td align="center">BOARD MEMBER</td>
 <td align="center">ADVISOR</td>
-<td align="center">118</td>
+<td align="center">120</td>
 </tr>
 <tr class="even">
 <td align="center">BOARD MEMBER</td>
 <td align="center">ADVISORY</td>
-<td align="center">118</td>
+<td align="center">120</td>
 </tr>
 </tbody>
 </table>
@@ -2127,22 +2126,23 @@ VIEW SHEET </a></p>
 position.</p>
 <p><a href="https://docs.google.com/spreadsheets/d/1iYEY2HYDZTV0uvu35UuwdgAUQNKXSyab260pPPutP1M/edit#gid=145854139" class="button">
 VIEW SHEET </a></p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>df.status <span class="ot">&lt;-</span> </span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  googlesheets4<span class="sc">::</span><span class="fu">read_sheet</span>( <span class="st">&quot;1iYEY2HYDZTV0uvu35UuwdgAUQNKXSyab260pPPutP1M&quot;</span>, </span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>                              <span class="at">sheet=</span><span class="st">&quot;status-codes&quot;</span>, </span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>                              <span class="at">range=</span><span class="st">&quot;A:B&quot;</span>,</span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>                              <span class="at">col_types =</span> <span class="st">&quot;c&quot;</span> )  <span class="co"># c = character</span></span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>( df.status<span class="sc">$</span>status.qualifier )</span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># googlesheets4::gs4_deauth()</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>df.status <span class="ot">&lt;-</span> </span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  googlesheets4<span class="sc">::</span><span class="fu">read_sheet</span>( <span class="st">&quot;1iYEY2HYDZTV0uvu35UuwdgAUQNKXSyab260pPPutP1M&quot;</span>, </span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>                              <span class="at">sheet=</span><span class="st">&quot;status-codes&quot;</span>, </span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>                              <span class="at">range=</span><span class="st">&quot;A:B&quot;</span>,</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>                              <span class="at">col_types =</span> <span class="st">&quot;c&quot;</span> )  <span class="co"># c = character</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>( df.status<span class="sc">$</span>status.qualifier )</span></code></pre></div>
 <pre><code>## 
 ##   AT LARGE    CURRENT EX OFFICIO     FORMER    FOUNDER     FUTURE    INTERIM 
-##          4          1          2         38          2         27          8 
+##          5          1          2         38          2         27          8 
 ##    PARTIAL   REGIONAL    SCHED O 
-##         10        177          4</code></pre>
+##         10        178          5</code></pre>
 <div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>( df.status )</span></code></pre></div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["status.variant"],"name":[1],"type":["chr"],"align":["left"]},{"label":["status.qualifier"],"name":[2],"type":["chr"],"align":["left"]}],"data":[{"1":"AS NEEDED","2":"AT LARGE"},{"1":"AT LARGE","2":"AT LARGE"},{"1":"PROXY","2":"AT LARGE"},{"1":"AT LG","2":"AT LARGE"},{"1":"CURRENT","2":"CURRENT"},{"1":"EX OFFICIO","2":"EX OFFICIO"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["status.variant"],"name":[1],"type":["chr"],"align":["left"]},{"label":["status.qualifier"],"name":[2],"type":["chr"],"align":["left"]}],"data":[{"1":"AS NEEDED","2":"AT LARGE"},{"1":"AT LARGE","2":"AT LARGE"},{"1":"AT-LARGE","2":"AT LARGE"},{"1":"PROXY","2":"AT LARGE"},{"1":"AT LG","2":"AT LARGE"},{"1":"CURRENT","2":"CURRENT"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <br>
@@ -2197,14 +2197,68 @@ VIEW SHEET </a></p>
 </div>
 <div id="region" class="section level4">
 <h4>REGION</h4>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># how do we go from </span></span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>df.region <span class="ot">&lt;-</span> <span class="fu">filter</span>( df.status, status.qualifier <span class="sc">==</span> <span class="st">&quot;regional&quot;</span> )</span>
-<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>regional.words <span class="ot">&lt;-</span> df.region<span class="sc">$</span>status.variant <span class="sc">%&gt;%</span> <span class="fu">unique</span>()</span>
-<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span>( regional.words )</span></code></pre></div>
-<pre><code>## character(0)</code></pre>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">filter</span>( df.status, status.qualifier <span class="sc">==</span> <span class="st">&quot;REGIONAL&quot;</span> )</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>regional.words <span class="ot">&lt;-</span> df<span class="sc">$</span>status.variant <span class="sc">%&gt;%</span> <span class="fu">unique</span>()</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span>( regional.words )</span></code></pre></div>
+<pre><code>##   [1] &quot;AFRICA&quot;            &quot;ALABAMA&quot;           &quot;ALASKA&quot;           
+##   [4] &quot;ALBUQUERQUE&quot;       &quot;AMERICA&quot;           &quot;AREA&quot;             
+##   [7] &quot;ARIZONA&quot;           &quot;ARKANSAS&quot;          &quot;ARLINGTON&quot;        
+##  [10] &quot;ASIA&quot;              &quot;ATLANTA&quot;           &quot;AUSTIN&quot;           
+##  [13] &quot;AUSTRALIA&quot;         &quot;BAKERSFIELD&quot;       &quot;BALTIMORE&quot;        
+##  [16] &quot;BOSTON&quot;            &quot;CALIFORNIA&quot;        &quot;CANADA&quot;           
+##  [19] &quot;CANADIAN&quot;          &quot;CAROLINAS&quot;         &quot;CENTRAL&quot;          
+##  [22] &quot;CHAPTER&quot;           &quot;CHARLOTTE&quot;         &quot;CHICAGO&quot;          
+##  [25] &quot;CHINA&quot;             &quot;CITY&quot;              &quot;COLORADO&quot;         
+##  [28] &quot;COLORADO SPRINGS&quot;  &quot;COLUMBUS&quot;          &quot;CONNECTICUT&quot;      
+##  [31] &quot;DALLAS&quot;            &quot;DC&quot;                &quot;DELAWAR&quot;          
+##  [34] &quot;DELAWARE&quot;          &quot;DENVER&quot;            &quot;DETROIT&quot;          
+##  [37] &quot;DIST&quot;              &quot;DISTRICT&quot;          &quot;DISTRICT I&quot;       
+##  [40] &quot;DISTRICT II&quot;       &quot;DISTRICT III&quot;      &quot;DISTRICT IV&quot;      
+##  [43] &quot;DISTRICT IX&quot;       &quot;DISTRICT V&quot;        &quot;DISTRICT VI&quot;      
+##  [46] &quot;DISTRICT VII&quot;      &quot;DISTRICT VIII&quot;     &quot;DISTRICT X&quot;       
+##  [49] &quot;EAST&quot;              &quot;EASTERN&quot;           &quot;EL PASO&quot;          
+##  [52] &quot;EUROPE&quot;            &quot;FLORIDA&quot;           &quot;FORT WORTH&quot;       
+##  [55] &quot;FRESNO&quot;            &quot;GEORGIA&quot;           &quot;GREAT LAKES&quot;      
+##  [58] &quot;GREATER PACIFIC&quot;   &quot;HAWAII&quot;            &quot;HEARTLAND&quot;        
+##  [61] &quot;HEARTLANDS&quot;        &quot;HOUSTON&quot;           &quot;IDAHO&quot;            
+##  [64] &quot;ILLINOIS&quot;          &quot;INDIANA&quot;           &quot;INDIANAPOLIS&quot;     
+##  [67] &quot;INTERNATIONAL&quot;     &quot;IOWA&quot;              &quot;JACKSONVILLE&quot;     
+##  [70] &quot;JAPAN&quot;             &quot;KANSAS&quot;            &quot;KANSAS CITY&quot;      
+##  [73] &quot;KENTUCKY&quot;          &quot;LAS VEGAS&quot;         &quot;LATIN AMERICA&quot;    
+##  [76] &quot;LOCAL&quot;             &quot;LONG BEACH&quot;        &quot;LONG ISLAND&quot;      
+##  [79] &quot;LOS ANGELES&quot;       &quot;LOUISIANA&quot;         &quot;LOUISVILLE&quot;       
+##  [82] &quot;MAINE&quot;             &quot;MARYLAND&quot;          &quot;MASSACHUSETTS&quot;    
+##  [85] &quot;MEMPHIS&quot;           &quot;MESA&quot;              &quot;METRO&quot;            
+##  [88] &quot;METROPOLITAN&quot;      &quot;MEXICO&quot;            &quot;MIAMI&quot;            
+##  [91] &quot;MICHIGAN&quot;          &quot;MID ATLANTIC&quot;      &quot;MID EASTERN&quot;      
+##  [94] &quot;MIDWEST&quot;           &quot;MILWAUKEE&quot;         &quot;MINNEAPOLIS&quot;      
+##  [97] &quot;MINNESOTA&quot;         &quot;MISSISSIPPI&quot;       &quot;MISSOURI&quot;         
+## [100] &quot;MONTANA&quot;           &quot;MW&quot;                &quot;NASHVILLE&quot;        
+## [103] &quot;NATIONAL&quot;          &quot;NC&quot;                &quot;NE&quot;               
+## [106] &quot;NEBRASKA&quot;          &quot;NEVADA&quot;            &quot;NEW ENGLAND&quot;      
+## [109] &quot;NEW HAMPSHIRE&quot;     &quot;NEW JERSEY&quot;        &quot;NEW MEXICO&quot;       
+## [112] &quot;NEW YORK&quot;          &quot;NEW YORK CITY&quot;     &quot;NJ&quot;               
+## [115] &quot;NORTH&quot;             &quot;NORTH AMERICA&quot;     &quot;NORTH CAROLINA&quot;   
+## [118] &quot;NORTH DAKOTA&quot;      &quot;NORTHERN&quot;          &quot;NW&quot;               
+## [121] &quot;NY&quot;                &quot;NYC&quot;               &quot;NZ&quot;               
+## [124] &quot;OAKLAND&quot;           &quot;OHIO&quot;              &quot;OKLAHOMA&quot;         
+## [127] &quot;OKLAHOMA CITY&quot;     &quot;OMAHA&quot;             &quot;OREGON&quot;           
+## [130] &quot;PA&quot;                &quot;PACIFIC NORTHWEST&quot; &quot;PACIFIC SOUTHWEST&quot;
+## [133] &quot;PENNSYLVANIA&quot;      &quot;PHILADELPHIA&quot;      &quot;PHOENIX&quot;          
+## [136] &quot;PORTLAND&quot;          &quot;RALEIGH&quot;           &quot;REGION&quot;           
+## [139] &quot;REGIONAL&quot;          &quot;RHODE ISLAND&quot;      &quot;ROCKY MOUNTAIN&quot;   
+## [142] &quot;SACRAMENTO&quot;        &quot;SAN ANTONIO&quot;       &quot;SAN DIEGO&quot;        
+## [145] &quot;SAN FRANCISCO&quot;     &quot;SAN JOSE&quot;          &quot;SC&quot;               
+## [148] &quot;SE&quot;                &quot;SEATTLE&quot;           &quot;SOUTH&quot;            
+## [151] &quot;SOUTH AMERICA&quot;     &quot;SOUTH CAROLINA&quot;    &quot;SOUTH CENTRAL&quot;    
+## [154] &quot;SOUTH DAKOTA&quot;      &quot;SOUTHERN&quot;          &quot;ST LOUIS&quot;         
+## [157] &quot;SUN&quot;               &quot;SUN BELT&quot;          &quot;SW&quot;               
+## [160] &quot;TENNESSEE&quot;         &quot;TENNESSEE VALLEY&quot;  &quot;TEXAS&quot;            
+## [163] &quot;TUCSON&quot;            &quot;TULSA&quot;             &quot;TX&quot;               
+## [166] &quot;UK&quot;                &quot;UTAH&quot;              &quot;VERMONT&quot;          
+## [169] &quot;VIRGINIA&quot;          &quot;VIRGINIA BEACH&quot;    &quot;WASHINGTON&quot;       
+## [172] &quot;WEST&quot;              &quot;WEST VIRGINIA&quot;     &quot;WESTERN&quot;          
+## [175] &quot;WICHITA&quot;           &quot;WISCONSIN&quot;         &quot;WYOMING&quot;</code></pre>
 <div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dump</span>( <span class="at">list=</span><span class="st">&quot;regional.words&quot;</span>, <span class="at">file=</span><span class="st">&quot;regional-words.R&quot;</span> )</span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="fu">save</span>( regional.words, <span class="at">file=</span><span class="st">&quot;../data/regional-words.rda&quot;</span> )</span></code></pre></div>
 <p><strong>possible.region.list</strong></p>
