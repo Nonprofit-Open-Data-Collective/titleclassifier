@@ -67,6 +67,24 @@ gen_status_codes <- function( comp.data, title="TitleTxt5" )
   ##  it's likely 'from...until': recode as FORMER.X only
   comp.data$FUTURE.X[ comp.data$FUTURE.X == 1 & comp.data$FORMER.X == 1 ] <- 0 
 
+  x <- comp.data[[title]]
+  
+  # clean up empty parentheses
+  x <- gsub(  "\\(\\s{0,3}\\)",  "",  x )
+  x <- gsub(  "\\b\\(",          "",  x )
+  x <- gsub(  "\\s\\(",         " ",  x )
+  x <- gsub(  "\\)\\b",          "",  x )
+  x <- gsub(  "\\)\\s",         " ",  x )
+  x <- trimws( x )
+  
+  # clean up hashes
+  x <- gsub( "-$", "", x )
+  x <- gsub( "-", " ", x )
+  x <- gsub( "CO ", "CO-", x ) 
+  x <- trimws( x )
+  
+  comp.data[[title]] <- x
+  
   print("generate status codes step complete")
 
   return( comp.data )
