@@ -127,6 +127,10 @@ remove_date <- function(TitleTxt)
   date <- paste0( "\\b", date.words, "\\b", collapse="|" )
   TitleTxt <- gsub( date, "", TitleTxt )
   
+  # replace R-1 with REGION
+  TitleTxt <- gsub( "R-[[:digit:]]{1,2}\\b", "REGION", TitleTxt )
+  TitleTxt <- gsub( "R[[:digit:]]{1,2}\\b", "REGION", TitleTxt )
+  
   #remove miscellaneous digits still lying around
   TitleTxt <- gsub("\\d[A-Z]*\\s", " ", TitleTxt)
   TitleTxt <- gsub("\\d", " ", TitleTxt)
