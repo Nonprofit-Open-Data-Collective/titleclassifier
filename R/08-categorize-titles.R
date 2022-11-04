@@ -242,7 +242,7 @@ simplify_varnames <- function( df )
            future.x = FUTURE.X,
            partial.x = PARTIAL.X,
            as.needed.x = AT.LARGE.X, 
-           ex.officio.x = EX.OFFICIO.X, 
+           ex.officio.x = EXOFFICIO.X, 
            co.x = CO.X,
            region.x = REGIONAL.X, 
            date.x = DATE.X, 
