@@ -269,7 +269,8 @@ fix_president <- function(TitleTxt){
 #' @export
 fix_secretary <- function(TitleTxt){
   
-  TitleTxt <- gsub("\\bSECR[A-Z]*\\b", "SECRETARY",TitleTxt)
+  TitleTxt <- gsub( "\\bSEC'Y\\b", "SECRETARY", TitleTxt )
+  TitleTxt <- gsub( "\\bSECR[A-Z]*\\b", "SECRETARY", TitleTxt )
   
   # TitleTxt <- gsub("\\bS\\b", "SECRETARY", TitleTxt) #assume standalone s is sec
   #cant do s+r
