@@ -1097,6 +1097,7 @@ fix_miscellaneous <- function(TitleTxt){
   TitleTxt <- gsub(  "\\bSCHOLARSHIP\\b", "SCHOLARSHIPS", TitleTxt) #standardize plurality
   TitleTxt <- gsub(  "\\bJ\\b","JUNIOR", TitleTxt)
   TitleTxt <- gsub(  "\\bCOUCIL\\b","COUNCIL", TitleTxt)
+  TitleTxt <- gsub(  "\\bINT'L\\b",    "INTERNATIONAL", TitleTxt)
 
   TitleTxt <- gsub("\\bFUNDRA\\b","FUNDRAISING", TitleTxt)
   
