@@ -1111,7 +1111,7 @@ fix_miscellaneous <- function(TitleTxt){
   TitleTxt <- gsub("\\bCHOREO[A-Z]*\\b","CHOREOGRAPHER",TitleTxt)
   TitleTxt <- gsub("\\bCOREO[A-Z]*\\b","CHOREOGRAPHER",TitleTxt)
   
-  TitleTxt <- gsub("\\bPHY[A-Z]*\\b", "PHYSICAL", TitleTxt)
+  # TitleTxt <- gsub("\\bPHY[A-Z]*\\b", "PHYSICIAN", TitleTxt)  # catches PHYSICS
   TitleTxt <- gsub("\\bTHEATR[A-Z]*\\b","THEATER",TitleTxt)
   TitleTxt <- gsub("\\bPARLIA[A-Z]*\\b","PARLIAMENTARIAN",TitleTxt)
   TitleTxt <- gsub("DIRECTOR\\s+CHAPTER", "CHAPTER DIRECTOR", TitleTxt)
