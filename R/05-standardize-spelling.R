@@ -1066,6 +1066,7 @@ fix_governor <- function(TitleTxt){
 fix_miscellaneous <- function(TitleTxt){
   
   #miscellaneous:
+  TitleTxt <- gsub(  "\\*",                   "",                 TitleTxt )
   TitleTxt <- gsub(  "\\bMINISTR\\b",         "MINISTER",         TitleTxt )
   TitleTxt <- gsub(  "\\bSGT\\b",             "SERGEANT",         TitleTxt)
   TitleTxt <- gsub(  "\\bSARG[A-Z]*\\b",      "SERGEANT",         TitleTxt)
