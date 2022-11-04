@@ -245,7 +245,7 @@ simplify_varnames <- function( df )
            ex.officio.x = EX.OFFICIO.X, 
            co.x = CO.X,
            region.x = REGIONAL.X, 
-           # date.x, 
+           date.x = DATE.X, 
            sched.o.x = SCHED.O.X, 
            # domain.category, domainl.label, soc.label, 
            # major.group, minor.group, broad.group, detailed.occupation, 
