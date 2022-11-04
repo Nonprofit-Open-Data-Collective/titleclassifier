@@ -956,7 +956,7 @@ fix_representative <- function(TitleTxt){
 fix_board <- function(TitleTxt){
   
   board.texts <- c("\\bBOAR\\b", "\\bBOA\\b", "\\bBO\\b",
-                   "\\bBRD\\b","\\bBOD\\b","\\bBD\\b")
+                   "\\bBRD\\b","\\bBOD\\b","\\bBD\\b","\\bBAORD\\b")
   for(title in board.texts){
     TitleTxt <- gsub(title,"BOARD",TitleTxt)
   }
