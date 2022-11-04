@@ -51,16 +51,15 @@ gen_status_codes <- function( comp.data, title="TitleTxt5" )
   
   comp.data <- 
     comp.data %>% 
+    flag_and_keep(    s.code="EXOFFICIO"  )  %>% 
     flag_and_remove(  s.code="FORMER"     )  %>% 
     flag_and_remove(  s.code="FOUNDER"    )  %>%
     flag_and_remove(  s.code="FUTURE"     )  %>%
     flag_and_remove(  s.code="INTERIM"    )  %>%
-    flag_and_remove(  s.code="PARTIAL"   )  %>% 
+    flag_and_remove(  s.code="PARTIAL"    )  %>% 
     flag_and_remove(  s.code="SCHED O"    )  %>%  
     flag_and_remove(  s.code="AT LARGE"   )  %>%  
-    flag_and_keep(    s.code="REGIONAL"   )  %>%   
-    flag_and_keep(    s.code="EX OFFICIO" )
-
+    flag_and_keep(    s.code="REGIONAL"   )    
   
   ##  sanity check:  
   ##  if FORMER.X and FUTURE.X both checked 
