@@ -78,9 +78,14 @@ gen_status_codes <- function( comp.data, title="TitleTxt5" )
   x <- trimws( x )
   
   # clean up hashes
+  
+  x <- gsub( "\\bCO - ", "CO-", x )
+  x <- gsub( "\\bCO -", "CO-", x )
+  x <- gsub( "\\bCO- {1,3}", "CO-", x )
   x <- gsub( "-$", "", x )
   x <- gsub( "-", " ", x )
-  x <- gsub( "CO ", "CO-", x ) 
+  x <- gsub( "CO ", "CO-", x )
+  x <- gsub(  "\\s{2,4}",  " ",  x )
   x <- trimws( x )
   
   comp.data[[title]] <- x
