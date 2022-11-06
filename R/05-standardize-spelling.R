@@ -279,7 +279,7 @@ fix_secretary <- function(TitleTxt){
   TitleTxt <- gsub("\\bSECY\\b", "SECRETARY", TitleTxt) #ditto but with secy
   TitleTxt <- gsub("\\bSCRTRY\\b", "SECRETARY", TitleTxt)
   
-  TitleTxt <- gsub("\\bSECT[A-Z]*\\b", "SECRETARY", TitleTxt) 
+  # TitleTxt <- gsub("\\bSECT[A-Z]*\\b", "SECRETARY", TitleTxt)  # catching SECTION
   
   return(TitleTxt)
 }
