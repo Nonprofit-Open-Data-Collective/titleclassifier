@@ -14,9 +14,86 @@ require(hunspell)
 #' @export
 standardize_spelling <- function( comp.data, title="TitleTxt4" )
 {
-  TitleTxt = comp.data[[title]]
   
-  TitleTxt <- apply_substitutes(TitleTxt)
+  TitleTxt = comp.data[[ title ]]
+  
+  TitleTxt <- fix_vice(           TitleTxt )
+  TitleTxt <- fix_executive(      TitleTxt )
+  TitleTxt <- fix_director(       TitleTxt )
+  TitleTxt <- fix_operations(     TitleTxt )  # operations/operating
+  TitleTxt <- fix_assistant(      TitleTxt )  # assistant/associate
+  TitleTxt <- fix_president(      TitleTxt )
+  TitleTxt <- fix_secretary(      TitleTxt )
+  TitleTxt <- fix_treasurer(      TitleTxt )
+  TitleTxt <- fix_finance(        TitleTxt ) # finance/financial
+  TitleTxt <- fix_senior(         TitleTxt ) # senior/junior
+  TitleTxt <- fix_development(    TitleTxt )
+  TitleTxt <- fix_chair(          TitleTxt )
+  TitleTxt <- fix_officer(        TitleTxt )
+  TitleTxt <- fix_admin(          TitleTxt )
+  TitleTxt <- fix_coordinator(    TitleTxt )
+  TitleTxt <- fix_strategy(       TitleTxt ) # strategy/strategic
+  TitleTxt <- fix_hr(             TitleTxt )
+  TitleTxt <- fix_manage(         TitleTxt ) # management/managing/manager
+  TitleTxt <- fix_programs(       TitleTxt ) # programs/programming
+  TitleTxt <- fix_projects(       TitleTxt )
+  TitleTxt <- fix_public(         TitleTxt )
+  TitleTxt <- fix_business(       TitleTxt )
+  TitleTxt <- fix_comm(           TitleTxt ) # communication/committee
+  TitleTxt <- fix_information(    TitleTxt )
+  TitleTxt <- fix_intelligence(   TitleTxt )
+  TitleTxt <- fix_technology(     TitleTxt )
+  TitleTxt <- fix_institute(      TitleTxt ) # institute/institutional
+  TitleTxt <- fix_academics(      TitleTxt ) # academics/academy
+  TitleTxt <- fix_marketing(      TitleTxt )
+  TitleTxt <- fix_advancement(    TitleTxt )
+  TitleTxt <- fix_philanthropy(   TitleTxt )
+  TitleTxt <- fix_systems(        TitleTxt )
+  TitleTxt <- fix_general(        TitleTxt )
+  TitleTxt <- fix_planning(       TitleTxt ) # planning/planned
+  TitleTxt <- fix_compliance(     TitleTxt )
+  TitleTxt <- fix_enrollment(     TitleTxt )
+  TitleTxt <- fix_admissions(     TitleTxt )
+  TitleTxt <- fix_deputy(         TitleTxt )
+  TitleTxt <- fix_corresponding(  TitleTxt ) # correspondent/corresponding
+  TitleTxt <- fix_emeritus(       TitleTxt )
+  TitleTxt <- fix_relations(      TitleTxt )
+  TitleTxt <- fix_representative( TitleTxt )
+  TitleTxt <- fix_board(          TitleTxt )
+  TitleTxt <- fix_transportation( TitleTxt )
+  TitleTxt <- fix_exofficio(      TitleTxt )
+  TitleTxt <- fix_atlarge(        TitleTxt )
+  TitleTxt <- fix_member(         TitleTxt )
+  TitleTxt <- fix_governor(       TitleTxt )
+  
+  TitleTxt <- condense_abbreviations(TitleTxt) 
+  
+  # random fixes
+  TitleTxt <- fix_miscellaneous(TitleTxt)
+  
+  # remove duplicates
+  TitleTxt <- gsub( "PRESIDENT\\s+PRESIDENT", "PRESIDENT", TitleTxt )
+  TitleTxt <- gsub( "PRESIDENTPR.*\\b", "PRESIDENT", TitleTxt )
+  TitleTxt <- gsub( "CEOCEO", "CEO", TitleTxt )
+  TitleTxt <- gsub( "\\bDIRECTOR DIRECTOR\\b", "DIRECTOR", TitleTxt )
+  
+  #remove residual spacing issues
+  TitleTxt <- gsub( "^\\s* | \\s*$", "", TitleTxt )
+  TitleTxt <- gsub( "\\s{2,}", " ", TitleTxt )
+  
+  #remove unnecessary conjunctions at the end
+  TitleTxt <- remove_trailing_conjunctions( TitleTxt )
+  
+  # abbreviate c-levels: chief exec officer --> CEO
+  TitleTxt <- simplify_clevels( TitleTxt )
+  
+  TitleTxt <- fix_of( TitleTxt )
+  
+  # TitleTxt <- spellcheck(TitleTxt) #slows things down, but is useful
+  
+  # clean up extra spaces
+  TitleTxt <- gsub( "^\\s* | \\s*$", "", TitleTxt )
+  TitleTxt <- gsub( "\\s{2,}", " ", TitleTxt )
   
   comp.data$TitleTxt5 <- TitleTxt
   
@@ -24,99 +101,6 @@ standardize_spelling <- function( comp.data, title="TitleTxt4" )
   
   return(comp.data)
 }
-
-
-
-#' @title 
-#' apply fix spelling function
-#' 
-#' @description 
-#' subwrapper function for standardize spelling by applying all the substitutes
-#' on the titletxt vector (or singular string)
-#' 
-#' @export
-apply_substitutes <- function(TitleTxt){
-  TitleTxt <- fix_vice(TitleTxt)
-  TitleTxt <- fix_executive(TitleTxt)
-  TitleTxt <- fix_director(TitleTxt)
-  TitleTxt <- fix_operations(TitleTxt) #operations/operating
-  TitleTxt <- fix_assistant(TitleTxt) #assistant/associate
-  TitleTxt <- fix_president(TitleTxt)
-  TitleTxt <- fix_secretary(TitleTxt)
-  TitleTxt <- fix_treasurer(TitleTxt)
-  TitleTxt <- fix_finance(TitleTxt) #finance/financial
-  TitleTxt <- fix_senior(TitleTxt) #senior/junior
-  TitleTxt <- fix_development(TitleTxt)
-  TitleTxt <- fix_chair(TitleTxt)
-  TitleTxt <- fix_officer(TitleTxt)
-  TitleTxt <- fix_admin(TitleTxt)
-  TitleTxt <- fix_coordinator(TitleTxt)
-  TitleTxt <- fix_strategy(TitleTxt) #strategy/strategic
-  TitleTxt <- fix_hr(TitleTxt)
-  TitleTxt <- fix_manage(TitleTxt) #management/managing/manager
-  TitleTxt <- fix_programs(TitleTxt) #programs/programming
-  TitleTxt <- fix_projects(TitleTxt)
-  TitleTxt <- fix_public(TitleTxt)
-  TitleTxt <- fix_business(TitleTxt)
-  TitleTxt <- fix_comm(TitleTxt) #communication/committee
-  TitleTxt <- fix_information(TitleTxt)
-  TitleTxt <- fix_intelligence(TitleTxt)
-  TitleTxt <- fix_technology(TitleTxt)
-  TitleTxt <- fix_institute(TitleTxt) #institute/institutional
-  TitleTxt <- fix_academics(TitleTxt) #academics/academy
-  TitleTxt <- fix_marketing(TitleTxt)
-  TitleTxt <- fix_advancement(TitleTxt)
-  TitleTxt <- fix_philanthropy(TitleTxt)
-  TitleTxt <- fix_systems(TitleTxt)
-  TitleTxt <- fix_general(TitleTxt)
-  TitleTxt <- fix_planning(TitleTxt) #planning/planned
-  TitleTxt <- fix_compliance(TitleTxt)
-  TitleTxt <- fix_enrollment(TitleTxt)
-  TitleTxt <- fix_admissions(TitleTxt)
-  TitleTxt <- fix_deputy(TitleTxt)
-  TitleTxt <- fix_corresponding(TitleTxt) #correspondent/corresponding
-  TitleTxt <- fix_emeritus(TitleTxt)
-  TitleTxt <- fix_relations(TitleTxt)
-  TitleTxt <- fix_representative(TitleTxt)
-  TitleTxt <- fix_board(TitleTxt)
-  TitleTxt <- fix_transportation(TitleTxt)
-  TitleTxt <- fix_exofficio(TitleTxt)
-  TitleTxt <- fix_atlarge(TitleTxt)
-  TitleTxt <- fix_member(TitleTxt)
-  TitleTxt <- fix_governor(TitleTxt)
-  
-  TitleTxt <- condense_abbreviations(TitleTxt) 
-  
-  TitleTxt <- fix_miscellaneous(TitleTxt)
-  
-  #duplicate removal
-  TitleTxt <- gsub("PRESIDENT\\s+PRESIDENT", "PRESIDENT", TitleTxt)
-  TitleTxt <- gsub("PRESIDENTPR.*\\b", "PRESIDENT", TitleTxt)
-  TitleTxt <- gsub("CEOCEO", "CEO", TitleTxt)
-  TitleTxt <- gsub("\\bDIRECTOR DIRECTOR\\b", "DIRECTOR", TitleTxt)
-  
-  #remove residual spacing issues
-  TitleTxt <- gsub("^\\s* | \\s*$", "", TitleTxt)
-  TitleTxt <- gsub( "\\s{2,}", " ", TitleTxt )
-  
-  #remove unnecessary conjunctions at the end
-  TitleTxt <- remove_trailing_conjunctions(TitleTxt)
-  
-  # abbreviate c-levels: chief exec officer --> CEO
-  TitleTxt <- simplify_clevels(TitleTxt)
-  
-  TitleTxt <- fix_of(TitleTxt)
-  
-  # TitleTxt <- spellcheck(TitleTxt) #slows things down, but is useful
-  
-  # clean up extra spaces
-  TitleTxt <- gsub("^\\s* | \\s*$", "", TitleTxt)
-  TitleTxt <- gsub( "\\s{2,}", " ", TitleTxt )
-  
-  return(TitleTxt)
-}
-
-
 
 
 
@@ -132,17 +116,17 @@ apply_substitutes <- function(TitleTxt){
 #' @export
 fix_vice <- function(TitleTxt){
   
-  TitleTxt <- gsub( "\\bE\\sV\\sPRESIDENT", "EXECUTIVE VICE PRESIDENT", TitleTxt )
-  TitleTxt <- gsub( "\\bE\\sVICE", "EXECUTIVE VICE", TitleTxt )
-  TitleTxt <- gsub( "\\bS\\sVICE", "SENIOR VICE", TitleTxt )
-  TitleTxt <- gsub( "\\bSR\\s*V\\s*P\\b", "SENIOR VICE PRESIDENT", TitleTxt )
-  TitleTxt <- gsub( "\\bE\\s*S\\s*V\\s*P\\b", "EXECUTIVE SENIOR VICE PRESIDENT", TitleTxt )
-  TitleTxt <- gsub( "\\bS\\s*E\\s*V\\s*P\\b", "SENIOR EXECUTIVE VICE PRESIDENT", TitleTxt )
-  TitleTxt <- gsub( "\\bS\\s*V\\s*P\\b", "SENIOR VICE PRESIDENT", TitleTxt )
-  TitleTxt <- gsub( "\\bS\\s*V\\s*PI\\b", "SENIOR VICE PRESIDENT", TitleTxt )
-  TitleTxt <- gsub( "\\bE\\s*V\\s*P\\b", "EXECUTIVE VICE PRESIDENT", TitleTxt )
-  TitleTxt <- gsub( "\\bA\\s*V\\s*P\\b", "ASSISTANT VICE PRESIDENT", TitleTxt )
-  TitleTxt <- gsub( "\\bR\\s*V\\s*P\\b", "REGIONAL VICE PRESIDENT", TitleTxt )
+  TitleTxt <- gsub( "\\bE\\sV\\sPRESIDENT",    "EXECUTIVE VICE PRESIDENT",         TitleTxt )
+  TitleTxt <- gsub( "\\bE\\sVICE",             "EXECUTIVE VICE",                   TitleTxt )
+  TitleTxt <- gsub( "\\bS\\sVICE",             "SENIOR VICE",                      TitleTxt )
+  TitleTxt <- gsub( "\\bSR\\s*V\\s*P\\b",      "SENIOR VICE PRESIDENT",            TitleTxt )
+  TitleTxt <- gsub( "\\bE\\s*S\\s*V\\s*P\\b",  "EXECUTIVE SENIOR VICE PRESIDENT",  TitleTxt )
+  TitleTxt <- gsub( "\\bS\\s*E\\s*V\\s*P\\b",  "SENIOR EXECUTIVE VICE PRESIDENT",  TitleTxt )
+  TitleTxt <- gsub( "\\bS\\s*V\\s*P\\b",       "SENIOR VICE PRESIDENT",            TitleTxt )
+  TitleTxt <- gsub( "\\bS\\s*V\\s*PI\\b",      "SENIOR VICE PRESIDENT",            TitleTxt )
+  TitleTxt <- gsub( "\\bE\\s*V\\s*P\\b",       "EXECUTIVE VICE PRESIDENT",         TitleTxt )
+  TitleTxt <- gsub( "\\bA\\s*V\\s*P\\b",       "ASSISTANT VICE PRESIDENT",         TitleTxt )
+  TitleTxt <- gsub( "\\bR\\s*V\\s*P\\b",       "REGIONAL VICE PRESIDENT",          TitleTxt )
   
   TitleTxt <- gsub( "\\bV\\s*P\\s*F\\b", "VICE PRESIDENT OF FINANCE", TitleTxt )
   TitleTxt <- gsub( "\\bV\\s*P\\s*O\\b", "VICE PRESIDENT OF OPERATIONS", TitleTxt )
