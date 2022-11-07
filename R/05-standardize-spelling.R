@@ -12,12 +12,11 @@ require(hunspell)
 #' to standardize titles
 #' 
 #' @export
-standardize_spelling <- function(comp.data, title="TitleTxt4"){
+standardize_spelling <- function( comp.data, title="TitleTxt4" )
+{
   TitleTxt = comp.data[[title]]
   
   TitleTxt <- apply_substitutes(TitleTxt)
-  TitleTxt <- gsub("^\\s* | \\s*$", "", TitleTxt)
-  TitleTxt <- gsub( "\\s{2,}", " ", TitleTxt )
   
   comp.data$TitleTxt5 <- TitleTxt
   
@@ -103,11 +102,16 @@ apply_substitutes <- function(TitleTxt){
   #remove unnecessary conjunctions at the end
   TitleTxt <- remove_trailing_conjunctions(TitleTxt)
   
-  TitleTxt <- stand_titles(TitleTxt)
+  # abbreviate c-levels: chief exec officer --> CEO
+  TitleTxt <- simplify_clevels(TitleTxt)
   
   TitleTxt <- fix_of(TitleTxt)
-  TitleTxt <- gsub("\\bOF AND\\b", "OF", TitleTxt)
+  
   # TitleTxt <- spellcheck(TitleTxt) #slows things down, but is useful
+  
+  # clean up extra spaces
+  TitleTxt <- gsub("^\\s* | \\s*$", "", TitleTxt)
+  TitleTxt <- gsub( "\\s{2,}", " ", TitleTxt )
   
   return(TitleTxt)
 }
@@ -1193,9 +1197,9 @@ fix_miscellaneous <- function(TitleTxt){
 #' maps executive director to CEO
 #' 
 #' @export
-stand_titles <- function(TitleTxt){
+simplify_clevels <- function(TitleTxt){
   
-  #convert known c-suite positions into abbrev
+  #convert known c-suite positions into abbreviated versions
   TitleTxt <- gsub( "CHIEF\\sEX[A-Z]*\\sO[A-Z]*\\b", "CEO", TitleTxt ) #executive
   TitleTxt <- gsub( "CHIEF\\sEX[A-Z]*$", "CEO", TitleTxt ) #executive
   
@@ -1250,6 +1254,9 @@ fix_of <- function(TitleTxt){
                     unlist(lapply(TitleTxt,of_title_helper)), NA)
   TitleTxt <- ifelse(!is.na(ofMatch), ofMatch, TitleTxt)
   TitleTxt <- gsub( "\\s{2,}", " ", TitleTxt)
+  
+  TitleTxt <- gsub("\\bOF AND\\b", "OF", TitleTxt)
+  
   return(TitleTxt)
 }
 
