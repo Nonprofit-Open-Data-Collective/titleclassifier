@@ -896,7 +896,7 @@ fix_corresponding <- function(TitleTxt){
 #' @export
 fix_emeritus <- function(TitleTxt){
   
-  TitleTxt <- ifelse(!grepl("EMPLOYEE",TitleTxt), 
+  TitleTxt <- ifelse(!grepl("EMPLOY",TitleTxt), 
                      gsub("\\bEM[A-Z]*\\b", "EMERITUS", TitleTxt),
                      TitleTxt)
   
