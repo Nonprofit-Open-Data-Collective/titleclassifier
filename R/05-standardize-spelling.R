@@ -610,6 +610,7 @@ fix_public <- function(TitleTxt){
 fix_business <- function(TitleTxt){
   
   TitleTxt <- gsub("\\bBUS[A-Z]*\\b", "BUSINESS", TitleTxt)
+  TitleTxt <- gsub("\\bBIZ\\b", "BUSINESS", TitleTxt)
   
   return(TitleTxt)
 }
