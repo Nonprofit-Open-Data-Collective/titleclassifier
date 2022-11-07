@@ -1336,11 +1336,14 @@ spellcheck <- function(TitleTxt){
 #' @export
 remove_trailing_conjunctions <- function(TitleTxt){
   
+  TitleTxt <- trimws( TitleTxt )
   TitleTxt <- gsub("\\bAND$","",TitleTxt)
   TitleTxt <- gsub("\\bOF$","",TitleTxt)
   TitleTxt <- gsub("\\bTO$","",TitleTxt)
   
   TitleTxt <- gsub("^AND\\s+","",TitleTxt)
+  
+  TitleTxt <- trimws( TitleTxt )
   
   return(TitleTxt)
 }
