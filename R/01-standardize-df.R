@@ -77,9 +77,14 @@ standardize_df <- function( df, title="F9_07_COMP_DTK_TITLE", form.type="FORMTYP
   df[[ key.employee ]]       <- to_boole( df[[ key.employee ]], formtype )
   df[[ high.comp.ind ]]      <- to_boole( df[[ high.comp.ind ]], formtype )
   df[[ former ]]             <- to_boole( df[[ former ]], formtype )
+  
+  df <- unique(df) 
+  #catching duplicates if orgs upload individuals with multiple titles
 
   #### RETURN CLEAN DF
   print("standardize df step complete")
+  
+  
   return( df )
   
 }
