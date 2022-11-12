@@ -20,7 +20,8 @@ standardize_df <- function( df, title="F9_07_COMP_DTK_TITLE", form.type="FORMTYP
                             comp.related="F9_07_COMP_DTK_COMP_RLTD", comp.other="F9_07_COMP_DTK_COMP_OTH",
                             trustee.ind="F9_07_COMP_DTK_POS_INDIV_TRUST_X", trustee.inst="F9_07_COMP_DTK_POS_INST_TRUST_X", 
                             officer="F9_07_COMP_DTK_POS_OFF_X", key.employee="F9_07_COMP_DTK_POS_KEY_EMPL_X", 
-                            high.comp.ind="F9_07_COMP_DTK_POS_HIGH_COMP_X", former="F9_07_COMP_DTK_POS_FORMER_X" )
+                            high.comp.ind="F9_07_COMP_DTK_POS_HIGH_COMP_X", former="F9_07_COMP_DTK_POS_FORMER_X",
+                            name = "F9_07_COMP_DTK_NAME_PERS")
 {
 
   #### TITLE
@@ -78,13 +79,15 @@ standardize_df <- function( df, title="F9_07_COMP_DTK_TITLE", form.type="FORMTYP
   df[[ high.comp.ind ]]      <- to_boole( df[[ high.comp.ind ]], formtype )
   df[[ former ]]             <- to_boole( df[[ former ]], formtype )
   
-  df <- unique(df) 
+  df = df[duplicated(df[, c("EIN", name, title)]) & !is.na(df[[ name ]]), ]
+  #remove duplicates of entries (if present)
   #catching duplicates if orgs upload individuals with multiple titles
+  
+  #some of the NA names are issues with the previous step of properly extracting
+  #the one to many table
 
   #### RETURN CLEAN DF
   print("standardize df step complete")
-  
-  
   return( df )
   
 }
