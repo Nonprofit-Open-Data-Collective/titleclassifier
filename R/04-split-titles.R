@@ -85,7 +85,7 @@ split_titles <- function(df, title = "TitleTxt3"){
     TitleTxt <- temp$TitleTxt4
   }
   
-  print("split titles step completed")
+  print("split titles step complete")
   return(df)
 }
 

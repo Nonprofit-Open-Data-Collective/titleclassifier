@@ -94,7 +94,8 @@ and_helper <- function(x){
     and_split <- unlist(strsplit(TitleTxt,"\\bAND\\b"))
     and_true <- TRUE
     for(i in 1:length(and_split)){
-      testTitle <- apply_substitutes(and_split[i])
+      # testTitle <- standardize_spelling(and_split[i])
+      testTitle <- and_split[i]
       titlePresent <- FALSE
       for(title in likely.titles){
         if(grepl(title,testTitle))
@@ -126,7 +127,8 @@ amp_helper <- function(x){
     amp_split <- unlist(strsplit(TitleTxt,"&"))
     amp_true <- TRUE
     for(i in 1:length(amp_split)){
-      testTitle <- apply_substitutes(amp_split[i])
+      # testTitle <- standardize_spelling(amp_split[i])
+      testTitle <- amp_split[i]
       titlePresent <- FALSE
       for(title in likely.titles){
         if(grepl(title,testTitle))
@@ -257,7 +259,8 @@ comma_helper <- function(x){
     com_true <- TRUE #comma used as a separator (defaulted to true)
     com_eq_of <- FALSE #comma used as of (i.e. vp, finance)
     for(i in 1:length(com_split)){
-      testTitle <- apply_substitutes(com_split[i])
+      # testTitle <- standardize_spelling(com_split[i])
+      testTitle <- com_split[i]
       titlePresent <- FALSE
       for(title in likely.titles){
         if(grepl(title,testTitle))
@@ -320,7 +323,8 @@ slash_helper <- function(x){
     slash_true  <- TRUE   #slash used as a separator (defaulted to true)
     slash_eq_of <- FALSE   #slash used as of (i.e. vp, finance)
     for(i in 1:length(slash_split)){
-      testTitle <- apply_substitutes(slash_split[i])
+      # testTitle <- standardize_spelling(slash_split[i])
+      testTitle <- slash_split[i]
       titlePresent <- FALSE
       for( title in likely.titles ){
         if( grepl( title, testTitle ) )

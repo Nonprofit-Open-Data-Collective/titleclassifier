@@ -19,7 +19,8 @@ standardize_df(
   officer = "F9_07_COMP_DTK_POS_OFF_X",
   key.employee = "F9_07_COMP_DTK_POS_KEY_EMPL_X",
   high.comp.ind = "F9_07_COMP_DTK_POS_HIGH_COMP_X",
-  former = "F9_07_COMP_DTK_POS_FORMER_X"
+  former = "F9_07_COMP_DTK_POS_FORMER_X",
+  name = "F9_07_COMP_DTK_NAME_PERS"
 )
 }
 \description{
