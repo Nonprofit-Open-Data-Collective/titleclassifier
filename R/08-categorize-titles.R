@@ -181,10 +181,6 @@ add_features <- function( df )
       df <- df[ new.order ]
       
       
-      df = df[duplicated(df[, c("dtk.name", "dtk.title", "title.standard")]) & 
-                  df$title.standard == "CEO", ]
-      
-      
       
    df <- clean_up_ceos(df)
 
