@@ -181,6 +181,9 @@ add_features <- function( df )
       df <- df[ new.order ]
       
       
+   #if a date code is present, setting to partial year if not already set
+   df["PARTIAL.X"] <- ifelse(df["DATE.X"] == 1, 1, df["PARTIAL.X"])    
+      
       
    df <- clean_up_ceos(df)
 
