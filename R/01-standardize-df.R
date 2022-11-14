@@ -79,7 +79,7 @@ standardize_df <- function( df, title="F9_07_COMP_DTK_TITLE", form.type="FORMTYP
   df[[ high.comp.ind ]]      <- to_boole( df[[ high.comp.ind ]], formtype )
   df[[ former ]]             <- to_boole( df[[ former ]], formtype )
   
-  df = df[duplicated(df[, c("EIN", name, title)]) & !is.na(df[[ name ]]), ]
+  df = df[!duplicated(df[, c("EIN", name, title)]) & !is.na(df[[ name ]]), ]
   #remove duplicates of entries (if present)
   #catching duplicates if orgs upload individuals with multiple titles
   
