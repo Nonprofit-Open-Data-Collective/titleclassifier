@@ -1,6 +1,6 @@
-#Step 9: Generate Taxonomy
+#Step 10: Generate Taxonomy
 
-# 09-gen-taxonomy.R
+# 10-gen-taxonomy.R
 
 #' @title
 #' generate taxonomy function

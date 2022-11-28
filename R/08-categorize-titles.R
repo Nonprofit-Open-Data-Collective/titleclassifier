@@ -70,7 +70,7 @@ add_features <- function( df )
     # weight people w multiple titles
     df <- 
       df %>% 
-      dplyr::group_by( OBJECT_ID, F9_07_COMP_DTK_NAME_PERS ) %>% 
+      dplyr::group_by( OBJECT_ID, F9_07_COMP_DTK_NAME_PERS ) %>%
       dplyr::mutate( tot.titles = max(Num.Titles, na.rm=T ),
                      emp2 = ifelse( sum(emp)>0, emp/sum(emp), 0 ),
                      board2 = ifelse( sum(board)>0, board/sum(board), 0 )  ) %>%
@@ -137,7 +137,7 @@ add_features <- function( df )
 
     new.order <- 
     c("NAME", "EIN", "TAXYR", "FORMTYPE", 
-      "F9_07_COMP_DTK_NAME_PERS", "F9_07_COMP_DTK_TITLE",  
+      "F9_07_COMP_DTK_NAME_PERS", "F9_07_COMP_DTK_TITLE",
       "Multiple.Titles", "Num.Titles", "tot.titles", 
 
       "TITLE_RAW", "title.standard", 
@@ -184,9 +184,9 @@ add_features <- function( df )
    #if a date code is present, setting to partial year if not already set
    df["PARTIAL.X"] <- ifelse(df["DATE.X"] == 1, 1, df["PARTIAL.X"])    
       
-      
-   df <- clean_up_ceos(df)
-
+   
+   print("Categorize titles step complete")
+   
    return( df )
 
 }
@@ -214,7 +214,7 @@ simplify_varnames <- function( df )
            ein = EIN, 
            taxyr = TAXYR, 
            formtype = FORMTYPE, 
-           dtk.name = F9_07_COMP_DTK_NAME_PERS, 
+           dtk.name = F9_07_COMP_DTK_NAME_PERS,
            multiple.titles = Multiple.Titles, 
            title.count = Num.Titles, 
            title.tot = tot.titles,
@@ -269,114 +269,3 @@ simplify_varnames <- function( df )
    return( df )
 }
 
-#' @title 
-#' clean up ceos function
-#' 
-#' @description 
-#' removes all duplicate instances of ceos within a single org
-#' 
-#' @export
-clean_up_ceos <- function(comp.data){
-  df <- comp.data
-  
-  df = df[!duplicated(df[, c("ein", "dtk.name", "dtk.title", "title.standard")]) | 
-            df$title.standard != "CEO", ] #remove duplicates of ceos
-  #but potential issues with multiple titles
-  
-  
-  return(df)
-}
-
-
-
-#' 
-#' #' @title 
-#' #' categorize ceo function
-#' #' 
-#' #' @description 
-#' #' categorizing ceo's and adding a flag
-#' #'
-#' #' @param df A compensation data frame. 
-#' #'
-#' #' @return Returns a data frame with a CEO boolean (1=CEO,0=other). 
-#' categorize_ceo <- function(df){
-#'   
-#'   df$CEO <- 0
-#'   
-#'   #ceo's (but not assistant or associate)
-#'   df$CEO [grepl("CEO",df$TitleTxt7)] <- 1
-#'   df$CEO [grepl("ASSOCIATE",df$TitleTxt7)] <- 0
-#'   df$CEO [grepl("ASSISTANT",df$TitleTxt7)] <- 0
-#'   
-#'   #exec dir
-#'   df$CEO [grepl("\\bEXECDIR[A-Z]*\\b",df$TitleTxt7)] <- 1
-#'   df$CEO [grepl("\\bEXDIR[A-Z]*\\b",df$TitleTxt7)] <- 1
-#'   
-#'   #president (if paid and working 40+ hours)
-#'   df$CEO [grepl("PRESIDENT",df$TitleTxt7) && df$AvgHrs >= 40 &&
-#'             df$TOT_COMP > 0 && !grepl("VICE", dfTitleTxt7)] <- 1
-#'   
-#'   #weird ones
-#'   df$CEO [agrepl("CHANCELLOR", df$TitleTxt7) && df$AvgHrs >= 40 &&
-#'             df$TOT_COMP > 0 && 
-#'             (df$Officer == "X" || df$FmrOfficer == "X")] <- 1
-#'   df$CEO [grepl("MANAGING DIRECTOR", df$TitleTxt7) && df$AvgHrs >= 40 &&
-#'             df$TOT_COMP > 0 && 
-#'             (df$Officer == "X" || df$FmrOfficer == "X")] <- 1
-#'   df$CEO [grepl("HEADMASTER", df$TitleTxt7) && df$AvgHrs >= 40 &&
-#'             df$TOT_COMP > 0 && 
-#'             (df$Officer == "X" || df$FmrOfficer == "X")] <- 1
-#'   return(df)
-#' }
-#' 
-#' 
-#' #' @title 
-#' #' categorize company leader function
-#' #' 
-#' #' @description 
-#' #' utilizes ceo and adds in president, chair, and managing director for those 
-#' #' without explicit/clear ceo positions
-
-#' categorize_company_leader <- function(df){
-#'   
-#'   df <- categorize_ceo( df )
-#'   df$Org.Leader <- 0
-#'   df$Org.Leader[df$CEO == 1] <- 1
-#'   aoc <- unique(df$NAME.x[df$Org.Leader == 1])
-#'   
-#'   #presidents
-#'   pres.leadership <- c("PRESIDENT", "BOARD PRESIDENT", "PRESIDENT OF BOARD")
-#'   df$Org.Leader[!df$NAME.x %in% aoc && 
-#'                   ((grepl("PRESIDENT",df$TitleTxt7) && 
-#'                       !grepl("VICE",df$TitleTxt7)) ||
-#'                      df$TitleTxt7[i] %in% pres.leadership)] <- 1
-#'   for(i in 1:length(df$NAME.x)){
-#'     if(!(df$NAME.x[i] %in% aoc)){
-#'       if((grepl("PRESIDENT",df$TitleTxt7[i]) && !grepl("VICE",df$TitleTxt7[i])) ||
-#'          df$TitleTxt7[i] %in% pres.leadership){
-#'         df$Org.Leader[i] <- 1
-#'       }
-#'     }
-#'   }
-#'   aoc <- unique(df$NAME.x[df$Org.Leader == 1])
-#'   
-#'   #chairs and misc
-#'   chair.leadership <- c("CHAIR", "BOARD CHAIR",
-#'                         "MANAGING DIRECTOR", "CHAIR OF BOARD")
-#'   for(i in 1:length(df$NAME.x)){
-#'     if(!(df$NAME.x[i] %in% aoc)){
-#'       if(df$TitleTxt7[i] %in% chair.leadership){
-#'         df$Org.Leader[i] <- 1
-#'       }
-#'     }
-#'   }
-#'   aoc <- unique(df$NAME.x[df$Org.Leader == 1])
-#'   
-#'   return(df)
-#' }
-#' 
-#' 
-#' # 
-#' # categorize_cfo <- function(df){
-#' #   
-#' # }

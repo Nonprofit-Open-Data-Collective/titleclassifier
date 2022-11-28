@@ -28,7 +28,7 @@ standardize_titles <- function(comp.data, title = "TitleTxt6",
   df.standard[ is.na( df.standard ) ] <- ""
   df.standard <- unique( df.standard )
   
-  comp.data <- conditional_logic(comp.data, officer = officer)
+  comp.data <- basic_csuite_fixes(comp.data, officer = officer)
   
   # comp.data <- merge( comp.data, df.standard, by.x=title, by.y="title.variant", all.x=T )
   comp.data <- merge( comp.data, df.standard, by.x="TitleTxt7", by.y="title.variant", all.x=T )
@@ -39,13 +39,13 @@ standardize_titles <- function(comp.data, title = "TitleTxt6",
 
 
 #' @title  
-#' conditional logic wrapper function
+#' basic c-suite fixes wrapper function
 #' 
 #' @description 
-#' applies conditional logic and creates flags with helpful info
+#' applies conditional logic and creates some flags with helpful info
 #' 
 #' @export
-conditional_logic <- function(comp.data, title = "TitleTxt6", 
+basic_csuite_fixes <- function(comp.data, title = "TitleTxt6", 
                               hours = "TOT.HOURS", pay = "TOT.COMP",
                               officer = "F9_07_COMP_DTK_POS_OFF_X"){
   
@@ -65,16 +65,8 @@ conditional_logic <- function(comp.data, title = "TitleTxt6",
   
   #cfo
   TitleTxt <- replace_cfo(TitleTxt, weekly.hours, total.pay, officer.flag)
-  
-  #board
-  
- 
-  #necessarily a slow step?
-  #set specific flags
-  # orgs <- unique(df$OBJECT_ID)
-  # for(i in 1:length(orgs)){
-  #   
-  # }
+
+
   
   df$TitleTxt7 <- TitleTxt
   
@@ -103,6 +95,8 @@ replace_ceo <- function(TitleTxt, weekly.hours, total.pay){
   
   return(TitleTxt)
 }
+
+
 
 #' @title 
 #' replace cfo function
@@ -136,15 +130,4 @@ replace_cfo <- function(TitleTxt, weekly.hours, total.pay, officer.flag){
                      "CFO", TitleTxt)
   
   return(TitleTxt)
-}
-
-#' @title 
-#' replace board function
-#' 
-#' @description 
-#' replaces all instances of titles that could be a board position
-#' including finance director and such
-#' 
-#' @export
-replace_board <- function(TitleTxt){
 }
