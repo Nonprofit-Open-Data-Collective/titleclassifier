@@ -17,6 +17,7 @@ conditional_logic <- function(comp.data){
   #manipulations here
   
   df <- clean_up_ceos(df)
+  df <- director_correction(df)
   
   print("conditional logic step complete")
   
@@ -41,6 +42,24 @@ clean_up_ceos <- function(comp.data){
             df$title.standard != "CEO", ] #remove duplicates of ceos
   #but potential issues with multiple titles
   
+  
+  return(df)
+}
+
+
+#' @title 
+#' director correction function
+#' 
+#' @description 
+#' confirm all directors are properly mapped 
+#' correcting board members "directors" that are not actually directors
+#' 
+#' @export
+director_correction <- function(df){
+  
+  df$title.standard <- ifelse(df$title.v7 == "DIRECTOR" & 
+                           df$dtk.indiv.trustee.x == 0 & df$dtk.inst.trustee.x == 0, 
+                           title.v7, title.standard)
   
   return(df)
 }
