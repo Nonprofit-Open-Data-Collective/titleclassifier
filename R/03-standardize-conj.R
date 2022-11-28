@@ -33,8 +33,7 @@ standardize_conj <- function(comp.data, title = "TitleTxt2"){
   TitleTxt <- gsub("\\bTHE\\b", "", TitleTxt)
   
   #remove all parentheticals too
-  
-  TitleTxt <- gsub("\\s*\\([^\\)]+\\)","",TitleTxt)
+  TitleTxt <- gsub("\\s*\\([^\\)]+\\)", "", TitleTxt)
   
   comp.data$TitleTxt3 <- TitleTxt
   
