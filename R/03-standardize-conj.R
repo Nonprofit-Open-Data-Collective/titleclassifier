@@ -32,6 +32,10 @@ standardize_conj <- function(comp.data, title = "TitleTxt2"){
   #"the" can safely be removed
   TitleTxt <- gsub("\\bTHE\\b", "", TitleTxt)
   
+  #remove all parentheticals too
+  
+  TitleTxt <- gsub("\\s*\\([^\\)]+\\)","",TitleTxt)
+  
   comp.data$TitleTxt3 <- TitleTxt
   
   print("standardize conjunctions step complete")
@@ -367,5 +371,3 @@ standardize_separator <- function(TitleTxt){
   
   return(TitleTxt)
 }
-
-
