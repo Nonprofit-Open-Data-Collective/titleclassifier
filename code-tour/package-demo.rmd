@@ -9,17 +9,12 @@ output:
     self_contained: true
 ---
 
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set( echo = TRUE, message=F, warning=F, fig.width=10 )
 
 library( dplyr )
 library( pander )
 ```
-
-
- 
-
 
 ```{r, eval=F, echo=F}
 ### UPDATE PACKAGE
@@ -41,14 +36,9 @@ setwd( ".." )
 devtools::install( "titleclassifier" ) 
 ```
 
-
-
-
-
 # titleclassifier Package Overview
 
 An R package to assign raw nonprofit executive titles from Form 990 Part VII to a well-structured title taxonomy.
-
 
 ## Example Challenges
 
@@ -102,10 +92,7 @@ c("PROGRAMS COCHAIR, RESEARCH COCHAIR", "FIN SECY / TREASURER PAST",
 raw.titles %>% head(20)
 ```
 
-
-
 # Demo of *titleclassifier* Package
-
 
 ## Installation
 
@@ -113,7 +100,7 @@ raw.titles %>% head(20)
 devtools::install_github( 'nonprofit-open-data-collective/titleclassifier' )
 ```
 
-After installation complete without errors load the package. 
+After installation complete without errors load the package.
 
 ```{r}
 library( titleclassifier )    # title classifier package 
@@ -121,10 +108,9 @@ library( dplyr )              # data wrangling
 library( pander )             # nicely formatted output
 ```
 
+## Demo Data
 
-## Demo Data 
-
-The package includes some IRS 990 Part VII data for development and demonstration purposes. 
+The package includes some IRS 990 Part VII data for development and demonstration purposes.
 
 ```{r}
 data( tinypartvii ) # 10,000 rows of part vii data
@@ -133,92 +119,73 @@ head( tinypartvii )
 
 **Data Dictionary:**
 
-* **OBJECT_ID** - id of the xml object storing return data 
-* **URL** - online location of the raw XML form from which data was derived
-* **EIN** - employee identification number 
-* **NAME** - organization's name 
-* **TAXYR** - tax year of the data 
-* **FORMTYPE** - type of IRS 990 form completed (990 or 990EZ)
-* **F9_07_COMP_DTK_NAME_PERS** - director, trustee or key employee name 
-* **F9_07_COMP_DTK_TITLE** - title 
-* **F9_07_COMP_DTK_AVE_HOUR_WEEK** - hours worked per week over tax period  
-* **F9_07_COMP_DTK_AVE_HOUR_WEEK_RL** - hours worked for a related entity 
-* **F9_07_COMP_DTK_COMP_ORG** - direct compensation from the nonprofit (salary or wages) 
-* **F9_07_COMP_DTK_COMP_RLTD** - compensated received from a related entity 
-* **F9_07_COMP_DTK_COMP_OTH** - other compensation amount received (bonus, fringe)
-* **F9_07_COMP_DTK_EMPL_BEN** - compensation amount in benefits 
-* **F9_07_COMP_DTK_POS_FORMER_X** - checkbox designating former status 
-* **F9_07_COMP_DTK_POS_HIGH_COMP_X** - highly-compensated individual checkbox
-* **F9_07_COMP_DTK_POS_OFF_X** - officer checkbox 
-* **F9_07_COMP_DTK_POS_INDIV_TRUST_X** - individual trustee checkbox 
-* **F9_07_COMP_DTK_POS_KEY_EMPL_X** - key employee checkbox 
-* **F9_07_COMP_DTK_POS_INST_TRUST_X** - institutional trustee checkbox 
-
-
-
+-   **OBJECT_ID** - id of the xml object storing return data
+-   **URL** - online location of the raw XML form from which data was derived
+-   **EIN** - employee identification number
+-   **NAME** - organization's name
+-   **TAXYR** - tax year of the data
+-   **FORMTYPE** - type of IRS 990 form completed (990 or 990EZ)
+-   **F9_07_COMP_DTK_NAME_PERS** - director, trustee or key employee name
+-   **F9_07_COMP_DTK_TITLE** - title
+-   **F9_07_COMP_DTK_AVE_HOUR_WEEK** - hours worked per week over tax period\
+-   **F9_07_COMP_DTK_AVE_HOUR_WEEK_RL** - hours worked for a related entity
+-   **F9_07_COMP_DTK_COMP_ORG** - direct compensation from the nonprofit (salary or wages)
+-   **F9_07_COMP_DTK_COMP_RLTD** - compensated received from a related entity
+-   **F9_07_COMP_DTK_COMP_OTH** - other compensation amount received (bonus, fringe)
+-   **F9_07_COMP_DTK_EMPL_BEN** - compensation amount in benefits
+-   **F9_07_COMP_DTK_POS_FORMER_X** - checkbox designating former status
+-   **F9_07_COMP_DTK_POS_HIGH_COMP_X** - highly-compensated individual checkbox
+-   **F9_07_COMP_DTK_POS_OFF_X** - officer checkbox
+-   **F9_07_COMP_DTK_POS_INDIV_TRUST_X** - individual trustee checkbox
+-   **F9_07_COMP_DTK_POS_KEY_EMPL_X** - key employee checkbox
+-   **F9_07_COMP_DTK_POS_INST_TRUST_X** - institutional trustee checkbox
 
 ## Necessary Data
-
-
 
 The following internal datasets are used by functions within the package for mapping and disambiguation purposes:
 
 **Disambiguation Lists:**
 
-- likely.subjects: used in **fix_of()**  
-- likely.titles: used in **???()**  
-- possible.titles: used in **???()** 
+-   likely.subjects: used in **fix_of()**\
+-   likely.titles: used in **???()**\
+-   possible.titles: used in **???()**
 
+**Status Words:**
 
-- all.titles: ARE WE STILL USING THIS? (from old title mapping function)
+Titles are often accompanied by some adjective describing a temporary or temporal period in which the person holds the title. These phrases are removed from the titles and flags are created for each.
 
-PLEASE UPDATE THESE TOO: 
+These are used in the gen_status_codes() step:
 
-https://github.com/Nonprofit-Open-Data-Collective/titleclassifier/edit/main/R/data.R
+<https://github.com/Nonprofit-Open-Data-Collective/titleclassifier/blob/main/R/06-gen-status-codes.R>
 
-
-
-**Status Words:** 
-
-Titles are often accompanied by some adjective describing a temporary or temporal period in which the person holds the title. These phrases are removed from the titles and flags are created for each. 
-
-These are used in the gen_status_codes() step: 
-
-https://github.com/Nonprofit-Open-Data-Collective/titleclassifier/blob/main/R/06-gen-status-codes.R
-
-- former.words
-- future.words
-- interim.words
-- regional.words
-- possible.regional-list 
-
+-   former.words
+-   future.words
+-   interim.words
+-   regional.words
+-   possible.regional-list
 
 **Demo Data:**
 
-Sample datasets for development and testing purposes: 
+Sample datasets for development and testing purposes:
 
-- tinypartvii
-- rawtitles
+-   tinypartvii
+-   rawtitles
 
-The package includes additional data that is used by functions for cleaning and assignment processes. 
+The package includes additional data that is used by functions for cleaning and assignment processes.
 
-**NOTE:** We need to export these: 
+**NOTE:** We need to export these:
 
 ```{r, eval=F}
 data( former.words  ) %>% head() 
 ```
 
-
-These data are imported into the package via Google Sheets: 
+These data are imported into the package via Google Sheets:
 
 [reference google sheet cases]
 
-
-
 ## Title Cleaning Process
 
-There are approximately 100 meaningful titles in a sparse taxonomy of key leadership positions disclosed on the Directors, Trustees, and Key Employees section of the 990 forms. The title field appears as raw text, however, so there are no constraints on what nonprofits can write in the field. As a result, there are over 900,000 unique strings in the database. 
-
+There are approximately 100 meaningful titles in a sparse taxonomy of key leadership positions disclosed on the Directors, Trustees, and Key Employees section of the 990 forms. The title field appears as raw text, however, so there are no constraints on what nonprofits can write in the field. As a result, there are over 900,000 unique strings in the database.
 
 ```{r, echo=F}
 
@@ -231,27 +198,29 @@ na_to_space <- function(x)
 reorder_df <- function( df )
 {
   new.order <- 
-    c("F9_07_COMP_DTK_NAME_PERS", "TITLE_RAW","TOT.HOURS", "TOT.COMP",
-      "title.standard", "TitleTxt6", "TitleTxt5", 
-      "TitleTxt4",  "TitleTxt3", "TitleTxt2", 
-      "OBJECT_ID", "EIN", "NAME", 
-      "TAXYR", "FORMTYPE", "URL", "F9_07_COMP_DTK_TITLE", 
-      "F9_07_COMP_DTK_AVE_HOUR_WEEK", "F9_07_COMP_DTK_AVE_HOUR_WEEK_RL", 
-      "F9_07_COMP_DTK_POS_INDIV_TRUST_X", "F9_07_COMP_DTK_POS_OFF_X", 
-      "F9_07_COMP_DTK_COMP_ORG", "F9_07_COMP_DTK_COMP_RLTD", "F9_07_COMP_DTK_COMP_OTH", 
-      "F9_07_COMP_DTK_POS_KEY_EMPL_X", "F9_07_COMP_DTK_POS_INST_TRUST_X", 
-      "F9_07_COMP_DTK_POS_HIGH_COMP_X", "F9_07_COMP_DTK_EMPL_BEN", 
-      "F9_07_COMP_DTK_POS_FORMER_X",  
-      "date.x",  "Num.Titles", "SCHED.O", "SCHED.AT.LARGE", "AS.NEEDED", "EX.OFFICIO", 
-      "CO", "REGIONAL", "FUTURE", "FORMER", "INTERIM", "domain.category", 
-      "domainl.label", "soc.label", "major.group", "minor.group", "broad.group", 
-      "detailed.occupation", "emp", "ceo", "c.level", "dir.vp", "mgr", 
-      "spec", "board", "pres", "vp", "sec", "treas", "com")
+    c("dtk.name", "title.raw","tot.hours", "tot.comp",
+      "title.standard", "title.v6", "title.v5",
+      "title.v4",  "title.v3", "title.v2",
+      "object.id", "ein", "org.name",
+      "taxyr", "formtype", "url", "dtk.title",
+      "dtk.hours", "dtk.hours.rltd",
+      "dtk.indiv.trustee.x", "dtk.officer.x",
+      "dtk.comp", "dtk.comp.rltd", "dtk.comp.oth",
+      "dtk.key.empl.x", "dtk.inst.trustee.x",
+      "dtk.high.comp.x", "dtk.comp.ben",
+      "dtk.former.x",
+      "date.x", "title.count", "sched.o.x", "at.large.x", "ex.officio.x",
+      "co.x", "region.x", "future.x", "former.x", "interim.x", "outgoing.x"
+      # , "domain.category",
+      # "domainl.label", "soc.label", "major.group", "minor.group", "broad.group",
+      # "detailed.occupation", "emp", "ceo", "c.level", "dir.vp", "mgr",
+      # "spec", "board", "pres", "vp", "sec", "treas", "com")
+    )
   
   df <- 
     df[ new.order ] %>% 
-    rename( PNAME = F9_07_COMP_DTK_NAME_PERS ) %>% 
-    arrange( -TOT.HOURS, EIN, TITLE_RAW ) # %>% 
+    rename( PNAME = dtk.name ) %>% 
+    arrange( -tot.hours, ein, title.raw ) # %>% 
     # mutate( domain.category = na_to_space( domain.category ),
     #         domainl.label = na_to_space( domainl.label ),
     #         soc.label = na_to_space( soc.label ),
@@ -272,10 +241,11 @@ reorder_df <- function( df )
     #         treas = na_to_space( treas ),
     #         com = na_to_space( com ) )
 
-  df$REGIONAL <- as.numeric( df$REGIONAL)
-  df$FUTURE <- as.numeric( df$FUTURE )
-  df$FORMER <- as.numeric( df$FORMER )
-  df$INTERIM <- as.numeric( df$INTERIM )
+  df$region.x <- as.numeric( df$region.x)
+  df$future.x <- as.numeric( df$future.x )
+  df$former.x <- as.numeric( df$former.x )
+  df$interim.x <- as.numeric( df$interim.x)
+  df$outgoing.x <- as.numeric( df$outgoing.x )
 
   return( df )
 }
@@ -295,22 +265,21 @@ df <-
   standardize_spelling() %>%   # condition has length > 1
   gen_status_codes() %>% 
   standardize_titles() %>%
-  categorize_titles() 
+  categorize_titles() %>%
+  conditional_logic()
 
 df <- reorder_df( df )
 df
 ```
-
-
 
 ```{r, echo=F}
 df <- lapply( df, as.character ) %>% as.data.frame()
 write.csv( df, file="PACKAGE-DEMO.csv", row.names=F )
 ```
 
-#### Problem cases: 
+#### Problem cases:
 
-Why is this one split? 
+Why is this one split?
 
 ```{r}
 # df[ df$F9_07_COMP_DTK_NAME_PERS == "Pat L Wheeler" , ]
@@ -342,18 +311,16 @@ df.standard %>%
   pander()
 ```
 
-Why are these cases uncoded? 
+Why are these cases uncoded?
 
 ```{r}
-keep <- c("PNAME", "TOT.HOURS", "TOT.COMP", "TITLE_RAW", 
-          "title.standard", "TitleTxt6", "TitleTxt5" )
+keep <- c("PNAME", "tot.hours", "tot.comp", "title.raw", 
+          "title.standard", "title.v6", "title.v6" )
   
 df[ is.na( df$title.standard) , keep ]
 ```
 
-Spacing is problematic - causing merges to break on some cases like PRESIDENT & CEO. 
-
-
+Spacing is problematic - causing merges to break on some cases like PRESIDENT & CEO.
 
 ```{r}
 df2 <- df[ is.na( df$title.standard ) , keep ]
@@ -370,16 +337,14 @@ df2$TitleTxt6
 # [19] "STEWARD" 
 ```
 
-* add chief medical officer
-* how to code "executive" 
-  - CEO? 
-  - if CEO exists, code as VP? 
-* create generic "VICE PRESIDENT OF" category for cases that don't fit into current domains? 
-  - many of these just need title variants: VP OF COMMS & LEADERSHIP --> VP OF COMMS 
-
+-   add chief medical officer
+-   how to code "executive"
+    -   CEO?
+    -   if CEO exists, code as VP?
+-   create generic "VICE PRESIDENT OF" category for cases that don't fit into current domains?
+    -   many of these just need title variants: VP OF COMMS & LEADERSHIP --\> VP OF COMMS
 
 ### 01 Standardize DF
-
 
 ```{r}
 df <- 
@@ -389,23 +354,23 @@ df <-
 head( df )
 ```
 
-
 ### 02 Remove Dates
 
 Many titles include dates to signify the start or end of the period that a person holds a position. For example:
 
-* Executive Director until March 2020 
-* Executive Director starting March 2020 
+-   Executive Director until March 2020
+-   Executive Director starting March 2020
 
+```{=html}
+<!-- -->
 ```
-remove_dates()
-¦
-+-- convert_ordinal()
-+-- identify_date() 
-+-- remove_date()
-```
+    remove_dates()
+    ¦
+    +-- convert_ordinal()
+    +-- identify_date() 
+    +-- remove_date()
 
-#### Function Demo 
+#### Function Demo
 
 ```{r}
 df <- 
@@ -416,24 +381,21 @@ df <-
 paste0( df$TITLE_RAW, "    -->    ", df$TitleTxt2 ) %>% knitr::kable()
 ```
 
+### 03 Standardize Conjugations
 
-### 03 Standardize Conjugations 
+Convert all conjugations within titles to consistent formats.
 
-Convert all conjugations within titles to consistent formats. 
+    standardize_conj( title = "TitleTxt2" )
+    ¦
+    +-- standardize_and()
+    +-- standardize_to()
+    +-- standardize_of()
+    +-- standardize_comma()
+    +-- standardize_slash()
+    +-- standardize_and() #repeated bc of possible standardization changes
+    +-- standardize_separator()
 
-```
-standardize_conj( title = "TitleTxt2" )
-¦
-+-- standardize_and()
-+-- standardize_to()
-+-- standardize_of()
-+-- standardize_comma()
-+-- standardize_slash()
-+-- standardize_and() #repeated bc of possible standardization changes
-+-- standardize_separator()
-```
-
-#### Function Demo 
+#### Function Demo
 
 ```{r, warning=F}
 df <- 
@@ -445,26 +407,18 @@ df <-
 df[ c("TITLE_RAW","TitleTxt2","TitleTxt3") ]  %>% knitr::kable()
 ```
 
-
-
-
 ### 04 Split Titles
 
+    split_titles()
+    ¦
+    +-- split_title()
+    ¦
+    ¦   +-- unmingle()
+    ¦
+    ¦       +-- check_hunspell()
+    ¦       +-- standardize_space()
 
-```
-split_titles()
-¦
-+-- split_title()
-¦
-¦   +-- unmingle()
-¦
-¦       +-- check_hunspell()
-¦       +-- standardize_space()
-```
-
-
-
-#### Function Demo 
+#### Function Demo
 
 ```{r}
 df <- 
@@ -481,77 +435,69 @@ df[ c("F9_07_COMP_DTK_NAME_PERS","Num.Titles","TITLE_RAW","TitleTxt4","TitleTxt3
   dplyr::arrange( desc(N), PNAME )
 ```
 
-
-
-
 ### 05 Standardize Spelling
 
+[ change "substitute\_" to "fix\_" in function names ? ]
 
-[ change "substitute_" to "fix_" in function names ? ]
+    standardize_spelling()
+    ¦
+    +-- fix_spelling()
+    ¦   +-- substitute_vice()  
+    ¦   +-- substitute_executive(TitleTxt)
+    ¦   +-- substitute_director(TitleTxt)
+    ¦   +-- substitute_operations(TitleTxt)
+    ¦   +-- substitute_assistant(TitleTxt)
+    ¦   +-- substitute_president(TitleTxt)
+    ¦   +-- substitute_secretary(TitleTxt)
+    ¦   +-- substitute_treasurer(TitleTxt)
+    ¦   +-- substitute_finance(TitleTxt)
+    ¦   +-- substitute_senior(TitleTxt)
+    ¦   +-- substitute_development(TitleTxt)
+    ¦   +-- substitute_chair(TitleTxt)
+    ¦   +-- substitute_officer(TitleTxt)
+    ¦   +-- substitute_admin(TitleTxt)
+    ¦   +-- substitute_coordinator(TitleTxt)
+    ¦   +-- substitute_strategy(TitleTxt) #strategy/strategic
+    ¦   +-- substitute_hr(TitleTxt)
+    ¦   +-- substitute_manage(TitleTxt) #management/managing/manager
+    ¦   +-- substitute_programs(TitleTxt) #programs/programming
+    ¦   +-- substitute_projects(TitleTxt)
+    ¦   +-- substitute_public(TitleTxt)
+    ¦   +-- substitute_business(TitleTxt)
+    ¦   +-- substitute_comm(TitleTxt) #communication/committee
+    ¦   +-- substitute_information(TitleTxt)
+    ¦   +-- substitute_intelligence(TitleTxt)
+    ¦   +-- substitute_technology(TitleTxt)
+    ¦   +-- substitute_institute(TitleTxt) #institute/institutional
+    ¦   +-- substitute_academics(TitleTxt) #academics/academy
+    ¦   +-- substitute_marketing(TitleTxt)
+    ¦   +-- substitute_advancement(TitleTxt)
+    ¦   +-- substitute_philanthropy(TitleTxt)
+    ¦   +-- substitute_systems(TitleTxt)
+    ¦   +-- substitute_general(TitleTxt)
+    ¦   +-- substitute_planning(TitleTxt) #planning/planned
+    ¦   +-- substitute_compliance(TitleTxt)
+    ¦   +-- substitute_enrollment(TitleTxt)
+    ¦   +-- substitute_admissions(TitleTxt)
+    ¦   +-- substitute_deputy(TitleTxt)
+    ¦   +-- substitute_corresponding(TitleTxt) #correspondent/corresponding
+    ¦   +-- substitute_emeritus(TitleTxt)
+    ¦   +-- substitute_relations(TitleTxt)
+    ¦   +-- substitute_representative(TitleTxt)
+    ¦   +-- substitute_board(TitleTxt)
+    ¦   +-- substitute_transportation(TitleTxt)
+    ¦   +-- substitute_exofficio(TitleTxt)
+    ¦   +-- substitute_atlarge(TitleTxt)
+    ¦   +-- substitute_member(TitleTxt)
+    ¦   +-- substitute_governor(TitleTxt)
+    ¦   +-- condense_abbreviations(TitleTxt) 
+    ¦   +-- substitute_miscellaneous(TitleTxt)
+    ¦   +-- remove_trailing_conjunctions(TitleTxt)
+    ¦   +-- stand_titles(TitleTxt)
+    ¦   +-- fix_of(TitleTxt)
+    ¦   +-- spellcheck(TitleTxt) #slows things down, but is useful
 
-
-```
-standardize_spelling()
-¦
-+-- apply_substitutes()
-¦   +-- substitute_vice()  
-¦   +-- substitute_executive(TitleTxt)
-¦   +-- substitute_director(TitleTxt)
-¦   +-- substitute_operations(TitleTxt)
-¦   +-- substitute_assistant(TitleTxt)
-¦   +-- substitute_president(TitleTxt)
-¦   +-- substitute_secretary(TitleTxt)
-¦   +-- substitute_treasurer(TitleTxt)
-¦   +-- substitute_finance(TitleTxt)
-¦   +-- substitute_senior(TitleTxt)
-¦   +-- substitute_development(TitleTxt)
-¦   +-- substitute_chair(TitleTxt)
-¦   +-- substitute_officer(TitleTxt)
-¦   +-- substitute_admin(TitleTxt)
-¦   +-- substitute_coordinator(TitleTxt)
-¦   +-- substitute_strategy(TitleTxt) #strategy/strategic
-¦   +-- substitute_hr(TitleTxt)
-¦   +-- substitute_manage(TitleTxt) #management/managing/manager
-¦   +-- substitute_programs(TitleTxt) #programs/programming
-¦   +-- substitute_projects(TitleTxt)
-¦   +-- substitute_public(TitleTxt)
-¦   +-- substitute_business(TitleTxt)
-¦   +-- substitute_comm(TitleTxt) #communication/committee
-¦   +-- substitute_information(TitleTxt)
-¦   +-- substitute_intelligence(TitleTxt)
-¦   +-- substitute_technology(TitleTxt)
-¦   +-- substitute_institute(TitleTxt) #institute/institutional
-¦   +-- substitute_academics(TitleTxt) #academics/academy
-¦   +-- substitute_marketing(TitleTxt)
-¦   +-- substitute_advancement(TitleTxt)
-¦   +-- substitute_philanthropy(TitleTxt)
-¦   +-- substitute_systems(TitleTxt)
-¦   +-- substitute_general(TitleTxt)
-¦   +-- substitute_planning(TitleTxt) #planning/planned
-¦   +-- substitute_compliance(TitleTxt)
-¦   +-- substitute_enrollment(TitleTxt)
-¦   +-- substitute_admissions(TitleTxt)
-¦   +-- substitute_deputy(TitleTxt)
-¦   +-- substitute_corresponding(TitleTxt) #correspondent/corresponding
-¦   +-- substitute_emeritus(TitleTxt)
-¦   +-- substitute_relations(TitleTxt)
-¦   +-- substitute_representative(TitleTxt)
-¦   +-- substitute_board(TitleTxt)
-¦   +-- substitute_transportation(TitleTxt)
-¦   +-- substitute_exofficio(TitleTxt)
-¦   +-- substitute_atlarge(TitleTxt)
-¦   +-- substitute_member(TitleTxt)
-¦   +-- substitute_governor(TitleTxt)
-¦   +-- condense_abbreviations(TitleTxt) 
-¦   +-- substitute_miscellaneous(TitleTxt)
-¦   +-- remove_trailing_conjunctions(TitleTxt)
-¦   +-- stand_titles(TitleTxt)
-¦   +-- fix_of(TitleTxt)
-¦   +-- spellcheck(TitleTxt) #slows things down, but is useful
-
-```
-
-#### Function Demo 
+#### Function Demo
 
 ```{r}
 df <- 
@@ -568,39 +514,32 @@ df[ c("TitleTxt4","TitleTxt5") ] %>%
 
 **NOTES:**
 
-VICE PRESIDENT MEMBERSHIP --> VICE PRESIDENT OF MEMBERSHPIP? 
-VICE PRESIDENT VOLUNTEERS --> VICE PRESIDENT OF VOLUNTEERS?
+VICE PRESIDENT MEMBERSHIP --\> VICE PRESIDENT OF MEMBERSHPIP? VICE PRESIDENT VOLUNTEERS --\> VICE PRESIDENT OF VOLUNTEERS?
 
-Inspect all to see if there are cases where spelling was not corrected and it should be. 
+Inspect all to see if there are cases where spelling was not corrected and it should be.
 
 ```{r}
 df[ c("TitleTxt4","TitleTxt5") ] %>% knitr::kable() 
 ```
 
+### 06 Generate Status Codes
 
+    gen_status_codes()
+    ¦
+    +-- categorize_miscellaneous()
+    ¦   
+    ¦   +-- identify_sched_o()
+    ¦   +-- identify_at_large()
+    ¦   +-- identify_as_needed()
+    ¦   +-- identify_ex_officio
+    ¦   +-- identify_co
+    ¦   +-- filter_regional
+    ¦   +-- remove_numbers
+    ¦
+    +-- categorize_qualifiers()
+    ¦   +-- standardize_qualifiers()  
 
-### 06 Generate Status Codes 
-
-```
-gen_status_codes()
-¦
-+-- categorize_miscellaneous()
-¦   
-¦   +-- identify_sched_o()
-¦   +-- identify_at_large()
-¦   +-- identify_as_needed()
-¦   +-- identify_ex_officio
-¦   +-- identify_co
-¦   +-- filter_regional
-¦   +-- remove_numbers
-¦
-+-- categorize_qualifiers()
-¦   +-- standardize_qualifiers()  
-
-```
-
-
-#### Assets 
+#### Assets
 
 ```{r, eval=F}
 
@@ -616,8 +555,7 @@ possible-regional-list.rda:
 status-mapping.rda:
 ```
 
-
-#### Function Demo 
+#### Function Demo
 
 ```{r}
 df <- 
@@ -632,38 +570,33 @@ df <-
 df[ c("TitleTxt5","TitleTxt6") ]
 ```
 
-
-Status codes: 
+Status codes:
 
 ```{r}
-df$REGIONAL    <- as.numeric( df$REGIONAL)
-df$FUTURE      <- as.numeric( df$FUTURE )
-df$FORMER      <- as.numeric( df$FORMER )
-df$INTERIM     <- as.numeric( df$INTERIM )
+df$REGIONAL.X    <- as.numeric( df$REGIONAL.X)
+df$FUTURE.X      <- as.numeric( df$FUTURE.X )
+df$FORMER.X      <- as.numeric( df$FORMER.X )
+df$INTERIM.X     <- as.numeric( df$INTERIM.X )
+df$OUTGOING.X     <- as.numeric( df$OUTGOING.X )
   
 keep <- 
   c("Num.Titles", "TITLE_RAW", "TitleTxt6", 
-    "date.x", "SCHED.O", "SCHED.AT.LARGE", 
-    "AS.NEEDED", "EX.OFFICIO", "CO",  
-    "REGIONAL",  "FUTURE", "FORMER", "INTERIM" )
+    "DATE.X", "SCHED.O.X", "AT.LARGE.X",
+    "EXOFFICIO.X", "CO.X",  
+    "REGIONAL.X",  "FUTURE.X", "FORMER.X", "INTERIM.X", "OUTGOING.X")
 
 df[ keep ]
 ```
 
 **NOTES:**
 
-Make all status code boolean. 
+Make all status code boolean.
 
+### 07 Standardize Titles
 
+Map all of the current titles onto a standardized list.
 
-
-### 07 Standardize Titles 
-
-Map all of the current titles onto a standardized list. 
-
-```
-standardize_titles()
-```
+    standardize_titles()
 
 #### Assets
 
@@ -680,8 +613,7 @@ df.standard %>%
   arrange( title.standard, title.variant )
 ```
 
-
-#### Function Demo 
+#### Function Demo
 
 ```{r}
 df <- 
@@ -697,16 +629,13 @@ df <-
 df[ c("TITLE_RAW","TitleTxt6","title.standard")]
 ```
 
+### 08 Categorize Titles
 
-### 08 Categorize Titles 
+Apply the category codes for domain and status hierarchies to the standardized versions of the title.
 
-Apply the category codes for domain and status hierarchies to the standardized versions of the title. 
+    categorize_titles()
 
-```
-categorize_titles()
-```
-
-#### Function Demo 
+#### Function Demo
 
 ```{r}
 df <- 
@@ -723,17 +652,39 @@ df <-
 reorder_df( df )
 ```
 
+### 08 Conditional Logic
+
+Applies conditional logic to further refine the dataset. For example, checks organizations with multiple CEOs if they are actually multiple CEOs or if it's a coding mistake. Uses suborganization categories (e.g. pay rank, hours worked) to determine if recategorization is necessary.
+
+    conditional_logic()
+    ¦
+    +-- clean_up_ceos()
+    +-- director_correction()
+
+#### Function Demo
+
+```{r}
+df <- 
+  df.sample %>% 
+  standardize_df() %>% 
+  remove_dates() %>% 
+  standardize_conj() %>%   # condition has length > 1
+  split_titles() %>% 
+  standardize_spelling() %>%   # condition has length > 1
+  gen_status_codes() %>% 
+  standardize_titles() %>%
+  categorize_titles() %>%
+  conditional_logic()
+
+reorder_df( df )
+```
+
+### 10 Generate Taxonomy
+
+Not fully implemented yet in this package, but this is similarly linked to the Google Sheets data dictionary document.
 
 
-
-
-
-
-
-
-
-
-
+```{=html}
 <style>
 
 td{ padding: 6px 10px 6px 10px } 
@@ -748,3 +699,4 @@ body{
      margin-right:20% }
      
 </style>
+```
