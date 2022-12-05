@@ -160,7 +160,7 @@ add_features <- function( df )
       "F9_07_COMP_DTK_COMP_ORG", "F9_07_COMP_DTK_COMP_RLTD", 
       "F9_07_COMP_DTK_COMP_OTH", "F9_07_COMP_DTK_EMPL_BEN", 
 
-      "FORMER.X", "INTERIM.X", "FUTURE.X", "PARTIAL.X", "OUTGOING.X", "AS.NEEDED.X", 
+      "FORMER.X", "INTERIM.X", "FUTURE.X", "PARTIAL.X", "OUTGOING.X", 
       "EXOFFICIO.X", "CO.X", "REGIONAL.X", "DATE.X", "SCHED.O.X", "AT.LARGE.X",
 
       "domain.category", "domainl.label", "soc.label", 
@@ -249,7 +249,6 @@ simplify_varnames <- function( df )
            future.x = FUTURE.X,
            partial.x = PARTIAL.X,
            outgoing.x = OUTGOING.X,
-           as.needed.x = AS.NEEDED.X, 
            ex.officio.x = EXOFFICIO.X, 
            co.x = CO.X,
            region.x = REGIONAL.X, 
