@@ -652,7 +652,7 @@ df <-
 reorder_df( df )
 ```
 
-### 08 Conditional Logic
+### 09 Conditional Logic
 
 Applies conditional logic to further refine the dataset. For example, checks organizations with multiple CEOs if they are actually multiple CEOs or if it's a coding mistake. Uses suborganization categories (e.g. pay rank, hours worked) to determine if recategorization is necessary.
 
