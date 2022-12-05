@@ -182,10 +182,7 @@ add_features <- function( df )
       
       
    #if a date code is present, setting to partial year if not already set
-   df["PARTIAL.X"] <- ifelse(df["DATE.X"] == 1, 1, df["PARTIAL.X"])    
-      
-   
-   print("Categorize titles step complete")
+   df$PARTIAL.X[ df$DATE.X == 1] <- 1  
    
    return( df )
 

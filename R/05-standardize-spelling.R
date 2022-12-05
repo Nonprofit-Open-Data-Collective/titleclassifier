@@ -17,6 +17,29 @@ standardize_spelling <- function( comp.data, title="TitleTxt4" )
   
   TitleTxt = comp.data[[ title ]]
   
+  TitleTxt <- fix_spelling( TitleTxt )
+  
+  comp.data$TitleTxt5 <- TitleTxt
+  
+  print("standardize spelling step complete")
+  
+  return(comp.data)
+}
+
+
+
+#' @title 
+#' fixes spelling wrapper function
+#'
+#' @description 
+#' apply custom dictionary of common abbreviations and misspellings 
+#' to fix spelling of titles
+#' operates on the title level instead of data frame and is used also in step 3
+#' as well
+#' 
+#' @export
+fix_spelling <- function(TitleTxt){
+  
   TitleTxt <- fix_vice(           TitleTxt )
   TitleTxt <- fix_executive(      TitleTxt )
   TitleTxt <- fix_director(       TitleTxt )
@@ -89,22 +112,13 @@ standardize_spelling <- function( comp.data, title="TitleTxt4" )
   
   TitleTxt <- fix_of( TitleTxt )
   
-  # TitleTxt <- spellcheck(TitleTxt) #slows things down, but is useful
-  
   # clean up extra spaces
   TitleTxt <- gsub( "^\\s* | \\s*$", "", TitleTxt )
   TitleTxt <- gsub( "\\s{2,}", " ", TitleTxt )
   
-  comp.data$TitleTxt5 <- TitleTxt
+  return( TitleTxt )
   
-  print("standardize spelling step complete")
-  
-  return(comp.data)
 }
-
-
-
-
 
 
 #' @title 
@@ -182,6 +196,8 @@ fix_director <- function(TitleTxt){
                      gsub("\\bDTR\\b","DIRECTOR", TitleTxt), TitleTxt)
   TitleTxt <- ifelse(!grepl("CEO", TitleTxt),
                      gsub("\\bDRECTOR\\b","DIRECTOR", TitleTxt), TitleTxt)
+  
+  TitleTxt <- gsub("\\bDIECTOR\\b", "DIRECTOR", TitleTxt) #misspelling
   
   return(TitleTxt)
 }
@@ -1232,8 +1248,6 @@ simplify_clevels <- function(TitleTxt){
 #' 
 #' @export
 fix_of <- function(TitleTxt){
-  
-  # TitleTxt <- apply_substitutes(TitleTxt) #depending on order of op's
   
   ofMatch <- ifelse(!grepl("\\bOF\\b", TitleTxt), 
                     unlist(lapply(TitleTxt,of_title_helper)), NA)

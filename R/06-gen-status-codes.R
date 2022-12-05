@@ -56,6 +56,7 @@ gen_status_codes <- function( comp.data, title="TitleTxt5" )
     flag_and_remove(  s.code="FOUNDER"    )  %>%
     flag_and_remove(  s.code="FUTURE"     )  %>%
     flag_and_remove(  s.code="INTERIM"    )  %>%
+    flag_and_remove(  s.code="OUTGOING"   )  %>%
     flag_and_remove(  s.code="PARTIAL"    )  %>% 
     flag_and_remove(  s.code="SCHED O"    )  %>%  
     flag_and_remove(  s.code="AT LARGE"   )  %>%  

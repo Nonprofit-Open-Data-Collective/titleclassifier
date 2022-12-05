@@ -16,8 +16,9 @@ conditional_logic <- function(comp.data){
   
   #manipulations here
   
-  df <- clean_up_ceos(df)
-  df <- director_correction(df)
+  df %>%
+    clean_up_ceos() %>%
+    director_correction() -> df
   
   print("conditional logic step complete")
   
@@ -59,7 +60,7 @@ director_correction <- function(df){
   
   df$title.standard <- ifelse(df$title.v7 == "DIRECTOR" & 
                            df$dtk.indiv.trustee.x == 0 & df$dtk.inst.trustee.x == 0, 
-                           title.v7, title.standard)
+                           df$title.v7, df$title.standard)
   
   return(df)
 }

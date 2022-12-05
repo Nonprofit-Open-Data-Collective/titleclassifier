@@ -97,8 +97,7 @@ and_helper <- function(x){
     and_split <- unlist(strsplit(TitleTxt,"\\bAND\\b"))
     and_true <- TRUE
     for(i in 1:length(and_split)){
-      # testTitle <- standardize_spelling(and_split[i])
-      testTitle <- and_split[i]
+      testTitle <- fix_spelling(and_split[i])
       titlePresent <- FALSE
       for(title in likely.titles){
         if(grepl(title,testTitle))
@@ -130,8 +129,7 @@ amp_helper <- function(x){
     amp_split <- unlist(strsplit(TitleTxt,"&"))
     amp_true <- TRUE
     for(i in 1:length(amp_split)){
-      # testTitle <- standardize_spelling(amp_split[i])
-      testTitle <- amp_split[i]
+      testTitle <- fix_spelling(amp_split[i])
       titlePresent <- FALSE
       for(title in likely.titles){
         if(grepl(title,testTitle))
@@ -262,8 +260,7 @@ comma_helper <- function(x){
     com_true <- TRUE #comma used as a separator (defaulted to true)
     com_eq_of <- FALSE #comma used as of (i.e. vp, finance)
     for(i in 1:length(com_split)){
-      # testTitle <- standardize_spelling(com_split[i])
-      testTitle <- com_split[i]
+      testTitle <- fix_spelling(com_split[i])
       titlePresent <- FALSE
       for(title in likely.titles){
         if(grepl(title,testTitle))
@@ -294,9 +291,7 @@ comma_helper <- function(x){
 #'
 #' @export
 standardize_slash <- function(TitleTxt){
-  
   slash_type = ifelse(grepl("/",TitleTxt), unlist(lapply(TitleTxt, slash_helper)), 2)
-  
   #slash as separator
   TitleTxt <- ifelse(slash_type == 0, gsub("/"," &",TitleTxt), TitleTxt) 
   
@@ -322,16 +317,18 @@ slash_helper <- function(x){
   TitleTxt <- x
   
   if(grepl("/",TitleTxt)){
+    
     slash_split <- unlist(strsplit(TitleTxt,"/"))
     slash_true  <- TRUE   #slash used as a separator (defaulted to true)
     slash_eq_of <- FALSE   #slash used as of (i.e. vp, finance)
     for(i in 1:length(slash_split)){
-      # testTitle <- standardize_spelling(slash_split[i])
-      testTitle <- slash_split[i]
+      testTitle <- fix_spelling(slash_split[i])
       titlePresent <- FALSE
       for( title in likely.titles ){
         if( grepl( title, testTitle ) )
+        {
           titlePresent <- TRUE
+        }
         if( ( grepl( "CHAIR", testTitle )    |  grepl( "VICE PRESIDENT", testTitle ) | 
               grepl( "DIRECTOR", testTitle ) |  grepl( "DEAN", testTitle )  |
               grepl( "TRUSTEE", testTitle )  |  grepl( "MANAGER", testTitle )  |
@@ -343,7 +340,7 @@ slash_helper <- function(x){
     if(slash_true) return(0)
     else if(slash_eq_of) return(1)
   }
-  else return(2)
+  return(2)
   
 }
 
