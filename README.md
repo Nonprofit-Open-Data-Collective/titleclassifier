@@ -26,7 +26,9 @@ tinypartvii %>%
   standardize_spelling() %>% 
   gen_status_codes() %>% 
   standardize_titles() %>%
-  categorize_titles() ->     df.coded
+  categorize_titles() %>%
+  conditional_logic() %>%
+  gen_taxonomy() ->     df.coded
   
 
 end_time <- Sys.time()    # runtime
@@ -39,8 +41,7 @@ end_time - start_time
 <p><b>   High level overview of procedural flow    </b></p>
 
 <br>
-
-<img width="357" alt="image" src="https://user-images.githubusercontent.com/40209975/182947784-f13ee7ba-d622-477a-9ce2-43534807fd1f.png">
+<img width="1000" alt="image" src="https://user-images.githubusercontent.com/40209975/208956035-db4c3a19-6575-477e-bfae-9f38de66685b.png">
 
 <br>
 
@@ -52,7 +53,7 @@ The output is another relational table with cleaned titles and specific flags fo
 
 ### Steps in detail:
 
-#### 1.	Format raw table
+#### 1.	Standardize Data Frame
 
 The purpose of this first step is to make basic data formatting improvements to our raw table. Some details include:
 <!-- Note: "&#8594;" is code for a right arrow -->
@@ -71,7 +72,7 @@ Example transformation of about 30 entries after initial table formatting step
 </p>
 </br>
 
-#### 2. Clean dates
+#### 2. Remove dates
 
 In this step, all titles with dates in them are processed. We want to capture date information in titles as it can be indicative of individual's only working for part of the year, which likely affects their pay. However, having dates in titles makes them less standardized. 
 
@@ -103,7 +104,7 @@ if(isDatePresent) {
 ```
 
 
-#### 3. Clean conjunctions
+#### 3. Standardize conjunctions
 
 Sometimes titles can include conjunctions, prepositions, and punctuation (like "and", "to", ",", "/"), but these symbols don't always refer to the same thing. For example, a title field could be "CEO AND BOARD PRESIDENT", and another could be "VP OF FINANCE AND ADMINISTRATION". In the first instance, the "and" serves to separate two different titles, but in the second it's part of a compound subject. There are many more cases like these with such symbols, so in this step, they are standardized. It is also important to note that we are operating on each individual title at this stage (as opposed to working with the entire compensation table).
 
@@ -220,7 +221,7 @@ split_titles(title2) # c("SECRETARY", "TREASURER")
 ```
 
 
-#### 5. Apply substitutions
+#### 5. Standardize spelling
 In this step we substitute all abbreviations with their full title versions. Having gone through all the previous steps, we can assume that we are only dealing with one title, but we want to ensure that it is standardized. The main **apply_substitution** function is a wrapper for many smaller **substitute_x** functions. The code is generalized so that in addition to common abbrevations, misspellings or words that are cut off are also standardized. Further, in the cases where we find "...VICE PRESIDENT *SUBJECT*" or "...DIRECTOR *SUBJECT*", we substitute an "of" between the main title and the subject. This also applies to "CHAIR", "DEAN", "MANAGER" as the main title. 
 
 Additionally, in this step, we remove any weird spacing/formatting that have trickled through our initial rounds of title cleaning.
@@ -271,13 +272,16 @@ As additional codes are added to the spreadsheet, the code dynamically changes.
 
 #### 7. Standardize titles
 
-With our pseudo-standardized titles at this point, some additional standardization substitutions may still be necessary. This step is not fully implemented yet, but the variants of titles will be mapped to a canonical standardized version for improved classification as shown in [this sheet](https://docs.google.com/spreadsheets/d/1iYEY2HYDZTV0uvu35UuwdgAUQNKXSyab260pPPutP1M/edit#gid=1464446536).
 
 #### 8. Categorize titles
 
-We have an old implementation of title categorization in place. It has achieved nearly 98% title classification in testing with a hundred thousand indvidual relational table. Still it is currently being reworked to act like a wrapper function with individual categorize_x functions. Some examples of completely categorized sets can be found [here](https://github.com/Nonprofit-Open-Data-Collective/titleclassifier/tree/main/test-tables/split).
 
-*Steps 7 and 8 are not completely finished.*
+#### 9. Conditional Logic
+
+
+
+#### 10. Generate Taxonomy
+
 
 
 
