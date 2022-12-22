@@ -27,12 +27,13 @@ tinypartvii %>%
   gen_status_codes() %>% 
   standardize_titles() %>%
   categorize_titles() %>%
-  conditional_logic() %>%
-  gen_taxonomy() ->     df.coded
+  conditional_logic() ->     df.coded
   
 
 end_time <- Sys.time()    # runtime
 end_time - start_time
+
+# since all major steps have a wrapper function that operates on a data frame, they can be piped together
 ```
 
 
@@ -93,14 +94,14 @@ Date cleaning methodology
 #example date cleaning
 
 input <- "TREASURER BEGINNING MAY 30 2018"
-isDatePresent <- identify_date(input) #flag for date present
+isDatePresent <- identify_dates(input) #flag for date present
 if(isDatePresent) {
   output <- remove_date(input)
   print(output)
   #"TREASURER BEGINNING"
 }
 
-#this is basically how the clean_dates function works but on the relational table as a whole
+#the remove_dates wrapper function applies this vectorized function process over all titles in the data frame
 ```
 
 
@@ -201,28 +202,44 @@ standardize_separator(title3) # "CHAPLAIN&TRUSTEE"
 
 It goes without saying that there are and will be instances of false positives, but using these techniques, the titles are generally in good shape for splitting and categorization in later steps. Browsing through [lists of titles with these symbols apparent (and their standardizations)](https://github.com/Nonprofit-Open-Data-Collective/titleclassifier/tree/main/test-tables/title-comparison/2022-07-19) can be helpful for coming up with more complicated yet accurate heuristics. 
 
-You may also notice that spacing can sometimes look inconsistent. That is true, but since the goal of this step is only to standardize conjunction/transition symbols, weird spacing is not dealt with here. In later steps, the excess spacing, or lackthereof, is dealt with.
+You may also notice that spacing can sometimes look inconsistent. That is true, but since the goal of this step is only to standardize conjunction/transition symbols, weird spacing is not dealt with here. In later steps, the excess spacing, or lackthereof, is dealt with. 
+
+As a note for code consistency, `standardize_and` is actually applied twice after its initial application (after `standardize_slash` and `standardize_separator`). The purpose of this is to catch any conjunction issues that may have arised as a result of the other standardizations. The "and" standardization is ultimately most important as "&" is the main separator, and thus we want it to be as refined as possible. 
+
+Additionally, as with the `remove_dates` wrapper function, the major aspects of standardizing conjunctions in this step are vectorized for efficiency.
 
 #### 4. Split titles
 
-This step separates rows with multiple titles into multiple rows. For instance, a row with the title field "SECRETARY & TREASURER" would be duplicated into two rows - one with title "SECRETARY" and the other with "TREASURER". Having standardized all of our separators, we theoretically need only split on "&". 
+This step separates rows with multiple titles into multiple rows. For instance, a row with the title field "SECRETARY & TREASURER" would be duplicated into two rows - one with title "SECRETARY" and the other with "TREASURER". Having standardized all of our separators, we theoretically need only split on "&". However, sometimes there are titles that are mingled together, as an error of data entry. For example "SECRETARYTREASURER" as one word would not be split into two titles when it should be. Previously, these were dealt with an unmingle() function, but for efficiency issues, this has since been removed. 
 
-However, sometimes there are titles that are mingled together, as an error of data entry. For example "SECRETARYTREASURER" as one word would not be split into two titles when it should be. So accordingly, for all titles with at least 10 characters (heuristic) and no spaces, a simple unmingling check is performed to determine if two words/titles have been smushed together. If they have, a **standardize_space** function is called which converts the space to "&" if the two substrings are both recognizable titles (similar to how standardize_and works). This substep is completed before the titles are split on "&" and serves as one last standardization before we fully split into separate rows.
+Unlike previous iterations of `split_titles` which operated on a singular title, this step is now fully vectorized and much more efficient. The process wrapper function operates on a data frame and checks all titles for an ampersand, and for those that do, it duplicates the row and removes all characters leading up to and including the symbol. This is then iteratively repeated five times to split entries with at most five different titles. Below is an example of how an entry with multiple titles would be treated.
 
 ```r
-title1 <- "CFO & TREASURER"
-title2 <- "SECRETARYTREASURER"
+row.title <- "CFO & TREASURER & DIRECTOR"
+num.titles <- identify_split_num(row.title) #will be 3
 
-split_titles(title1) # c("CFO ", " TREASURER")
-split_titles(title2) # c("SECRETARY", "TREASURER")
+#in split_titles, if num.titles > 1, the row is duplicated and all text after "&" is removed
+#thus in the original row we have the title as "CFO "
 
-#for each entry in the output vector from split_titles we duplicate a row in the table, 
-#with "TitleTxt2" being the singularized title
+row.title <- remove_first_split(row.title) #row.title is now " TREASURER & DIRECTOR"
+num.titles <- identify_split_num(row.title) #will now be 2
+
+#since num.titles is still > 1, the row is duplicated again
+
+row.title <- remove_first_split(row.title) #row.title is now " DIRECTOR"
+num.titles <- identify_split_num(row.title) #now 1
+
+#since num.titles is now 1, the row duplication stops and split_titles job is now done
+#this process is vectorized, so all rows are simultaneously going through this process
+#ultimately, the one row with title "CFO & TREASURER & DIRECTOR" has been duplicated into three rows with the titles
+#"CFO", "TREASURER", and "DIRECTOR" respectively. 
 ```
+
+To clarify, in the `split_titles` process, extra white space and other irregularities are appropriately dealt with. 
 
 
 #### 5. Standardize spelling
-In this step we substitute all abbreviations with their full title versions. Having gone through all the previous steps, we can assume that we are only dealing with one title, but we want to ensure that it is standardized. The main **apply_substitution** function is a wrapper for many smaller **substitute_x** functions. The code is generalized so that in addition to common abbrevations, misspellings or words that are cut off are also standardized. Further, in the cases where we find "...VICE PRESIDENT *SUBJECT*" or "...DIRECTOR *SUBJECT*", we substitute an "of" between the main title and the subject. This also applies to "CHAIR", "DEAN", "MANAGER" as the main title. 
+In this step we substitute all abbreviations with their full title versions. Having gone through all the previous steps, we can assume that we are only dealing with one title, but we want to ensure that it is standardized. The main `fix_spelling` function is a wrapper for many smaller `fix_x` functions. The code is generalized so that in addition to common abbrevations, misspellings or words that are cut off are also standardized. Further, in the cases where we find "...VICE PRESIDENT *SUBJECT*" or "...DIRECTOR *SUBJECT*", we substitute an "of" between the main title and the subject. This also applies to "CHAIR", "DEAN", "MANAGER" as the main title. In total, there are nearly 50 `fix_x` subroutines.
 
 Additionally, in this step, we remove any weird spacing/formatting that have trickled through our initial rounds of title cleaning.
 
@@ -230,21 +247,21 @@ Additionally, in this step, we remove any weird spacing/formatting that have tri
 ```r
 #examples
 
-apply_substitute("VP") # "VICE PRESIDENT"
-apply_substitute("DIRECTOR FACILITIES") # "DIRECTOR OF FACILITIES"
-apply_substitute("SR D MARKETING") # "SENIOR DIRECTOR OF MARKETING"
-apply_substitute("VICE PRESID") # "VICE PRESIDENT"
-apply_substitute("SGT AT ARMS") # "SERGEANT AT ARMS"
-apply_substitute("TRTEE") # "TRUSTEE"
-apply_substitute("SECY") # "SECRETARY"
+fix_spelling("VP") # "VICE PRESIDENT"
+fix_spelling("DIRECTOR FACILITIES") # "DIRECTOR OF FACILITIES"
+fix_spelling("SR D MARKETING") # "SENIOR DIRECTOR OF MARKETING"
+fix_spelling("VICE PRESID") # "VICE PRESIDENT"
+fix_spelling("SGT AT ARMS") # "SERGEANT AT ARMS"
+fix_spelling("TRTEE") # "TRUSTEE"
+fix_spelling("SECY") # "SECRETARY"
 ```
 
 Some title standardization was also completed at this step, and namely any version of "EXECUTIVE DIRECTOR" was mapped onto "CEO". In addition, unambiguous c-suite positions were condensed to their abbreviations. Not all c-suite positions fall into this category however.
 ```r
-apply_substitute("EX DIR") # "CEO"
-apply_substitute("CHIEF EXEC OFFICER") # "CEO"
-apply_substitute("CHIEF FINANCIAL OFFICER") # "CFO"
-apply_substitute("CHIEF ADVANCEMENT OFFICER") # "CHIEF ADVANCEMENT OFFICER"
+fix_spelling("EX DIR") # "CEO"
+fix_spelling("CHIEF EXEC OFFICER") # "CEO"
+fix_spelling("CHIEF FINANCIAL OFFICER") # "CFO"
+fix_spelling("CHIEF ADVANCEMENT OFFICER") # "CHIEF ADVANCEMENT OFFICER"
 ```
 
 
@@ -252,42 +269,44 @@ There are many cases of ambiguity especially with abbreviations, so sometimes a 
 
 #### 6. Generate status codes
 
-Having substitute full length words for our abbreviations, the titles are nearly standardized. Some may still include remnants from date cleaning indicating temporal words (like "EMERITUS", "INTERIM", or "STARTING"), and some titles may still include extraneous modifiers (like "EX-OFFICIO", "CO-", or "AT LARGE"). This step removes these modifiers and groups them with appropriate flags. 
+Having substitute full length words for our abbreviations, the titles are nearly standardized. Some may still include remnants from date cleaning indicating temporal words (like "EMERITUS", "INTERIM", or "STARTING"), and some titles may still include extraneous modifiers. This step removes most modifiers and groups them with appropriate flags. Some modifiers are kept (like "EX-OFFICIO" and "REGIONAL") as they can provide extra information. Below is a code snippet of the flag and keep/remove process.
+```
+  comp.data <- 
+    comp.data %>% 
+    flag_and_keep(    s.code="EXOFFICIO"  )  %>% 
+    flag_and_remove(  s.code="FORMER"     )  %>% 
+    flag_and_remove(  s.code="FOUNDER"    )  %>%
+    flag_and_remove(  s.code="FUTURE"     )  %>%
+    flag_and_remove(  s.code="INTERIM"    )  %>%
+    flag_and_remove(  s.code="OUTGOING"   )  %>%
+    flag_and_remove(  s.code="PARTIAL"    )  %>% 
+    flag_and_remove(  s.code="SCHED O"    )  %>%  
+    flag_and_remove(  s.code="AT LARGE"   )  %>%  
+    flag_and_keep(    s.code="REGIONAL"   )    
+```
 
-<p align = "center">
-<img width="580" alt="image" src="https://user-images.githubusercontent.com/40209975/182951683-c23a4cef-0f97-49e8-b8ee-62b348e9b9c6.png">
-</p>
-<p align = "center">
-<b>
-Overview of status code generation
-</b>
-</p>
-
-With the **categorize_miscellaneous** wrapper function, instances of the literal strings (and their derivatives) "SCHEDULE O", "AT LARGE", "AS NEEDED", "EX-OFFICIO", and "CO-" were identified, flagged, then removed. For example, a title of "TRUSTEE EX-OFFICIO" will have a flag in the "EX-OFFICIO" column, and have the filtered title end up as simply "TRUSTEE". "Quantifier" refers to ordinal numbers like "FIRST" and "SECOND". They were removed because while they do add hierarchical value to a title, they are not part of any standardized titleset.
-
-With the **categorize_qualifiers** wrapper function, if present versions of the literal strings "FORMER", "FUTURE", "INTERIM", and "REGIONAL" were generalized, flagged, and then removed. What this means is that the titles "PRESIDENT EMERITUS" and "PAST PRESIDENT" both end up as "PRESIDENT" with a flag in the "FORMER" column. There are significantly more variants of these qualifiers as opposed to the miscellaneous ones, and [this sheet](https://docs.google.com/spreadsheets/d/1iYEY2HYDZTV0uvu35UuwdgAUQNKXSyab260pPPutP1M/edit#gid=145854139) provides a dynamic view of the mappings. 
-
-As additional codes are added to the spreadsheet, the code dynamically changes.
+The specific variants that are removed are documented in [this spreadsheet](https://docs.google.com/spreadsheets/d/1iYEY2HYDZTV0uvu35UuwdgAUQNKXSyab260pPPutP1M/edit#gid=145854139), which the code pulls from and makes it dynamic. When additional variants are identified, they can be added to that document and the code will be updated accordingly.
 
 
 #### 7. Standardize titles
 
+Like step 6 with generating status codes, this step also pulls from the Google Sheet. More specifically, it converts variants of titles to a canonical form. For example "ADMINISTRATIVE ASSISTANT" and "ADMINISTRATION ASSISTANT" are both mapped to "ADMINISTRATIVE ASSISTANT" in this step. A full list of the mappings can be found [here](https://docs.google.com/spreadsheets/d/1iYEY2HYDZTV0uvu35UuwdgAUQNKXSyab260pPPutP1M/edit#gid=1464446536). There are several thousand titles to be coded and mapped, and the team is actively working on updating and increasing the dataset for better results.
+
+In addition to the mappings, there are some basic heuristics applied in this step to improve overall title classification accuracy. Most notably, some C-Suite positions like CFO and CEO are corrected based on information within an organization. For example, depending on pay hierarchy, hours worked, and officer positionship, a "FINANCE DIRECTOR" can be corrected to "CFO". More of these conditional logic processes are applied in step 9 where it is specialized. Unlike step 9, the heuristics applied here are mostly with titles that were not successfully standardized (i.e. non-coded titles).
+
 
 #### 8. Categorize titles
+
+With the standardized titles, they are next classified, again using the Google Sheets document. This classification is a title taxonomy and includes helpful information about domain category, domain label, and SOC code amongst other things. This is also a living and breathing document, and the current work being done can be found [here](https://docs.google.com/spreadsheets/d/1iYEY2HYDZTV0uvu35UuwdgAUQNKXSyab260pPPutP1M/edit#gid=756762038).
 
 
 #### 9. Conditional Logic
 
+Step 9 is basically a data refinement step. The majority of titles have been standardized and categorized, but some are still not. Part of this issue lies with the great variance in filers having different standards and understandings when filling out the 990 forms, but some are fundamental issues. Conditional logic tries to look broad strokes at non-coded or potentially miscoded titles and use organization information (like pay rank, hours worked, board role, etc.) to try to recategorize if needed. This step is not completely fleshed and could always use more refinement, but the two major conditional logic processes applied are `clean_up_ceos` and `director_correction`.
 
+With `clean_up_ceos`, organizations with multiple CEOs are inspected and adjusted. Sometimes, the multiple CEOs makes sense as it's a transition and there are individuals with "interim" or "past" flags checked, but other times it's an issue with CEOs with multiple titles being split into multiple rows and then double counted. In those instances, they are filtered out based on equivalence checking on other fields. 
+With `director_correction', the issue of "DIRECTOR" being used as a term for board member is addressed. In step 7, all rows with "DIRECTOR" are converted to the standardized "BOARD MEMBER" and in this step we check to make sure that that was the correct change. If an individual has a raw director title, but is paid and not on the board, then their title is corrected to "DIRECTOR" instead of the rough conversion to "BOARD MEMBER".
 
-#### 10. Generate Taxonomy
-
-
-
-
-## Improvements
-
-* Looking at the flow of our code, in retrospect it seems more effective generate status codes before the "apply substitutes" and "standardize titles" steps.
-* As we comb through more examples, we will find more places where the transition word heuristics fail. With those discoveries, we can improve our probabilistic cleaning.
+In the future, it would be helpful to further build out the `conditional_logic` with more cases where situational information can be helpful in correcting an individual's title. To determine these rules, however, requires painstaking time sifting through filtered results and trying to draw patterns. As of now, the package is in working condition and functions as intended in filtering and categorizing over 90% of all compensation data from the 990 Part VII form (a dataset of several million entries).
 
 
