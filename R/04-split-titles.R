@@ -25,6 +25,10 @@ split_titles <- function(df, title = "TitleTxt3"){
   
   TitleTxt <- gsub("^\\s*SEC[A-Z]*\\s*TREAS[A-Z]*\\b$", 
                    "SECRETARY & TREASURER", TitleTxt)
+ 
+  # split all FOUNDER titles
+  TitleTxt <- gsub( " & FOUNDER\\b", " FOUNDER", TitleTxt )
+  TitleTxt <- gsub( "\\bFOUNDER\\b", "& FOUNDER", TitleTxt )
   
   df$Num.Titles <- identify_split_num(TitleTxt)
   
