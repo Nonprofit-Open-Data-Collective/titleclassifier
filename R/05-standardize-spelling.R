@@ -1142,6 +1142,8 @@ fix_miscellaneous <- function(TitleTxt){
   #spelling corrections
   TitleTxt <- gsub("\\bCONTRUCTION\\b", "CONSTRUCTION", TitleTxt)
   TitleTxt <- gsub("\\bFORNER\\b", "FORMER", TitleTxt)
+  TitleTxt <- gsub("\\bKNIG\\b", "KNIGHT", TitleTxt)
+  
   
   #regionals
   TitleTxt <- gsub("\\bSOUTHWES\\b", "SOUTHWEST", TitleTxt)
