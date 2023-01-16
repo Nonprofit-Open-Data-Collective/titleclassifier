@@ -103,18 +103,19 @@ split_titles <- function(df, title = "TitleTxt3"){
 #' 
 #' @export
 identify_split_num <- function(x){
-  TitleTxt <- x
 
-  TitleTxt <- gsub("\\d", "",TitleTxt)
+  # remove digits
+  x <- gsub( "\\d", "", x )
 
+  # replace "exec & dir" versions with "executive director"
+  x <- gsub( "\\bEX[A-Z]*\\b\\s*&\\s*DIR[A-Z]*\\b", "EXECUTIVE DIRECTOR", x )
 
-  TitleTxt <- gsub("\\bEX[A-Z]*\\b\\s*&\\s*DIR[A-Z]*\\b",
-                "EXECUTIVE DIRECTOR", TitleTxt)
-
-  TitleTxt[grepl("^\\s*SEC[A-Z]*\\s*TREAS[A-Z]*\\b$", TitleTxt)] <-
-    "SECRETARY & TREASURER"
+  # replace "secretary treasurer" with "secretary & treasurer"
+  x[ grepl( "^\\s*SEC[A-Z]*\\s*TREAS[A-Z]*\\b$", x ) ] <- "SECRETARY & TREASURER"
   
-  return( stringr::str_count(TitleTxt,"&")+1 )
+  num.titles <- stringr::str_count( x, "&" ) + 1
+  
+  return( num.titles )
 }
 
 
@@ -125,16 +126,43 @@ identify_split_num <- function(x){
 #' removes the first occurrence of a split title
 #' 
 #' @export
-remove_first_split <- function(x){
-  TitleTxt <- x
+remove_first_split <- function(x)
+{
+  #finds the first occurrence of the ampersand
+  amp_loc <- regexpr( "&", x ) 
   
-  amp_loc <- regexpr("&", TitleTxt) #finds the first occurrence of the ampersand
-  TitleTxt <- ifelse(nchar(substr(TitleTxt, regexpr("&",TitleTxt)+1, 
-                                  nchar(TitleTxt))),
-                     substr(TitleTxt, amp_loc+1, nchar(TitleTxt)), 
-                     substr(TitleTxt, 1, amp_loc-1))
+  # drop text before first ampersand
+  x <- substr( x, amp_loc+1, nchar(x) )
   
-  return(TitleTxt)
+  # x <- ifelse( nchar( substr( x, regexpr( "&", x ) + 1, 
+  #                                 nchar(x) ) ),
+  #                    substr( x, amp_loc+1, nchar(x) ), 
+  #                    substr( x, 1, amp_loc-1) )
+  
+  return( x )
 }
 
 
+
+# find all titles at once
+# x <- "title1 & title2 & title3"
+# titles <- strsplit( x, "&" )[[1]]
+# titles <- trimws( titles )
+
+# d <- data.frame( x=c("title1","title1 & title2","title1","title1 & title2 & title3","title1"), 
+#                  y=1:5, 
+#                  z=c("A","B","A","B","A") )
+# 
+# d
+# 
+# title.list <- strsplit( d$x, "&" )
+# title.list <- lapply( titles, trimws )
+# 
+#### check title veracity here
+# 
+# title.count <- sapply( title.list, length )
+# row.count <- rep( index, times=title.count )
+# 
+# d2 <- d[  row.count , ]
+# d2$x2 <- unlist(title.list)
+# d2
