@@ -1014,12 +1014,14 @@ fix_transportation <- function(TitleTxt){
 #' @export
 fix_exofficio <- function(TitleTxt){
   
-  TitleTxt <- gsub("\\bEX\\s+OFF[A-Z]*\\b", "EX-OFFICIO", TitleTxt)
-  TitleTxt <- gsub("\\bEX-OFF[A-Z]*\\b", "EX-OFFICIO", TitleTxt)
+  TitleTxt <- gsub("\\bEX\\s+OFF[A-Z]*\\b", "EXOFFICIO", TitleTxt)
+  TitleTxt <- gsub("\\bEX-OFF[A-Z]*\\b", "EXOFFICIO", TitleTxt)
   
   #typos
-  TitleTxt <- gsub("\\bEX OFICIO*\\b", "EX-OFFICIO", TitleTxt)
-  TitleTxt <- gsub("\\bEXOFFICIO", "EX-OFFICIO", TitleTxt)
+  TitleTxt <- gsub("\\bEX OFICIO*\\b", "EXOFFICIO", TitleTxt)
+  TitleTxt <- gsub("\\bEXOFFICIO", "EXOFFICIO", TitleTxt)
+  
+  TitleTxt <- gsub("\\bOFFICIO\\b", "EXOFFICIO", TitleTxt)
   
   return(TitleTxt)
 }
@@ -1071,6 +1073,7 @@ fix_governor <- function(TitleTxt){
 fix_miscellaneous <- function(TitleTxt){
   
   #miscellaneous:
+  TitleTxt <- gsub(  "\\bEXBOARD\\b",         "EX BOARD",         TitleTxt )
   TitleTxt <- gsub(  "\\*",                   "",                 TitleTxt )
   TitleTxt <- gsub(  "\\bMINISTR\\b",         "MINISTER",         TitleTxt )
   TitleTxt <- gsub(  "\\bSGT\\b",             "SERGEANT",         TitleTxt)
