@@ -357,13 +357,17 @@ slash_helper <- function(x){
 #' They all get mapped to &
 #'
 #' @export
-standardize_separator <- function(TitleTxt){
+standardize_separator <- function( x )
+{
   
-  standard_separator <- "&"
-  alternate_separators <- c(";", "\\\\", "/")
-  for(separator in alternate_separators){
-    TitleTxt <- gsub(separator,standard_separator,TitleTxt)
-  }
+  alt.separators <- c( ";", "\\\\", "/", " - ", " -", "- " )
+  x <- gsub( paste( alt.separators, collapse="|" ), " & ", x )
   
-  return(TitleTxt)
+  # standard_separator <- "&"
+  # alternate_separators <- c( ";", "\\\\", "/", " - ", " -", "- " )
+  # for(separator in alternate_separators){
+  #   x <- gsub( separator, standard_separator, x )
+  # }
+  
+  return(x)
 }
