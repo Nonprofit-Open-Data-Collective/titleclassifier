@@ -58,7 +58,7 @@ split_titles <- function( df, title = "TitleTxt3" )
   
   # number of unique titles per person
   new.title.id <- sapply( title.count, seq ) %>% unlist()
-  df$num.titles <- new.title.id  
+  df$Num.Titles <- new.title.id  
   
   print("split titles step complete")
   return(df)
