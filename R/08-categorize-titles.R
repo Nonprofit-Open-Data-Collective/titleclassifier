@@ -53,15 +53,35 @@ categorize_titles <- function( comp.data )
 add_features <- function( df )
 {
 
-    df$Multiple.Titles  <- as.numeric( df$Multiple.Titles )
+
+# > dput( names(df) )
+# c("OBJECT_ID", "EIN", "NAME", "TAXYR", "FORMTYPE", "URL", "F9_07_COMP_DTK_NAME_PERS", 
+# "F9_07_COMP_DTK_TITLE", "F9_07_COMP_DTK_AVE_HOUR_WEEK", "F9_07_COMP_DTK_AVE_HOUR_WEEK_RL", 
+# "F9_07_COMP_DTK_POS_INDIV_TRUST_X", "F9_07_COMP_DTK_POS_OFF_X", 
+# "F9_07_COMP_DTK_COMP_ORG", "F9_07_COMP_DTK_COMP_RLTD", "F9_07_COMP_DTK_COMP_OTH", 
+# "F9_07_COMP_DTK_POS_KEY_EMPL_X", "F9_07_COMP_DTK_POS_INST_TRUST_X", 
+# "F9_07_COMP_DTK_POS_HIGH_COMP_X", "F9_07_COMP_DTK_EMPL_BEN", 
+# "F9_07_COMP_DTK_POS_FORMER_X", "TITLE_RAW", "TOT.HOURS", "TOT.COMP", 
+# "DATE.X", "TitleTxt2", "TitleTxt3", "TitleTxt4", "Num.Titles", 
+# "TitleTxt5", "CO.X", "TitleTxt6", "EXOFFICIO.X", "FORMER.X", 
+# "FOUNDER.X", "FUTURE.X", "INTERIM.X", "OUTGOING.X", "PARTIAL.X", 
+# "SCHED.O.X", "AT.LARGE.X", "REGIONAL.X")
+
+
+    
+    # df$AS.NEEDED.X        <- as.numeric( df$AS.NEEDED.X )
+    df$Multiple.Titles    <- as.numeric( df$Multiple.Titles )
     df$FORMER.X           <- as.numeric( df$FORMER.X )
     df$INTERIM.X          <- as.numeric( df$INTERIM.X ) 
     df$REGIONAL.X         <- as.numeric( df$REGIONAL.X )
     df$PARTIAL.X          <- as.numeric( df$PARTIAL.X )
-    df$AS.NEEDED.X        <- as.numeric( df$AS.NEEDED.X )
     df$EXOFFICIO.X        <- as.numeric( df$EXOFFICIO.X )
     df$CO.X               <- as.numeric( df$CO.X )
     df$SCHED.O.X          <- as.numeric( df$SCHED.O.X )
+
+    df$FOUNDER.X          <- as.numeric( df$FOUNDER.X )
+    df$OUTGOING.X         <- as.numeric( df$OUTGOING.X )
+    df$AT.LARGE.X         <- as.numeric( df$AT.LARGE.X )
     
 
     these <- c("emp", "board",
@@ -76,10 +96,16 @@ add_features <- function( df )
     # weight people w multiple titles
     df <- 
       df %>% 
-      dplyr::group_by( OBJECT_ID, F9_07_COMP_DTK_NAME_PERS ) %>%
-      dplyr::mutate( tot.titles = max(Num.Titles, na.rm=T ),
-                     emp2 = ifelse( sum(emp)>0, emp/sum(emp), 0 ),
-                     board2 = ifelse( sum(board)>0, board/sum(board), 0 )  ) %>%
+      dplyr::group_by( OBJECT_ID, 
+                       F9_07_COMP_DTK_NAME_PERS ) %>%
+      dplyr::mutate( tot.titles = max( Num.Titles, na.rm=T ),
+                     emp2 = ifelse( sum(emp) > 0, 
+                                    emp / sum(emp), 
+                                    0 ),
+                     board2 = ifelse( sum(board) > 0, 
+                                      board / sum(board), 
+                                      0 )  
+      ) %>%
       ungroup()  
 
 
@@ -139,18 +165,17 @@ add_features <- function( df )
                      pay.tot = sum( tot.comp2, na.rm=T ), # don't double-count multiple titles
                      pay.pct.of.max = TOT.COMP / pay.max,
                      pay.pct.of.tot = TOT.COMP / pay.tot, 
-                     pay.max.allpay = max( TOT.COMP.TOT, na.rm=T ),
-                     pay.tot.allpay = sum( tot.comp2.tot, na.rm=T ), # don't double-count multiple titles
-                     pay.pct.of.max.allpay = TOT.COMP.TOT / pay.max.all,
-                     pay.pct.of.tot.allpay = TOT.COMP.TOT / pay.tot.all, 
+                     pay.max.all = max( TOT.COMP.TOT, na.rm=T ),
+                     pay.tot.all = sum( tot.comp2.tot, na.rm=T ), # don't double-count multiple titles
+                     pay.pct.of.max.all = TOT.COMP.TOT / pay.max.all,
+                     pay.pct.of.tot.all = TOT.COMP.TOT / pay.tot.all, 
                      hours.rank = dense_rank( -TOT.HOURS ),
-                     hours.pct.of.max = TOT.HOURS / max( TOT.HOURS, na.rm=T )  ) %>% 
-                     hours.rank.allhours = dense_rank( -TOT.HOURS.TOT ),
-                     hours.pct.of.max.allhours = TOT.HOURS.TOT / max( TOT.HOURS.TOT, na.rm=T )  ) %>% 
+                     hours.pct.of.max = TOT.HOURS / max( TOT.HOURS, na.rm=T ), 
+                     hours.rank.all = dense_rank( -TOT.HOURS.TOT ),
+                     hours.pct.of.max.all = TOT.HOURS.TOT / max( TOT.HOURS.TOT, na.rm=T )  ) %>% 
       ungroup() %>% 
       as.data.frame()
     
-    pay.pct
 
     new.order <- 
     c("NAME", "EIN", "TAXYR", "FORMTYPE", 
@@ -158,11 +183,13 @@ add_features <- function( df )
       "Multiple.Titles", "Num.Titles", "tot.titles", 
 
       "TITLE_RAW", "title.standard", 
-      "TOT.HOURS", "TOT.HOURS.TOT",  "hours.rank", "hours.pct.of.max",  
+      "TOT.HOURS", "TOT.HOURS.TOT",  
+      "hours.rank", "hours.pct.of.max",  
       "TOT.COMP", "TOT.COMP.TOT", 
-      "pay.rank", "pay.max", "pay.max.allpay", "pay.tot", "pay.tot.allpay",
-      "pay.pct.of.max", "pay.pct.of.max.allpay", 
-      "pay.pct.of.tot", "pay.pct.of.tot.allpay",
+      "pay.rank", "pay.max", "pay.max.all", 
+      "pay.tot", "pay.tot.all",
+      "pay.pct.of.max", "pay.pct.of.max.all", 
+      "pay.pct.of.tot", "pay.pct.of.tot.all",
       
 
       # "hour_rank", "pay_rank", "has_leader", 
@@ -202,7 +229,7 @@ add_features <- function( df )
       
       
    #if a date code is present, setting to partial year if not already set
-   df$PARTIAL.X[ df$DATE.X == 1] <- 1  
+   df$PARTIAL.X[ df$DATE.X == 1 ] <- 1  
    
    return( df )
 

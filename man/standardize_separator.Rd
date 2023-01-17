@@ -4,7 +4,7 @@
 \alias{standardize_separator}
 \title{standardize separator function}
 \usage{
-standardize_separator(TitleTxt)
+standardize_separator(x)
 }
 \description{
 standardize the separator for distinguishing titles

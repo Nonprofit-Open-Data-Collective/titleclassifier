@@ -33,12 +33,15 @@ split_titles <- function( df, title = "TitleTxt3" )
   # split all FOUNDER titles
   x <- gsub( " & FOUNDER\\b", " FOUNDER", x )
   x <- gsub( "\\bFOUNDING\\b", "FOUNDER", x )
-  x <- gsub( "\\bFOUNDER\\b", "& FOUNDER", Tx )
+  x <- gsub( "\\bFOUNDER\\b", "& FOUNDER", x )
+  
+  # empty titles are returned as character(0) 
+  # from strsplit()
+  x[ x == "" ] <- " "
   
   # unique titles have & as separators:
-  
   title.list <- strsplit( x, "&" )
-  title.list <- lapply( titles, trimws )
+  title.list <- lapply( title.list, trimws )
   
   # ADD title veracity check here
 
@@ -47,6 +50,8 @@ split_titles <- function( df, title = "TitleTxt3" )
   
   # duplicate rows of df based 
   # on number of unique titles
+  row.id <- 1:nrow(df)
+  row.count <- rep( row.id, times=title.count )
   df <- df[  row.count , ]
   
   # single vector with all unique titles 
