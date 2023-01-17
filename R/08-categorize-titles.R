@@ -54,9 +54,15 @@ add_features <- function( df )
 {
 
     df$Multiple.Titles  <- as.numeric( df$Multiple.Titles )
-    df$FORMER           <- as.numeric( df$FORMER )
-    df$INTERIM          <- as.numeric( df$INTERIM ) 
-    df$REGIONAL         <- as.numeric( df$REGIONAL )
+    df$FORMER.X           <- as.numeric( df$FORMER.X )
+    df$INTERIM.X          <- as.numeric( df$INTERIM.X ) 
+    df$REGIONAL.X         <- as.numeric( df$REGIONAL.X )
+    df$PARTIAL.X          <- as.numeric( df$PARTIAL.X )
+    df$AS.NEEDED.X        <- as.numeric( df$AS.NEEDED.X )
+    df$EXOFFICIO.X        <- as.numeric( df$EXOFFICIO.X )
+    df$CO.X               <- as.numeric( df$CO.X )
+    df$SCHED.O.X          <- as.numeric( df$SCHED.O.X )
+    
 
     these <- c("emp", "board",
                "ceo", "c.level", "dir.vp", 
@@ -99,9 +105,11 @@ add_features <- function( df )
     df$TOT.COMP.TOT <- pay1 + pay2 + pay3 + pay4
 
 
-
+    # do not double-count split titles 
     df$tot.comp2 <- df$TOT.COMP
     df$tot.comp2[ df$Num.Titles > 1 ] <- NA
+    df$tot.comp2.tot <- df$TOT.COMP.TOT
+    df$tot.comp2.tot[ df$Num.Titles > 1 ] <- NA
     df$tot.hours2 <- df$TOT.HOURS
     df$tot.hours2[ df$Num.Titles > 1 ] <- NA
 
@@ -127,13 +135,22 @@ add_features <- function( df )
                      num.fte.30h = sum( tot.hours2 >= 30, na.rm=T ),
                      num.pte = sum( tot.hours2 > 9 & tot.hours2 < 30, na.rm=T ),                   
                      pay.rank = dense_rank( -TOT.COMP ),
-                     pay.pct.of.max = TOT.COMP / max( TOT.COMP, na.rm=T ),
-                     pay.pct.of.tot = TOT.COMP / sum( tot.comp2, na.rm=T ),  # don't double-count multiple titles
+                     pay.max = max( TOT.COMP, na.rm=T ),
+                     pay.tot = sum( tot.comp2, na.rm=T ), # don't double-count multiple titles
+                     pay.pct.of.max = TOT.COMP / pay.max,
+                     pay.pct.of.tot = TOT.COMP / pay.tot, 
+                     pay.max.allpay = max( TOT.COMP.TOT, na.rm=T ),
+                     pay.tot.allpay = sum( tot.comp2.tot, na.rm=T ), # don't double-count multiple titles
+                     pay.pct.of.max.allpay = TOT.COMP.TOT / pay.max.all,
+                     pay.pct.of.tot.allpay = TOT.COMP.TOT / pay.tot.all, 
                      hours.rank = dense_rank( -TOT.HOURS ),
                      hours.pct.of.max = TOT.HOURS / max( TOT.HOURS, na.rm=T )  ) %>% 
+                     hours.rank.allhours = dense_rank( -TOT.HOURS.TOT ),
+                     hours.pct.of.max.allhours = TOT.HOURS.TOT / max( TOT.HOURS.TOT, na.rm=T )  ) %>% 
       ungroup() %>% 
       as.data.frame()
     
+    pay.pct
 
     new.order <- 
     c("NAME", "EIN", "TAXYR", "FORMTYPE", 
@@ -142,8 +159,11 @@ add_features <- function( df )
 
       "TITLE_RAW", "title.standard", 
       "TOT.HOURS", "TOT.HOURS.TOT",  "hours.rank", "hours.pct.of.max",  
-      "TOT.COMP", "TOT.COMP.TOT",  
-      "pay.rank", "pay.pct.of.max", "pay.pct.of.tot",
+      "TOT.COMP", "TOT.COMP.TOT", 
+      "pay.rank", "pay.max", "pay.max.allpay", "pay.tot", "pay.tot.allpay",
+      "pay.pct.of.max", "pay.pct.of.max.allpay", 
+      "pay.pct.of.tot", "pay.pct.of.tot.allpay",
+      
 
       # "hour_rank", "pay_rank", "has_leader", 
 
