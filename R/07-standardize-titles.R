@@ -83,9 +83,10 @@ basic_csuite_fixes <- function(comp.data, title = "TitleTxt6",
 #' @export
 replace_ceo <- function(TitleTxt, weekly.hours, total.pay){
   
-  #replace president with CEO if weekly hours > 10 and only singular title
-  TitleTxt <- ifelse(TitleTxt == "PRESIDENT" & weekly.hours >= 10, 
-                     "CEO", TitleTxt)
+  # replace president with CEO if weekly hours > 10 and only singular title
+  # TitleTxt <- 
+  #   ifelse( TitleTxt == "PRESIDENT" & weekly.hours >= 10, 
+  #           "CEO",  TitleTxt  )
   
   #replace chancellor with CEO if paid
   TitleTxt <- ifelse(TitleTxt == "CHANCELLOR" & total.pay > 0, 
