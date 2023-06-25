@@ -391,3 +391,26 @@ standardize_separator <- function( x )
   
   return(x)
 }
+
+#' @title 
+#' misc split rules
+#'
+#' @description
+#' Miscelaneous cases that should be split into
+#' two titles but are not addressed by general rules.
+#'
+#' @export
+fix_misc_splits <- function( x )
+{
+  x <- gsub( "^VICE PRESIDENT TREASURER$", "VICE PRESIDENT & TREASURER", x ) 
+  x <- gsub( "\\bSECRETARY TREASURER\\b", "SECRETARY & TREASURER", x )
+  x <- gsub( "^VICE PRESIDENT AND CIO$", "VICE PRESIDENT & CIO", x )
+  x <- gsub( "^VICE PRESIDENT SECRETARY$", "VICE PRESIDENT & SECRETARY", x )
+  x <- gsub( "^CFO AND MINISTRY MARKETING$", "CFO & MINISTRY MARKETING", x )
+  x <- gsub( "^PRESIDENT AND REGIONAL", "PRESIDENT & REGIONAL", x )
+  x <- gsub( "^PRESIDENT TREASURER$", "BOARD PRESIDENT & TREASURER", x )
+  x <- gsub( "SENIOR VICE PRESIDENT GENERAL COUNSEL", "SENIOR VICE PRESIDENT & GENERAL COUNSEL", x )
+  x <- gsub( "^TRUSTEE AND PHYSICIAN$", "TRUSTEE & PHYSICIAN", x )
+  x <- gsub( "^VICE PRESIDENT DIRECTOR$", "VICE PRESIDENT & DIRECTOR", x )
+  return(x)
+}
