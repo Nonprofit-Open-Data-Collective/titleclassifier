@@ -76,6 +76,7 @@ standardize_and <- function(TitleTxt){
   TitleTxt <- gsub( "  ", " ", TitleTxt ) # replace double space with single
 
   TitleTxt <- fix_double_and( TitleTxt )
+  TitleTxt <- fix_misc_splits( TitleTxt )
   
   return(TitleTxt)
 }
