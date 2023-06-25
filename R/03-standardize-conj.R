@@ -69,11 +69,13 @@ standardize_and <- function(TitleTxt){
   amp_true <- ifelse(grepl("&",TitleTxt), 
                      unlist(lapply(TitleTxt, amp_helper)),TRUE)
   
-  TitleTxt <- ifelse(and_true, gsub("\\bAND\\b","&",TitleTxt), TitleTxt)
-  TitleTxt <- ifelse(!amp_true, gsub("&", " AND ", TitleTxt), TitleTxt)
+  TitleTxt <- ifelse(   and_true, gsub( "\\bAND\\b", "&", TitleTxt ), TitleTxt )
+  TitleTxt <- ifelse( ! amp_true, gsub( "&", " AND ", TitleTxt ), TitleTxt )
   
   TitleTxt <- gsub( "&"," & ",TitleTxt ) 
-  TitleTxt <- gsub( "  "," ",TitleTxt ) # replace double space with single
+  TitleTxt <- gsub( "  ", " ", TitleTxt ) # replace double space with single
+
+  TitleTxt <- fix_double_and( TitleTxt )
   
   return(TitleTxt)
 }
@@ -141,6 +143,24 @@ amp_helper <- function(x){
   return(amp_true)
 }
 
+
+
+#' @title 
+#' double 'and' split rule
+#' 
+#' @description 
+#' Identifies cases with the pattern "title AND word AND word"
+#' and makes the substitution "title & word AND word".
+#' 
+#' @export
+fix_double_and <- function(x)
+{
+  has.two <- grepl( " and [[:alpha:]]{1,} and ", x )
+  replace_first <- function(x)
+  { sub( " and ", " & ", x  ) }
+  x <- ifelse( has.two, replace_first(x), x )
+  return(x)
+}
 
 #' @title
 #' standardize "to" function
