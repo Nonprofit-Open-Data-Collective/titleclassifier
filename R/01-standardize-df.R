@@ -95,7 +95,7 @@ standardize_df <- function( df,
   #the one to many table
 
   #### RETURN CLEAN DF
-  print("standardize df step complete")
+  cat( "✔ standardize df step complete" )
   return( df )
   
 }
