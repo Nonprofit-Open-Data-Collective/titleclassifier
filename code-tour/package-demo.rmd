@@ -687,16 +687,23 @@ Not fully implemented yet in this package, but this is similarly linked to the G
 ```{=html}
 <style>
 
-td{ padding: 6px 10px 6px 10px } 
-th{ text-align: left; } 
+td{ 
+  padding: 6px 10px 6px 10px;
+  font-size:calc(0.5em + 0.25vw);}
+
+th{ 
+  text-align: left;
+  font-size:calc(0.5em + 0.25vw);} 
+  
 h1, h3, h4 { color: #995c00; }
 h1,h2, h3 { margin-top:50px; }
+
 body{
      font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
      font-size:calc(1.5em + 0.25vw);
      font-weight:300;line-height:1.65;
      margin-left:20%;
      margin-right:20% }
-     
+    
 </style>
 ```
