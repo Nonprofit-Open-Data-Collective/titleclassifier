@@ -32,7 +32,17 @@ get_n_df <- function( df, n, seed=123 )
 
 
 
-
+#' @title
+#' test 'remove_dates' function
+#'
+#' @description
+#' Generate a test table to show effects of the function.
+#'
+#' @param x A vector of test titles, if NULL uses internal data. 
+#' @param n How many test cases to process. 
+#' @return A data frame with the input titles (RAW) and processed titles (FIXED). 
+#'
+#' @export
 test_remove_dates <- function( n=250, x=NULL )
 {
 
@@ -57,7 +67,17 @@ test_remove_dates <- function( n=250, x=NULL )
 #### STEP 03 - STANDARDIZE CONJUGATIONS 
 ####
 
-
+#' @title
+#' test 'standardize_and' function
+#'
+#' @description
+#' Generate a test table to show effects of the function.
+#'
+#' @param x A vector of test titles, if NULL uses internal data. 
+#' @param n How many test cases to process. 
+#' @return A data frame with the input titles (RAW) and processed titles (FIXED). 
+#'
+#' @export
 test_standardize_and <- function( n=250, x=NULL )
 {
   if( is.null(x) )
@@ -76,7 +96,17 @@ test_standardize_and <- function( n=250, x=NULL )
 
   
   
-  
+ #' @title
+#' test 'standardize_to' function
+#'
+#' @description
+#' Generate a test table to show effects of the function.
+#'
+#' @param x A vector of test titles, if NULL uses internal data. 
+#' @param n How many test cases to process. 
+#' @return A data frame with the input titles (RAW) and processed titles (FIXED). 
+#'
+#' @export 
 test_standardize_to <- function( n=250, x=NULL )
 {
   
@@ -99,7 +129,17 @@ test_standardize_to <- function( n=250, x=NULL )
 
 
 
-
+#' @title
+#' test 'standardize_of' function
+#'
+#' @description
+#' Generate a test table to show effects of the function.
+#'
+#' @param x A vector of test titles, if NULL uses internal data. 
+#' @param n How many test cases to process. 
+#' @return A data frame with the input titles (RAW) and processed titles (FIXED). 
+#'
+#' @export
 test_standardize_of <- function( n=250, x=NULL )
 {
   if( is.null(x) )
@@ -121,7 +161,17 @@ test_standardize_of <- function( n=250, x=NULL )
 
 
 
-
+#' @title
+#' test 'standardize_comma' function
+#'
+#' @description
+#' Generate a test table to show effects of the function.
+#'
+#' @param x A vector of test titles, if NULL uses internal data. 
+#' @param n How many test cases to process. 
+#' @return A data frame with the input titles (RAW) and processed titles (FIXED). 
+#'
+#' @export
 test_standardize_comma <- function( n=250, x=NULL )
 {
   if( is.null(x) )
@@ -143,7 +193,17 @@ test_standardize_comma <- function( n=250, x=NULL )
 
 
 
-
+#' @title
+#' test 'standardize_slash' function
+#'
+#' @description
+#' Generate a test table to show effects of the function.
+#'
+#' @param x A vector of test titles, if NULL uses internal data. 
+#' @param n How many test cases to process. 
+#' @return A data frame with the input titles (RAW) and processed titles (FIXED). 
+#'
+#' @export
 test_standardize_slash <- function( n=250, x=NULL )
 {
   if( is.null(x) )
@@ -165,7 +225,17 @@ test_standardize_slash <- function( n=250, x=NULL )
 
 
 
-
+#' @title
+#' test 'standardize_separator' function
+#'
+#' @description
+#' Generate a test table to show effects of the function.
+#'
+#' @param x A vector of test titles, if NULL uses internal data. 
+#' @param n How many test cases to process. 
+#' @return A data frame with the input titles (RAW) and processed titles (FIXED). 
+#'
+#' @export
 test_standardize_separator <- function( n=250, x=NULL )
 {
   if( is.null(x) )
@@ -193,7 +263,18 @@ test_standardize_separator <- function( n=250, x=NULL )
 ####
 #### STEP 05 - FIX SPELLING 
 ####
-  
+
+#' @title
+#' test 'fix_spelling' function
+#'
+#' @description
+#' Generate a test table to show effects of the function.
+#'
+#' @param x A vector of test titles, if NULL uses internal data. 
+#' @param n How many test cases to process. 
+#' @return A data frame with the input titles (RAW) and processed titles (FIXED). 
+#'
+#' @export
 test_fix_spelling <- function( n=250, x=NULL )
 {
   if( is.null(x) )
