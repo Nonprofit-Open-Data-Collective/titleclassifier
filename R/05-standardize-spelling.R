@@ -14,15 +14,10 @@ require(hunspell)
 #' @export
 standardize_spelling <- function( comp.data, title="TitleTxt4" )
 {
-  
   TitleTxt = comp.data[[ title ]]
-  
   TitleTxt <- fix_spelling( TitleTxt )
-  
   comp.data$TitleTxt5 <- TitleTxt
-  
-  print("standardize spelling step complete")
-  
+  cat( "? standardize spelling step complete\n" )
   return(comp.data)
 }
 
@@ -38,8 +33,8 @@ standardize_spelling <- function( comp.data, title="TitleTxt4" )
 #' as well
 #' 
 #' @export
-fix_spelling <- function(TitleTxt){
-  
+fix_spelling <- function(TitleTxt)
+{
   TitleTxt <- fix_vice(           TitleTxt )
   TitleTxt <- fix_executive(      TitleTxt )
   TitleTxt <- fix_director(       TitleTxt )
@@ -89,10 +84,10 @@ fix_spelling <- function(TitleTxt){
   TitleTxt <- fix_member(         TitleTxt )
   TitleTxt <- fix_governor(       TitleTxt )
   
-  TitleTxt <- condense_abbreviations(TitleTxt) 
+  TitleTxt <- condense_abbreviations( TitleTxt ) 
   
   # random fixes
-  TitleTxt <- fix_miscellaneous(TitleTxt)
+  TitleTxt <- fix_miscellaneous( TitleTxt )
   
   # remove duplicates
   TitleTxt <- gsub( "PRESIDENT\\s+PRESIDENT", "PRESIDENT", TitleTxt )
@@ -128,8 +123,8 @@ fix_spelling <- function(TitleTxt){
 #' condenses vice president abbreviations to a standardized form
 #'
 #' @export
-fix_vice <- function(TitleTxt){
-  
+fix_vice <- function(TitleTxt)
+{
   TitleTxt <- gsub( "\\bE\\sV\\sPRESIDENT",    "EXECUTIVE VICE PRESIDENT",         TitleTxt )
   TitleTxt <- gsub( "\\bE\\sVICE",             "EXECUTIVE VICE",                   TitleTxt )
   TitleTxt <- gsub( "\\bS\\sVICE",             "SENIOR VICE",                      TitleTxt )
@@ -149,7 +144,6 @@ fix_vice <- function(TitleTxt){
   
   TitleTxt <- gsub( "\\bV\\s*P[A-Z]*\\b", "VICE PRESIDENT", TitleTxt )
   TitleTxt <- gsub("\\bVICE\\s*P[A-Z]*\\b", "VICE PRESIDENT", TitleTxt)
-  
   
   TitleTxt <- gsub("\\bVI$", "VICE PRESIDENT", TitleTxt) #heuristic
   TitleTxt <- gsub("\\bVIC$", "VICE PRESIDENT", TitleTxt) #heuristic
@@ -249,7 +243,8 @@ fix_assistant <- function(TitleTxt){
 #' ignores "presiding"
 #'
 #' @export
-fix_president <- function(TitleTxt){
+fix_president <- function(TitleTxt)
+{
   presidingCheck <- ifelse(grepl("PRESIDING", TitleTxt), FALSE, TRUE)
   
   TitleTxt <- ifelse(presidingCheck, 
@@ -271,7 +266,8 @@ fix_president <- function(TitleTxt){
 #' condenses secretary abbreviations to a standardized form
 #'
 #' @export
-fix_secretary <- function(TitleTxt){
+fix_secretary <- function(TitleTxt)
+{
   
   TitleTxt <- gsub( "\\bSEC'Y\\b", "SECRETARY", TitleTxt )
   TitleTxt <- gsub( "\\bSECR[A-Z]*\\b", "SECRETARY", TitleTxt )
@@ -295,12 +291,12 @@ fix_secretary <- function(TitleTxt){
 #' condenses treasurer abbreviations to a standardized form
 #'
 #' @export
-fix_treasurer <- function(TitleTxt){
-  
-  TitleTxt <- gsub("\\bTRE[A-Z]*\\b", "TREASURER", TitleTxt)
-  TitleTxt <- gsub("\\bTR\\b", "TREASURER", TitleTxt)
-  TitleTxt <- gsub("\\bTRSR\\b", "TREASURER", TitleTxt)
-  
+fix_treasurer <- function(TitleTxt)
+{
+  TitleTxt <- gsub( "\\bTRE[A-Z]*\\b",  "TREASURER", TitleTxt )
+  TitleTxt <- gsub( "\\bTR\\b",         "TREASURER", TitleTxt )
+  TitleTxt <- gsub( "\\bTRSR\\b",       "TREASURER", TitleTxt )
+  TitleTxt <- gsub( "\\bTREASUER\\b",   "TREASURER", TitleTxt )
   return(TitleTxt)
 }
 
@@ -312,12 +308,11 @@ fix_treasurer <- function(TitleTxt){
 #' financial is included
 #'
 #' @export
-fix_finance <- function(TitleTxt){
-  
+fix_finance <- function(TitleTxt)
+{
   #everything gets converted to finance (including financial)
-  TitleTxt <- gsub("\\bFIN[A-Z]*\\b", "FINANCE", TitleTxt)
-  TitleTxt <- gsub("\\bFI\\b", "FINANCE", TitleTxt)
-  
+  TitleTxt <- gsub( "\\bFIN[A-Z]*\\b", "FINANCE", TitleTxt )
+  TitleTxt <- gsub( "\\bFI\\b",        "FINANCE", TitleTxt )
   return(TitleTxt)
 }
 
@@ -328,16 +323,16 @@ fix_finance <- function(TitleTxt){
 #' condenses senior/junior abbreviations to a standardized form
 #'
 #' @export
-fix_senior <- function(TitleTxt){
+fix_senior <- function(TitleTxt)
+{
+  TitleTxt <- gsub( "\\bSENI[A-Z]*\\b", "SENIOR", TitleTxt )
+  TitleTxt <- gsub( "\\bSEN\\b",        "SENIOR", TitleTxt )
+  TitleTxt <- gsub( "\\bSR\\b",         "SENIOR", TitleTxt )
+  TitleTxt <- gsub( "\\bSNR\\b",        "SENIOR", TitleTxt )
   
-  TitleTxt <- gsub("\\bSENI[A-Z]*\\b", "SENIOR", TitleTxt)
-  TitleTxt <- gsub("\\bSEN\\b", "SENIOR", TitleTxt)
-  TitleTxt <- gsub("\\bSR\\b", "SENIOR", TitleTxt)
-  TitleTxt <- gsub("\\bSNR\\b", "SENIOR", TitleTxt)
-  
-  TitleTxt <- gsub("\\bJUNI[A-Z]*\\b", "JUNIOR", TitleTxt)
-  TitleTxt <- gsub( "\\bJR\\b", "JUNIOR", TitleTxt)
-  TitleTxt <- gsub( "\\bJT\\b", "JUNIOR", TitleTxt)
+  TitleTxt <- gsub( "\\bJUNI[A-Z]*\\b", "JUNIOR", TitleTxt )
+  TitleTxt <- gsub( "\\bJR\\b",         "JUNIOR", TitleTxt )
+  TitleTxt <- gsub( "\\bJT\\b",         "JUNIOR", TitleTxt )
   
   return(TitleTxt)
 }
@@ -365,8 +360,8 @@ fix_development <- function(TitleTxt){
 #' includes vice chair standardizations
 #'
 #' @export
-fix_chair <- function(TitleTxt){
-  
+fix_chair <- function(TitleTxt)
+{
   TitleTxt <- gsub( "\\bV\\s*C\\b", "VICE CHAIR", TitleTxt )
   TitleTxt <- gsub( "\\bV\\s\\bCHAIR\\b", "VICE CHAIR", TitleTxt )
   TitleTxt <- gsub( "\\bVICE\\b\\sC\\b", "VICE CHAIR", TitleTxt )
@@ -542,24 +537,26 @@ fix_hr <- function(TitleTxt){
 #'  abbreviations to a standardized form
 #'
 #' @export
-fix_manage <- function(TitleTxt){
-  
-  management.texts <- c("\\bMANAGEMEN\\b","\\bMANAGEME\\b",
-                        "\\bMANAGEM\\b","\\bMANAGE\\b",
-                        "\\bMANAG\\b","\\bMANA\\b","\\bMAN\\b",
-                        "\\bMGMT\\b","\\bMGM\\b")
-  for(name in management.texts){
-    TitleTxt <- gsub(name,"MANAGEMENT",TitleTxt)
-  }
+fix_manage <- function(TitleTxt)
+{
+  #management
+  management <- 
+    c( "\\bMANAGEMEN\\b", "\\bMANAGEME\\b",
+       "\\bMANAGEM\\b", "\\bMANAGE\\b",
+       "\\bMANAG\\b", "\\bMANA\\b", 
+       "\\bMAN\\b","\\bMGMT\\b", "\\bMGM\\b" )
+       
+  mgmt     <- paste( management, collapse="|" )
+  TitleTxt <- gsub( mgmt, "MANAGEMENT", TitleTxt )
   
   #managing
-  TitleTxt <- gsub("\\bMANAGIN\\b","MANAGING",TitleTxt)
-  TitleTxt <- gsub("\\bMANAGI\\b","MANAGING",TitleTxt)
+  TitleTxt <- gsub( "\\bMANAGIN\\b", "MANAGING", TitleTxt )
+  TitleTxt <- gsub( "\\bMANAGI\\b",  "MANAGING", TitleTxt )
   
   #manager
-  TitleTxt <- gsub("\\bMANGER\\b","MANAGER",TitleTxt)
-  TitleTxt <- gsub("\\bMGR\\b","MANAGER",TitleTxt)
-  TitleTxt <- gsub("\\bMNGR\\b","MANAGER",TitleTxt)
+  TitleTxt <- gsub("\\bMANGER\\b", "MANAGER", TitleTxt )
+  TitleTxt <- gsub("\\bMGR\\b",    "MANAGER", TitleTxt )
+  TitleTxt <- gsub("\\bMNGR\\b",   "MANAGER", TitleTxt )
   
   return(TitleTxt)
 }
@@ -572,17 +569,19 @@ fix_manage <- function(TitleTxt){
 #' skips over programming
 #'
 #' @export
-fix_programs <- function(TitleTxt){
-  
-  TitleTxt <- ifelse(grepl("\\bPROGRAMMI", TitleTxt), 
-                     gsub("\\bPROGRAMMI[A-Z]*\\b", "PROGRAMMING", TitleTxt), TitleTxt)
+fix_programs <- function(TitleTxt)
+{
+  #programming
+  TitleTxt <- gsub( "\\bPROGRAMMI[A-Z]*\\b", "PROGRAMMING", TitleTxt )
   
   #everything else = programs
-  TitleTxt <- ifelse(!grepl("\\bPROGRAMMING", TitleTxt), 
-                     gsub("\\bPROG[A-Z]*\\b", "PROGRAMS", TitleTxt), TitleTxt)
+  TitleTxt <- ifelse( !grepl("\\bPROGRAMMING", TitleTxt), 
+                      gsub("\\bPROG[A-Z]*\\b", "PROGRAMS", TitleTxt), TitleTxt)
   
   return(TitleTxt)
 }
+
+
 
 #' @title 
 #' standardize versions of 'projects'
@@ -591,12 +590,13 @@ fix_programs <- function(TitleTxt){
 #' condenses projects abbreviations to a standardized form
 #'
 #' @export
-fix_projects <- function(TitleTxt){
-  
-  TitleTxt <- gsub("\\bPROJ[A-Z]*\\b", "PROJECTS", TitleTxt)
-  
+fix_projects <- function(TitleTxt)
+{
+  TitleTxt <- gsub( "\\bPROJ[A-Z]*\\b", "PROJECTS", TitleTxt )
   return(TitleTxt)  
 }
+
+
 
 #' @title 
 #' standardize versions of 'public' 
@@ -605,16 +605,16 @@ fix_projects <- function(TitleTxt){
 #' condenses public abbreviations to a standardized form
 #'
 #' @export
-fix_public <- function(TitleTxt){
-  
-  public.texts <- c("\\bPUBLI\\b", "\\bPUBL\\b", "\\bPUB\\b")
-  for(name in public.texts){
-    TitleTxt <- gsub(name,"PUBLIC",TitleTxt)
-  }
-  
+fix_public <- function(TitleTxt)
+{
+  public <- c( "\\bPUBLI\\b", "\\bPUBL\\b", "\\bPUB\\b" )
+  pub <- paste( public, collapse="|" )
+  TitleTxt <- gsub( pub, "PUBLIC", TitleTxt )
   return(TitleTxt)
-  
 }
+
+
+
 
 #' @title 
 #' standardize versions of 'business'
@@ -623,13 +623,14 @@ fix_public <- function(TitleTxt){
 #' condenses business abbreviations to a standardized form
 #'
 #' @export
-fix_business <- function(TitleTxt){
-  
+fix_business <- function(TitleTxt)
+{
   TitleTxt <- gsub("\\bBUS[A-Z]*\\b", "BUSINESS", TitleTxt)
   TitleTxt <- gsub("\\bBIZ\\b", "BUSINESS", TitleTxt)
-  
   return(TitleTxt)
 }
+
+
 
 #' @title 
 #' standardize abbreviations for 'comm'
@@ -638,24 +639,25 @@ fix_business <- function(TitleTxt){
 #' condenses communication and committee abbreviations to a standardized form
 #'
 #' @export
-fix_comm <- function(TitleTxt){
-  
-  #TitleT
-  
-  #communication
-  TitleTxt <- ifelse(!grepl("COMMUNIT", TitleTxt), 
-                     gsub("\\bCOMMU[A-Z]*\\b", "COMMUNICATIONS", TitleTxt),
-                     TitleTxt)
-  TitleTxt <- gsub("\\bCOMMS\\b", "COMMUNICATIONS", TitleTxt)
+fix_comm <- function(TitleTxt)
+{ 
+  #communications
+  TitleTxt <- ifelse( !grepl( "COMMUNIT", TitleTxt ), 
+                      gsub( "\\bCOMMU[A-Z]*\\b", "COMMUNICATIONS", TitleTxt),
+                      TitleTxt)
+                      
+  TitleTxt <- gsub( "\\bCOMMS\\b", "COMMUNICATIONS", TitleTxt )
   
   #committee
-  TitleTxt <- gsub("\\bCOMMIT[A-Z]*\\b", "COMMITTEE", TitleTxt)
-  itleTxt <- gsub("\\bCOMMI\\b", "COMMITTEE", TitleTxt)
-  TitleTxt <- gsub("\\bCOMM\\b", "COMMITTEE", TitleTxt)
-  TitleTxt <- gsub("\\bCOM\\b", "COMMITTEE", TitleTxt)
+  TitleTxt <- gsub( "\\bCOMMIT[A-Z]*\\b", "COMMITTEE", TitleTxt )
+  TitleTxt <- gsub( "\\bCOMMI\\b",        "COMMITTEE", TitleTxt )
+  TitleTxt <- gsub( "\\bCOMM\\b",         "COMMITTEE", TitleTxt )
+  TitleTxt <- gsub( "\\bCOM\\b",          "COMMITTEE", TitleTxt )
   
   return(TitleTxt)
 }
+
+
 
 #' @title 
 #' standardize versions of 'information'
@@ -664,12 +666,13 @@ fix_comm <- function(TitleTxt){
 #' condenses info abbreviations to a standardized form
 #'
 #' @export
-fix_information <- function(TitleTxt){
-  
-  TitleTxt <- gsub("\\bINFO[A-Z]*\\b", "INFORMATION", TitleTxt)
-  
+fix_information <- function(TitleTxt)
+{
+  TitleTxt <- gsub( "\\bINFO[A-Z]*\\b", "INFORMATION", TitleTxt )
   return(TitleTxt)
 }
+
+
 
 #' @title 
 #' standardize versions of 'intelligence' 
@@ -678,12 +681,13 @@ fix_information <- function(TitleTxt){
 #' condenses intel abbreviations to a standardized form
 #'
 #' @export
-fix_intelligence <- function(TitleTxt){
-  
-  TitleTxt <- gsub("\\bINTEL[A-Z]*\\b","INTELLIGENCE",TitleTxt)
-  
+fix_intelligence <- function(TitleTxt)
+{
+  TitleTxt <- gsub( "\\bINTEL[A-Z]*\\b", "INTELLIGENCE", TitleTxt )
   return(TitleTxt)
 }
+
+
 
 #' @title 
 #' standardize versions of 'technology'
@@ -692,12 +696,13 @@ fix_intelligence <- function(TitleTxt){
 #' condenses tech abbreviations to a standardized form
 #'
 #' @export
-fix_technology <- function(TitleTxt){
-  
-  TitleTxt <- gsub("\\bTECH[A-Z]*\\b", "TECHNOLOGY", TitleTxt)
-  
+fix_technology <- function(TitleTxt)
+{
+  TitleTxt <- gsub( "\\bTECH[A-Z]*\\b", "TECHNOLOGY", TitleTxt )
   return(TitleTxt)
 }
+
+
 
 #' @title 
 #' standardize versions of 'institute' (root of institutional)
@@ -1085,38 +1090,39 @@ fix_miscellaneous <- function(TitleTxt){
   TitleTxt <- gsub(  "\\bFOUN\\b",            "FOUNDER",          TitleTxt)
   TitleTxt <- gsub(  "\\bGM\\b",              "GENERAL MANAGER",  TitleTxt)
   TitleTxt <- gsub(  "\\bD AND T\\b",         "DEVELOPMENT AND TECHNOLOGY", TitleTxt)
-  TitleTxt <- gsub(  "\\bD\\b", "DIRECTOR", TitleTxt) #assume standalone d is director
-  TitleTxt <- gsub(  "\\bDD\\b", "DEPUTY DIRECTOR", TitleTxt) #assume dd = dep director
-  TitleTxt <- gsub(  "\\bCO\\s", "CO-", TitleTxt) #co-chair over co chair for example
-  TitleTxt <- gsub(  "\\bCL\\b", "CLERK", TitleTxt)
-  TitleTxt <- gsub(  "\\bCUL\\b", "CULTURE", TitleTxt)
-  TitleTxt <- gsub(  "\\bSERV\\b", "SERVICE", TitleTxt)
-  # TitleTxt <- gsub("\\bGOVERN\\b", "GOVERNANCE", TitleTxt)
-  TitleTxt <- gsub(  "\\bCHF\\b", "CHIEF", TitleTxt)
-  TitleTxt <- gsub(  "\\bREC\\b", "RECORDING", TitleTxt)
-  TitleTxt <- gsub(  "\\bORG\\s", "ORGANIZING ", TitleTxt)
-  TitleTxt <- gsub(  "\\bCOU\\b", "COUNCIL", TitleTxt)
-  TitleTxt <- gsub(  "\\bLIASON\\b", "LIAISON",TitleTxt)
-  TitleTxt <- gsub(  "\\bEDUCA\\b", "EDUCATION", TitleTxt)
-  TitleTxt <- gsub(  "\\bADV\\s*$", "ADVISOR", TitleTxt)
-  TitleTxt <- gsub(  "\\bADV\\b", "ADVANCEMENT", TitleTxt)
-  TitleTxt <- gsub(  "\\bEXP\\b","EXPERIENCE", TitleTxt)
-  TitleTxt <- gsub(  "\\bOFCR\\b","OFFICER", TitleTxt)
-  TitleTxt <- gsub(  "\\bEXT\\b","EXTERNAL", TitleTxt)
-  TitleTxt <- gsub(  "\\bCHANCEL[A-Z]*\\b","CHANCELLOR", TitleTxt)
-  TitleTxt <- gsub(  "\\bSCHOLARSHIP\\b", "SCHOLARSHIPS", TitleTxt) #standardize plurality
-  TitleTxt <- gsub(  "\\bJ\\b","JUNIOR", TitleTxt)
-  TitleTxt <- gsub(  "\\bCOUCIL\\b","COUNCIL", TitleTxt)
-  TitleTxt <- gsub(  "\\bINT'L\\b",    "INTERNATIONAL", TitleTxt)
+  TitleTxt <- gsub(  "\\bD\\b",               "DIRECTOR",         TitleTxt) #assume standalone d is director
+  TitleTxt <- gsub(  "\\bDD\\b",              "DEPUTY DIRECTOR",  TitleTxt) #assume dd = dep director
+  TitleTxt <- gsub(  "\\bCO\\s",              "CO-",              TitleTxt) #co-chair over co chair for example
+  TitleTxt <- gsub(  "\\bCL\\b",              "CLERK",            TitleTxt)
+  TitleTxt <- gsub(  "\\bCUL\\b",             "CULTURE",          TitleTxt)
+  TitleTxt <- gsub(  "\\bSERV\\b",            "SERVICE",          TitleTxt)
+  TitleTxt <- gsub(  "\\bCHF\\b",             "CHIEF",            TitleTxt)
+  TitleTxt <- gsub(  "\\bREC\\b",             "RECORDING",        TitleTxt)
+  TitleTxt <- gsub(  "\\bORG\\s",             "ORGANIZING ",      TitleTxt)
+  TitleTxt <- gsub(  "\\bCOU\\b",             "COUNCIL",          TitleTxt)
+  TitleTxt <- gsub(  "\\bLIASON\\b",          "LIAISON",          TitleTxt)
+  TitleTxt <- gsub(  "\\bEDUCA\\b",           "EDUCATION",        TitleTxt)
+  TitleTxt <- gsub(  "\\bADV\\s*$",           "ADVISOR",          TitleTxt)
+  TitleTxt <- gsub(  "\\bADV\\b",             "ADVANCEMENT",      TitleTxt)
+  TitleTxt <- gsub(  "\\bEXP\\b",             "EXPERIENCE",       TitleTxt)
+  TitleTxt <- gsub(  "\\bOFCR\\b",            "OFFICER",          TitleTxt)
+  TitleTxt <- gsub(  "\\bEXT\\b",             "EXTERNAL",         TitleTxt)
+  TitleTxt <- gsub(  "\\bCHANCEL[A-Z]*\\b",   "CHANCELLOR",       TitleTxt)
+  TitleTxt <- gsub(  "\\bSCHOLARSHIP\\b",     "SCHOLARSHIPS",     TitleTxt) #standardize plurality
+  TitleTxt <- gsub(  "\\bJ\\b",               "JUNIOR",           TitleTxt)
+  TitleTxt <- gsub(  "\\bCOUCIL\\b",          "COUNCIL",          TitleTxt)
+  TitleTxt <- gsub(  "\\bINT'L\\b",           "INTERNATIONAL",    TitleTxt)
+  TitleTxt <- gsub(  "\\bIST\\b",             "FIRST",            TitleTxt)
+  # TitleTxt <- gsub("\\bGOVERN\\b", "GOVERNANCE", TitleTxt)  
 
-  TitleTxt <- gsub("\\bFUNDRA\\b","FUNDRAISING", TitleTxt)
+  TitleTxt <- gsub("\\bFUNDRA\\b",            "FUNDRAISING", TitleTxt)
   
-  TitleTxt <- gsub("\\bER\\b", "EDITOR", TitleTxt)
-  TitleTxt <- gsub("\\bEDR\\b", "EDITOR", TitleTxt)
-  TitleTxt <- gsub("\\bEDI\\b", "EDITOR", TitleTxt)
+  TitleTxt <- gsub("\\bER\\b",   "EDITOR", TitleTxt)
+  TitleTxt <- gsub("\\bEDR\\b",  "EDITOR", TitleTxt)
+  TitleTxt <- gsub("\\bEDI\\b",  "EDITOR", TitleTxt)
   
-  TitleTxt <- gsub("\\bAFFA[A-Z]*\\b", "AFFAIRS", TitleTxt)
-  TitleTxt <- gsub("\\bCONSU[A-Z]*\\b","CONSULTANT", TitleTxt)
+  TitleTxt <- gsub("\\bAFFA[A-Z]*\\b",  "AFFAIRS", TitleTxt)
+  TitleTxt <- gsub("\\bCONSU[A-Z]*\\b", "CONSULTANT", TitleTxt)
   
   TitleTxt <- gsub("\\bART[A-Z]*\\s", "ARTISTIC ", TitleTxt)
   TitleTxt <- gsub("\\bART[A-Z]*\\b$", "ARTIST", TitleTxt)

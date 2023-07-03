@@ -6,21 +6,16 @@
 #' standardize titles function
 #'
 #' @description
-#' TODO not written yet, but we will generate the standardizations using the dynamic google sheets
-#' still title manipulation, but now we need context of other codes
+#' Maps multiple variants of a title onto the standard form
+#' that is defined in the Google sheet:
+#' \href{https://docs.google.com/spreadsheets/d/1iYEY2HYDZTV0uvu35UuwdgAUQNKXSyab260pPPutP1M/edit?usp=sharing}{Title standardization crosswalk}
 #' 
 #' @export
 standardize_titles <- function(comp.data, title = "TitleTxt6", 
                                hours = "TOT.HOURS", pay = "TOT.COMP",
-                               officer = "F9_07_COMP_DTK_POS_OFF_X"){
-  
-  # MOVED TO SPELLING STEP
-  # TitleTxt = comp.data[[title]]
-  # TitleTxt <- gsub("^\\s* | \\s*$", "", TitleTxt)
-  # TitleTxt <- gsub( "\\s{2,}", " ", TitleTxt )
-  # comp.data[[title]] <- TitleTxt
-  
-  # manipulations with google sheets
+                               officer = "F9_07_COMP_DTK_POS_OFF_X")
+{
+  # read from google sheets
   googlesheets4::gs4_deauth()
   df.standard <- googlesheets4::read_sheet( "1iYEY2HYDZTV0uvu35UuwdgAUQNKXSyab260pPPutP1M", 
                                             sheet="title-standardization", range="A:C",
@@ -28,14 +23,16 @@ standardize_titles <- function(comp.data, title = "TitleTxt6",
   df.standard[ is.na( df.standard ) ] <- ""
   df.standard <- unique( df.standard )
   
-  comp.data <- basic_csuite_fixes(comp.data, officer = officer)
+  comp.data <- basic_csuite_fixes( comp.data, officer = officer )
   
   # comp.data <- merge( comp.data, df.standard, by.x=title, by.y="title.variant", all.x=T )
   comp.data <- merge( comp.data, df.standard, by.x="TitleTxt7", by.y="title.variant", all.x=T )
   
-  print("standardize titles step complete")
+  cat( "? standardize titles step complete\n" )
   return(comp.data)
 }
+
+
 
 
 #' @title  
@@ -45,18 +42,22 @@ standardize_titles <- function(comp.data, title = "TitleTxt6",
 #' applies conditional logic and creates some flags with helpful info
 #' 
 #' @export
-basic_csuite_fixes <- function(comp.data, title = "TitleTxt6", 
-                              hours = "TOT.HOURS", pay = "TOT.COMP",
-                              officer = "F9_07_COMP_DTK_POS_OFF_X"){
+basic_csuite_fixes <- 
+  function(  comp.data, 
+             title = "TitleTxt6", 
+             hours = "TOT.HOURS",
+             pay   = "TOT.COMP",
+             officer = "F9_07_COMP_DTK_POS_OFF_X" )
+{
   
   df <- comp.data
   
-  TitleTxt <- df[[title]]
-  weekly.hours <- df[[hours]]
-  total.pay <- df[[pay]]
-  officer.flag <- df[[officer]]
+  TitleTxt      <-  df[[  title   ]]
+  weekly.hours  <-  df[[  hours   ]]
+  total.pay     <-  df[[  pay     ]]
+  officer.flag  <-  df[[  officer ]]
   
-  df$Multiple.Titles <- ifelse(grepl("&", df$TitleTxt3), T, F) 
+  df$Multiple.Titles <- ifelse( grepl( "&",  df$TitleTxt3 ), T, F ) 
   #flag for having multiple titles
   
   
@@ -66,13 +67,11 @@ basic_csuite_fixes <- function(comp.data, title = "TitleTxt6",
   #cfo
   TitleTxt <- replace_cfo(TitleTxt, weekly.hours, total.pay, officer.flag)
 
-
-  
   df$TitleTxt7 <- TitleTxt
-  
-  
   return(df)
 }
+
+
 
 #' @title 
 #' replace ceo function
@@ -81,8 +80,8 @@ basic_csuite_fixes <- function(comp.data, title = "TitleTxt6",
 #' replaces all instances of titles that could be CEO
 #' 
 #' @export
-replace_ceo <- function(TitleTxt, weekly.hours, total.pay){
-  
+replace_ceo <- function( TitleTxt, weekly.hours, total.pay )
+{
   # replace president with CEO if weekly hours > 10 and only singular title
   # TitleTxt <- 
   #   ifelse( TitleTxt == "PRESIDENT" & weekly.hours >= 10, 
@@ -106,7 +105,8 @@ replace_ceo <- function(TitleTxt, weekly.hours, total.pay){
 #' replaces all instances of titles that could be CFO
 #' 
 #' @export
-replace_cfo <- function(TitleTxt, weekly.hours, total.pay, officer.flag){
+replace_cfo <- function(TitleTxt, weekly.hours, total.pay, officer.flag)
+{
   #replace director of finance with CFO if officer flag
   TitleTxt <-ifelse(TitleTxt == "FINANCE DIRECTOR" | 
                       TitleTxt == "HEAD OF FINANCE" | 

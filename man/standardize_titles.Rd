@@ -13,6 +13,7 @@ standardize_titles(
 )
 }
 \description{
-TODO not written yet, but we will generate the standardizations using the dynamic google sheets
-still title manipulation, but now we need context of other codes
+Maps multiple variants of a title onto the standard form
+that is defined in the Google sheet:
+\href{https://docs.google.com/spreadsheets/d/1iYEY2HYDZTV0uvu35UuwdgAUQNKXSyab260pPPutP1M/edit?usp=sharing}{Title standardization crosswalk}
 }

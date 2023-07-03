@@ -10,7 +10,8 @@
 #' (have a couple of them already thought out in categorize titles, but need
 #' to migrate them)
 #' @export
-conditional_logic <- function(comp.data){
+conditional_logic <- function(comp.data)
+{
   
   df <- comp.data
   
@@ -20,7 +21,7 @@ conditional_logic <- function(comp.data){
     clean_up_ceos() %>%
     director_correction() -> df
   
-  print("conditional logic step complete")
+  cat( "? conditional logic step complete\n")
   
   return(df)
 }
@@ -56,7 +57,8 @@ clean_up_ceos <- function(comp.data){
 #' correcting board members "directors" that are not actually directors
 #' 
 #' @export
-director_correction <- function(df){
+director_correction <- function(df)
+{
   
   df$title.standard <- ifelse(df$title.v7 == "DIRECTOR" & 
                            df$dtk.indiv.trustee.x == 0 & df$dtk.inst.trustee.x == 0, 

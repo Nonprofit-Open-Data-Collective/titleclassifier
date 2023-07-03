@@ -7,5 +7,5 @@
 standardize_slash(TitleTxt)
 }
 \description{
-distinguish if slash is for separator or "of"
+replaces slash with '&'
 }

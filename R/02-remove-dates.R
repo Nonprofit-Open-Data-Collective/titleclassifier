@@ -21,17 +21,13 @@
 remove_dates <- function( df, title="F9_07_COMP_DTK_TITLE" )
 {
   x <- df[[ title ]]
-  
   # replace 1st, 2nd, etc with first, second...
   x <- convert_ordinal( x )
-  
   # flag cases that have dates: 
   # date.x = 1 if date was removed from title, 0 otherwise
-  df$DATE.X <- identify_dates( x )
-  
+  df$DATE.X <- has_date( x ) %>% as.numeric()
   df$TitleTxt2 <- remove_date( x )
-
-  print("remove dates step complete")
+  cat("? remove dates step complete\n")
   return( df )
 }
 
@@ -45,33 +41,34 @@ remove_dates <- function( df, title="F9_07_COMP_DTK_TITLE" )
 #' converts ordinal numbers (1st) to their alphabetic counterpart (first)
 #'
 #' @export
-convert_ordinal <- function(TitleTxt){
-  
+convert_ordinal <- function(TitleTxt)
+{
   #substitute ordinal numbers
-  TitleTxt <- gsub("1ST","FIRST",TitleTxt)
-  TitleTxt <- gsub("2ND","SECOND",TitleTxt)
-  TitleTxt <- gsub("3RD","THIRD",TitleTxt)
-  TitleTxt <- gsub("4TH","FOURTH",TitleTxt)
-  TitleTxt <- gsub("5TH","FIFTH",TitleTxt)
-  TitleTxt <- gsub("6TH","SIXTH",TitleTxt)
-  TitleTxt <- gsub("7TH","SEVENTH",TitleTxt)
-  TitleTxt <- gsub("8TH","EIGHTH",TitleTxt)
-  TitleTxt <- gsub("9TH","NINTH",TitleTxt)
-  TitleTxt <- gsub("10TH","TENTH",TitleTxt)
-  
+  TitleTxt <- gsub( "1ST",  "FIRST",   TitleTxt )
+  TitleTxt <- gsub( "2ND",  "SECOND",  TitleTxt )
+  TitleTxt <- gsub( "3RD",  "THIRD",   TitleTxt )
+  TitleTxt <- gsub( "4TH",  "FOURTH",  TitleTxt )
+  TitleTxt <- gsub( "5TH",  "FIFTH",   TitleTxt )
+  TitleTxt <- gsub( "6TH",  "SIXTH",   TitleTxt )
+  TitleTxt <- gsub( "7TH",  "SEVENTH", TitleTxt )
+  TitleTxt <- gsub( "8TH",  "EIGHTH",  TitleTxt )
+  TitleTxt <- gsub( "9TH",  "NINTH",   TitleTxt )
+  TitleTxt <- gsub( "10TH", "TENTH",   TitleTxt )
   return(TitleTxt)
 }
 
 
 #assuming everything is uppercase
+
+
 #' @title
 #' identify dates
 #'
 #' @description
-#' returns boolean: 1 if a string contains a date 
+#' returns logical: TRUE if a string contains a date 
 #'
 #' @export
-identify_dates <- function(TitleTxt)
+has_date <- function(TitleTxt)
 {
   
   # 'YY format: e.g. TRUSTEE (TO APR '19)
@@ -91,9 +88,7 @@ identify_dates <- function(TitleTxt)
   format5 <- grepl( date, TitleTxt )
   
   has.date <- format1 | format2 | format3 | format4 | format5
-  is.date <- ifelse( has.date, 1, 0 )
-  
-  return( is.date ) 
+  return( has.date ) 
 }
 
 
@@ -144,8 +139,9 @@ remove_date <- function(TitleTxt)
   TitleTxt <- gsub(  "\\(\\s{0,3}\\)",  "",  TitleTxt )
   TitleTxt <- gsub(  "\\b\\(",          "",  TitleTxt )
   TitleTxt <- gsub(  "\\s\\(",         " ",  TitleTxt )
-  TitleTxt <- gsub(  "\\)\\b",          "",  TitleTxt )
-  TitleTxt <- gsub(  "\\)\\s",         " ",  TitleTxt )
+  TitleTxt <- gsub(  "-\\)",           " ",  TitleTxt )
+  TitleTxt <- gsub(  "\\)",            " ",  TitleTxt )
+  TitleTxt <- gsub(  "  ",             " ",  TitleTxt )
   TitleTxt <- trimws( TitleTxt )
   
   # clean up trailing hashes

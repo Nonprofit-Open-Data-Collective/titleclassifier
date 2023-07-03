@@ -80,12 +80,12 @@ standardize_df <- function( df,
 
   formtype <- df[[ form.type ]]
 
-  df[[ trustee.ind ]]        <- to_boole( df[[ trustee.ind ]], formtype ) 
-  df[[ trustee.inst ]]       <- to_boole( df[[ trustee.inst ]], formtype )
-  df[[ officer ]]            <- to_boole( df[[ officer ]], formtype )
-  df[[ key.employee ]]       <- to_boole( df[[ key.employee ]], formtype )
-  df[[ high.comp.ind ]]      <- to_boole( df[[ high.comp.ind ]], formtype )
-  df[[ former ]]             <- to_boole( df[[ former ]], formtype )
+  df[[  trustee.ind   ]]   <- to_boole( df[[  trustee.ind   ]], formtype ) 
+  df[[  trustee.inst  ]]   <- to_boole( df[[  trustee.inst  ]], formtype )
+  df[[  officer       ]]   <- to_boole( df[[  officer       ]], formtype )
+  df[[  key.employee  ]]   <- to_boole( df[[  key.employee  ]], formtype )
+  df[[  high.comp.ind ]]   <- to_boole( df[[  high.comp.ind ]], formtype )
+  df[[  former        ]]   <- to_boole( df[[  former        ]], formtype )
   
   df = df[!duplicated(df[, c("EIN", name, title)]) & !is.na(df[[ name ]]), ]
   #remove duplicates of entries (if present)
@@ -95,7 +95,7 @@ standardize_df <- function( df,
   #the one to many table
 
   #### RETURN CLEAN DF
-  cat( "✔ standardize df step complete" )
+  cat( "✔ standardize df step complete\n" )
   return( df )
   
 }
@@ -117,6 +117,8 @@ pre_clean <- function( x )
   x <- gsub("\\.","", x )
   return( x )
 }
+
+
 
 to_numeric <- function( x )
 {

@@ -7,7 +7,7 @@
 slash_helper(x)
 }
 \description{
-returns 0,1,2 depending on whether a slash is used as a title separator,
-word separator, or just extraneous
-operates on the atomic vector level
+checks for a slash and replaces it
+with an ampersand;
+operates on single title
 }

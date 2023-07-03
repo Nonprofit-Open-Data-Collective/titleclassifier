@@ -9,36 +9,22 @@
 #' wrapper for cleaning conjunctions (all the standardizations come in here)
 #'
 #' @export
-standardize_conj <- function(comp.data, title = "TitleTxt2"){
+standardize_conj <- function( comp.data, title="TitleTxt2" )
+{
   TitleTxt <- comp.data[[ title ]]
-  TitleTxt <- standardize_and(TitleTxt)
-  TitleTxt <- standardize_to(TitleTxt)
-  TitleTxt <- standardize_of(TitleTxt)
-  TitleTxt <- standardize_comma(TitleTxt)
-  TitleTxt <- standardize_slash(TitleTxt)
-  TitleTxt <- standardize_and(TitleTxt) #repeated bc of possible standardization changes
-  TitleTxt <- standardize_separator(TitleTxt)
-  TitleTxt <- standardize_and(TitleTxt)
   
-  for(i in 1:5){
-  TitleTxt <- ifelse(grepl("\\bAND AND\\b",TitleTxt), 
-                     gsub("\\bAND AND\\b", "AND", TitleTxt), TitleTxt)
-  TitleTxt <- ifelse(grepl("\\OF OF\\b",TitleTxt), 
-                     gsub("\\bOF OF\\b", "OF", TitleTxt), TitleTxt)
-  TitleTxt <- ifelse(grepl("\\TO TO\\b",TitleTxt), 
-                     gsub("\\bTO TO\\b", "OF", TitleTxt), TitleTxt)
-  }
-  
-  #"the" can safely be removed
-  TitleTxt <- gsub("\\bTHE\\b", "", TitleTxt)
-  
-  #remove all parentheticals too
-  TitleTxt <- gsub("\\s*\\([^\\)]+\\)", "", TitleTxt)
-  
+  TitleTxt <- standardize_and(       TitleTxt  )
+  TitleTxt <- standardize_to(        TitleTxt  )
+  TitleTxt <- standardize_of(        TitleTxt  )
+  TitleTxt <- standardize_comma(     TitleTxt  )
+  TitleTxt <- standardize_slash(     TitleTxt  )
+  TitleTxt <- standardize_and(       TitleTxt  ) #repeated bc of possible standardization changes
+  TitleTxt <- standardize_separator( TitleTxt  )
+  TitleTxt <- standardize_and(       TitleTxt  )
+  TitleTxt <- txt_cleanup(           TitleTxt  )
+
   comp.data$TitleTxt3 <- TitleTxt
-  
-  print("standardize conjunctions step complete")
-  
+  cat( "✔ standardize conjunctions step complete\n" )
   return(comp.data)
 }
 
@@ -227,20 +213,27 @@ to_helper <- function(x){
 #' and its subject
 #'
 #' @export
-standardize_of <- function(TitleTxt){
+standardize_of <- function(TitleTxt)
+{
+  # we replace all the as of's with since
+  TitleTxt <- gsub( "\\bAS OF\\b",  "SINCE", TitleTxt )
+  TitleTxt <- gsub( ", SINCE$",    " SINCE", TitleTxt )
   
-  #we replace all the as of's with since
-  TitleTxt <- gsub("\\bAS OF\\b", "SINCE", TitleTxt)
-  #if nothing after "of", then remove entirely
+  # if nothing after "of", then remove entirely
   TitleTxt <- gsub("\\bOF$", "", TitleTxt) 
+  
   TitleTxt <- ifelse(grepl("\\bFOR\\b",TitleTxt) & !grepl("\\bFOR$",TitleTxt),
                      gsub("\\bFOR\\b", "OF", TitleTxt), TitleTxt)
   
   #replace vp- with vp,
   TitleTxt <- gsub("VP\\s*-","VP,", TitleTxt)
-  return(TitleTxt)
   
+  return(TitleTxt)
 }
+
+
+
+
 
 #' @title
 #' standardize comma function
@@ -250,20 +243,179 @@ standardize_of <- function(TitleTxt){
 #' we also deal with commas as "of"(e.g. VP, finance = VP of Finance)
 #'
 #' @export
-standardize_comma <- function(TitleTxt){
-  type <- ifelse(grepl(",", TitleTxt), unlist(lapply(TitleTxt, comma_helper)),2)
+standardize_comma <- function(TitleTxt)
+{
+  # make sure all commas are followed by space
+  TitleTxt <- gsub( ",([A-Z])", ", \\1", TitleTxt )
+  
+  # replace state abbrev with REGION
+  TitleTxt <- check_if_state( TitleTxt )
+  
+  # find most common 'of' cases
+  TitleTxt <- replace_w_of_except( TitleTxt )
+  
+  type <- 
+    ifelse( grepl(",", TitleTxt), 
+            unlist( lapply( TitleTxt, comma_helper ) ), 2 )
   
   #comma as separator
   TitleTxt <- ifelse(type == 0, gsub(","," &",TitleTxt), TitleTxt) 
   
   #substitute first occurrence of , --> "of", (will be caught in fix_of)
   #"VP, Sales, marketing, and partnerships"
-  TitleTxt <- ifelse(type == 1, gsub(",", " ", TitleTxt), TitleTxt)
+  TitleTxt <- ifelse( type == 1, gsub( ",", " ", TitleTxt), TitleTxt)
+  TitleTxt <- ifelse( type == 2, gsub( ",", " AND ", TitleTxt), TitleTxt)
   
-  TitleTxt <- ifelse(type == 2, gsub(",", " AND ", TitleTxt), TitleTxt)
-  
+  TitleTxt <- gsub( "  ", " ", TitleTxt )
+ 
   return(TitleTxt)
 }
+
+
+# NEED TO ADD CHECK FOR REGION
+#   DIRECTOR, CO
+#   FAIRHOPE, AL
+#   maybe.state <- 
+#      ifelse( grepl( ", [A-Z]{2}$", x ), 
+#              gsub( ".*, ([A-Z]{2})$", "\\1", x ), 
+#              "" ) 
+
+
+check_if_state <- function(x)
+{
+  maybe.state <- 
+    ifelse( grepl( ", [A-Z]{2}$", x ), 
+            gsub( ".*, ([A-Z]{2})$", "\\1", x ), 
+            "" )
+            
+  is.state <- maybe.state %in% state.abb
+  
+  x <- 
+      ifelse( is.state, 
+              gsub( ", ([A-Z]{2})$", " OF REGION", x ), 
+              x )
+  return(x)
+}
+
+replace_w_of_except <- function(x)
+{
+  use.of.after <- 
+    c( "\\bVP, ", "\\bVICE PRES, ",
+       "\\bVICE PRESIDENT, ", 
+       "\\bSVP, ", "\\bEVP, ",
+       "\\bMANAGER, ", "MNGR, ", "\\bHEAD, ",
+       "\\bCHAIR, ",
+       "PROFESSOR, ", "\\bDEAN, " )
+
+  use.and.before <- 
+    c( "EXEC[A-Z]*\\b", "EX ", 
+       "DIRECTOR", "DIR[A-Z]*\\b",
+       "PRESIDENT", "CHIEF", "CHF",   
+       "CEO", "CFO", "COO", "CAO", "CNO",
+       "VP", "VICE", "EVP", "SVP",
+       "GENERAL", "GEN[A-Z]*\\b",
+       "TREASURER", "SECRETARY", 
+       "[A-Z]* TRUSTEE",
+       "ACTING" )
+
+  # replace commas with '&'
+  x <- replace_w_and( x, exp=use.and.before )
+  
+  # replace commas with 'of'
+  x <- replace_w_of(  x, exp=use.of.after  )
+  
+  return( x )
+} 
+
+replace_w_of <- function( x, exp )
+{
+  exp <- gsub( "^", "(",   exp )
+  exp <- gsub( ",", "),(", exp )
+  exp <- gsub( "$", ")",   exp )
+  for( i in exp )
+  {
+    x <- gsub( i, "\\1 OF\\2", x )
+  }
+  return(x)
+}
+
+# replace_w_and <- function( x, exp )
+# {
+#   exp <- gsub( "^", "(",   exp )
+#   exp <- gsub( ",", "),(", exp )
+#   exp <- gsub( "$", ")",   exp )
+#   for( i in exp )
+#   {
+#    x <- gsub( i, "\\1 &\\2", x )
+#   }
+#   return(x)
+# }
+
+
+replace_w_and <- function( x, exp )
+{
+  exp <- gsub( "^", "([A-Z]),( ",   exp )
+  exp <- gsub( "$", ")",   exp )
+  for( i in exp )
+  {
+    x <- gsub( i, "\\1 &\\2", x )
+  }
+  return(x)
+}
+
+
+### CHECK THESE FOR COMMON OF TITLES
+#
+# HEAD,
+# MANAGER,
+# VC,
+# VICE PRESIDENT,
+# VICE PRES,
+# VP,
+# SVP,
+# EVP,
+# SECRETARY,
+# CHAIR,
+# PROFESSOR, 
+# DIRECTOR,
+# DIRECTOR/EVP,
+# DIR,
+# PRESIDENT,
+# PRES,
+# OFFICER,
+# TRUSTEE,
+
+
+  # # most common SOMETHING OF SOMETHING positions from standard titles
+  # of.positions <- c("ACADEMICS", "ACQUISITIONS", "ADMINISTRATION", "ADVANCEMENT", 
+  #   "ALUMNAE", "BUDGET", "BUSINESS", "COMMITTEE", "COMMUNICATIONS", 
+  #   "COMMUNITY", "CORPORATE", "DEVELOPMENT", "ECONOMIC", "EDUCATION", 
+  #   "ENGINEERING", "EVENTS", "EXTERNAL", "FACILITIES", "FINANCE", 
+  #   "FRATERNITY", "FUNDRAISING", "GOVERNMENT", "HEALTH", "HOSPITALITY", 
+  #   "HOUSING", "HUMAN", "INFORMATION", "INSTITUTIONAL", "LEGISLATIVE", 
+  #   "LENDING", "MARKETING", "MEDICAL", "MEMBER", "MEMBERSHIP", "MEMBERSHIPS", 
+  #   "NURSING", "OPERATIONS", "PHILANTHROPY", "PROGRAMMING", "PROGRAMS", 
+  #   "PROJECTS", "PUBLIC", "REAL", "RESEARCH", "RISK", "SALES", "SOFTBALL", 
+  #   "STAFF", "STANDARDS", "STRATEGY", "TECHNOLOGY", "UNIVERSITY", 
+  #   "VOLUNTEERS")
+  #  
+  #    # DIRECTOR, PHARMACY
+  #    # VP, FUND DEVELOPMENT
+  #    # SENIOR VP, ASSISTED LIVING OPERATIONS
+  # 
+  # # word following comma
+  # x <- TitleTxt
+  # x <- gsub( ".*, ", "", x )
+  # x <- gsub( " .*", "", x )
+  # x.of <- gsub( ",", " OF ", TitleTxt )
+  # TitleTxt[ x %in% of.positions ] <- x.of[ x %in% of.positions ]
+  
+  
+  
+  
+  
+  
+  
 
 #' @title 
 #' standardize comma helper function
@@ -308,20 +460,11 @@ comma_helper <- function(x){
 #' standardize slash function
 #' 
 #' @description 
-#' distinguish if slash is for separator or "of"
+#' replaces slash with '&'
 #'
 #' @export
-standardize_slash <- function(TitleTxt){
-  slash_type = ifelse(grepl("/",TitleTxt), unlist(lapply(TitleTxt, slash_helper)), 2)
-  #slash as separator
-  TitleTxt <- ifelse(slash_type == 0, gsub("/"," &",TitleTxt), TitleTxt) 
-  
-  #substitute first occurrence of / --> "of" (to be fixed in fix_of)
-  TitleTxt <- ifelse(slash_type == 1, gsub("/", " ", TitleTxt), TitleTxt)
-  
-  #extraneous slash is treated as "AND"
-  TitleTxt <- ifelse(slash_type == 2, gsub("/", " AND ", TitleTxt), TitleTxt)
-  
+standardize_slash <- function( TitleTxt ){
+  TitleTxt <- sapply( TitleTxt, slash_helper, USE.NAMES=F )
   return(TitleTxt)
 }
 
@@ -329,40 +472,23 @@ standardize_slash <- function(TitleTxt){
 #' standardize slash helper function
 #' 
 #' @description 
-#' returns 0,1,2 depending on whether a slash is used as a title separator,
-#' word separator, or just extraneous
-#' operates on the atomic vector level
+#' checks for a slash and replaces it
+#' with an ampersand; 
+#' operates on single title
 #' 
 #' @export
-slash_helper <- function(x){
-  TitleTxt <- x
+slash_helper <- function( x ){
   
-  if(grepl("/",TitleTxt)){
-    
-    slash_split <- unlist(strsplit(TitleTxt,"/"))
-    slash_true  <- TRUE   #slash used as a separator (defaulted to true)
-    slash_eq_of <- FALSE   #slash used as of (i.e. vp, finance)
-    for(i in 1:length(slash_split)){
-      testTitle <- fix_spelling(slash_split[i])
-      titlePresent <- FALSE
-      for( title in likely.titles ){
-        if( grepl( title, testTitle ) )
-        {
-          titlePresent <- TRUE
-        }
-        if( ( grepl( "CHAIR", testTitle )    |  grepl( "VICE PRESIDENT", testTitle ) | 
-              grepl( "DIRECTOR", testTitle ) |  grepl( "DEAN", testTitle )  |
-              grepl( "TRUSTEE", testTitle )  |  grepl( "MANAGER", testTitle )  |
-              grepl( "CEO", testTitle )      |  grepl( "SECRETARY", testTitle ) ) & i == 1 )
-          slash_eq_of <- TRUE
-      }
-      slash_true <- ( slash_true & titlePresent )
-    }
-    if(slash_true) return(0)
-    else if(slash_eq_of) return(1)
-  }
-  return(2)
-  
+    # does not contain slash
+    if( ! grepl( "/", x ) )
+    { return(x) }
+
+    # remove double slashes
+    x <- gsub( "/ ?/", "/", x )
+
+    x <- gsub( "/", " & ", x )
+    x <- gsub( "  ", " ", x )
+    return(x) 
 }
 
 
@@ -383,12 +509,6 @@ standardize_separator <- function( x )
   
   alt.separators <- c( ";", "\\\\", "/", " - ", " -", "- " )
   x <- gsub( paste( alt.separators, collapse="|" ), " & ", x )
-  
-  # standard_separator <- "&"
-  # alternate_separators <- c( ";", "\\\\", "/", " - ", " -", "- " )
-  # for(separator in alternate_separators){
-  #   x <- gsub( separator, standard_separator, x )
-  # }
   
   return(x)
 }
@@ -414,4 +534,28 @@ fix_misc_splits <- function( x )
   x <- gsub( "^TRUSTEE AND PHYSICIAN$", "TRUSTEE & PHYSICIAN", x )
   x <- gsub( "^VICE PRESIDENT DIRECTOR$", "VICE PRESIDENT & DIRECTOR", x )
   return(x)
+}
+
+
+txt_cleanup <- function(x)
+{
+  x <- gsub( "\\bAND AND\\b", "AND", x )
+  x <- gsub( "\\bOF OF\\b", "OF", x )
+  x <- gsub("\\bTO TO\\b", "OF", x )
+  
+  x <- gsub( "\\bAND AND\\b", "AND", x )
+  x <- gsub( "\\bOF OF\\b", "OF", x )
+  x <- gsub("\\bTO TO\\b", "OF", x )
+  
+  #"the" can safely be removed
+  x <- gsub( "\\bTHE\\b", "", x )
+  
+  #remove all parentheticals too
+  x <- gsub( "\\s*\\([^\\)]+\\)", "", x )
+  
+  #remove double spaces
+  x <- gsub( " {2,}", " ", x )
+  x <- trimws( x )
+  
+  return(x) 
 }
