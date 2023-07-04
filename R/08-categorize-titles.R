@@ -179,10 +179,13 @@ add_features <- function( df )
 
     new.order <- 
     c("NAME", "EIN", "TAXYR", "FORMTYPE", 
-      "F9_07_COMP_DTK_NAME_PERS", "F9_07_COMP_DTK_TITLE",
-      "Multiple.Titles", "Num.Titles", "tot.titles", 
-
-      "TITLE_RAW", "title.standard", 
+      "F9_07_COMP_DTK_NAME_PERS", 
+      
+      "TITLE_RAW", "title.standard",
+      "Multiple.Titles", "Num.Titles", "tot.titles",
+      "TitleTxt7", "TitleTxt6", "TitleTxt5", "TitleTxt4", 
+      "TitleTxt3", "TitleTxt2", "F9_07_COMP_DTK_TITLE",
+      
       "TOT.HOURS", "TOT.HOURS.TOT",  
       "hours.rank", "hours.pct.of.max",  
       "TOT.COMP", "TOT.COMP.TOT", 
@@ -191,14 +194,10 @@ add_features <- function( df )
       "pay.pct.of.max", "pay.pct.of.max.all", 
       "pay.pct.of.tot", "pay.pct.of.tot.all",
       
-
       # "hour_rank", "pay_rank", "has_leader", 
 
       "num.dtk", "num.titles", 
-      "num.paid", "num.fte", "num.fte.30h", "num.pte",  
-
-      "TitleTxt7", "TitleTxt6", "TitleTxt5", "TitleTxt4", 
-      "TitleTxt3", "TitleTxt2", 
+      "num.paid", "num.fte", "num.fte.30h", "num.pte",   
 
       "F9_07_COMP_DTK_POS_INDIV_TRUST_X", "F9_07_COMP_DTK_POS_INST_TRUST_X", 
       "F9_07_COMP_DTK_POS_OFF_X", "F9_07_COMP_DTK_POS_KEY_EMPL_X", 
@@ -217,11 +216,17 @@ add_features <- function( df )
 
       "emp", "num.emp", "board", "num.board", 
 
-      "ceo", "c.level", "dir.vp", "mgr", "spec",
-      "num.ceos", "num.clevel", "num.dirvp", "num.mgr", "num.spec", 
+      "ceo", "num.ceos",
+      "c.level", "num.clevel",
+      "dir.vp", "num.dirvp",
+      "mgr", "num.mgr",
+      "spec", "num.spec", 
 
-      "pres", "vp", "sec", "treas", "com",
-      "num.pres", "num.vp", "num.treas", "num.sec", "num.com", 
+      "pres", "num.pres",
+      "vp", "num.vp",
+      "treas", "num.treas",
+      "sec", "num.sec",
+      "com", "num.com", 
 
       "URL", "OBJECT_ID"  )
 
@@ -260,9 +265,9 @@ simplify_varnames <- function( df )
            formtype = FORMTYPE, 
            dtk.name = F9_07_COMP_DTK_NAME_PERS,
            multiple.titles = Multiple.Titles, 
-           title.count = Num.Titles, 
+           title.order = Num.Titles, 
            title.tot = tot.titles,
-           dtk.title = F9_07_COMP_DTK_TITLE, 
+           title.v1 = F9_07_COMP_DTK_TITLE, 
            title.raw = TITLE_RAW, 
            tot.hours = TOT.HOURS,
            tot.hours.tot = TOT.HOURS.TOT, 
