@@ -1,5 +1,26 @@
 #Step 5: Standardize Spelling
 
+### REGEX HELPER
+###
+###  ^ anchor to start of a word
+###  $ anchor to end of a word
+###  \\b finds a word border, including start & end, also space
+###
+###  x? OR x{0,1} - x can appear 0 or 1 times
+###  x* OR x{0,}  - x can appear 0 to many times
+###  x{2} - x can appear exactly 2 times
+###
+###  use period for wildcard character
+###  [A-Z]*  for wildcard word (omits spaces)
+###  .* matches any text
+###
+###  SETS OF STRINGS
+###  (word) string (word)  \\1 string \\2 
+###  gsub( "(.*), ([A-Z])", "\\1 & \\2", x )
+###        "exec direct, trustee" --> "exec director & trustee"
+###        retains set 1 and 2, replaces comma with &
+
+
 require(hunspell)
 
 # 05-standardize-spelling.R
@@ -271,6 +292,7 @@ fix_secretary <- function(TitleTxt)
   
   TitleTxt <- gsub( "\\bSEC'Y\\b", "SECRETARY", TitleTxt )
   TitleTxt <- gsub( "\\bSECR[A-Z]*\\b", "SECRETARY", TitleTxt )
+  TitleTxt <- gsub( "\\bSECTY\\b", "SECRETARY", TitleTxt )
   
   # TitleTxt <- gsub("\\bS\\b", "SECRETARY", TitleTxt) #assume standalone s is sec
   #cant do s+r
