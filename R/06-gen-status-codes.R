@@ -100,7 +100,7 @@ gen_status_codes <- function( comp.data, title="TitleTxt5" )
   
   comp.data[[title]] <- x
   
-  cat( "? generate status codes step complete\n" )
+  cat( "✔ generate status codes step complete\n" )
 
   return( comp.data )
 
