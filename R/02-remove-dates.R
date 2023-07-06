@@ -27,7 +27,7 @@ remove_dates <- function( df, title="F9_07_COMP_DTK_TITLE" )
   # date.x = 1 if date was removed from title, 0 otherwise
   df$DATE.X <- has_date( x ) %>% as.numeric()
   df$TitleTxt2 <- remove_date( x )
-  cat("? remove dates step complete\n")
+  cat("✔ remove dates step complete\n")
   return( df )
 }
 
