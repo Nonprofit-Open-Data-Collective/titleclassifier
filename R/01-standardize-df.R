@@ -124,6 +124,7 @@ to_numeric <- function( x )
 {
   x <- gsub( "[^0-9.]", "", x )
   x <- as.numeric(x)
+  x[ is.null(x) ] <- 0
   x[ is.na(x) ] <- 0
   return(x)
 }
