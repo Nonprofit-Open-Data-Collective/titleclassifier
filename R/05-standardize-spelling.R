@@ -38,7 +38,7 @@ standardize_spelling <- function( comp.data, title="TitleTxt4" )
   TitleTxt = comp.data[[ title ]]
   TitleTxt <- fix_spelling( TitleTxt )
   comp.data$TitleTxt5 <- TitleTxt
-  cat( "? standardize spelling step complete\n" )
+  cat( "✔ standardize spelling step complete\n" )
   return(comp.data)
 }
 
