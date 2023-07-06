@@ -28,7 +28,7 @@ standardize_titles <- function(comp.data, title = "TitleTxt6",
   # comp.data <- merge( comp.data, df.standard, by.x=title, by.y="title.variant", all.x=T )
   comp.data <- merge( comp.data, df.standard, by.x="TitleTxt7", by.y="title.variant", all.x=T )
   
-  cat( "? standardize titles step complete\n" )
+  cat( "✔ standardize titles step complete\n" )
   return(comp.data)
 }
 
