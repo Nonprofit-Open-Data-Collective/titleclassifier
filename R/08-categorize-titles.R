@@ -37,7 +37,7 @@ categorize_titles <- function( comp.data )
     add_features() %>% 
     simplify_varnames()
   
-  print("categorize titles step complete")
+  cat( "✔ categorize titles step complete" )
   
   return( comp.data )
 }
