@@ -181,7 +181,7 @@ add_features <- function( df )
     c("NAME", "EIN", "TAXYR", "FORMTYPE", 
       "F9_07_COMP_DTK_NAME_PERS", 
       
-      "TITLE_RAW", "title.standard",
+      "TITLE_RAW", "dtk.title", "title.standard",
       "Multiple.Titles", "Num.Titles", "tot.titles",
       "TitleTxt7", "TitleTxt6", "TitleTxt5", "TitleTxt4", 
       "TitleTxt3", "TitleTxt2", "F9_07_COMP_DTK_TITLE",

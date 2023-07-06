@@ -32,6 +32,9 @@ standardize_df <- function( df,
                             name = "F9_07_COMP_DTK_NAME_PERS"  )
 {
 
+  # make sure it has all vars
+  df <- check_names(df)
+  
   #### TITLE
 
   TitleTxt <- df[[ title ]]
@@ -149,3 +152,24 @@ to_boole <- function( x, form.type )
   return(x)
 }
 
+check_names <- function( df )
+{
+  all.names <- 
+    c("F9_07_COMP_DTK_POS_INDIV_TRUST_X", "F9_07_COMP_DTK_POS_INST_TRUST_X", 
+      "F9_07_COMP_DTK_POS_OFF_X", "F9_07_COMP_DTK_POS_KEY_EMPL_X", 
+      "F9_07_COMP_DTK_POS_HIGH_COMP_X", "F9_07_COMP_DTK_POS_FORMER_X", 
+      "F9_07_COMP_DTK_AVE_HOUR_WEEK", "F9_07_COMP_DTK_AVE_HOUR_WEEK_RL", 
+      "F9_07_COMP_DTK_COMP_ORG", "F9_07_COMP_DTK_COMP_RLTD", 
+      "F9_07_COMP_DTK_COMP_OTH", "F9_07_COMP_DTK_EMPL_BEN")
+
+  missing <- setdiff( all.names, names(df) )
+  if( length(missing) == 0 )
+  { return( df ) }
+
+  for( i in missing )
+  {
+    df[[ i ]] <- NA
+  }
+
+  return(df)
+}
