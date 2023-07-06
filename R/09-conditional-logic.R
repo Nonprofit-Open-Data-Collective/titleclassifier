@@ -21,7 +21,7 @@ conditional_logic <- function(comp.data)
     clean_up_ceos() %>%
     director_correction() -> df
   
-  cat( "? conditional logic step complete\n")
+  cat( "✔ conditional logic step complete\n")
   
   return(df)
 }
