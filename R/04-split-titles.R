@@ -53,7 +53,7 @@ split_titles <- function( df, title = "TitleTxt3" )
   new.title.id <- sapply( title.count, seq ) %>% unlist()
   df$Num.Titles <- new.title.id  
   
-  cat( "? split titles step complete\n" )
+  cat( "✔ split titles step complete\n" )
   return(df)
 }
   
