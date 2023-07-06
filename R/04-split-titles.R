@@ -3,6 +3,9 @@
 # 04-split-titles.R
 require(stringr)
 
+
+
+
 #' @title 
 #' split titles wrapper function
 #' 
@@ -15,26 +18,11 @@ require(stringr)
 #' @export
 split_titles <- function( df, title = "TitleTxt3" )
 {
-
   x <- df[[title]]
   
-  # final substitutions before split 
-  # MOVE TO PREVIOUS STEP 
-  x <- gsub( "\\d", "", x )
-  
-  x <- gsub( pattern = "\\bEX[A-Z]*\\b\\s*&\\s*DIR[A-Z]*\\b",
-             replacement = "EXECUTIVE DIRECTOR", 
-             x )
-  
-  x <- gsub( pattern = "^\\s*SEC[A-Z]*\\s*TREAS[A-Z]*\\b$", 
-             replacement = "SECRETARY & TREASURER", 
-             x )
+  # edge cases
+  x <- apply_misc_split_rules(x)
  
-  # split all FOUNDER titles
-  x <- gsub( " & FOUNDER\\b", " FOUNDER", x )
-  x <- gsub( "\\bFOUNDING\\b", "FOUNDER", x )
-  x <- gsub( "\\bFOUNDER\\b", "& FOUNDER", x )
-  
   # empty titles are returned as character(0) 
   # from strsplit()
   x[ x == "" ] <- " "
@@ -70,70 +58,47 @@ split_titles <- function( df, title = "TitleTxt3" )
 }
   
 
-  
 
-# df$Num.Titles <- identify_split_num(TitleTxt)
-# 
-# df$TitleTxt4 <- TitleTxt 
-# 
-# 
-# #WHAT ARE WE DOING FROM HERE ON??
-# 
-# #first pass thru
-# 
-# #boolean vector of all titles with only one occurrence
-# has.one.title <- df$Num.Titles == 1 
-# 
-# #data frame of entires with at least 2 titles
-# multiple.titles <- df[df$Num.Titles >= 2, ] 
-# 
-# #selecting only the first title in titles with multiple possible elements
-# df$TitleTxt4 <- ifelse(has.one.title, TitleTxt,
-#                        substr(TitleTxt,1, regexpr("&",TitleTxt)-1))
-# 
-# #saving the one-title filtered df as a temp data frame
-# temp <- df
-# 
-# #assuming no field has more than 5 titles
-# max.num.titles <- 5
-# 
-# #iterative approach
-# for(i in 1:max.num.titles){
-#   
-#   #KEY STEPS
-#   
-#   #repeatedly creating a boolean vector reflecting which entries 
-#   #have singular titles
-#   has.one.title <- temp$Num.Titles == 1 
-#   
-#   #creating the data frame with multiple titles (for consistency this is duplicated)
-#   if(i!=1) multiple.titles <- temp[temp$Num.Titles >= 2, ]
-#   
-#   #selecting only the first title in temp
-#   temp$TitleTxt4 <- ifelse(has.one.title, TitleTxt, 
-#                            substr(TitleTxt,1, regexpr("&",TitleTxt)-1))
-#   
-#   #binding the singular titles to the data frame (if not first step)
-#   if(i != 1) df <- rbind(df,temp)
-#   
-#   #decrementing multi-titles title count
-#   multiple.titles$Num.Titles <- multiple.titles$Num.Titles - 1
-#   
-#   #removing the first title from the multi=title entries
-#   multiple.titles$TitleTxt4 <- remove_first_split(multiple.titles$TitleTxt4)
-#   
-#   #resetting the temp to the previously multi-title data frame
-#   temp = multiple.titles
-#   #at this point, one layer of titles should have been removed, and
-#   #we will iteratively remove until there are only singular titles in temp
-#   
-#   #resetting titletxt
-#   TitleTxt <- temp$TitleTxt4
-# }
-# 
-# print("split titles step complete")
-# return(df)
-# }
+#' @title 
+#' misc split rules for edge cases
+#' 
+#' @description 
+#' Add some additional split rules for cases
+#' not identified by previous steps. 
+#' 
+#' @export
+apply_misc_split_rules <- function(x)
+{
+  # remove all lingering digits
+  x <- gsub( "\\d", "", x )
+  
+  # random title splits
+  x <- gsub( "CEO TRUSTEE", "CEO & TRUSTEE", x )
+  x <- gsub( "DIRECTOR AND AD HOC", "DIRECTOR & AD HOC", x )
+  x <- gsub( "AND CFO$", "& CFO", x )
+  
+  # abbreviated exec dir positions 
+  x <- gsub( pattern = "\\bEX[A-Z]*\\b\\s*&\\s*DIR[A-Z]*\\b",
+             replacement = "EXECUTIVE DIRECTOR", 
+             x )
+  x <- gsub( "CEO AND EXOFFICIO$", "CEO & EXOFFICIO", x )  
+  x <- gsub( "DIRECTOR AND EXOFFICIO$", "DIRECTOR & EXOFFICIO", x ) 
+  
+  # joint board positions   
+  x <- gsub( "^\\s*SEC[A-Z]*\\s*TREAS[A-Z]*\\b$", 
+             "SECRETARY & TREASURER", x )
+  x <- gsub( "TREASURER AND S$", "TREASURER & SECRETARY", x ) 
+
+  # split all FOUNDER titles
+  x <- gsub( "\\bFOUNDING\\b", "FOUNDER", x )
+  x <- gsub( "\\bFOUNDER\\b", "& FOUNDER & ", x )
+  x <- gsub( "& $", "", x ) # trailing ampersands
+  x <- trimws( x )
+  
+  return(x)
+}
+
+
 
 
 
@@ -187,26 +152,3 @@ remove_first_split <- function(x)
 }
 
 
-
-# find all titles at once
-# x <- "title1 & title2 & title3"
-# titles <- strsplit( x, "&" )[[1]]
-# titles <- trimws( titles )
-
-# d <- data.frame( x=c("title1","title1 & title2","title1","title1 & title2 & title3","title1"), 
-#                  y=1:5, 
-#                  z=c("A","B","A","B","A") )
-# 
-# d
-# 
-# title.list <- strsplit( d$x, "&" )
-# title.list <- lapply( titles, trimws )
-# 
-#### check title veracity here
-# 
-# title.count <- sapply( title.list, length )
-# row.count <- rep( index, times=title.count )
-# 
-# d2 <- d[  row.count , ]
-# d2$x2 <- unlist(title.list)
-# d2

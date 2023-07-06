@@ -506,6 +506,7 @@ slash_helper <- function( x ){
 #' @export
 standardize_separator <- function( x )
 {
+  x <- gsub( "CO - ?", "CO-", x )
   
   alt.separators <- c( ";", "\\\\", "/", " - ", " -", "- " )
   x <- gsub( paste( alt.separators, collapse="|" ), " & ", x )
