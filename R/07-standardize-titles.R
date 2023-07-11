@@ -22,7 +22,16 @@ standardize_titles <- function(comp.data, title = "TitleTxt6",
                                             sheet="title-standardization", range="A:D",
                                             col_types = "c" )  # c = character
   df.standard[ is.na( df.standard ) ] <- ""
+
+  dupes <- df.standard$title.variant[ duplicated( df.standard$title.variant ) ] %>% sort()
+  if( length(dupes) > 0 )
+  { 
+    print( "There are duplicate title variants: ")
+    print( paste0( dupes, collapse=" ;; " ) ) 
+  }
+  
   df.standard <- unique( df.standard )
+  df.standard <- filter( df.standard, ! duplicated( title.variant ) )
 
   
   comp.data <- basic_csuite_fixes( comp.data, officer = officer ) 
