@@ -15,18 +15,23 @@ standardize_titles <- function(comp.data, title = "TitleTxt6",
                                hours = "TOT.HOURS", pay = "TOT.COMP",
                                officer = "F9_07_COMP_DTK_POS_OFF_X")
 {
+  
   # read from google sheets
   googlesheets4::gs4_deauth()
   df.standard <- googlesheets4::read_sheet( "1iYEY2HYDZTV0uvu35UuwdgAUQNKXSyab260pPPutP1M", 
-                                            sheet="title-standardization", range="A:C",
+                                            sheet="title-standardization", range="A:D",
                                             col_types = "c" )  # c = character
   df.standard[ is.na( df.standard ) ] <- ""
   df.standard <- unique( df.standard )
+
   
-  comp.data <- basic_csuite_fixes( comp.data, officer = officer )
+  comp.data <- basic_csuite_fixes( comp.data, officer = officer ) 
   
-  # comp.data <- merge( comp.data, df.standard, by.x=title, by.y="title.variant", all.x=T )
-  comp.data <- merge( comp.data, df.standard, by.x="TitleTxt7", by.y="title.variant", all.x=T )
+  comp.data <- 
+    merge( comp.data, df.standard, 
+           by.x="TitleTxt7", 
+           by.y="title.variant", 
+           all.x=T )
   
   cat( "✔ standardize titles step complete\n" )
   return(comp.data)
@@ -56,10 +61,9 @@ basic_csuite_fixes <-
   weekly.hours  <-  df[[  hours   ]]
   total.pay     <-  df[[  pay     ]]
   officer.flag  <-  df[[  officer ]]
-  
+
+  # flag cases with multiple titles
   df$Multiple.Titles <- ifelse( grepl( "&",  df$TitleTxt3 ), T, F ) 
-  #flag for having multiple titles
-  
   
   #ceo
   TitleTxt <- replace_ceo(TitleTxt, weekly.hours, total.pay)
