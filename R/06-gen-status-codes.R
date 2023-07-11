@@ -67,8 +67,10 @@ gen_status_codes <- function( comp.data, title="TitleTxt5" )
 
   x <- comp.data[[title]]
   
-  # fix exoffcio m
+  # fix exoffcio : remove at end if not the only title
   x <- gsub( "EXOFFICIO M$", "EXOFFICIO BOARD MEMBER", x )
+  x <- gsub( "(.*) EXOFFICIO$", "\\1", x )
+  x <- gsub( "(.*) AND$", "\\1", x )
   
   # remove double regionals
   x <- gsub( "REGIONAL REGIONAL", "REGIONAL", x )
