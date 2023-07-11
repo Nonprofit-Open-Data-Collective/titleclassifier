@@ -9,6 +9,21 @@ An R package to assign raw nonprofit executive titles from Form 990 Part VII to 
 devtools::install_github( 'nonprofit-open-data-collective/titleclassifier' )
 ```
 
+If you get the following error message: 
+
+```
+Error in utils::download.file( ...
+: download from 'https://api.github.com/repos/nonprofit-open-data-collective/titleclassifier/tarball/HEAD' failed
+```
+
+Try changing the default file download options before installing: 
+
+```r
+options( download.file.method = "wininet" )    # for windows
+options( download.file.method = "libcurl" )    # for all op systems
+devtools::install_github( 'nonprofit-open-data-collective/titleclassifier' )
+```
+
 
 ```r
 library( titleclassifier )
