@@ -161,14 +161,14 @@ add_features <- function( df )
                      pay.tot = sum( tot.comp2, na.rm=T ), # don't double-count multiple titles
                      pay.pct.of.max = TOT.COMP / pay.max,
                      pay.pct.of.tot = TOT.COMP / pay.tot, 
-                     pay.max.all = max( TOT.COMP.TOT, na.rm=T ),
-                     pay.tot.all = sum( tot.comp2.tot, na.rm=T ), # don't double-count multiple titles
-                     pay.pct.of.max.all = TOT.COMP.TOT / pay.max.all,
-                     pay.pct.of.tot.all = TOT.COMP.TOT / pay.tot.all, 
+                     pay.max.incl.rltd = max( TOT.COMP.TOT, na.rm=T ),
+                     pay.tot.incl.rltd = sum( tot.comp2.tot, na.rm=T ), # don't double-count multiple titles
+                     pay.pct.of.max.incl.rltd = TOT.COMP.TOT / pay.max.all,
+                     pay.pct.of.tot.incl.rltd = TOT.COMP.TOT / pay.tot.all, 
                      hours.rank = dense_rank( -TOT.HOURS ),
                      hours.pct.of.max = TOT.HOURS / max( TOT.HOURS, na.rm=T ), 
-                     hours.rank.all = dense_rank( -TOT.HOURS.TOT ),
-                     hours.pct.of.max.all = TOT.HOURS.TOT / max( TOT.HOURS.TOT, na.rm=T )  ) %>% 
+                     hours.rank.incl.rltd = dense_rank( -TOT.HOURS.TOT ),
+                     hours.pct.of.max.incl.rltd = TOT.HOURS.TOT / max( TOT.HOURS.TOT, na.rm=T )  ) %>% 
       ungroup() %>% 
       as.data.frame()
     
@@ -184,12 +184,13 @@ add_features <- function( df )
       
       "TOT.HOURS", "TOT.HOURS.TOT",  
       "hours.rank", "hours.rank.all",
-      "hours.pct.of.max", "hours.pct.of.max.all",  
+      "hours.pct.of.max", "hours.pct.of.max.incl.rltd",  
       "TOT.COMP", "TOT.COMP.TOT", 
-      "pay.rank", "pay.max", "pay.max.all", 
-      "pay.tot", "pay.tot.all",
-      "pay.pct.of.max", "pay.pct.of.max.all", 
-      "pay.pct.of.tot", "pay.pct.of.tot.all",
+      "pay.rank", 
+      "pay.max", "pay.max.incl.rltd", 
+      "pay.tot", "pay.tot.incl.rltd",
+      "pay.pct.of.max", "pay.pct.of.max.incl.rltd", 
+      "pay.pct.of.tot", "pay.pct.of.tot.incl.rltd",
       
       # "hour_rank", "pay_rank", "has_leader", 
 
@@ -273,9 +274,9 @@ simplify_varnames <- function( df )
            tot.hours = TOT.HOURS,
            tot.hours.incl.rltd = TOT.HOURS.TOT, 
            # hours.rank, 
-           hours.rank.incl.rltd = hours.rank.all,
+           # hours.rank.incl.rltd = hours.rank.all,
            # hours.pct.of.max,
-           hours.pct.of.max.incl.rltd = hours.pct.of.max.all, 
+           # hours.pct.of.max.incl.rltd = hours.pct.of.max.all, 
            tot.comp = TOT.COMP, 
            tot.comp.incl.rltd = TOT.COMP.TOT, 
            # pay.rank, pay.pct.of.max, pay.pct.of.tot, 
@@ -321,4 +322,3 @@ simplify_varnames <- function( df )
 
    return( df )
 }
-
