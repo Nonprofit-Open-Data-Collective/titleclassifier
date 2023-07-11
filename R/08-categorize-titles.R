@@ -34,7 +34,7 @@ categorize_titles <- function( comp.data )
   
   comp.data <- 
     comp.data %>% 
-    add_features() %>% 
+    add_features() %>% comp.data <- comp.data %>% 
     simplify_varnames()
   
   cat( "✔ categorize titles step complete" )
@@ -210,10 +210,11 @@ add_features <- function( df )
       "REGIONAL.X", "CO.X", "DATE.X", 
       "SCHED.O.X",  
 
-      "domain.category", "domain.label", "soc.label", 
-      "major.group", "minor.group", "broad.group", "detailed.occupation",
-      
-      "strata", "stata.label",
+      "domain.category", "domain.label", 
+      "strata", "strata.label",
+      "soc.label", "major.group", 
+      "minor.group", "broad.group", 
+      "detailed.occupation",
 
       "emp", "num.emp", "board", "num.board", 
 
@@ -320,3 +321,5 @@ simplify_varnames <- function( df )
 
    return( df )
 }
+
+
