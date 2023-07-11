@@ -87,11 +87,17 @@ add_features <- function( df )
     these <- c("emp", "board",
                "ceo", "c.level", "dir.vp", 
                "mgr", "spec", "pres", "vp", 
-               "sec", "treas", "com" )
+               "sec", "treas", "mem" )
+
+    if( ! all( these %in% names(df) ) )
+    { cat( paste0( "The following vars are missing: ", 
+           paste0( setdiff(these,names(df)), collapse=" ;; " ) ) 
+      break 
+    }
 
     df[ these ] <- 
       df[these] %>% 
-      lapply( to_boolean )  # to_boolean is in utilities.R
+      lapply( to_boolean )     # to_boolean is in utilities.R
 
     # weight people w multiple titles
     df <- 
@@ -155,7 +161,7 @@ add_features <- function( df )
                      num.vp = sum( vp, na.rm=T ),
                      num.treas = sum( treas, na.rm=T ),
                      num.sec = sum( sec, na.rm=T ),
-                     num.com = sum( com, na.rm=T ),
+                     num.mem = sum( mem, na.rm=T ),
                      num.paid = sum( tot.comp2 > 0, na.rm=T ),  # don't double-count multiple titles
                      num.fte = sum( tot.hours2 >= 40, na.rm=T ),
                      num.fte.30h = sum( tot.hours2 >= 30, na.rm=T ),
@@ -216,17 +222,17 @@ add_features <- function( df )
 
       "emp", "num.emp", "board", "num.board", 
 
-      "ceo", "num.ceos",
+      "ceo",     "num.ceos",
       "c.level", "num.clevel",
-      "dir.vp", "num.dirvp",
-      "mgr", "num.mgr",
-      "spec", "num.spec", 
+      "dir.vp",  "num.dirvp",
+      "mgr",     "num.mgr",
+      "spec",    "num.spec", 
 
-      "pres", "num.pres",
-      "vp", "num.vp",
+      "pres",  "num.pres",
+      "vp",    "num.vp",
       "treas", "num.treas",
-      "sec", "num.sec",
-      "com", "num.com", 
+      "sec",   "num.sec",
+      "mem",   "num.mem", 
 
       "URL", "OBJECT_ID"  )
 
@@ -318,4 +324,3 @@ simplify_varnames <- function( df )
 
    return( df )
 }
-
