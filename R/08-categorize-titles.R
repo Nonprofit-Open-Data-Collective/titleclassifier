@@ -53,21 +53,6 @@ categorize_titles <- function( comp.data )
 add_features <- function( df )
 {
 
-
-# > dput( names(df) )
-# c("OBJECT_ID", "EIN", "NAME", "TAXYR", "FORMTYPE", "URL", "F9_07_COMP_DTK_NAME_PERS", 
-# "F9_07_COMP_DTK_TITLE", "F9_07_COMP_DTK_AVE_HOUR_WEEK", "F9_07_COMP_DTK_AVE_HOUR_WEEK_RL", 
-# "F9_07_COMP_DTK_POS_INDIV_TRUST_X", "F9_07_COMP_DTK_POS_OFF_X", 
-# "F9_07_COMP_DTK_COMP_ORG", "F9_07_COMP_DTK_COMP_RLTD", "F9_07_COMP_DTK_COMP_OTH", 
-# "F9_07_COMP_DTK_POS_KEY_EMPL_X", "F9_07_COMP_DTK_POS_INST_TRUST_X", 
-# "F9_07_COMP_DTK_POS_HIGH_COMP_X", "F9_07_COMP_DTK_EMPL_BEN", 
-# "F9_07_COMP_DTK_POS_FORMER_X", "TITLE_RAW", "TOT.HOURS", "TOT.COMP", 
-# "DATE.X", "TitleTxt2", "TitleTxt3", "TitleTxt4", "Num.Titles", 
-# "TitleTxt5", "CO.X", "TitleTxt6", "EXOFFICIO.X", "FORMER.X", 
-# "FOUNDER.X", "FUTURE.X", "INTERIM.X", "OUTGOING.X", "PARTIAL.X", 
-# "SCHED.O.X", "AT.LARGE.X", "REGIONAL.X")
-
-
     
     # df$AS.NEEDED.X        <- as.numeric( df$AS.NEEDED.X )
     df$Multiple.Titles    <- as.numeric( df$Multiple.Titles )
@@ -84,22 +69,25 @@ add_features <- function( df )
     df$AT.LARGE.X         <- as.numeric( df$AT.LARGE.X )
     
 
+    #if a date code is present, setting to partial year if not already set
+    df$PARTIAL.X[ df$DATE.X == 1 ] <- 1 
+
+    # to_boolean is in utilities.R
+
     these <- c("emp", "board",
                "ceo", "c.level", "dir.vp", 
                "mgr", "spec", "pres", "vp", 
                "sec", "treas", "mem" )
 
-    if( ! all( these %in% names(df) ) )
-    { cat( paste0( "The following vars are missing: ", 
-           paste0( setdiff(these,names(df)), collapse=" ;; " ) ) 
-      break 
-    }
-
     df[ these ] <- 
       df[these] %>% 
-      lapply( to_boolean )     # to_boolean is in utilities.R
+      lapply( to_boolean )     
+
+
+
 
     # weight people w multiple titles
+
     df <- 
       df %>% 
       dplyr::group_by( OBJECT_ID, 
@@ -113,6 +101,8 @@ add_features <- function( df )
                                       0 )  
       ) %>%
       ungroup()  
+
+
 
 
     # RECALCULATE HOURS AND PAY W RELATED ORGS SEPARATED
@@ -187,13 +177,14 @@ add_features <- function( df )
     c("NAME", "EIN", "TAXYR", "FORMTYPE", 
       "F9_07_COMP_DTK_NAME_PERS", 
       
-      "TITLE_RAW", "dtk.title", "title.standard",
+      "TITLE_RAW", "title.standard",
       "Multiple.Titles", "Num.Titles", "tot.titles",
       "TitleTxt7", "TitleTxt6", "TitleTxt5", "TitleTxt4", 
       "TitleTxt3", "TitleTxt2", "F9_07_COMP_DTK_TITLE",
       
       "TOT.HOURS", "TOT.HOURS.TOT",  
-      "hours.rank", "hours.pct.of.max",  
+      "hours.rank", "hours.rank.all",
+      "hours.pct.of.max", "hours.pct.of.max.all",  
       "TOT.COMP", "TOT.COMP.TOT", 
       "pay.rank", "pay.max", "pay.max.all", 
       "pay.tot", "pay.tot.all",
@@ -212,13 +203,17 @@ add_features <- function( df )
       "F9_07_COMP_DTK_COMP_ORG", "F9_07_COMP_DTK_COMP_RLTD", 
       "F9_07_COMP_DTK_COMP_OTH", "F9_07_COMP_DTK_EMPL_BEN", 
 
-      "FORMER.X", "INTERIM.X", "FUTURE.X", "PARTIAL.X", "OUTGOING.X", 
-      "EXOFFICIO.X", "CO.X", "REGIONAL.X", "DATE.X", "SCHED.O.X", "AT.LARGE.X",
+      "FOUNDER.X", "FORMER.X",   
+      "FUTURE.X",  "OUTGOING.X",
+      "INTERIM.X", "PARTIAL.X", 
+      "EXOFFICIO.X", "AT.LARGE.X", 
+      "REGIONAL.X", "CO.X", "DATE.X", 
+      "SCHED.O.X",  
 
-      "domain.category", "domainl.label", "soc.label", 
+      "domain.category", "domain.label", "soc.label", 
       "major.group", "minor.group", "broad.group", "detailed.occupation",
       
-      "strata",
+      "strata", "stata.label",
 
       "emp", "num.emp", "board", "num.board", 
 
@@ -239,8 +234,7 @@ add_features <- function( df )
       df <- df[ new.order ]
       
       
-   #if a date code is present, setting to partial year if not already set
-   df$PARTIAL.X[ df$DATE.X == 1 ] <- 1  
+ 
    
    return( df )
 
@@ -270,17 +264,19 @@ simplify_varnames <- function( df )
            taxyr = TAXYR, 
            formtype = FORMTYPE, 
            dtk.name = F9_07_COMP_DTK_NAME_PERS,
-           multiple.titles = Multiple.Titles, 
+           title.mult.x = Multiple.Titles, 
            title.order = Num.Titles, 
-           title.tot = tot.titles,
+           title.count = tot.titles,
            title.v1 = F9_07_COMP_DTK_TITLE, 
            title.raw = TITLE_RAW, 
            tot.hours = TOT.HOURS,
-           tot.hours.tot = TOT.HOURS.TOT, 
+           tot.hours.incl.rltd = TOT.HOURS.TOT, 
            # hours.rank, 
-           # hours.pct.of.max, 
+           hours.rank.incl.rltd = hours.rank.all,
+           # hours.pct.of.max,
+           hours.pct.of.max.incl.rltd = hours.pct.of.max.all, 
            tot.comp = TOT.COMP, 
-           tot.comp.tot = TOT.COMP.TOT, 
+           tot.comp.incl.rltd = TOT.COMP.TOT, 
            # pay.rank, pay.pct.of.max, pay.pct.of.tot, 
            # num.dtk, num.titles, num.paid,  
            # num.fte, num.fte.30h, num.pte, 
