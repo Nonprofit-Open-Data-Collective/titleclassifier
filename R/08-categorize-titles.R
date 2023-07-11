@@ -234,10 +234,7 @@ add_features <- function( df )
       "URL", "OBJECT_ID"  )
 
       df <- df[ new.order ]
-      
-      
- 
-   
+
    return( df )
 
 }
@@ -320,5 +317,29 @@ simplify_varnames <- function( df )
            url = URL, 
            object.id = OBJECT_ID )
 
+   # zero out all NA fields in financial ratio fields 
+
+   zero.these.nas <- 
+   c("tot.hours", "tot.hours.incl.rltd", "hours.rank", "hours.rank.incl.rltd", 
+     "hours.pct.of.max", "hours.pct.of.max.incl.rltd", "tot.comp", 
+     "tot.comp.incl.rltd", "pay.rank", "pay.max", "pay.max.incl.rltd", 
+     "pay.tot", "pay.tot.incl.rltd", "pay.pct.of.max", "pay.pct.of.max.incl.rltd", 
+     "pay.pct.of.tot", "pay.pct.of.tot.incl.rltd", "num.dtk", "num.titles", 
+     "num.paid", "num.fte", "num.fte.30h", "num.pte", "dtk.indiv.trustee.x", 
+     "dtk.inst.trustee.x", "dtk.officer.x", "dtk.key.empl.x", "dtk.high.comp.x", 
+     "dtk.former.x", "dtk.hours", "dtk.hours.rltd", "dtk.comp", "dtk.comp.rltd", 
+     "dtk.comp.oth", "dtk.comp.ben")
+  
+   zero_nas <- function(x)
+   { 
+     x[ is.na(x) ] <- 0
+     return(x)
+   }
+   
+   df[ zero.these.nas ] <- 
+      df[ zero.these.nas ] %>% 
+      lapply( zero_nas ) 
+
+  
    return( df )
 }
