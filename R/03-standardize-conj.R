@@ -525,6 +525,7 @@ standardize_separator <- function( x )
 fix_misc_splits <- function( x )
 {
   x <- gsub( "^VICE PRESIDENT TREASURER$", "VICE PRESIDENT & TREASURER", x ) 
+  x <- gsub( "^SECRETARY TREASURER$", "SECRETARY & TREASURER", x )
   x <- gsub( "\\bSECRETARY TREASURER\\b", "SECRETARY & TREASURER", x )
   x <- gsub( "^VICE PRESIDENT AND CIO$", "VICE PRESIDENT & CIO", x )
   x <- gsub( "^VICE PRESIDENT SECRETARY$", "VICE PRESIDENT & SECRETARY", x )
