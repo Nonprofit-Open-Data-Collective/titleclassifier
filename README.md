@@ -33,7 +33,8 @@ data( tinypartvii )       # sample of form 990 part vii for 10,000 orgs
 
 start_time <- Sys.time()  # benchmark runtime
 
-tinypartvii %>% 
+df <- 
+  tinypartvii %>% 
   standardize_df() %>% 
   remove_dates() %>% 
   standardize_conj() %>% 
@@ -41,15 +42,13 @@ tinypartvii %>%
   standardize_spelling() %>% 
   gen_status_codes() %>% 
   standardize_titles() %>%
-  categorize_titles() %>%
-  conditional_logic() ->     df.coded
+  categorize_titles()     
   
-
 end_time <- Sys.time()    # runtime
 end_time - start_time
-
-# since all major steps have a wrapper function that operates on a data frame, they can be piped together
 ```
+
+
 
 
 ## Process
