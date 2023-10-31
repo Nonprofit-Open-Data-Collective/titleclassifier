@@ -45,7 +45,8 @@ standardize_df <- function( df,
   
   #pre_clean call
   TitleTxt <- pre_clean(TitleTxt)
-
+  Encoding(TitleTxt) <- "latin1"
+  
   df[[ title ]] <- TitleTxt
 
 
