@@ -1027,7 +1027,7 @@ fix_member <- function(TitleTxt){
 #' @export
 fix_transportation <- function(TitleTxt){
   
-  TitleTxt <- gsub("\\bTRANS[A-Z]*\\b", "TRANSPORTATION", TitleTxt)
+  TitleTxt <- gsub( "\\bTRANSP[A-Z]*\\b", "TRANSPORTATION", TitleTxt )
   
   return(TitleTxt)
 }

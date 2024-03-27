@@ -177,7 +177,7 @@ add_features <- function( df )
     c("NAME", "EIN", "TAXYR", "FORMTYPE", 
       "F9_07_COMP_DTK_NAME_PERS", 
       
-      "TITLE_RAW", "title.standard",
+      "TITLE_RAW", "strata", "strata.label", "title.standard", 
       "Multiple.Titles", "Num.Titles", "tot.titles",
       "TitleTxt7", "TitleTxt6", "TitleTxt5", "TitleTxt4", 
       "TitleTxt3", "TitleTxt2", "F9_07_COMP_DTK_TITLE",
@@ -212,7 +212,6 @@ add_features <- function( df )
       "SCHED.O.X",  
 
       "domain.category", "domain.label", 
-      "strata", "strata.label",
       "soc.label", "major.group", 
       "minor.group", "broad.group", 
       "detailed.occupation",
@@ -297,6 +296,7 @@ simplify_varnames <- function( df )
            dtk.comp.rltd = F9_07_COMP_DTK_COMP_RLTD, 
            dtk.comp.oth = F9_07_COMP_DTK_COMP_OTH, 
            dtk.comp.ben = F9_07_COMP_DTK_EMPL_BEN, 
+           founder.x = FOUNDER.X,
            former.x = FORMER.X, 
            interim.x = INTERIM.X, 
            future.x = FUTURE.X,

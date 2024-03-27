@@ -148,13 +148,36 @@ gen_status_codes <- function( comp.data, title="TitleTxt5" )
 #' @export
 flag_and_remove <- function( df, title="TitleTxt6", s.code="FORMER" )
 {
-  df <- add_status_flag( df, title, s.code )
-  x <- df[[title]]
-  df[[title]] <- remove_status( x, s.code )
+  variants <- get_variants( s.code )
+  df <- add_status_flag( df, title, s.code, variants )
+  df[[title]] <- remove_status( df[[title]], variants )
   return( df )
 }
 
 
+
+
+#' @title create a status code flag and KEEP the standardized version of the string
+#' 
+#' @description  
+#' Search for variants of a status code (stored in google sheets),
+#' create a boolean flag in the dataset, and replace the status variant
+#' in the title with the standardized version.
+#' The flag variable is named SCODE.X (e.g. REGIONAL.X). 
+#' 
+#' @param df A compensation dataframe
+#' @param title Which version of the title string to use (defaults to "TitleTxt6")
+#' @param s.code Any of the unique status.qualifier strings from df.status (e.g. "REGIONAL")
+#' 
+#' @export
+flag_and_keep <- function( df, title="TitleTxt6", s.code )
+{
+  variants <- get_variants( s.code )
+  df <- add_status_flag( df, title, s.code, variants )
+  x <- df[[title]]
+  df[[title]] <- standardize_status( x, s.code, variants )
+  return( df )
+}
 
 
 
@@ -201,12 +224,11 @@ get_variants <- function( s.code )
 #' @param s.code Any of the unique status.qualifier strings from df.status (e.g. "FORMER")
 #' 
 #' @export
-add_status_flag <- function( df, title, s.code )
+add_status_flag <- function( df, title, s.code, variants )
 {
   x <- df[[title]]
-  search.terms <- get_variants( s.code )
   # create a flag if there are any matches
-  df[ paste0( gsub(" ",".",s.code), ".X" ) ] <- grepl( search.terms, x )
+  df[ paste0( gsub(" ",".",s.code), ".X" ) ] <- grepl( variants, x )
   return( df )
 }
 
@@ -225,40 +247,15 @@ add_status_flag <- function( df, title, s.code )
 #' @param s.code Any of the unique status.qualifier strings from df.status (e.g. "FORMER")
 #' 
 #' @export
-remove_status <- function( x, s.code )
+remove_status <- function( x, variants )
 {
-  search.terms <- get_variants( s.code )
   # delete all variants
-  x <- gsub( search.terms, "", x )
+  x.temp <- x
+  x <- gsub( variants, "", x )
   # keep status code if it's the full title
-  x[ trimws(x) == "" ] <- s.code
+  x[ trimws(x) == "" ] <- x.temp
   return( x )
 }  
-
-
-
-
-
-#' @title create a status code flag and KEEP the standardized version of the string
-#' 
-#' @description  
-#' Search for variants of a status code (stored in google sheets),
-#' create a boolean flag in the dataset, and replace the status variant
-#' in the title with the standardized version.
-#' The flag variable is named SCODE.X (e.g. REGIONAL.X). 
-#' 
-#' @param df A compensation dataframe
-#' @param title Which version of the title string to use (defaults to "TitleTxt6")
-#' @param s.code Any of the unique status.qualifier strings from df.status (e.g. "REGIONAL")
-#' 
-#' @export
-flag_and_keep <- function( df, title="TitleTxt6", s.code )
-{
-  df <- add_status_flag( df, title, s.code )
-  x <- df[[title]]
-  df[[title]] <- standardize_status( x, s.code )
-  return( df )
-}
 
 
 
@@ -273,11 +270,10 @@ flag_and_keep <- function( df, title="TitleTxt6", s.code )
 #' @param s.code Any of the unique status.qualifier strings from df.status 
 #' 
 #' @export
-standardize_status <- function( x, s.code )
+standardize_status <- function( x, s.code, variants )
 {
-  search.terms <- get_variants( s.code )
   # replace all variants with the standardized version
-  x <- gsub( search.terms, s.code, x )
+  x <- gsub( variants, s.code, x )
   return( x )
 }
 
