@@ -111,6 +111,18 @@ STEP-01: standardize_df()
 
 #### 2. Remove Dates
 
+Many titles include start or end dates for positions: 
+
+```
+TREASURER (ENDED 3/16/23)
+DIRECTOR (THRU 12/23)
+DIRECTOR AS OF OCT. 2023
+SECRETARY UNTIL JAN. 2023, THEN VICE PRESIDENT
+TRUSTEE (RESIGNED 1/24/23)
+```
+
+This function creates a flag for cases that appear to contain dates and removes the date strings. 
+
 ```
 STEP-02: remove_dates()
 |
@@ -165,7 +177,21 @@ if(isDatePresent) {
 
 #### 3. Standardize Conjunctions
 
-Sometimes titles can include conjunctions, prepositions, and punctuation (like "and", "to", ",", "/"), but these symbols don't always refer to the same thing. For example, a title field could be "CEO AND BOARD PRESIDENT", and another could be "VP OF FINANCE AND ADMINISTRATION". In the first instance, the "and" serves to separate two different titles, but in the second it's part of a compound subject. There are many more cases like these with such symbols, so in this step, they are standardized. It is also important to note that we are operating on each individual title at this stage (as opposed to working with the entire compensation table).
+Many individuals have multiple titles that need to be split. There is no standard way to list multiple titles so you see the creative use of conjunctions, prepositions, and punctuation (like "and", "to", ",", "/"), but these symbols don't always refer to the same thing. For example, a title field could be "CEO AND BOARD PRESIDENT", and another could be "VP OF FINANCE AND ADMINISTRATION". In the first instance, the "and" serves to separate two different titles, but in the second it's part of a compound subject. There are many more cases like these with such symbols, so in this step, they are standardized.  
+
+```
+PRESIDENT/DI
+EXEC VP & CFO
+DIRECTOR/CHAIRMAN OF EXEC. COM.
+COO/CFO, Sec. & TREAS.
+Asst Head of School, CFO                  # two titles
+Asst Head of School, Academics            # one title
+DIRECTOR, FUND FOR JOURNALISTS            # one title
+SECRETARY TREA                            # no punction used
+PAST PRESIDENT'S COUNCIL REPRESENTATIVE   # one title that looks like two
+```
+
+This step attempts to convert all different types of seperators into a standard ampersand so that multi-titles can be split into single titles in the next step. The trick is to guess which conjugations and punctuation are splits and when they are part of a single title. 
 
 ```
 STEP-03: standardize_conj()
@@ -231,11 +257,11 @@ With the **standardize_and** function, the method checks the substrings on each 
 
 ```r
 # "and" examples
-title1 <- "CEO AND BOARD PRESIDENT"
-title2 <- "VP OF FINANCE AND ADMINISTRATION"
+case1 <- "CEO AND BOARD PRESIDENT"
+case2 <- "VP OF FINANCE AND ADMINISTRATION"
 
-standardize_and(title1) # "CEO & BOARD PRESIDENT"
-standardize_and(title2) # "VP OF FINANCE AND ADMINISTRATION"
+standardize_and( case1 ) # "CEO & BOARD PRESIDENT"
+standardize_and( case2 ) # "VP OF FINANCE AND ADMINISTRATION"
 ```
 
 With the **standardize_to()** function, the method checks if "to" is at the end of the title (in which case it was part of a date description) in which case it converts the "to" to "until". If the "to" is not at the end of the title, the method then checks if the substring on the left is a recognizable title, in which case it leaves it alone. In all other cases also the "to" is left alone. 
@@ -243,11 +269,11 @@ With the **standardize_to()** function, the method checks if "to" is at the end 
 
 ```r
 # "to" examples
-title1 <- "DIRECTOR TO"
-title2 <- "LIAISON TO BOARD OF TRUSTEES"
+case1 <- "DIRECTOR TO"
+case2 <- "LIAISON TO BOARD OF TRUSTEES"
 
-standardize_to(title1) # "DIRECTOR UNTIL"
-standardize_to(title2) # "LIAISON TO BOARD OF TRUSTEES"
+standardize_to( case1 ) # "DIRECTOR UNTIL"
+standardize_to( case2 ) # "LIAISON TO BOARD OF TRUSTEES"
 ```
 
 With the **standardize_of()** function, the method checks if "of" is part of an "as of" phrasing, in which case it converts "as of" to "since". If that is not the case, yet "of" is at the end of the title, the "of" is removed. Otherwise, the "of" is treated the same way as "to" by checking the left side substring. Additionally, all instances of "for" are replaced with "of", and "VP-" is replaced with "VP OF"
@@ -255,56 +281,56 @@ With the **standardize_of()** function, the method checks if "of" is part of an 
 
 ```r
 # "of" examples
-title1 <- "VICE PRESIDENT AS OF"
-title2 <- "DIRECTOR OF"
-title3 <- "VICE PRESIDENT FOR MARKETING"
-title3 <- "VP-ADMINISTRATION"
+case1 <- "VICE PRESIDENT AS OF"
+case2 <- "DIRECTOR OF"
+case3 <- "VICE PRESIDENT FOR MARKETING"
+case3 <- "VP-ADMINISTRATION"
 
-standardize_of(title1) # "VICE PRESIDENT SINCE"
-standardize_of(title2) # "DIRECTOR "
-standardize_of(title3) # "VICE PRESIDENT OF MARKETING"
-standardize_of(title4) # "VICE PRESIDENT OF ADMINISTRATION"
+standardize_of( case1 ) # "VICE PRESIDENT SINCE"
+standardize_of( case2 ) # "DIRECTOR "
+standardize_of( case3 ) # "VICE PRESIDENT OF MARKETING"
+standardize_of( case4 ) # "VICE PRESIDENT OF ADMINISTRATION"
 ```
 
 With the **standardize_comma()** function, the method checks for the different meanings that the comma can represent. If a comma is used as a title delineator, it is replaced with "&" (same procedure as standardize_and). If it is used in place of "of" (same procedure as standardize_to), the comma is replaced with "of". For titles with multiple commas, this only applies to the first instance of the symbol. Any extraneous commas are replaced with "and". 
 
 ```r
 # comma examples
-title1 <- "SECRETARY, TREASURER"
-title2 <- "VP, MARKETING"
-title3 <- "SENIOR VICE PRESIDENT, MARKETING, SALES, AND PUBLICITY"
-title4 <- "FINANCE, ADMINISTRATION"
+case1 <- "SECRETARY, TREASURER"
+case2 <- "VP, MARKETING"
+case3 <- "SENIOR VICE PRESIDENT, MARKETING, SALES, AND PUBLICITY"
+case4 <- "FINANCE, ADMINISTRATION"
 
-standardize_comma(title1) # "SECRETARY & TREASURER"
-standardize_comma(title2) # "VP OF MARKETING"
-standardize_comma(title3) # "SENIOR VICE PRESIDENT OF MARKETING, SALES, AND PUBLICITY"
-standardize_comma(title4) # "FINANCE AND ADMINISTRATION"
+standardize_comma( case1 ) # "SECRETARY & TREASURER"
+standardize_comma( case2 ) # "VP OF MARKETING"
+standardize_comma( case3 ) # "SENIOR VICE PRESIDENT OF MARKETING, SALES, AND PUBLICITY"
+standardize_comma( case4 ) # "FINANCE AND ADMINISTRATION"
 ```
 
 With the **standardize_slash()** function, the method checks for the different meanings that the slash can represent. The slash is treated the same way as the comma; thus, when it is used as a delineator it is replaced with "&", when used like "of" it is replaced with "of", and when used extraneously it is replaced with "and". 
 
 ```r
 # slash examples
-title1 <- "SECRETARY/TREASURER"
-title2 <- "VP/SALES"
-title3 <- "SENIOR VICE PRESIDENT OF FINANCE/ADMINISTRATION"
+case1 <- "SECRETARY/TREASURER"
+case2 <- "VP/SALES"
+case3 <- "SENIOR VICE PRESIDENT OF FINANCE/ADMINISTRATION"
 
-standardize_slash(title1) # "SECRETARY & TREASURER"
-standardize_slash(title2) # "VP OF MARKETING"
-standardize_slash(title3) # "SENIOR VICE PRESIDENT OF FINANCE AND ADMINISTRATION"
+standardize_slash( case1 ) # "SECRETARY & TREASURER"
+standardize_slash( case2 ) # "VP OF MARKETING"
+standardize_slash( case3 ) # "SENIOR VICE PRESIDENT OF FINANCE AND ADMINISTRATION"
 ```
 
 Finally, the **standardize_separator()** function standardizes all other miscellaneous symbols that are used as a separator. As previously mentioned, the "&" is the main symbol used to delineate titles, but ";" and "\" can also be used. As such, those symbols are replaced by "&" to make title splitting more straightforward. The other common title separators ("," and "/") have already been dealt with. 
 
 ```r
 # separator examples
-title1 <- "CEO & CFO"
-title2 <- "DIRECTOR; CHAIR"
-title3 <- "CHAPLAIN\TRUSTEE"
+case1 <- "CEO & CFO"
+case2 <- "DIRECTOR; CHAIR"
+case3 <- "CHAPLAIN\TRUSTEE"
 
-standardize_separator(title1) # "CEO & CFO"
-standardize_separator(title2) # "DIRECTOR& CHAIR"
-standardize_separator(title3) # "CHAPLAIN&TRUSTEE"
+standardize_separator( case1 ) # "CEO & CFO"
+standardize_separator( case2 ) # "DIRECTOR& CHAIR"
+standardize_separator( case3 ) # "CHAPLAIN&TRUSTEE"
 ```
 
 It goes without saying that there are and will be instances of false positives, but using these techniques, the titles are generally in good shape for splitting and categorization in later steps. Browsing through [lists of titles with these symbols apparent (and their standardizations)](https://github.com/Nonprofit-Open-Data-Collective/titleclassifier/tree/main/test-tables/title-comparison/2022-07-19) can be helpful for coming up with more complicated yet accurate heuristics. 
@@ -457,22 +483,22 @@ STEP-05: standardize_spelling()
 ```r
 #examples
 
-fix_spelling("VP") # "VICE PRESIDENT"
-fix_spelling("DIRECTOR FACILITIES") # "DIRECTOR OF FACILITIES"
-fix_spelling("SR D MARKETING") # "SENIOR DIRECTOR OF MARKETING"
-fix_spelling("VICE PRESID") # "VICE PRESIDENT"
-fix_spelling("SGT AT ARMS") # "SERGEANT AT ARMS"
-fix_spelling("TRTEE") # "TRUSTEE"
-fix_spelling("SECY") # "SECRETARY"
+fix_spelling( "VP" )                    # "VICE PRESIDENT"
+fix_spelling( "DIRECTOR FACILITIES" )   # "DIRECTOR OF FACILITIES"
+fix_spelling( "SR D MARKETING" )        # "SENIOR DIRECTOR OF MARKETING"
+fix_spelling( "VICE PRESID" )           # "VICE PRESIDENT"
+fix_spelling( "SGT AT ARMS" )           # "SERGEANT AT ARMS"
+fix_spelling( "TRTEE" )                 # "TRUSTEE"
+fix_spelling( "SECY" )                  # "SECRETARY"
 ```
 
 Some title standardization was also completed at this step, and namely any version of "EXECUTIVE DIRECTOR" was mapped onto "CEO". In addition, unambiguous c-suite positions were condensed to their abbreviations. Not all c-suite positions fall into this category however.
 
 ```r
-fix_spelling("EX DIR") # "CEO"
-fix_spelling("CHIEF EXEC OFFICER") # "CEO"
-fix_spelling("CHIEF FINANCIAL OFFICER") # "CFO"
-fix_spelling("CHIEF ADVANCEMENT OFFICER") # "CHIEF ADVANCEMENT OFFICER"
+fix_spelling( "EX DIR" )                      # "CEO"
+fix_spelling( "CHIEF EXEC OFFICER" )          # "CEO"
+fix_spelling( "CHIEF FINANCIAL OFFICER" )     # "CFO"
+fix_spelling( "CHIEF ADVANCEMENT OFFICER" )   # "CHIEF ADVANCEMENT OFFICER"
 ```
 
 
@@ -528,7 +554,42 @@ STEP-06: gen_status_codes()
 |    - Used when status is to be preserved (flag_and_keep).  
 ```
 
-The specific variants that are removed are documented in [this spreadsheet](https://docs.google.com/spreadsheets/d/1iYEY2HYDZTV0uvu35UuwdgAUQNKXSyab260pPPutP1M/edit#gid=145854139), which the code pulls from and makes it dynamic. When additional variants are identified, they can be added to that document and the code will be updated accordingly.
+The specific variants that are removed are documented in [this spreadsheet](https://docs.google.com/spreadsheets/d/1iYEY2HYDZTV0uvu35UuwdgAUQNKXSyab260pPPutP1M/edit#gid=145854139), which the code pulls from and makes it dynamic. When additional variants are identified, they can be added to that document and the code will be updated accordingly. 
+
+There are currently ~300 rows in the status variant crosswalk table. Some examples: 
+
+| STATUS VARIANT | STANDARDIZED     |
+| -------------- | ---------------- |
+| AS NEEDED      | AT LARGE         |
+| AT LARGE       | AT LARGE         |
+| CURRENT        | CURRENT          |
+| EX OFFICIO     | EXOFFICIO        |
+| EXOFFICIO      | EXOFFICIO        |
+| DECEASED       | FORMER           |
+| EMERITUS       | FORMER           |
+| IMMEDIATE PAST | FORMER           |
+| FOUNDER        | FOUNDER          |
+| FOUNDING       | FOUNDER          |
+| CO-FOUNDER     | FOUNDER          |
+| BEGINNING      | FUTURE           |
+| EFFECTIVE      | FUTURE           |
+| FROM           | FUTURE           |
+| AS OF          | FUTURE           |
+| INTERIM        | INTERIM          |
+| ACTING         | INTERIM          |
+| TEMP           | INTERIM          |
+| TEMPORARY      | INTERIM          |
+| END DATE       | OUTGOING         |
+| EXITED         | OUTGOING         |
+| OUTGOING       | OUTGOING         |
+| RESIGNED       | OUTGOING         |
+| TERMINATED     | OUTGOING         |
+| PART YEAR      | PARTIAL          |
+| PARTIAL YEAR   | PARTIAL          |
+| MONTHS         | PARTIAL          |
+| DISTRICT       | REGIONAL         |
+| REGIONAL       | REGIONAL         |
+| SOUTHERN       | REGIONAL         |
 
 
 #### 7. Standardize Titles
