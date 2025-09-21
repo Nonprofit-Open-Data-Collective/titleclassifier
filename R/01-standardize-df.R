@@ -14,26 +14,34 @@ require(dplyr) #should we port this to somewhere else?
 #' returns a data frame with understandable information about DTK individuals.
 #'
 #' @export
-standardize_df <- function( df, 
-                            title="F9_07_COMP_DTK_TITLE", 
-                            form.type="FORMTYPE",
-                            ave.hours="F9_07_COMP_DTK_AVE_HOUR_WEEK", 
-                            ave.hours.rltd="F9_07_COMP_DTK_AVE_HOUR_WEEK_RL", 
-                            comp.base="F9_07_COMP_DTK_COMP_ORG", 
-                            comp.benefits="F9_07_COMP_DTK_EMPL_BEN", 
-                            comp.related="F9_07_COMP_DTK_COMP_RLTD", 
-                            comp.other="F9_07_COMP_DTK_COMP_OTH",
-                            trustee.ind="F9_07_COMP_DTK_POS_INDIV_TRUST_X", 
-                            trustee.inst="F9_07_COMP_DTK_POS_INST_TRUST_X", 
-                            officer="F9_07_COMP_DTK_POS_OFF_X", 
-                            key.employee="F9_07_COMP_DTK_POS_KEY_EMPL_X", 
-                            high.comp.ind="F9_07_COMP_DTK_POS_HIGH_COMP_X", 
-                            former="F9_07_COMP_DTK_POS_FORMER_X",
-                            name = "F9_07_COMP_DTK_NAME_PERS"  )
+standardize_df <- function( 
+  df, 
+  EIN="EIN2",
+  OBJECTID="OBJECTID",
+  title="F9_07_COMP_DTK_TITLE", 
+  form.type="RETURN_TYPE",
+  ave.hours="F9_07_COMP_DTK_AVE_HOUR_WEEK", 
+  ave.hours.rltd="F9_07_COMP_DTK_AVE_HOUR_WEEK_RL", 
+  comp.base="F9_07_COMP_DTK_COMP_ORG", 
+  comp.benefits="F9_07_COMP_DTK_EMPL_BEN", 
+  comp.related="F9_07_COMP_DTK_COMP_RLTD", 
+  comp.other="F9_07_COMP_DTK_COMP_OTH",
+  trustee.ind="F9_07_COMP_DTK_POS_INDIV_TRUST_X", 
+  trustee.inst="F9_07_COMP_DTK_POS_INST_TRUST_X", 
+  officer="F9_07_COMP_DTK_POS_OFF_X", 
+  key.employee="F9_07_COMP_DTK_POS_KEY_EMPL_X", 
+  high.comp.ind="F9_07_COMP_DTK_POS_HIGH_COMP_X", 
+  former="F9_07_COMP_DTK_POS_FORMER_X",
+  name = "F9_07_COMP_DTK_NAME_PERS",
+  biz1 = "F9_07_COMP_DTK_NAME_ORG_L1",
+  biz2 = "F9_07_COMP_DTK_NAME_ORG_L2"  )
 {
 
   # make sure it has all vars
   df <- check_names(df)
+  
+  # add row IDs
+  df$PERSONID <- get_row_id(df)
   
   #### TITLE
 
@@ -49,6 +57,14 @@ standardize_df <- function( df,
   
   df[[ title ]] <- TitleTxt
 
+
+  #### NAMES OF DTK 
+
+  name1 <- df[[ name ]]
+  name2 <- df[[ biz1 ]]
+  name3 <- df[[ biz2 ]]
+  dtk_name <- paste( name1, name2, name3 ) |> trimws()
+  df$NAME <- dtk_name
 
   #### HOURS
 
@@ -91,12 +107,12 @@ standardize_df <- function( df,
   df[[  high.comp.ind ]]   <- to_boole( df[[  high.comp.ind ]], formtype )
   df[[  former        ]]   <- to_boole( df[[  former        ]], formtype )
   
-  df = df[!duplicated(df[, c("EIN", name, title)]) & !is.na(df[[ name ]]), ]
-  #remove duplicates of entries (if present)
-  #catching duplicates if orgs upload individuals with multiple titles
+  # df = df[!duplicated(df[, c("EIN", name, title)]) & !is.na(df[[ name ]]), ]
+  # remove duplicates of entries (if present)
+  # catching duplicates if orgs upload individuals with multiple titles
   
-  #some of the NA names are issues with the previous step of properly extracting
-  #the one to many table
+  # some of the NA names are issues with the previous step of properly extracting
+  # the one to many table
 
   #### RETURN CLEAN DF
   cat( "✔ standardize df step complete\n" )

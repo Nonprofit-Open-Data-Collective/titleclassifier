@@ -247,6 +247,9 @@ fix_assistant <- function(TitleTxt){
   TitleTxt <- gsub( "\\bASS\\s*T\\b", "ASSISTANT", TitleTxt)
   TitleTxt <- gsub( "^\\s*A\\b", "ASSISTANT", TitleTxt)
   
+  # associate
+  TitleTxt <- gsub( "\\sASSO\\s", "ASSOCIATE", TitleTxt)
+  
   #skipping association
   TitleTxt <- ifelse(!grepl("\\bASSOCIATI[A-Z]*\\b", TitleTxt), 
                      gsub( "\\bASSOC[A-Z]*\\b", "ASSOCIATE", TitleTxt), TitleTxt)
@@ -392,6 +395,8 @@ fix_chair <- function(TitleTxt)
   TitleTxt <- gsub("\\bCHAIR PERSON\\b", "CHAIR", TitleTxt)
   
   TitleTxt <- gsub("\\bCHA\\b", "CHAIR", TitleTxt)
+  TitleTxt <- gsub("\\bIN CH\\b", "IN CHIEF", TitleTxt)
+  TitleTxt <- gsub("\\b-IN-CH\\b", "-IN-CHIEF", TitleTxt)
   TitleTxt <- gsub("\\bCH\\b", "CHAIR", TitleTxt)
   TitleTxt <- gsub("\\bC\\b", "CHAIR", TitleTxt) #assume standalone c is chair
   
@@ -1140,6 +1145,8 @@ fix_miscellaneous <- function(TitleTxt){
 
   TitleTxt <- gsub("\\bFUNDRA\\b",            "FUNDRAISING", TitleTxt)
   
+  TitleTxt <- gsub("\\bOPERATIONS M\\b", "OPERATIONS MANAGER", TitleTxt)
+  
   TitleTxt <- gsub("\\bER\\b",   "EDITOR", TitleTxt)
   TitleTxt <- gsub("\\bEDR\\b",  "EDITOR", TitleTxt)
   TitleTxt <- gsub("\\bEDI\\b",  "EDITOR", TitleTxt)
@@ -1163,7 +1170,11 @@ fix_miscellaneous <- function(TitleTxt){
   TitleTxt <- gsub("\\bVICE\\s*$", "VICE PRESIDENT",TitleTxt)
   TitleTxt <- gsub("\\bHUMAN\\s*$", "HUMAN RESOURCES", TitleTxt)
   
-  #TRUSTEE
+  # MEMBER
+  TitleTxt <- gsub("\\bMEMBE\\b", "MEMBER", TitleTxt)
+  
+  
+  # TRUSTEE
   TitleTxt <- gsub("\\bTRTEE\\b", "TRUSTEE", TitleTxt)
   TitleTxt <- gsub("\\bTRU\\b", "TRUSTEE", TitleTxt)
   TitleTxt <- gsub("\\bTSTEE\\b", "TRUSTEE", TitleTxt)
@@ -1171,50 +1182,50 @@ fix_miscellaneous <- function(TitleTxt){
   TitleTxt <- gsub("\\bTRUSTE\\b", "TRUSTEE", TitleTxt)
   
   
-  #spelling corrections
+  # spelling corrections
   TitleTxt <- gsub("\\bCONTRUCTION\\b", "CONSTRUCTION", TitleTxt)
   TitleTxt <- gsub("\\bFORNER\\b", "FORMER", TitleTxt)
   TitleTxt <- gsub("\\bKNIG\\b", "KNIGHT", TitleTxt)
+  TitleTxt <- gsub("\\bKNIGH\\b", "KNIGHT", TitleTxt)
   
-  
-  #regionals
+  # regionals
   TitleTxt <- gsub("\\bSOUTHWES\\b", "SOUTHWEST", TitleTxt)
   TitleTxt <- gsub("\\bSTATE\\b", " ", TitleTxt) #state removed from titles
   
-  #duplicate removal
+  # duplicate removal
   TitleTxt <- gsub("PRESIDENT\\s+PRESIDENT", "PRESIDENT", TitleTxt)
   TitleTxt <- gsub("PRESIDENTPR.*\\b", "PRESIDENT", TitleTxt)
   TitleTxt <- gsub("CEOCEO", "CEO", TitleTxt)
   TitleTxt <- gsub("\\bDIRECTOR DIRECTOR\\b", "DIRECTOR", TitleTxt)
   TitleTxt <- gsub("\\bDIRECTOR EXECUTIVE\\b", "EXECUTIVE DIRECTOR", TitleTxt)
   
-  #heuristics (won't be much use until we get rid of role statuses)
+  # heuristics (won't be much use until we get rid of role statuses)
   
   TitleTxt <- ifelse(grepl("^\\s*VICE\\s*$",TitleTxt), "VICE PRESIDENT", TitleTxt)
-  #standalone vice is likely vp
+  # standalone vice is likely vp
   
   TitleTxt <- ifelse(grepl("^\\s*PR\\s*$",TitleTxt), "PRESIDENT", TitleTxt)
-  #standalone pr is likely pres
+  # standalone pr is likely pres
   
   TitleTxt <- ifelse(grepl("^\\s*EX\\s*$",TitleTxt), "EXECUTIVE", TitleTxt)
-  #standalone ex is likely exec
+  # standalone ex is likely exec
   
   TitleTxt <- ifelse(grepl("\\bT\\b", TitleTxt), gsub("\\bT\\b","TRUSTEE",TitleTxt), TitleTxt)
-  #standalone t is likely trustee, but could be treasurer
+  # standalone t is likely trustee, but could be treasurer
   
   TitleTxt <- ifelse(grepl("\\bEXECUTIVE V\\b", TitleTxt),
                      gsub("\\bEXECUTIVE V\\b","EXECUTIVE VICE PRESIDENT", TitleTxt),
-                     TitleTxt)
+                     TitleTxt)  
   
   TitleTxt <- ifelse(grepl("\\bCE$",TitleTxt), gsub("\\bCE$","CEO",TitleTxt), TitleTxt)
-  #ceo misspelling
+  # ceo misspelling
   
   TitleTxt <- ifelse(grepl("\\bCF$",TitleTxt), gsub("\\bCF$","CFO",TitleTxt), TitleTxt)
   
   TitleTxt <- ifelse(grepl("^EXECUTIVE OFFICER$",TitleTxt), "CEO", TitleTxt)
   
   TitleTxt <- ifelse(grepl("^AT\\s*LARGE$",TitleTxt), "DIRECTOR", TitleTxt) 
-  #at large sub
+  # at large sub
   
   TitleTxt <- ifelse(grepl("^N/A$",TitleTxt) | grepl("^N\\s*A$",TitleTxt) | 
                        grepl("^\\s*$",TitleTxt),

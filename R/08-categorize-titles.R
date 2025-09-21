@@ -16,28 +16,32 @@ require(dplyr)
 #' wrapper function
 #' 
 #' @export
-categorize_titles <- function( comp.data )
+categorize_titles <- function( comp.data, gs_title_taxonomy=NULL )
 {
+
+  # load title taxonomy 
+  # from google sheets
+  if( is.null(gs_title_taxonomy) )
+  { gs_title_taxonomy <- get_googlesheets_title_taxonomy() }
   
-  googlesheets4::gs4_deauth()
-  google.id <- "1iYEY2HYDZTV0uvu35UuwdgAUQNKXSyab260pPPutP1M"
-  d.taxonomy <- 
-    googlesheets4::read_sheet(  google.id,
-                                sheet="title-taxonomy", range="A:T",
-                                col_types = "c" )  # c = character
-  d.taxonomy[ is.na( d.taxonomy ) ] <- ""
-  
-  
-  comp.data <- merge( comp.data, d.taxonomy, 
-                     by.x="title.standard", by.y="title.standard", 
-                     all.x=T )
+  comp.data <- 
+    merge( comp.data, 
+           gs_title_taxonomy, 
+           by.x="title.standard", 
+           by.y="title.standard", 
+           all.x=T )
   
   comp.data <- 
     comp.data %>% 
     add_features() %>% 
-    simplify_varnames()
+    simplify_varnames() %>%
+    dplyr::arrange( object.id, 
+                    desc(pay.pct.of.max.incl.rltd),
+                    desc(hours.pct.of.max.incl.rltd), 
+                    person.id, 
+                    title.order )
   
-  cat( "✔ categorize titles step complete" )
+  cat( "✔ categorize titles step complete\n\n" )
   
   return( comp.data )
 }
@@ -53,7 +57,11 @@ categorize_titles <- function( comp.data )
 add_features <- function( df )
 {
 
-    
+  biz1 <- df[[ "ORG_NAME_L1" ]]
+  biz2 <- df[[ "ORG_NAME_L2" ]]
+  
+  df$ORGNAME <- paste0( biz1, biz2 ) |> trimws()
+  
     # df$AS.NEEDED.X        <- as.numeric( df$AS.NEEDED.X )
     df$Multiple.Titles    <- as.numeric( df$Multiple.Titles )
     df$FORMER.X           <- as.numeric( df$FORMER.X )
@@ -90,8 +98,7 @@ add_features <- function( df )
 
     df <- 
       df %>% 
-      dplyr::group_by( OBJECT_ID, 
-                       F9_07_COMP_DTK_NAME_PERS ) %>%
+      dplyr::group_by( OBJECTID, PERSONID ) %>%
       dplyr::mutate( tot.titles = max( Num.Titles, na.rm=T ),
                      emp2 = ifelse( sum(emp) > 0, 
                                     emp / sum(emp), 
@@ -137,7 +144,7 @@ add_features <- function( df )
 
     df <- 
       df %>%
-      dplyr::group_by( EIN ) %>% 
+      dplyr::group_by( EIN2 ) %>% 
       dplyr::mutate( num.dtk = n() - sum( Num.Titles > 1, na.rm=T ),
                      num.titles = n(),
                      num.emp = sum( emp2, na.rm=T ),  # weights people w multiple titles
@@ -174,7 +181,9 @@ add_features <- function( df )
     
 
     new.order <- 
-    c("NAME", "EIN", "TAXYR", "FORMTYPE", 
+    c("OBJECTID", "PERSONID",
+    
+      "ORGNAME","NAME", "EIN2", "TAX_YEAR", "RETURN_TYPE", 
       "F9_07_COMP_DTK_NAME_PERS", 
       
       "TITLE_RAW", "strata", "strata.label", "title.standard", 
@@ -230,7 +239,7 @@ add_features <- function( df )
       "sec",   "num.sec",
       "mem",   "num.mem", 
 
-      "URL", "OBJECT_ID"  )
+      "URL"  )
 
       df <- df[ new.order ]
 
@@ -253,15 +262,15 @@ add_features <- function( df )
 #' @export
 simplify_varnames <- function( df )
 {
-
+  
   df <- 
     df %>% 
     dplyr::rename(  
-           org.name = NAME,
-           ein = EIN, 
-           taxyr = TAXYR, 
-           formtype = FORMTYPE, 
-           dtk.name = F9_07_COMP_DTK_NAME_PERS,
+           org.name = ORGNAME,
+           ein = EIN2, 
+           taxyr = TAX_YEAR, 
+           formtype = RETURN_TYPE, 
+           dtk.name = NAME,
            title.mult.x = Multiple.Titles, 
            title.order = Num.Titles, 
            title.count = tot.titles,
@@ -315,7 +324,8 @@ simplify_varnames <- function( df )
            # num.spec, pres, vp, sec, treas, com, num.pres, 
            # num.vp, num.treas, num.sec, num.com, 
            url = URL, 
-           object.id = OBJECT_ID )
+           object.id = OBJECTID,
+           person.id = PERSONID )
 
    # zero out all NA fields in financial ratio fields 
 

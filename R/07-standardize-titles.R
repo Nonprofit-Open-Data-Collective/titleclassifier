@@ -13,31 +13,19 @@
 #' @export
 standardize_titles <- function(comp.data, title = "TitleTxt6", 
                                hours = "TOT.HOURS", pay = "TOT.COMP",
-                               officer = "F9_07_COMP_DTK_POS_OFF_X")
+                               officer = "F9_07_COMP_DTK_POS_OFF_X",
+                               gs_title_xwalk=NULL)
 {
   
-  # read from google sheets
-  googlesheets4::gs4_deauth()
-  df.standard <- googlesheets4::read_sheet( "1iYEY2HYDZTV0uvu35UuwdgAUQNKXSyab260pPPutP1M", 
-                                            sheet="title-standardization", range="A:D",
-                                            col_types = "c" )  # c = character
-  df.standard[ is.na( df.standard ) ] <- ""
-
-  dupes <- df.standard$title.variant[ duplicated( df.standard$title.variant ) ] %>% sort()
-  if( length(dupes) > 0 )
-  { 
-    print( "There are duplicate title variants: ")
-    print( paste0( dupes, collapse=" ;; " ) ) 
-  }
-  
-  df.standard <- unique( df.standard )
-  df.standard <- filter( df.standard, ! duplicated( title.variant ) )
-
+  # load title standardization 
+  # crosswalk from google sheets
+  if( is.null(gs_title_xwalk) )
+  { gs_title_xwalk <- get_googlesheets_title_xwalk() }
   
   comp.data <- basic_csuite_fixes( comp.data, officer = officer ) 
   
   comp.data <- 
-    merge( comp.data, df.standard, 
+    merge( comp.data, gs_title_xwalk, 
            by.x="TitleTxt7", 
            by.y="title.variant", 
            all.x=T )

@@ -535,6 +535,18 @@ fix_misc_splits <- function( x )
   x <- gsub( "SENIOR VICE PRESIDENT GENERAL COUNSEL", "SENIOR VICE PRESIDENT & GENERAL COUNSEL", x )
   x <- gsub( "^TRUSTEE AND PHYSICIAN$", "TRUSTEE & PHYSICIAN", x )
   x <- gsub( "^VICE PRESIDENT DIRECTOR$", "VICE PRESIDENT & DIRECTOR", x )
+  x <- gsub( "^EXECUTIVE VICE PRESIDENT AND\\b", "EXECUTIVE VICE PRESIDENT &", x )
+  x <- gsub( "^SENIOR VICE PRESIDENT AND\\b", "SENIOR VICE PRESIDENT &", x )
+  x <- gsub( "^VICE PRESIDENT AND\\b", "VICE PRESIDENT &", x )
+  x <- gsub( " PRESIDENT AND ", " PRESIDENT & ", x )
+  x <- gsub( "^DIRECTOR AND\\b", "DIRECTOR &", x )
+  x <- gsub( "^SENIOR VICE PRESIDENT CHIEF ", "SENIOR VICE PRESIDENT & CHIEF ", x )
+  x <- gsub( "^EXECUTIVE VICE PRESIDENT CHIEF ", "EXECUTIVE VICE PRESIDENT & CHIEF ", x )
+  x <- gsub( "^VICE PRESIDENT CHIEF ", "VICE PRESIDENT & CHIEF ", x )
+  x <- gsub( "\\bAND CHIEF ", "& CHIEF ", x )
+  x <- gsub( " OFFICER AND ", " OFFICER & ", x )
+  x <- gsub( "^PRESIDENT CHAIR$", "PRESIDENT & CHAIR", x )
+  
   return(x)
 }
 

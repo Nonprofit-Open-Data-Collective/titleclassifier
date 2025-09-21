@@ -14,7 +14,7 @@
 #' roughly 5 minutes for 100,000 titles
 #' 
 #' @export
-gen_status_codes <- function( comp.data, title="TitleTxt5" )
+gen_status_codes <- function( comp.data, title="TitleTxt5", gs_status_codes=NULL )
 {
   
   TitleTxt <- comp.data[[title]]
@@ -49,16 +49,16 @@ gen_status_codes <- function( comp.data, title="TitleTxt5" )
   
   comp.data <- 
     comp.data %>% 
-    flag_and_keep(    s.code="EXOFFICIO"  )  %>% 
-    flag_and_remove(  s.code="FORMER"     )  %>% 
-    flag_and_remove(  s.code="FOUNDER"    )  %>%
-    flag_and_remove(  s.code="FUTURE"     )  %>%
-    flag_and_remove(  s.code="INTERIM"    )  %>%
-    flag_and_remove(  s.code="OUTGOING"   )  %>%
-    flag_and_remove(  s.code="PARTIAL"    )  %>% 
-    flag_and_remove(  s.code="SCHED O"    )  %>%  
-    flag_and_remove(  s.code="AT LARGE"   )  %>%  
-    flag_and_keep(    s.code="REGIONAL"   )    
+    flag_and_keep(    s.code="EXOFFICIO", gs_status_codes=gs_status_codes  )  %>% 
+    flag_and_remove(  s.code="FORMER", gs_status_codes=gs_status_codes     )  %>% 
+    flag_and_remove(  s.code="FOUNDER", gs_status_codes=gs_status_codes    )  %>%
+    flag_and_remove(  s.code="FUTURE" , gs_status_codes=gs_status_codes    )  %>%
+    flag_and_remove(  s.code="INTERIM",  gs_status_codes=gs_status_codes   )  %>%
+    flag_and_remove(  s.code="OUTGOING", gs_status_codes=gs_status_codes   )  %>%
+    flag_and_remove(  s.code="PARTIAL", gs_status_codes=gs_status_codes    )  %>% 
+    flag_and_remove(  s.code="SCHED O", gs_status_codes=gs_status_codes    )  %>%  
+    flag_and_remove(  s.code="AT LARGE", gs_status_codes=gs_status_codes   )  %>%  
+    flag_and_keep(    s.code="REGIONAL", gs_status_codes=gs_status_codes   )    
   
   ##  sanity check:  
   ##  if FORMER.X and FUTURE.X both checked 
@@ -146,9 +146,9 @@ gen_status_codes <- function( comp.data, title="TitleTxt5" )
 #' remove_date(x) %>% remove_status( s.code="INTERIM" )
 #' 
 #' @export
-flag_and_remove <- function( df, title="TitleTxt6", s.code="FORMER" )
+flag_and_remove <- function( df, title="TitleTxt6", s.code="FORMER", gs_status_codes=NULL )
 {
-  variants <- get_variants( s.code )
+  variants <- get_variants( s.code, gs_status_codes )
   df <- add_status_flag( df, title, s.code, variants )
   df[[title]] <- remove_status( df[[title]], variants )
   return( df )
@@ -170,9 +170,9 @@ flag_and_remove <- function( df, title="TitleTxt6", s.code="FORMER" )
 #' @param s.code Any of the unique status.qualifier strings from df.status (e.g. "REGIONAL")
 #' 
 #' @export
-flag_and_keep <- function( df, title="TitleTxt6", s.code )
+flag_and_keep <- function( df, title="TitleTxt6", s.code, gs_status_codes=NULL )
 {
-  variants <- get_variants( s.code )
+  variants <- get_variants( s.code, gs_status_codes )
   df <- add_status_flag( df, title, s.code, variants )
   x <- df[[title]]
   df[[title]] <- standardize_status( x, s.code, variants )
@@ -190,21 +190,19 @@ flag_and_keep <- function( df, title="TitleTxt6", s.code )
 #' @param s.code Any of the unique status.qualifier strings from df.status ("FUTURE","FORMER","INTERIM",etc)
 #' 
 #' @export
-get_variants <- function( s.code )
+get_variants <- function( s.code, gs_status_codes=NULL )
 { 
-  # load current status codes from google sheets
-  googlesheets4::gs4_deauth()
-  status.df <- 
-    googlesheets4::read_sheet( "1iYEY2HYDZTV0uvu35UuwdgAUQNKXSyab260pPPutP1M", 
-                                sheet="status-codes", 
-                                range="A:B",
-                                col_types = "c" )  
-  
+  # load dtk status codes
+  # from google sheets
+  if( is.null(gs_status_codes) )
+  { gs_status_codes <- get_googlesheets_status_codes() }
+
   # collapse all variants into regex OR statement 
   # \\b = regex word boundary
-  v <- status.df$status.variant[ status.df$status.qualifier == s.code ]
+  is_status_type <- gs_status_codes$status.qualifier == s.code
+  status_variants <- gs_status_codes$status.variant
+  v <- status_variants[ is_status_type ]
   search.terms <- paste0( "\\b", v, "\\b", collapse="|" )  
-  
   return( search.terms )
 }
 
@@ -253,7 +251,7 @@ remove_status <- function( x, variants )
   x.temp <- x
   x <- gsub( variants, "", x )
   # keep status code if it's the full title
-  x[ trimws(x) == "" ] <- x.temp
+  x[ trimws(x) == "" ] <- x.temp[ trimws(x) == "" ]
   return( x )
 }  
 

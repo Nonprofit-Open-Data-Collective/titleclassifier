@@ -90,8 +90,8 @@ apply_misc_split_rules <- function(x)
   x <- gsub( "TREASURER AND S$", "TREASURER & SECRETARY", x ) 
 
   # split all FOUNDER titles
-  x <- gsub( "\\bFOUNDING\\b", "FOUNDER", x )
   x <- gsub( "\\bFOUNDER\\b", "& FOUNDER & ", x )
+  x <- gsub( "\\bFOUNDING\\b", "FOUNDER  & ", x )
   x <- gsub( "& $", "", x ) # trailing ampersands
   x <- trimws( x )
   
@@ -120,7 +120,7 @@ identify_split_num <- function(x){
   x <- gsub( "\\bEX[A-Z]*\\b\\s*&\\s*DIR[A-Z]*\\b", "EXECUTIVE DIRECTOR", x )
 
   # replace "secretary treasurer" with "secretary & treasurer"
-  x[ grepl( "^\\s*SEC[A-Z]*\\s*TREAS[A-Z]*\\b$", x ) ] <- "SECRETARY & TREASURER"
+  x[ grepl( "^\\s*SEC[A-Z]*\\s|-*TREAS[A-Z]*\\b$", x ) ] <- "SECRETARY & TREASURER"
   
   num.titles <- stringr::str_count( x, "&" ) + 1
   
