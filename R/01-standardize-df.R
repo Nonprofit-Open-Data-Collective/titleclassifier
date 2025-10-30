@@ -37,6 +37,8 @@ standardize_df <- function(
   biz2 = "F9_07_COMP_DTK_NAME_ORG_L2"  )
 {
 
+  df <- as.data.frame(df)
+  
   # make sure it has all vars
   df <- check_names(df)
   

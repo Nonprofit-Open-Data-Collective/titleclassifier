@@ -203,16 +203,24 @@ fix_executive <- function(TitleTxt){
 #'
 #' @export
 fix_director <- function(TitleTxt){
+
+  # common misspellings of director
+  TitleTxt <- gsub("\\bDIECTOR\\b", "DIRECTOR", TitleTxt) 
+  TitleTxt <- gsub("\\bDRECTOR\\b", "DIRECTOR", TitleTxt) 
+  
+  # executive directors
+  TitleTxt <- gsub( "\\bEXECUTIVE D\\b", "EXECUTIVE DIRECTOR", TitleTxt )
+  TitleTxt <- gsub( "\\bE\\b DIRECTOR",  "EXECUTIVE DIRECTOR", TitleTxt )
+  TitleTxt <- gsub("EXEC DIR[A-Z]*\\b",  "EXECUTIVE DIRECTOR", TitleTxt)
+  TitleTxt <- gsub( "\\bE\\s*D\\b",      "EXECUTIVE DIRECTOR", TitleTxt )
+  TitleTxt <- gsub("\\bE\\s*D\\b",       "EXECUTIVE DIRECTOR", TitleTxt)
+  
   TitleTxt <- ifelse(!grepl("CEO", TitleTxt),
                      gsub("\\bDIR[A-Z]*\\b", "DIRECTOR", TitleTxt), TitleTxt)
   TitleTxt <- ifelse(!grepl("CEO", TitleTxt),
                      gsub("\\bDI\\b","DIRECTOR", TitleTxt), TitleTxt)
   TitleTxt <- ifelse(!grepl("CEO", TitleTxt),
                      gsub("\\bDTR\\b","DIRECTOR", TitleTxt), TitleTxt)
-  TitleTxt <- ifelse(!grepl("CEO", TitleTxt),
-                     gsub("\\bDRECTOR\\b","DIRECTOR", TitleTxt), TitleTxt)
-  
-  TitleTxt <- gsub("\\bDIECTOR\\b", "DIRECTOR", TitleTxt) #misspelling
   
   return(TitleTxt)
 }
@@ -428,10 +436,6 @@ condense_abbreviations <- function(TitleTxt){
   TitleTxt <- gsub( "C\\sR\\sN\\sA", "CRNA", TitleTxt ) #certified registered nurse anesthetist
   TitleTxt <- gsub( "C\\sN\\sO", "CNO", TitleTxt ) #nursing
   TitleTxt <- gsub( "C\\sM\\sO", "CMO", TitleTxt ) #marketing
-  
-  TitleTxt <- gsub( "\\bE\\b DIRECTOR", "EXECUTIVE DIRECTOR", TitleTxt )
-  TitleTxt <- gsub( "\\bE\\s*D\\b", "EXECUTIVE DIRECTOR", TitleTxt )
-  TitleTxt <- gsub( "\\bEXECUTIVE D\\b", "EXECUTIVE DIRECTOR", TitleTxt )
   
   TitleTxt <- gsub( "\\bKEY\\s\\bE\\b", "KEY EMPLOYEE\\b", TitleTxt )
   
@@ -1222,7 +1226,7 @@ fix_miscellaneous <- function(TitleTxt){
   
   TitleTxt <- ifelse(grepl("\\bCF$",TitleTxt), gsub("\\bCF$","CFO",TitleTxt), TitleTxt)
   
-  TitleTxt <- ifelse(grepl("^EXECUTIVE OFFICER$",TitleTxt), "CEO", TitleTxt)
+  # TitleTxt <- ifelse(grepl("^EXECUTIVE OFFICER$",TitleTxt), "CEO", TitleTxt)
   
   TitleTxt <- ifelse(grepl("^AT\\s*LARGE$",TitleTxt), "DIRECTOR", TitleTxt) 
   # at large sub
@@ -1259,9 +1263,9 @@ simplify_clevels <- function(TitleTxt){
   #all other c-suites are unclear (for now)
   
   #change executive director and chief executive director to CEO
-  TitleTxt <- gsub("EXECUTIVE DIRECTOR", "CEO", TitleTxt)
-  TitleTxt <- gsub("EXEC DIR[A-Z]*\\b", "CEO", TitleTxt)
-  TitleTxt <- gsub("\\bE\\s*D\\b", "CEO", TitleTxt)
+  # TitleTxt <- gsub("EXECUTIVE DIRECTOR", "CEO", TitleTxt)
+  # TitleTxt <- gsub("EXEC DIR[A-Z]*\\b", "CEO", TitleTxt)
+  # TitleTxt <- gsub("\\bE\\s*D\\b", "CEO", TitleTxt)
   TitleTxt <- gsub("\\bCOCEO\\b", "CO-CEO", TitleTxt)
   
   #board member substitutions

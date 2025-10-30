@@ -6,7 +6,11 @@ rebatch <- function( lst, n = 10 ) {
   split( lst, ceiling( seq_along(lst) / n ))
 }
 
-process_chunk <- function(chunk, gs_status_codes=NULL, gs_title_xwalk=NULL, gs_title_taxonomy=NULL) {
+process_chunk <- function( chunk, 
+                           batch_id, total_batches,
+                           gs_status_codes=NULL, 
+                           gs_title_xwalk=NULL, 
+                           gs_title_taxonomy=NULL) {
 
   df <- dplyr::bind_rows(chunk)
   
@@ -25,17 +29,21 @@ process_chunk <- function(chunk, gs_status_codes=NULL, gs_title_xwalk=NULL, gs_t
       
   })
   
+  # report progress
+  message(sprintf("batch %d of %d complete", batch_id, total_batches))
+  
   return(dd)
 }
 
-classify_titles <- function( df, batch_size = 10, workers = NULL ) {
+classify_titles <- function( df, batch_size = 2000, workers = NULL ) {
   
-  if( is.null(workers) ){ workers = parallel::detectCores() - 1 }
+  if( is.null(workers) ){ workers = parallel::detectCores() / 2 }
 
   groups <- df %>%
     dplyr::group_split(OBJECTID) 
   
   batches <- rebatch(groups, n = batch_size)
+  total_batches <- length(batches)
   
   if (.Platform$OS.type == "windows") {
     future::plan(future::multisession, workers = workers)
@@ -49,14 +57,27 @@ classify_titles <- function( df, batch_size = 10, workers = NULL ) {
   gs_title_taxonomy <- get_googlesheets_title_taxonomy()
   
   # Pass them to each worker
-  results <- furrr::future_map(
+  # results <- furrr::future_map(
+  #   batches,
+  #   process_chunk,
+  #   gs_status_codes   = gs_status_codes,
+  #   gs_title_xwalk    = gs_title_xwalk,
+  #   gs_title_taxonomy = gs_title_taxonomy,
+  #   .progress = TRUE
+  # )
+  
+  # pass to workers with batch number
+  results <- furrr::future_map2(
     batches,
-    process_chunk,
-    gs_status_codes   = gs_status_codes,
-    gs_title_xwalk    = gs_title_xwalk,
-    gs_title_taxonomy = gs_title_taxonomy,
-    .progress = TRUE
-  )
+    seq_along(batches),
+    ~ process_chunk(.x,
+                    batch_id = .y,
+                    total_batches = total_batches,
+                    gs_status_codes   = gs_status_codes,
+                    gs_title_xwalk    = gs_title_xwalk,
+                    gs_title_taxonomy = gs_title_taxonomy),
+    .progress = FALSE
+  )  
 
   final_df <- dplyr::bind_rows(results)
   return(final_df)

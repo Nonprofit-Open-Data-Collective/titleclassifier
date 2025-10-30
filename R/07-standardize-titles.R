@@ -133,3 +133,47 @@ replace_cfo <- function(TitleTxt, weekly.hours, total.pay, officer.flag)
   
   return(TitleTxt)
 }
+
+
+
+# CONDITIONAL LOGIC FOR CEO
+#
+#  candidate positions: 
+#  - executive director
+#  - president
+#  - managing director
+#  - general director
+#  - museum director
+
+# ceo title exists within org
+# more than one person with title in org
+# max pay rank for people with title is 1, only 
+# max hour rank for people with title is 1
+# count of titles %in% c(ceo,ed,managing director, general director)
+
+###  ONLY ONE PAID EMPLOYEE
+#
+#    num.paid == 1
+#    num.fte < 3
+#    top pay has title in c(ceo,ed,managing director, general director)
+
+###  NO ONE IS FULL TIME
+#
+# 
+
+###  HAS INTERIM EXECS
+#
+# 
+
+# if count < 3
+# pay rank > 3
+# no other CEO
+
+
+
+# anyone with "chief" title? 
+
+# deal with presidents last
+
+
+

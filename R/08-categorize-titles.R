@@ -144,12 +144,12 @@ add_features <- function( df )
 
     df <- 
       df %>%
-      dplyr::group_by( EIN2 ) %>% 
+      dplyr::group_by( OBJECTID ) %>% 
       dplyr::mutate( num.dtk = n() - sum( Num.Titles > 1, na.rm=T ),
                      num.titles = n(),
                      num.emp = sum( emp2, na.rm=T ),  # weights people w multiple titles
                      num.ceos = sum( ceo, na.rm=T ),
-                     num.clevel = sum( ceo, na.rm=T ) + sum( c.level, na.rm=T ),
+                     num.clevel = sum( c.level, na.rm=T ),  # all ceos already counted as c.level
                      num.dirvp = sum( dir.vp, na.rm=T ),
                      num.mgr = sum( mgr, na.rm=T ),
                      num.spec = sum( spec, na.rm=T ),

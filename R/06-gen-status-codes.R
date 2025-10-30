@@ -23,7 +23,7 @@ gen_status_codes <- function( comp.data, title="TitleTxt5", gs_status_codes=NULL
   TitleTxt <- gsub( "\\bCURRENT\\b", "", TitleTxt )
 
   # edge cases - standardize first
-  TitleTxt <- gsub( "\\bEX\\s", "FORMER", TitleTxt )
+  # TitleTxt <- gsub( "\\bEX\\s", "FORMER", TitleTxt )
   TitleTxt <- gsub( "\\bEX$",   "FORMER", TitleTxt )
   TitleTxt <- gsub( "\\bEND$",  "FORMER", TitleTxt )
   TitleTxt <- gsub( "\\bNEW$",  "FORMER", TitleTxt )
@@ -40,7 +40,12 @@ gen_status_codes <- function( comp.data, title="TitleTxt5", gs_status_codes=NULL
   # passing the df through flag steps
   title <- "TitleTxt6"
   comp.data[[title]] <- TitleTxt
-
+  
+  # load dtk status codes
+  # from google sheets
+  if( is.null(gs_status_codes) )
+  { gs_status_codes <- get_googlesheets_status_codes() }
+  
   # don't remove 'regional' because 
   # it changes the title meaning
   
@@ -59,11 +64,35 @@ gen_status_codes <- function( comp.data, title="TitleTxt5", gs_status_codes=NULL
     flag_and_remove(  s.code="SCHED O", gs_status_codes=gs_status_codes    )  %>%  
     flag_and_remove(  s.code="AT LARGE", gs_status_codes=gs_status_codes   )  %>%  
     flag_and_keep(    s.code="REGIONAL", gs_status_codes=gs_status_codes   )    
+
+  ##  apply consistent status codes for people with multiple titles 
+  ##  for example, "interim" often applies to all titles not just one
   
+  comp.data <-
+    comp.data %>%
+    group_by( PERSONID ) %>%
+    mutate( DATE.X = max( DATE.X ),
+            FORMER.X = max( FORMER.X ),
+            FUTURE.X = max( FUTURE.X ),
+            OUTGOING.X = max( OUTGOING.X ),
+            PARTIAL.X = max( PARTIAL.X ),
+            INTERIM.X = max( INTERIM.X ),
+            FOUNDER.X = max( FOUNDER.X ),
+            EXOFFICIO.X = max( EXOFFICIO.X ),
+            AT.LARGE.X = max( AT.LARGE.X ),
+            REGIONAL.X = max( REGIONAL.X ),
+            SCHED.O.X = max( SCHED.O.X ) ) 
+
+  ##  check partial if part year, outgoing, incoming, or has date in title
+  partial <- comp.data$PARTIAL.X | comp.data$OUTGOING.X |  comp.data$FUTURE.X | comp.data$DATE.X
+  comp.data$PARTIAL <- partial
+
   ##  sanity check:  
   ##  if FORMER.X and FUTURE.X both checked 
   ##  it's likely 'from ... until': recode as FORMER.X only
-  comp.data$FUTURE.X[ comp.data$FUTURE.X == 1 & comp.data$FORMER.X == 1 ] <- 0 
+  comp.data$FUTURE.X[ comp.data$FUTURE.X == 1 & comp.data$FORMER.X == 1 ] <- 0        
+    
+  ## CLEAN UP TITLES
 
   x <- comp.data[[title]]
   
@@ -192,11 +221,6 @@ flag_and_keep <- function( df, title="TitleTxt6", s.code, gs_status_codes=NULL )
 #' @export
 get_variants <- function( s.code, gs_status_codes=NULL )
 { 
-  # load dtk status codes
-  # from google sheets
-  if( is.null(gs_status_codes) )
-  { gs_status_codes <- get_googlesheets_status_codes() }
-
   # collapse all variants into regex OR statement 
   # \\b = regex word boundary
   is_status_type <- gs_status_codes$status.qualifier == s.code
@@ -226,7 +250,8 @@ add_status_flag <- function( df, title, s.code, variants )
 {
   x <- df[[title]]
   # create a flag if there are any matches
-  df[ paste0( gsub(" ",".",s.code), ".X" ) ] <- grepl( variants, x )
+  flag.name <- paste0( gsub(" ",".",s.code), ".X" )
+  df[[ flag.name ]] <- grepl( variants, x )
   return( df )
 }
 
