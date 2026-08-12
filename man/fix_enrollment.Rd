@@ -6,6 +6,9 @@
 \usage{
 fix_enrollment(TitleTxt)
 }
+\arguments{
+\item{TitleTxt}{A character vector of titles.}
+}
 \description{
 condenses enrollment abbreviations to a standardized form
 }

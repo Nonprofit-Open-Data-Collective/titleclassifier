@@ -6,6 +6,9 @@
 \usage{
 fix_miscellaneous(TitleTxt)
 }
+\arguments{
+\item{TitleTxt}{A character vector of titles.}
+}
 \description{
 substituting all the one's we missed/haven't generalized
 }

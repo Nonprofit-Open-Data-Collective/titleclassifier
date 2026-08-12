@@ -6,6 +6,9 @@
 \usage{
 clean_up_ceos(comp.data)
 }
+\arguments{
+\item{comp.data}{A Part VII compensation data frame.}
+}
 \description{
 removes all duplicate instances of ceos within a single org
 }

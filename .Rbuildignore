@@ -1,0 +1,23 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^\.git$
+^\.gitignore$
+^\.Rhistory$
+^LICENSE\.md$
+# development, reference, and data-prep material not part of the package
+^old-R$
+^data-raw$
+^data-dev$
+^test-tables$
+^background$
+^regex$
+^code-tour$
+^tests/regression$
+^efdata$
+^.*-COMPENSATION-.*\.CSV$
+^data/README\.md$
+^TODO\.md$
+^CODE-QUALITY-ASSESSMENT\.md$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$

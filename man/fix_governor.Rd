@@ -6,6 +6,9 @@
 \usage{
 fix_governor(TitleTxt)
 }
+\arguments{
+\item{TitleTxt}{A character vector of titles.}
+}
 \description{
 condenses governor abbreviations to a standardized form
 also works on governance and government

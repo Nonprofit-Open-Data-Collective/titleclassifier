@@ -6,6 +6,9 @@
 \usage{
 pre_clean(x)
 }
+\arguments{
+\item{x}{A character vector of titles.}
+}
 \description{
 gets rid of meaningless punctuation (like periods),
 converts titles to uppercase form

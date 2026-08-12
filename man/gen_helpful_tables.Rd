@@ -6,6 +6,9 @@
 \usage{
 gen_helpful_tables(comp.table)
 }
+\arguments{
+\item{comp.table}{A Part VII compensation data frame.}
+}
 \description{
 generates and saves some helpful tables from a compensation table
 including raw and cleaned titles including some specific string.

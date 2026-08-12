@@ -6,6 +6,15 @@
 \usage{
 replace_cfo(TitleTxt, weekly.hours, total.pay, officer.flag)
 }
+\arguments{
+\item{TitleTxt}{A character vector of titles.}
+
+\item{weekly.hours}{Numeric vector of average weekly hours.}
+
+\item{total.pay}{Numeric vector of total compensation.}
+
+\item{officer.flag}{Officer checkbox flag vector.}
+}
 \description{
 replaces all instances of titles that could be CFO
 }

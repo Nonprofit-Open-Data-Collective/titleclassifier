@@ -16,6 +16,8 @@ require(stringr)
 #' runtime compared to old code is about several magnitudes faster than before
 #' 
 #' @export
+#' @param df A Part VII compensation data frame.
+#' @param title Name of the title column to operate on.
 split_titles <- function( df, title = "TitleTxt3" )
 {
   x <- df[[title]]
@@ -53,7 +55,7 @@ split_titles <- function( df, title = "TitleTxt3" )
   new.title.id <- sapply( title.count, seq ) %>% unlist()
   df$Num.Titles <- new.title.id  
   
-  cat( "✔ split titles step complete\n" )
+  cat( "[OK] split titles step complete\n" )
   return(df)
 }
   
@@ -67,6 +69,7 @@ split_titles <- function( df, title = "TitleTxt3" )
 #' not identified by previous steps. 
 #' 
 #' @export
+#' @param x A character vector of titles.
 apply_misc_split_rules <- function(x)
 {
   # remove all lingering digits
@@ -92,7 +95,11 @@ apply_misc_split_rules <- function(x)
   # split all FOUNDER titles
   x <- gsub( "\\bFOUNDER\\b", "& FOUNDER & ", x )
   x <- gsub( "\\bFOUNDING\\b", "FOUNDER  & ", x )
-  x <- gsub( "& $", "", x ) # trailing ampersands
+  # tidy the ampersands the FOUNDER rules can introduce so strsplit() on "&"
+  # doesn't yield empty title fragments (e.g. leading "& FOUNDER")
+  x <- gsub( "&\\s*&", "&", x )        # collapse doubled ampersands
+  x <- gsub( "^\\s*&\\s*", "", x )     # strip a leading ampersand
+  x <- gsub( "\\s*&\\s*$", "", x )     # strip a trailing ampersand
   x <- trimws( x )
   
   return(x)
@@ -111,6 +118,7 @@ apply_misc_split_rules <- function(x)
 #' and returns the number of titles actually present
 #' 
 #' @export
+#' @param x A character vector of titles.
 identify_split_num <- function(x){
 
   # remove digits
@@ -119,8 +127,12 @@ identify_split_num <- function(x){
   # replace "exec & dir" versions with "executive director"
   x <- gsub( "\\bEX[A-Z]*\\b\\s*&\\s*DIR[A-Z]*\\b", "EXECUTIVE DIRECTOR", x )
 
-  # replace "secretary treasurer" with "secretary & treasurer"
-  x[ grepl( "^\\s*SEC[A-Z]*\\s|-*TREAS[A-Z]*\\b$", x ) ] <- "SECRETARY & TREASURER"
+  # replace a whole-string "secretary treasurer" (or SEC-TREAS / SECTREAS)
+  # with "secretary & treasurer". Must be a single anchored expression: the
+  # previous version had a top-level "|" that split it into two loose
+  # alternatives, matching any title starting with a SEC-word or ending in a
+  # TREAS-word (e.g. "SECURITY DIRECTOR", "ASSISTANT TREASURER").
+  x[ grepl( "^\\s*SEC[A-Z]*\\s*-*\\s*TREAS[A-Z]*\\b$", x ) ] <- "SECRETARY & TREASURER"
   
   num.titles <- stringr::str_count( x, "&" ) + 1
   
@@ -135,6 +147,7 @@ identify_split_num <- function(x){
 #' removes the first occurrence of a split title
 #' 
 #' @export
+#' @param x A character vector of titles.
 remove_first_split <- function(x)
 {
   #finds the first occurrence of the ampersand

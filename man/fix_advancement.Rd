@@ -6,6 +6,9 @@
 \usage{
 fix_advancement(TitleTxt)
 }
+\arguments{
+\item{TitleTxt}{A character vector of titles.}
+}
 \description{
 condenses advancement abbreviations to a standardized form
 }

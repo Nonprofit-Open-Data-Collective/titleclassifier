@@ -6,6 +6,9 @@
 \usage{
 conditional_logic(comp.data)
 }
+\arguments{
+\item{comp.data}{A Part VII compensation data frame.}
+}
 \description{
 TODO formalize the conditional logic rules
 (have a couple of them already thought out in categorize titles, but need

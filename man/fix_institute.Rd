@@ -6,6 +6,9 @@
 \usage{
 fix_institute(TitleTxt)
 }
+\arguments{
+\item{TitleTxt}{A character vector of titles.}
+}
 \description{
 condenses institute/institutional abbreviations to a standardized form
 

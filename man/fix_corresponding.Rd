@@ -6,6 +6,9 @@
 \usage{
 fix_corresponding(TitleTxt)
 }
+\arguments{
+\item{TitleTxt}{A character vector of titles.}
+}
 \description{
 condenses corresponding abbreviations to a standardized form
 }

@@ -6,6 +6,9 @@
 \usage{
 slash_helper(x)
 }
+\arguments{
+\item{x}{A character vector of titles.}
+}
 \description{
 checks for a slash and replaces it
 with an ampersand;

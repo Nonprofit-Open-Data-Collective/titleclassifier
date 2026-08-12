@@ -6,6 +6,9 @@
 \usage{
 condense_abbreviations(TitleTxt)
 }
+\arguments{
+\item{TitleTxt}{A character vector of titles.}
+}
 \description{
 condenses spaced out c-suite abbreviations
 e.g. C E O --> CEO

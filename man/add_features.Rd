@@ -6,6 +6,9 @@
 \usage{
 add_features(df)
 }
+\arguments{
+\item{df}{A Part VII compensation data frame.}
+}
 \description{
 adds helpful context fields in comp dataset
 like pay rank, hour rank, counts of types of employees, etc.

@@ -4,12 +4,12 @@
 \alias{remove_status}
 \title{remove a status qualifier from the title}
 \usage{
-remove_status(x, s.code)
+remove_status(x, variants)
 }
 \arguments{
 \item{x}{Vector of titles}
 
-\item{s.code}{Any of the unique status.qualifier strings from df.status (e.g. "FORMER")}
+\item{variants}{Regex alternation of status-code variants (from \code{get_variants()}).}
 }
 \description{
 Search for variants of a status code and remove them.

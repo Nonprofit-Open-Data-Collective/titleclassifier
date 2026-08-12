@@ -6,9 +6,12 @@
 \usage{
 standardize_of(TitleTxt)
 }
+\arguments{
+\item{TitleTxt}{A character vector of titles.}
+}
 \description{
-detects whether “of” is a part of the title, or separator
-for example, TITLE OF TITLE is fine, “AS OF DATE” is not
+detects whether "of" is a part of the title, or separator
+for example, TITLE OF TITLE is fine, "AS OF DATE" is not
 
 if "of" is part of a date (and namely as of), then we replace with "SINCE"
 for also gets mapped to of?

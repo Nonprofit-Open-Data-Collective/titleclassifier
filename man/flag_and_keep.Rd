@@ -4,7 +4,7 @@
 \alias{flag_and_keep}
 \title{create a status code flag and KEEP the standardized version of the string}
 \usage{
-flag_and_keep(df, title = "TitleTxt6", s.code)
+flag_and_keep(df, title = "TitleTxt6", s.code, gs_status_codes = NULL)
 }
 \arguments{
 \item{df}{A compensation dataframe}
@@ -12,6 +12,8 @@ flag_and_keep(df, title = "TitleTxt6", s.code)
 \item{title}{Which version of the title string to use (defaults to "TitleTxt6")}
 
 \item{s.code}{Any of the unique status.qualifier strings from df.status (e.g. "REGIONAL")}
+
+\item{gs_status_codes}{Optional status-code crosswalk data frame; if \code{NULL}, loaded from the bundled snapshot.}
 }
 \description{
 Search for variants of a status code (stored in google sheets),

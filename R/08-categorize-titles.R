@@ -16,6 +16,8 @@ require(dplyr)
 #' wrapper function
 #' 
 #' @export
+#' @param comp.data A Part VII compensation data frame.
+#' @param gs_title_taxonomy Optional title-taxonomy crosswalk; if `NULL`, loaded from the bundled snapshot.
 categorize_titles <- function( comp.data, gs_title_taxonomy=NULL )
 {
 
@@ -41,7 +43,7 @@ categorize_titles <- function( comp.data, gs_title_taxonomy=NULL )
                     person.id, 
                     title.order )
   
-  cat( "✔ categorize titles step complete\n\n" )
+  cat( "[OK] categorize titles step complete\n\n" )
   
   return( comp.data )
 }
@@ -54,6 +56,7 @@ categorize_titles <- function( comp.data, gs_title_taxonomy=NULL )
 #' like pay rank, hour rank, counts of types of employees, etc.
 #' 
 #' @export
+#' @param df A Part VII compensation data frame.
 add_features <- function( df )
 {
 
@@ -260,6 +263,7 @@ add_features <- function( df )
 #' simplify variable names 
 #' 
 #' @export
+#' @param df A Part VII compensation data frame.
 simplify_varnames <- function( df )
 {
   

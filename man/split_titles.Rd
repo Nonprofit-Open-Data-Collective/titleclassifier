@@ -6,6 +6,11 @@
 \usage{
 split_titles(df, title = "TitleTxt3")
 }
+\arguments{
+\item{df}{A Part VII compensation data frame.}
+
+\item{title}{Name of the title column to operate on.}
+}
 \description{
 creates a flag for a split, and then builds out a new data frame
 (combining it back together) later --> should run much faster

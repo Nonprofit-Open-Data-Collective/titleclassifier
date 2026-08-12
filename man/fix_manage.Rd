@@ -6,6 +6,9 @@
 \usage{
 fix_manage(TitleTxt)
 }
+\arguments{
+\item{TitleTxt}{A character vector of titles.}
+}
 \description{
 condenses management/manager/managing
 abbreviations to a standardized form

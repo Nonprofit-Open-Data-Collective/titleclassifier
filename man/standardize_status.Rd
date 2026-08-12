@@ -4,12 +4,14 @@
 \alias{standardize_status}
 \title{replace status variant with the standardized version}
 \usage{
-standardize_status(x, s.code)
+standardize_status(x, s.code, variants)
 }
 \arguments{
 \item{x}{Vector of titles}
 
 \item{s.code}{Any of the unique status.qualifier strings from df.status}
+
+\item{variants}{Regex alternation of status-code variants (from \code{get_variants()}).}
 }
 \description{
 Search for variants of a status code and replace the variant

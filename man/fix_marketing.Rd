@@ -6,6 +6,9 @@
 \usage{
 fix_marketing(TitleTxt)
 }
+\arguments{
+\item{TitleTxt}{A character vector of titles.}
+}
 \description{
 condenses marketing abbreviations to a standardized form
 }

@@ -6,6 +6,11 @@
 \usage{
 get_title_dump(comp.table, target.word)
 }
+\arguments{
+\item{comp.table}{A Part VII compensation data frame.}
+
+\item{target.word}{A word, or vector of words, to search for within titles.}
+}
 \description{
 generate all the titles that contain a given word and output a dataframe
 including the original raw title and its cleaned version

@@ -6,6 +6,9 @@
 \usage{
 simplify_clevels(TitleTxt)
 }
+\arguments{
+\item{TitleTxt}{A character vector of titles.}
+}
 \description{
 maps long names to abbreviations if CEO, COO, or CFO
 maps executive director to CEO

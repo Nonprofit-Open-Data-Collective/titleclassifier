@@ -6,6 +6,9 @@
 \usage{
 amp_helper(x)
 }
+\arguments{
+\item{x}{A character vector of titles.}
+}
 \description{
 operates on a singular title level
 splits it, checks that if both/all sub titles are valid titles,

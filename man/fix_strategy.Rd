@@ -6,6 +6,9 @@
 \usage{
 fix_strategy(TitleTxt)
 }
+\arguments{
+\item{TitleTxt}{A character vector of titles.}
+}
 \description{
 condenses strategy abbreviations to a standardized form
 also condenses strategic to strategy

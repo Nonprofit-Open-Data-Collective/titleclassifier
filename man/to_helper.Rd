@@ -6,6 +6,9 @@
 \usage{
 to_helper(x)
 }
+\arguments{
+\item{x}{A character vector of titles.}
+}
 \description{
 does what standardize to but on a singular level
 checks for to in between parentheticals and replaces with until

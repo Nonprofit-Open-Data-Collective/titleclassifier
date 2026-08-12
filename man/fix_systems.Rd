@@ -6,6 +6,9 @@
 \usage{
 fix_systems(TitleTxt)
 }
+\arguments{
+\item{TitleTxt}{A character vector of titles.}
+}
 \description{
 condenses systems abbreviations to a standardized form
 }

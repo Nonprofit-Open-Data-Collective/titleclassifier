@@ -6,6 +6,9 @@
 \usage{
 convert_ordinal(TitleTxt)
 }
+\arguments{
+\item{TitleTxt}{A character vector of titles.}
+}
 \description{
 converts ordinal numbers (1st) to their alphabetic counterpart (first)
 }

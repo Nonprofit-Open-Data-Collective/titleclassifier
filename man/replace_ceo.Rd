@@ -6,6 +6,13 @@
 \usage{
 replace_ceo(TitleTxt, weekly.hours, total.pay)
 }
+\arguments{
+\item{TitleTxt}{A character vector of titles.}
+
+\item{weekly.hours}{Numeric vector of average weekly hours.}
+
+\item{total.pay}{Numeric vector of total compensation.}
+}
 \description{
 replaces all instances of titles that could be CEO
 }

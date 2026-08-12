@@ -6,6 +6,9 @@
 \usage{
 standardize_separator(x)
 }
+\arguments{
+\item{x}{A character vector of titles.}
+}
 \description{
 standardize the separator for distinguishing titles
 possible separators are & ; and \ (rarely used but sometimes)

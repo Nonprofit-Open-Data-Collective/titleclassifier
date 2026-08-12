@@ -6,8 +6,10 @@
 \usage{
 standardize_df(
   df,
+  EIN = "EIN2",
+  OBJECTID = "OBJECTID",
   title = "F9_07_COMP_DTK_TITLE",
-  form.type = "FORMTYPE",
+  form.type = "RETURN_TYPE",
   ave.hours = "F9_07_COMP_DTK_AVE_HOUR_WEEK",
   ave.hours.rltd = "F9_07_COMP_DTK_AVE_HOUR_WEEK_RL",
   comp.base = "F9_07_COMP_DTK_COMP_ORG",
@@ -20,8 +22,51 @@ standardize_df(
   key.employee = "F9_07_COMP_DTK_POS_KEY_EMPL_X",
   high.comp.ind = "F9_07_COMP_DTK_POS_HIGH_COMP_X",
   former = "F9_07_COMP_DTK_POS_FORMER_X",
-  name = "F9_07_COMP_DTK_NAME_PERS"
+  name = "F9_07_COMP_DTK_NAME_PERS",
+  biz1 = "F9_07_COMP_DTK_NAME_ORG_L1",
+  biz2 = "F9_07_COMP_DTK_NAME_ORG_L2"
 )
+}
+\arguments{
+\item{df}{A Part VII compensation data frame.}
+
+\item{EIN}{Column name for the organization EIN.}
+
+\item{OBJECTID}{Column name for the filing object id.}
+
+\item{title}{Name of the title column to operate on.}
+
+\item{form.type}{Column name for the 990 return type (e.g. "990", "990EZ").}
+
+\item{ave.hours}{Column name for average weekly hours.}
+
+\item{ave.hours.rltd}{Column name for average weekly hours at related organizations.}
+
+\item{comp.base}{Column name for base compensation from the organization.}
+
+\item{comp.benefits}{Column name for benefits compensation.}
+
+\item{comp.related}{Column name for compensation from related organizations.}
+
+\item{comp.other}{Column name for other compensation.}
+
+\item{trustee.ind}{Column name for the individual-trustee checkbox.}
+
+\item{trustee.inst}{Column name for the institutional-trustee checkbox.}
+
+\item{officer}{Name of the officer-flag column.}
+
+\item{key.employee}{Column name for the key-employee checkbox.}
+
+\item{high.comp.ind}{Column name for the highly-compensated checkbox.}
+
+\item{former}{Column name for the former-officer checkbox.}
+
+\item{name}{Column name for the person's name.}
+
+\item{biz1}{Column name for the organization name, line 1.}
+
+\item{biz2}{Column name for the organization name, line 2.}
 }
 \description{
 \code{standardize_df} returns a processed data frame with renamed column titles

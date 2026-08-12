@@ -6,6 +6,9 @@
 \usage{
 fix_atlarge(TitleTxt)
 }
+\arguments{
+\item{TitleTxt}{A character vector of titles.}
+}
 \description{
 condenses at large abbreviations to a standardized form
 }

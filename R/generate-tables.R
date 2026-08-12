@@ -11,6 +11,8 @@
 #' this function works for individual words as well as word lists
 #' 
 #' @export
+#' @param comp.table A Part VII compensation data frame.
+#' @param target.word A word, or vector of words, to search for within titles.
 get_title_dump <- function(comp.table, target.word){
   k <- 1
   cotitles <- data.frame(matrix(ncol = 2))
@@ -55,6 +57,7 @@ get_title_dump <- function(comp.table, target.word){
 #' They are in csv format.
 #' 
 #' @export
+#' @param comp.table A Part VII compensation data frame.
 gen_helpful_tables <- function(comp.table){
   co.titles <- get_title_dump(comp.table, "\\bCO\\b")
   of.titles <- get_title_dump(comp.table, "\\bOF\\b")

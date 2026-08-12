@@ -6,6 +6,9 @@
 \usage{
 fix_academics(TitleTxt)
 }
+\arguments{
+\item{TitleTxt}{A character vector of titles.}
+}
 \description{
 condenses academics abbreviations to a standardized form
 }

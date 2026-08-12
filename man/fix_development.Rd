@@ -6,6 +6,9 @@
 \usage{
 fix_development(TitleTxt)
 }
+\arguments{
+\item{TitleTxt}{A character vector of titles.}
+}
 \description{
 condenses development abbreviations to a standardized form
 }

@@ -1,6 +1,10 @@
 # mac ds_store
 .DS_Store
 
+# downloaded efile tables (large; fetched via fetch_partvii)
+efdata/
+*-COMPENSATION-*.CSV
+
 # History files
 .Rhistory
 .Rapp.history
@@ -42,8 +46,7 @@ vignettes/*.pdf
 # R Environment Variables
 .Renviron
 
-# pkgdown site
-docs/
+# pkgdown site is committed (served via GitHub Pages from main /docs)
 
 # translation temp files
 po/*~

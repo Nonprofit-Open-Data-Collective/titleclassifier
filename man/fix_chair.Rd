@@ -6,6 +6,9 @@
 \usage{
 fix_chair(TitleTxt)
 }
+\arguments{
+\item{TitleTxt}{A character vector of titles.}
+}
 \description{
 condenses chair abbreviations to a standardized form
 e.g. chairperson,chairman,chairwoman --> chair

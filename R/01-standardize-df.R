@@ -14,6 +14,26 @@ require(dplyr) #should we port this to somewhere else?
 #' returns a data frame with understandable information about DTK individuals.
 #'
 #' @export
+#' @param df A Part VII compensation data frame.
+#' @param EIN Column name for the organization EIN.
+#' @param OBJECTID Column name for the filing object id.
+#' @param title Name of the title column to operate on.
+#' @param form.type Column name for the 990 return type (e.g. "990", "990EZ").
+#' @param ave.hours Column name for average weekly hours.
+#' @param ave.hours.rltd Column name for average weekly hours at related organizations.
+#' @param comp.base Column name for base compensation from the organization.
+#' @param comp.benefits Column name for benefits compensation.
+#' @param comp.related Column name for compensation from related organizations.
+#' @param comp.other Column name for other compensation.
+#' @param trustee.ind Column name for the individual-trustee checkbox.
+#' @param trustee.inst Column name for the institutional-trustee checkbox.
+#' @param officer Name of the officer-flag column.
+#' @param key.employee Column name for the key-employee checkbox.
+#' @param high.comp.ind Column name for the highly-compensated checkbox.
+#' @param former Column name for the former-officer checkbox.
+#' @param name Column name for the person's name.
+#' @param biz1 Column name for the organization name, line 1.
+#' @param biz2 Column name for the organization name, line 2.
 standardize_df <- function( 
   df, 
   EIN="EIN2",
@@ -117,7 +137,7 @@ standardize_df <- function(
   # the one to many table
 
   #### RETURN CLEAN DF
-  cat( "✔ standardize df step complete\n" )
+  cat( "[OK] standardize df step complete\n" )
   return( df )
   
 }
@@ -133,6 +153,7 @@ standardize_df <- function(
 #' converts titles to uppercase form
 #' 
 #' @export
+#' @param x A character vector of titles.
 pre_clean <- function( x )
 {
   x <- toupper(x)

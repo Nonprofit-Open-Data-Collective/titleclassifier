@@ -6,6 +6,9 @@
 \usage{
 fix_philanthropy(TitleTxt)
 }
+\arguments{
+\item{TitleTxt}{A character vector of titles.}
+}
 \description{
 condenses philanthropy abbreviations to a standardized form
 }

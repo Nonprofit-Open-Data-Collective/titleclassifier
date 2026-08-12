@@ -6,6 +6,9 @@
 \usage{
 fix_of(TitleTxt)
 }
+\arguments{
+\item{TitleTxt}{A character vector of titles.}
+}
 \description{
 inserts an "of" in between the title and subject if not present and needed
 e.g. would insert "of" in "VP Operations" --> "VP of Operations"

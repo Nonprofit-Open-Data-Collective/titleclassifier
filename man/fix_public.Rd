@@ -6,6 +6,9 @@
 \usage{
 fix_public(TitleTxt)
 }
+\arguments{
+\item{TitleTxt}{A character vector of titles.}
+}
 \description{
 condenses public abbreviations to a standardized form
 }

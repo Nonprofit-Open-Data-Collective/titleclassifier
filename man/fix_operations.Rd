@@ -6,6 +6,9 @@
 \usage{
 fix_operations(TitleTxt)
 }
+\arguments{
+\item{TitleTxt}{A character vector of titles.}
+}
 \description{
 condenses operations abbreviations to a standardized form
 function leaves "operating" alone --> does not convert to operations

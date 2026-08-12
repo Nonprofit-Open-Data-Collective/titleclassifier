@@ -1,20 +1,39 @@
 Package: titleclassifier
-Title: Title Cleaning and Standardization
+Title: Clean, Standardize, and Classify Nonprofit Executive Titles
 Version: 0.0.0.9000
-Authors@R: 
+Authors@R:
     person(given = "Kevin",
            family = "Cui",
            role = c("aut", "cre"),
-           email = "kc734@cornell.edu",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: The package is the first step towards title classification.
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+           email = "kc734@cornell.edu")
+Description: Tools to transform the raw, free-text officer and key-employee
+    titles reported on IRS Form 990 Part VII into a structured, analysis-ready
+    taxonomy. The pipeline standardizes the raw compensation table, removes
+    dates, normalizes conjunctions and separators, splits multi-title strings,
+    harmonizes spelling and abbreviations, flags status qualifiers, maps titles
+    to canonical forms via a crosswalk, and assigns taxonomy categories with
+    organization-level features. Includes helpers to fetch Part VII tables
+    directly from the public NCCS efile store.
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports:
-  dplyr,
-  hunspell,
-  googlesheets4
+    dplyr,
+    magrittr,
+    hunspell,
+    stringr,
+    googlesheets4,
+    data.table,
+    digest,
+    furrr,
+    future,
+    parallel
+Suggests:
+    knitr,
+    rmarkdown,
+    pander,
+    testthat (>= 3.0.0)
+VignetteBuilder: knitr
+Config/testthat/edition: 3
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.3

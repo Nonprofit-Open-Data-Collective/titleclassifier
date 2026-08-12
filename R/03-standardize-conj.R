@@ -9,6 +9,8 @@
 #' wrapper for cleaning conjunctions (all the standardizations come in here)
 #'
 #' @export
+#' @param comp.data A Part VII compensation data frame.
+#' @param title Name of the title column to operate on.
 standardize_conj <- function( comp.data, title="TitleTxt2" )
 {
   TitleTxt <- comp.data[[ title ]]
@@ -24,7 +26,7 @@ standardize_conj <- function( comp.data, title="TitleTxt2" )
   TitleTxt <- txt_cleanup(           TitleTxt  )
 
   comp.data$TitleTxt3 <- TitleTxt
-  cat( "✔ standardize conjunctions step complete\n" )
+  cat( "[OK] standardize conjunctions step complete\n" )
   return(comp.data)
 }
 
@@ -38,13 +40,14 @@ standardize_conj <- function( comp.data, title="TitleTxt2" )
 #' standardize "and" function
 #'
 #' @description
-#' detects whether “and” or & is a title separator
-#' use & as separator, “and” as regular? 
+#' detects whether "and" or & is a title separator
+#' use & as separator, "and" as regular? 
 #' assume our dates are already extracted
 #'
 #'& is separator, and is regular 
 #'
 #' @export
+#' @param TitleTxt A character vector of titles.
 standardize_and <- function(TitleTxt){
   
   # "and" not used as separator in raw
@@ -79,6 +82,7 @@ standardize_and <- function(TitleTxt){
 #' as opposed to & its default is false
 #' 
 #' @export
+#' @param x A character vector of titles.
 and_helper <- function(x){
   TitleTxt <- x
   and_true <- FALSE
@@ -111,6 +115,7 @@ and_helper <- function(x){
 #' as opposed to and, its default is true
 #' 
 #' @export
+#' @param x A character vector of titles.
 amp_helper <- function(x){
   TitleTxt <- x
   amp_true <- TRUE
@@ -140,8 +145,14 @@ amp_helper <- function(x){
 #' and makes the substitution "title & word AND word".
 #' 
 #' @export
+#' @param x A character vector of titles.
 fix_double_and <- function(x)
 {
+  # NOTE: no-op in the current pipeline. The pattern is lower-case while pipeline
+  # text is upper-case, so it never matches -- and the "title AND word AND word"
+  # case is already handled by standardize_and()/fix_misc_splits(). Left inert on
+  # purpose (activating it double-processes that path); kept for API stability and
+  # documented in CODE-QUALITY-ASSESSMENT.md (L3).
   has.two <- grepl( " and [[:alpha:]]{1,} and ", x )
   replace_first <- function(x)
   { sub( " and ", " & ", x  ) }
@@ -163,6 +174,7 @@ fix_double_and <- function(x)
 #' if we detected a date, then likely the "to" should be an until
 #'
 #' @export
+#' @param TitleTxt A character vector of titles.
 standardize_to <- function(TitleTxt){
   
   #if "to" is in inside parentheses, almost certainly it was part of a date
@@ -183,19 +195,21 @@ standardize_to <- function(TitleTxt){
 #' checks for to in between parentheticals and replaces with until
 #' 
 #' @export
+#' @param x A character vector of titles.
 to_helper <- function(x){
   TitleTxt <- x
   if(grepl("\\(",TitleTxt) & grepl("\\)",TitleTxt)){
-    paren <- stringr::str_extract_all(TitleTxt, "\\([^()]+\\)")[[1]]
-    if(length(paren) >= 1) {
-      paren <- paren[1]
-      paren <- substring(paren, 2, nchar(paren)-1)
-      if(nchar(paren) > 0 & grepl("\\bTO\\b",paren)) 
-        TitleTxt <- gsub("\\bTO\\b","UNTIL",TitleTxt)
+    # examine every parenthetical, and replace TO -> UNTIL only *inside* the
+    # parentheses (not elsewhere in the string, and not just the first paren)
+    parens <- stringr::str_extract_all(TitleTxt, "\\([^()]+\\)")[[1]]
+    for(p in parens){
+      if(grepl("\\bTO\\b", p)){
+        p_new <- gsub("\\bTO\\b", "UNTIL", p)
+        TitleTxt <- sub(p, p_new, TitleTxt, fixed=TRUE)
+      }
     }
   }
   return(TitleTxt)
-  
 }
 
 
@@ -203,8 +217,8 @@ to_helper <- function(x){
 #' standardize "of" usage function
 #'
 #' @description 
-#' detects whether “of” is a part of the title, or separator 
-#' for example, TITLE OF TITLE is fine, “AS OF DATE” is not
+#' detects whether "of" is a part of the title, or separator 
+#' for example, TITLE OF TITLE is fine, "AS OF DATE" is not
 #' 
 #' if "of" is part of a date (and namely as of), then we replace with "SINCE"
 #' for also gets mapped to of?
@@ -213,6 +227,7 @@ to_helper <- function(x){
 #' and its subject
 #'
 #' @export
+#' @param TitleTxt A character vector of titles.
 standardize_of <- function(TitleTxt)
 {
   # we replace all the as of's with since
@@ -222,8 +237,11 @@ standardize_of <- function(TitleTxt)
   # if nothing after "of", then remove entirely
   TitleTxt <- gsub("\\bOF$", "", TitleTxt) 
   
-  TitleTxt <- ifelse(grepl("\\bFOR\\b",TitleTxt) & !grepl("\\bFOR$",TitleTxt),
-                     gsub("\\bFOR\\b", "OF", TitleTxt), TitleTxt)
+  # convert "FOR" (used like "of", e.g. "VP FOR FINANCE") to OF, but leave a
+  # trailing FOR in place (often dangling from a removed date). The negative
+  # lookahead replaces each non-terminal FOR independently, so a trailing FOR
+  # no longer blocks conversion of earlier ones.
+  TitleTxt <- gsub("\\bFOR\\b(?!\\s*$)", "OF", TitleTxt, perl=TRUE)
   
   #replace vp- with vp,
   TitleTxt <- gsub("VP\\s*-","VP,", TitleTxt)
@@ -243,6 +261,7 @@ standardize_of <- function(TitleTxt)
 #' we also deal with commas as "of"(e.g. VP, finance = VP of Finance)
 #'
 #' @export
+#' @param TitleTxt A character vector of titles.
 standardize_comma <- function(TitleTxt)
 {
   # make sure all commas are followed by space
@@ -426,6 +445,7 @@ replace_w_and <- function( x, exp )
 #' operates on the atomic vector level
 #' 
 #' @export
+#' @param x A character vector of titles.
 comma_helper <- function(x){
   TitleTxt <- x
   if(grepl(",",TitleTxt)){
@@ -463,6 +483,7 @@ comma_helper <- function(x){
 #' replaces slash with '&'
 #'
 #' @export
+#' @param TitleTxt A character vector of titles.
 standardize_slash <- function( TitleTxt ){
   TitleTxt <- sapply( TitleTxt, slash_helper, USE.NAMES=F )
   return(TitleTxt)
@@ -477,6 +498,7 @@ standardize_slash <- function( TitleTxt ){
 #' operates on single title
 #' 
 #' @export
+#' @param x A character vector of titles.
 slash_helper <- function( x ){
   
     # does not contain slash
@@ -504,6 +526,7 @@ slash_helper <- function( x ){
 #' They all get mapped to &
 #'
 #' @export
+#' @param x A character vector of titles.
 standardize_separator <- function( x )
 {
   x <- gsub( "CO - ?", "CO-", x )
@@ -522,6 +545,7 @@ standardize_separator <- function( x )
 #' two titles but are not addressed by general rules.
 #'
 #' @export
+#' @param x A character vector of titles.
 fix_misc_splits <- function( x )
 {
   x <- gsub( "^VICE PRESIDENT TREASURER$", "VICE PRESIDENT & TREASURER", x ) 
