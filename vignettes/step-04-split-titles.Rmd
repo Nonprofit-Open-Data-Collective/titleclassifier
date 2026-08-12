@@ -1,0 +1,57 @@
+---
+title: "Step 04 - Split multi-titles"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Step 04 - Split multi-titles}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>", message = FALSE, warning = FALSE)
+library(titleclassifier)
+library(dplyr)
+```
+
+With separators normalized to `&`, **`split_titles()`** expands a row that holds
+several roles into one row per role, duplicating the person's other data.
+
+```
+split_titles()
+|
++- apply_misc_split_rules()  regex fixes for tricky edge cases
++- identify_split_num()      how many distinct titles does the string hold?
++- remove_first_split()      peel the text before the first "&"
+```
+
+## Counting and peeling
+
+```{r}
+identify_split_num("CFO & TREASURER & DIRECTOR")   # 3
+remove_first_split("CFO & TREASURER & DIRECTOR")   # " TREASURER & DIRECTOR"
+```
+
+## In the pipeline
+
+A single multi-title row becomes several rows, each carrying a `Num.Titles` index:
+
+```{r}
+data(tinypartvii)
+set.seed(4)
+d <- dplyr::sample_n(tinypartvii, 120)
+
+df <- d |>
+  standardize_df() |>
+  remove_dates() |>
+  standardize_conj() |>
+  split_titles()
+
+df |>
+  dplyr::filter(grepl("&", TitleTxt3)) |>
+  dplyr::select(F9_07_COMP_DTK_NAME_PERS, Num.Titles, TitleTxt3, TitleTxt4) |>
+  head(10)
+```
+
+**Input:** `TitleTxt3`. **Output:** expanded rows with a single-title `TitleTxt4`
+and a within-person `Num.Titles`. Continue with
+[step 05](step-05-standardize-spelling.html).

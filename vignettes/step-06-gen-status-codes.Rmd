@@ -1,0 +1,64 @@
+---
+title: "Step 06 - Generate status codes"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Step 06 - Generate status codes}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>", message = FALSE, warning = FALSE)
+library(titleclassifier)
+```
+
+Titles often carry a temporal/temporary qualifier — FORMER, INTERIM, FUTURE,
+EX OFFICIO, and so on. **`gen_status_codes()`** detects each qualifier, adds a
+boolean flag, and either removes it or standardizes it in place.
+
+```
+gen_status_codes()
+|
++- flag_and_remove()   flag SCODE.X and delete the qualifier (FORMER, INTERIM, FUTURE, ...)
++- flag_and_keep()     flag SCODE.X but keep a standardized form (EXOFFICIO, REGIONAL)
++- get_variants()      collapse a status code's variants into one regex
+```
+
+The variant-to-code mapping comes from the bundled status-code crosswalk (see the
+[Dictionaries](dictionaries.html) article). Some qualifiers (EX OFFICIO, REGIONAL)
+are kept because they change the meaning of the role.
+
+## Examples
+
+```{r}
+sc <- get_googlesheets_status_codes()
+
+# all variants that map to FORMER, as a single regex
+get_variants("FORMER", sc)
+
+x <- c("IMMEDIATE PAST CHAIR", "OUTGOING CEO", "ACTING DIRECTOR", "TREASURER")
+remove_status(x, get_variants("FORMER",  sc))
+remove_status(x, get_variants("INTERIM", sc))
+```
+
+## In the pipeline
+
+```{r}
+library(dplyr)
+data(tinypartvii)
+set.seed(6)
+d <- dplyr::sample_n(tinypartvii, 150)
+
+df <- d |>
+  standardize_df() |> remove_dates() |> standardize_conj() |>
+  split_titles() |> standardize_spelling() |> gen_status_codes()
+
+df |>
+  dplyr::filter(FORMER.X == 1 | INTERIM.X == 1) |>
+  dplyr::select(TitleTxt5, TitleTxt6, FORMER.X, INTERIM.X) |>
+  head(8)
+```
+
+**Input:** `TitleTxt5`. **Output:** `TitleTxt6` plus status flags (`FORMER.X`,
+`INTERIM.X`, `FUTURE.X`, `EXOFFICIO.X`, `REGIONAL.X`, …). Continue with
+[step 07](step-07-standardize-titles.html).

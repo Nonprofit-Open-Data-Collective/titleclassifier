@@ -1,0 +1,60 @@
+---
+title: "Step 07 - Standardize titles"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Step 07 - Standardize titles}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>", message = FALSE, warning = FALSE)
+library(titleclassifier)
+```
+
+**`standardize_titles()`** maps each cleaned title to a canonical `title.standard`
+using the title-standardization crosswalk, after applying a few conditional
+"executive fixes" for ambiguous finance and chancellor roles.
+
+```
+standardize_titles()
+|
++- basic_csuite_fixes()   conditional logic -> TitleTxt7
+|    +- replace_ceo()     CHANCELLOR -> CEO if paid, else BOARD PRESIDENT
+|    +- replace_cfo()     finance roles -> CFO when officer + paid + full-time
++- merge with the crosswalk on the title variant -> title.standard
+```
+
+## Crosswalk mapping
+
+The crosswalk collapses many spellings onto one canonical form (for example
+"ADMINISTRATION ASSISTANT" and "ADMINISTRATIVE ASSISTANT" both map to
+"ADMINISTRATIVE ASSISTANT"). See the [Dictionaries](dictionaries.html) article.
+
+```{r}
+library(dplyr)
+data(tinypartvii)
+set.seed(7)
+d <- dplyr::sample_n(tinypartvii, 200)
+
+df <- d |>
+  standardize_df() |> remove_dates() |> standardize_conj() |>
+  split_titles() |> standardize_spelling() |> gen_status_codes() |>
+  standardize_titles()
+
+df |>
+  dplyr::select(TitleTxt6, title.standard) |>
+  dplyr::distinct() |>
+  head(12)
+```
+
+## A necessary caveat
+
+The crosswalk is a deterministic 1:1 map, so it cannot resolve genuinely ambiguous
+titles — "PRESIDENT" may be a working CEO or an unpaid board president; "DIRECTOR"
+may be an executive director or a board member. Step 08 attaches the organization-
+level features (pay rank, hours, officer flags) that a later disambiguation step
+uses to settle those cases.
+
+**Input:** `TitleTxt6`. **Output:** `TitleTxt7` and the canonical `title.standard`.
+Continue with [step 08](step-08-categorize-titles.html).

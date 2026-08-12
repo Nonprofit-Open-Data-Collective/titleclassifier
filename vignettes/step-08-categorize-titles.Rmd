@@ -1,0 +1,59 @@
+---
+title: "Step 08 - Categorize titles"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Step 08 - Categorize titles}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>", message = FALSE, warning = FALSE)
+library(titleclassifier)
+library(dplyr)
+```
+
+**`categorize_titles()`** joins the standardized titles to the taxonomy, engineers
+organization-level features, and produces the finished, analysis-ready data frame.
+
+```
+categorize_titles()
+|
++- merge with the taxonomy on title.standard  (domain, SOC codes, role flags)
++- add_features()        pay/hours ranks, leadership counts, per-EIN summaries
++- simplify_varnames()   rename to the tidy output schema; zero-fill ratio NAs
+```
+
+## Engineered features
+
+`add_features()` computes, per organization (`OBJECTID`): counts of employees,
+board members, and leaders (`num.ceos`, `num.clevel`, `num.dirvp`, `num.mgr`,
+`num.spec`); officer counts (`num.pres`, `num.vp`, `num.treas`, `num.sec`); pay and
+hours ranks and shares; and full/part-time headcounts — weighting people who hold
+multiple titles so they are not double-counted.
+
+```{r}
+data(tinypartvii)
+set.seed(8)
+d <- dplyr::sample_n(tinypartvii, 250)
+
+df <- d |>
+  standardize_df() |> remove_dates() |> standardize_conj() |>
+  split_titles() |> standardize_spelling() |> gen_status_codes() |>
+  standardize_titles() |> categorize_titles()
+
+df |>
+  dplyr::select(org.name, dtk.name, title.standard, domain.category,
+                pay.rank, tot.comp, num.ceos, num.board) |>
+  dplyr::arrange(org.name, pay.rank) |>
+  head(10)
+```
+
+## Where this leaves us
+
+Every row is now a single standardized, categorized title enriched with
+organization context. The remaining ambiguity (which "PRESIDENT" is the CEO?) is
+the target of the forthcoming machine-learning relabeling step, which will consume
+exactly these engineered features.
+
+**Input:** `title.standard`. **Output:** the final analysis-ready data frame.

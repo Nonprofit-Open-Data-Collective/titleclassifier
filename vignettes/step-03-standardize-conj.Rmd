@@ -1,0 +1,57 @@
+---
+title: "Step 03 - Standardize conjunctions"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Step 03 - Standardize conjunctions}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>", message = FALSE, warning = FALSE)
+library(titleclassifier)
+```
+
+People list multiple roles with no standard punctuation ("CEO AND BOARD PRESIDENT",
+"VP OF FINANCE AND ADMINISTRATION"). **`standardize_conj()`** normalizes the
+connectors so that step 04 can split reliably, converting genuine separators into a
+single `&` while leaving compound titles intact.
+
+```
+standardize_conj()
+|
++- standardize_and()        AND -> & when both sides are valid titles
++- standardize_to()         parenthetical / trailing TO -> UNTIL (dates)
++- standardize_of()         AS OF -> SINCE; drop dangling OF; FOR -> OF
++- standardize_comma()      comma as separator / "of" / redundant
++- standardize_slash()      slash as separator / "of" / redundant
++- standardize_and()        re-applied to catch newly created cases
++- standardize_separator()  ";" and "\\" -> &
+```
+
+## The trick: separator vs. compound
+
+The `and`/`&` decision checks whether both sides look like real titles:
+
+```{r}
+standardize_and("CEO AND BOARD PRESIDENT")        # separator -> &
+standardize_and("VP OF FINANCE AND ADMINISTRATION") # compound  -> unchanged
+```
+
+Commas and slashes are disambiguated the same way — separator, "of", or filler:
+
+```{r}
+standardize_comma("SECRETARY, TREASURER")   # separator
+standardize_comma("VP, MARKETING")          # "of"
+standardize_slash("SECRETARY/TREASURER")    # separator
+```
+
+"TO" and "OF" at the end of a title usually belonged to a (removed) date phrase:
+
+```{r}
+standardize_to("DIRECTOR TO")               # -> "DIRECTOR UNTIL"
+standardize_of("VICE PRESIDENT AS OF")      # -> "VICE PRESIDENT SINCE"
+```
+
+**Input:** `TitleTxt2`. **Output:** `TitleTxt3` with `&` as the single title
+separator. Continue with [step 04](step-04-split-titles.html).
