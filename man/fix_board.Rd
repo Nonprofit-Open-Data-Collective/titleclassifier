@@ -6,6 +6,9 @@
 \usage{
 fix_board(TitleTxt)
 }
+\arguments{
+\item{TitleTxt}{A character vector of titles.}
+}
 \description{
 condenses board abbreviations to a standardized form
 }

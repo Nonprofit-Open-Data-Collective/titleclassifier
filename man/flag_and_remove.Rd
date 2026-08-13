@@ -4,7 +4,12 @@
 \alias{flag_and_remove}
 \title{create a status code flag and remove string from title}
 \usage{
-flag_and_remove(df, title = "TitleTxt6", s.code = "FORMER")
+flag_and_remove(
+  df,
+  title = "TitleTxt6",
+  s.code = "FORMER",
+  gs_status_codes = NULL
+)
 }
 \arguments{
 \item{df}{A compensation dataframe}
@@ -13,7 +18,7 @@ flag_and_remove(df, title = "TitleTxt6", s.code = "FORMER")
 
 \item{s.code}{Any of the unique status.qualifier strings from df.status (defaults to "FORMER")}
 
-\item{df.status}{The status variant dataframe loaded from google sheets}
+\item{gs_status_codes}{Optional status-code crosswalk data frame; if \code{NULL}, loaded from the bundled snapshot.}
 }
 \description{
 Search for variants of a status code (stored in google sheets),
@@ -24,9 +29,10 @@ In cases where the status is the full title (e.g. 'ex officio') replace the vari
 with the standardized version and keep it.
 }
 \examples{
-x <- 
+\dontrun{
+x <-
   c( "IMMEDIATE PAST CHAIR",
-     "FORMER CEO (EXIT 12/31/17)" 
+     "FORMER CEO (EXIT 12/31/17)",
      "PAST PRESIDENT",
      "OUTGOING CEO",
      "PRESIDENT ELECT",
@@ -38,8 +44,6 @@ x <-
      "PAST INTERIM PRESIDENT" )
 
 remove_date( x )
-remove_date(x) \%>\% remove_status( s.code="FORMER" )
-remove_date(x) \%>\% remove_status( s.code="FUTURE" )
-remove_date(x) \%>\% remove_status( s.code="INTERIM" )
+}
 
 }

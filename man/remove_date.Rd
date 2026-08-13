@@ -6,6 +6,9 @@
 \usage{
 remove_date(TitleTxt)
 }
+\arguments{
+\item{TitleTxt}{A character vector of titles.}
+}
 \description{
 removes date from raw title text
 }

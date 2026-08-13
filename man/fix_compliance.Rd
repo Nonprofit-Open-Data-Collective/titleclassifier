@@ -6,6 +6,9 @@
 \usage{
 fix_compliance(TitleTxt)
 }
+\arguments{
+\item{TitleTxt}{A character vector of titles.}
+}
 \description{
 condenses compliance abbreviations to a standardized form
 }

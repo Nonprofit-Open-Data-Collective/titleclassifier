@@ -14,6 +14,9 @@
 #' roughly 5 minutes for 100,000 titles
 #' 
 #' @export
+#' @param comp.data A Part VII compensation data frame.
+#' @param title Name of the title column to operate on.
+#' @param gs_status_codes Optional status-code crosswalk data frame; if `NULL`, loaded from the bundled snapshot.
 gen_status_codes <- function( comp.data, title="TitleTxt5", gs_status_codes=NULL )
 {
   
@@ -130,7 +133,7 @@ gen_status_codes <- function( comp.data, title="TitleTxt5", gs_status_codes=NULL
   
   comp.data[[title]] <- x
   
-  cat( "✔ generate status codes step complete\n" )
+  cat( "[OK] generate status codes step complete\n" )
 
   return( comp.data )
 
@@ -152,13 +155,13 @@ gen_status_codes <- function( comp.data, title="TitleTxt5", gs_status_codes=NULL
 #' 
 #' @param df A compensation dataframe
 #' @param title Which version of the title string to use (defaults to "TitleTxt6")
-#' @param df.status The status variant dataframe loaded from google sheets
 #' @param s.code Any of the unique status.qualifier strings from df.status (defaults to "FORMER")
 #' 
 #' @examples
-#' x <- 
+#' \dontrun{
+#' x <-
 #'   c( "IMMEDIATE PAST CHAIR",
-#'      "FORMER CEO (EXIT 12/31/17)" 
+#'      "FORMER CEO (EXIT 12/31/17)",
 #'      "PAST PRESIDENT",
 #'      "OUTGOING CEO",
 #'      "PRESIDENT ELECT",
@@ -168,13 +171,12 @@ gen_status_codes <- function( comp.data, title="TitleTxt5", gs_status_codes=NULL
 #'      "INTERIM PRES",
 #'      "ACTING DIRECTOR",
 #'      "PAST INTERIM PRESIDENT" )
-#' 
+#'
 #' remove_date( x )
-#' remove_date(x) %>% remove_status( s.code="FORMER" )
-#' remove_date(x) %>% remove_status( s.code="FUTURE" )
-#' remove_date(x) %>% remove_status( s.code="INTERIM" )
-#' 
+#' }
+#'
 #' @export
+#' @param gs_status_codes Optional status-code crosswalk data frame; if `NULL`, loaded from the bundled snapshot.
 flag_and_remove <- function( df, title="TitleTxt6", s.code="FORMER", gs_status_codes=NULL )
 {
   variants <- get_variants( s.code, gs_status_codes )
@@ -199,6 +201,7 @@ flag_and_remove <- function( df, title="TitleTxt6", s.code="FORMER", gs_status_c
 #' @param s.code Any of the unique status.qualifier strings from df.status (e.g. "REGIONAL")
 #' 
 #' @export
+#' @param gs_status_codes Optional status-code crosswalk data frame; if `NULL`, loaded from the bundled snapshot.
 flag_and_keep <- function( df, title="TitleTxt6", s.code, gs_status_codes=NULL )
 {
   variants <- get_variants( s.code, gs_status_codes )
@@ -219,6 +222,7 @@ flag_and_keep <- function( df, title="TitleTxt6", s.code, gs_status_codes=NULL )
 #' @param s.code Any of the unique status.qualifier strings from df.status ("FUTURE","FORMER","INTERIM",etc)
 #' 
 #' @export
+#' @param gs_status_codes Optional status-code crosswalk data frame; if `NULL`, loaded from the bundled snapshot.
 get_variants <- function( s.code, gs_status_codes=NULL )
 { 
   # collapse all variants into regex OR statement 
@@ -246,6 +250,7 @@ get_variants <- function( s.code, gs_status_codes=NULL )
 #' @param s.code Any of the unique status.qualifier strings from df.status (e.g. "FORMER")
 #' 
 #' @export
+#' @param variants Regex alternation of status-code variants (from `get_variants()`).
 add_status_flag <- function( df, title, s.code, variants )
 {
   x <- df[[title]]
@@ -267,8 +272,8 @@ add_status_flag <- function( df, title, s.code, variants )
 #' it is replaced with the standardized version of the status code.
 #' 
 #' @param x Vector of titles
-#' @param s.code Any of the unique status.qualifier strings from df.status (e.g. "FORMER")
-#' 
+#' @param variants Regex alternation of status-code variants (from `get_variants()`).
+#'
 #' @export
 remove_status <- function( x, variants )
 {
@@ -293,6 +298,7 @@ remove_status <- function( x, variants )
 #' @param s.code Any of the unique status.qualifier strings from df.status 
 #' 
 #' @export
+#' @param variants Regex alternation of status-code variants (from `get_variants()`).
 standardize_status <- function( x, s.code, variants )
 {
   # replace all variants with the standardized version

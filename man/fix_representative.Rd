@@ -6,6 +6,9 @@
 \usage{
 fix_representative(TitleTxt)
 }
+\arguments{
+\item{TitleTxt}{A character vector of titles.}
+}
 \description{
 condenses rep abbreviations to a standardized form
 }

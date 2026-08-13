@@ -6,6 +6,9 @@
 \usage{
 fix_hr(TitleTxt)
 }
+\arguments{
+\item{TitleTxt}{A character vector of titles.}
+}
 \description{
 condenses hr abbreviations to a standardized form
 }

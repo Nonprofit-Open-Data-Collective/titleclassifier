@@ -6,6 +6,9 @@
 \usage{
 fix_technology(TitleTxt)
 }
+\arguments{
+\item{TitleTxt}{A character vector of titles.}
+}
 \description{
 condenses tech abbreviations to a standardized form
 }

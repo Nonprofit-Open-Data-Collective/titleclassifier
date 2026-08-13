@@ -1,0 +1,114 @@
+---
+title: "End-to-end workflow"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{End-to-end workflow}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>", message = FALSE, warning = FALSE)
+```
+
+`titleclassifier` turns the free-text officer and key-employee titles reported on
+IRS Form 990 Part VII into a structured, analysis-ready taxonomy. The work is done
+by an eight-step pipeline; each step is a single verb you can run on its own, and
+each has its own article in this site.
+
+| Step | Function | What it does |
+|----:|----------|--------------|
+| 01 | `standardize_df()` | Standardize the raw Part VII data frame. |
+| 02 | `remove_dates()` | Strip and flag date fragments. |
+| 03 | `standardize_conj()` | Normalize conjunctions, prepositions, separators. |
+| 04 | `split_titles()` | Split multi-title strings into one row per title. |
+| 05 | `standardize_spelling()` | Harmonize spelling, abbreviations, short forms. |
+| 06 | `gen_status_codes()` | Detect, flag, and clean status qualifiers. |
+| 07 | `standardize_titles()` | Map titles to canonical forms via a crosswalk. |
+| 08 | `categorize_titles()` | Assign taxonomy categories and engineer features. |
+
+## Getting the data
+
+Part VII compensation tables are published in the public NCCS efile store. You can
+pull one directly by tax year (each file is large, so it is cached on disk):
+
+```{r, eval = FALSE}
+library(titleclassifier)
+
+# fetch + read the 2023 Part VII table in one call
+d <- get_partvii(2023)
+
+# or split the two steps (download once, re-read from cache)
+paths <- fetch_partvii(2023, dest = "efdata")
+d     <- read_partvii(paths)
+```
+
+For examples the package ships a demo slice, `tinypartvii`, already in the expected
+schema.
+
+```{r}
+library(titleclassifier)
+library(dplyr)
+
+data(tinypartvii)
+set.seed(1234)
+d <- dplyr::sample_n(tinypartvii, 300)
+dim(d)
+```
+
+## Running the pipeline
+
+The steps compose with the base pipe. The title-standardization, status-code, and
+taxonomy crosswalks are bundled with the package (a pinned snapshot of the source
+Google Sheet), so a run needs no network access.
+
+```{r}
+df <- d |>
+  standardize_df()    |>   # 01
+  remove_dates()      |>   # 02
+  standardize_conj()  |>   # 03
+  split_titles()      |>   # 04
+  standardize_spelling() |> # 05
+  gen_status_codes()  |>   # 06
+  standardize_titles() |>  # 07
+  categorize_titles()      # 08
+
+dim(df)
+```
+
+## The result
+
+Each row is one standardized title for one person, carrying the raw text, the
+successive cleaned versions (`title.v2` … `title.v7`), the canonical
+`title.standard`, taxonomy fields, status flags, and organization-level features
+(pay/hours ranks, leadership counts).
+
+```{r}
+df |>
+  select(dtk.name, title.raw, title.standard, domain.category, tot.comp, tot.hours) |>
+  arrange(desc(tot.comp)) |>
+  head(10)
+```
+
+The successive title versions make the cleaning transparent — you can see exactly
+what each step changed:
+
+```{r}
+df |>
+  select(title.raw, title.v3, title.v5, title.v6, title.standard) |>
+  distinct() |>
+  head(12)
+```
+
+## Refreshing the crosswalks
+
+By default the crosswalk loaders read the bundled snapshot. To pull the current
+Google-Sheet version instead (and refresh the snapshot in a source checkout), pass
+`refresh = TRUE`:
+
+```{r, eval = FALSE}
+xwalk <- get_googlesheets_title_xwalk(refresh = TRUE)
+```
+
+See the [Dictionaries and crosswalks](dictionaries.html) article for what each
+crosswalk contains.

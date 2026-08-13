@@ -6,6 +6,9 @@
 \usage{
 gen_taxonomy(comp.data)
 }
+\arguments{
+\item{comp.data}{A Part VII compensation data frame.}
+}
 \description{
 TODO not written yet, but we will generate the taxonomy using the dynamic google sheets
 no longer manipulating the titles

@@ -10,6 +10,7 @@
 #' (have a couple of them already thought out in categorize titles, but need
 #' to migrate them)
 #' @export
+#' @param comp.data A Part VII compensation data frame.
 conditional_logic <- function(comp.data)
 {
   
@@ -21,7 +22,7 @@ conditional_logic <- function(comp.data)
     clean_up_ceos() %>%
     director_correction() -> df
   
-  cat( "✔ conditional logic step complete\n")
+  cat( "[OK] conditional logic step complete\n")
   
   return(df)
 }
@@ -37,6 +38,7 @@ conditional_logic <- function(comp.data)
 #' removes all duplicate instances of ceos within a single org
 #' 
 #' @export
+#' @param comp.data A Part VII compensation data frame.
 clean_up_ceos <- function(comp.data){
   df <- comp.data
   
@@ -57,6 +59,7 @@ clean_up_ceos <- function(comp.data){
 #' correcting board members "directors" that are not actually directors
 #' 
 #' @export
+#' @param df A Part VII compensation data frame.
 director_correction <- function(df)
 {
   

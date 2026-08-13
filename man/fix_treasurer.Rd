@@ -6,6 +6,9 @@
 \usage{
 fix_treasurer(TitleTxt)
 }
+\arguments{
+\item{TitleTxt}{A character vector of titles.}
+}
 \description{
 condenses treasurer abbreviations to a standardized form
 }

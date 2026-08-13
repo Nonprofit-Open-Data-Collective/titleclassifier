@@ -6,6 +6,9 @@
 \usage{
 apply_misc_split_rules(x)
 }
+\arguments{
+\item{x}{A character vector of titles.}
+}
 \description{
 Add some additional split rules for cases
 not identified by previous steps.

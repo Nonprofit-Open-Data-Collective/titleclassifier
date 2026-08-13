@@ -4,10 +4,12 @@
 \alias{get_variants}
 \title{retrieve all status variants for a unique status code}
 \usage{
-get_variants(s.code)
+get_variants(s.code, gs_status_codes = NULL)
 }
 \arguments{
 \item{s.code}{Any of the unique status.qualifier strings from df.status ("FUTURE","FORMER","INTERIM",etc)}
+
+\item{gs_status_codes}{Optional status-code crosswalk data frame; if \code{NULL}, loaded from the bundled snapshot.}
 }
 \description{
 Search for variants of a status code (stored in google sheets),

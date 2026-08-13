@@ -1,0 +1,147 @@
+url: https://nonprofit-open-data-collective.github.io/titleclassifier/
+
+destination: docs
+
+template:
+  bootstrap: 5
+
+home:
+  title: titleclassifier
+  description: >
+    Clean, standardize, and classify nonprofit executive titles from IRS Form
+    990 Part VII into a structured taxonomy.
+
+navbar:
+  structure:
+    left:  [workflow, steps, reference]
+    right: [search, github]
+  components:
+    workflow:
+      text: Workflow
+      href: articles/workflow.html
+    steps:
+      text: Pipeline steps
+      menu:
+      - text: "01 - Standardize the data frame"
+        href: articles/step-01-standardize-df.html
+      - text: "02 - Remove dates"
+        href: articles/step-02-remove-dates.html
+      - text: "03 - Standardize conjunctions"
+        href: articles/step-03-standardize-conj.html
+      - text: "04 - Split multi-titles"
+        href: articles/step-04-split-titles.html
+      - text: "05 - Standardize spelling"
+        href: articles/step-05-standardize-spelling.html
+      - text: "06 - Generate status codes"
+        href: articles/step-06-gen-status-codes.html
+      - text: "07 - Standardize titles"
+        href: articles/step-07-standardize-titles.html
+      - text: "08 - Categorize titles"
+        href: articles/step-08-categorize-titles.html
+
+articles:
+- title: Get started
+  navbar: ~
+  contents:
+  - workflow
+  - dictionaries
+- title: Pipeline steps
+  contents:
+  - starts_with("step-")
+
+reference:
+- title: Pipeline steps
+  desc: The eight-step title classification pipeline, in order.
+  contents:
+  - standardize_df
+  - remove_dates
+  - standardize_conj
+  - split_titles
+  - standardize_spelling
+  - gen_status_codes
+  - standardize_titles
+  - categorize_titles
+  - conditional_logic
+  - gen_taxonomy
+- title: Data acquisition
+  desc: Fetch Part VII compensation tables from the NCCS efile store.
+  contents:
+  - fetch_partvii
+  - read_partvii
+  - get_partvii
+- title: Crosswalk loaders
+  desc: Load the bundled title/status/taxonomy crosswalk snapshots (or refresh from Google Sheets).
+  contents:
+  - get_googlesheets_status_codes
+  - get_googlesheets_title_xwalk
+  - get_googlesheets_title_taxonomy
+- title: Spelling & cleaning helpers
+  desc: The fix_* routines used inside standardize_spelling().
+  contents:
+  - starts_with("fix_")
+- title: Step helpers
+  desc: >
+    Lower-level functions used inside the pipeline steps. Currently exported to
+    aid debugging and refinement; several are slated to become internal (see
+    TODO.md).
+  contents:
+  - add_features
+  - add_status_flag
+  - amp_helper
+  - and_helper
+  - apply_misc_split_rules
+  - basic_csuite_fixes
+  - clean_up_ceos
+  - comma_helper
+  - condense_abbreviations
+  - convert_ordinal
+  - director_correction
+  - flag_and_keep
+  - flag_and_remove
+  - gen_helpful_tables
+  - get_title_dump
+  - get_variants
+  - has_date
+  - identify_split_num
+  - of_title_helper
+  - pre_clean
+  - remove_date
+  - remove_first_split
+  - remove_status
+  - remove_trailing_conjunctions
+  - replace_ceo
+  - replace_cfo
+  - simplify_clevels
+  - simplify_varnames
+  - slash_helper
+  - spellcheck
+  - standardize_and
+  - standardize_comma
+  - standardize_of
+  - standardize_separator
+  - standardize_slash
+  - standardize_status
+  - standardize_to
+  - to_helper
+- title: Testing helpers
+  desc: Ad-hoc test harnesses (to be folded into the test suite; see TODO.md).
+  contents:
+  - starts_with("test_")
+- title: Datasets
+  desc: Bundled demo data, dictionaries, and crosswalk snapshots.
+  contents:
+  - date.words
+  - number.words
+  - likely.subjects
+  - likely.titles
+  - possible.titles
+  - former.words
+  - future.words
+  - interim.words
+  - regional.words
+  - possible.regional.list
+  - raw.titles
+  - tinypartvii
+  - df.standard
+  - d.taxonomy
+  - status.mapping

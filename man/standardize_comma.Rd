@@ -6,6 +6,9 @@
 \usage{
 standardize_comma(TitleTxt)
 }
+\arguments{
+\item{TitleTxt}{A character vector of titles.}
+}
 \description{
 distinguish if comma is for separator, extraneous, or of
 we also deal with commas as "of"(e.g. VP, finance = VP of Finance)

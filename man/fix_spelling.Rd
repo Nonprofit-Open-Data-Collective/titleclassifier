@@ -6,6 +6,9 @@
 \usage{
 fix_spelling(TitleTxt)
 }
+\arguments{
+\item{TitleTxt}{A character vector of titles.}
+}
 \description{
 apply custom dictionary of common abbreviations and misspellings
 to fix spelling of titles

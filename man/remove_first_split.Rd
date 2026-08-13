@@ -6,6 +6,9 @@
 \usage{
 remove_first_split(x)
 }
+\arguments{
+\item{x}{A character vector of titles.}
+}
 \description{
 removes the first occurrence of a split title
 }

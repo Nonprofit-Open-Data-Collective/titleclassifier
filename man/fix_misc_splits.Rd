@@ -6,6 +6,9 @@
 \usage{
 fix_misc_splits(x)
 }
+\arguments{
+\item{x}{A character vector of titles.}
+}
 \description{
 Miscelaneous cases that should be split into
 two titles but are not addressed by general rules.

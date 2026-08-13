@@ -6,6 +6,9 @@
 \usage{
 director_correction(df)
 }
+\arguments{
+\item{df}{A Part VII compensation data frame.}
+}
 \description{
 confirm all directors are properly mapped
 correcting board members "directors" that are not actually directors

@@ -6,9 +6,12 @@
 \usage{
 standardize_and(TitleTxt)
 }
+\arguments{
+\item{TitleTxt}{A character vector of titles.}
+}
 \description{
-detects whether “and” or & is a title separator
-use & as separator, “and” as regular?
+detects whether "and" or & is a title separator
+use & as separator, "and" as regular?
 assume our dates are already extracted
 
 & is separator, and is regular

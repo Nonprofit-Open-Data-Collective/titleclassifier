@@ -6,6 +6,9 @@
 \usage{
 fix_executive(TitleTxt)
 }
+\arguments{
+\item{TitleTxt}{A character vector of titles.}
+}
 \description{
 condenses executive abbreviations to a standardized form
 }

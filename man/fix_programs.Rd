@@ -6,6 +6,9 @@
 \usage{
 fix_programs(TitleTxt)
 }
+\arguments{
+\item{TitleTxt}{A character vector of titles.}
+}
 \description{
 condenses programs abbreviations to a standardized form
 skips over programming

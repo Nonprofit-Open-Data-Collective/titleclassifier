@@ -6,6 +6,9 @@
 \usage{
 fix_senior(TitleTxt)
 }
+\arguments{
+\item{TitleTxt}{A character vector of titles.}
+}
 \description{
 condenses senior/junior abbreviations to a standardized form
 }

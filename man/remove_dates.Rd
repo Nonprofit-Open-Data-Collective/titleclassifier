@@ -6,6 +6,11 @@
 \usage{
 remove_dates(df, title = "F9_07_COMP_DTK_TITLE")
 }
+\arguments{
+\item{df}{A Part VII compensation data frame.}
+
+\item{title}{Name of the title column to operate on.}
+}
 \description{
 cleans the dates by first identifying date, setting a flag if it finds one,
 then removing the date if it is present

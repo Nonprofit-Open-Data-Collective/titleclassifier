@@ -6,6 +6,9 @@
 \usage{
 fix_intelligence(TitleTxt)
 }
+\arguments{
+\item{TitleTxt}{A character vector of titles.}
+}
 \description{
 condenses intel abbreviations to a standardized form
 }

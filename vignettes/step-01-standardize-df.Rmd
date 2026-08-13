@@ -1,0 +1,55 @@
+---
+title: "Step 01 - Standardize the data frame"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Step 01 - Standardize the data frame}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>", message = FALSE, warning = FALSE)
+library(titleclassifier)
+library(dplyr)
+```
+
+**`standardize_df()`** cleans the raw Part VII compensation table into a numeric-
+friendly, consistently-named form that the rest of the pipeline expects.
+
+```
+standardize_df()
+|
++- check_names()   ensure expected compensation/checkbox columns exist (add NA if missing)
++- pre_clean()     uppercase titles, strip periods         -> applied to the title field
++- to_numeric()    coerce hours/compensation to numeric, blanks -> 0
++- to_boole()      normalize "X"/"YES"/blank checkboxes to 1/0 (NA on 990EZ)
+```
+
+## What it does
+
+* Adds a per-row `PERSONID` hash and preserves the raw title as `TITLE_RAW`.
+* Uppercases titles and strips punctuation via `pre_clean()`.
+* Converts hours and the four compensation components to numeric, summing
+  `TOT.HOURS` and `TOT.COMP`.
+* Normalizes the trustee/officer/key-employee/high-comp/former checkboxes to 0/1.
+
+## Example
+
+```{r}
+pre_clean(c("Vice President.", "sec/treas."))
+```
+
+```{r}
+data(tinypartvii)
+set.seed(1)
+d  <- dplyr::sample_n(tinypartvii, 50)
+df <- standardize_df(d)
+
+df |>
+  dplyr::select(TITLE_RAW, F9_07_COMP_DTK_TITLE, TOT.HOURS, TOT.COMP) |>
+  head(8)
+```
+
+**Input:** a raw Part VII data frame (modern NCCS schema).
+**Output:** the same rows with cleaned title text, numeric money/hours, boolean
+checkboxes, and a `PERSONID`. Continue with [step 02](step-02-remove-dates.html).

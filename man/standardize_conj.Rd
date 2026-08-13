@@ -6,6 +6,11 @@
 \usage{
 standardize_conj(comp.data, title = "TitleTxt2")
 }
+\arguments{
+\item{comp.data}{A Part VII compensation data frame.}
+
+\item{title}{Name of the title column to operate on.}
+}
 \description{
 wrapper for cleaning conjunctions (all the standardizations come in here)
 }

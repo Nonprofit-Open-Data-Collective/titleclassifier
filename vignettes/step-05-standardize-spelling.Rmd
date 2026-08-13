@@ -1,0 +1,60 @@
+---
+title: "Step 05 - Standardize spelling"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Step 05 - Standardize spelling}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>", message = FALSE, warning = FALSE)
+library(titleclassifier)
+```
+
+The dictionary-driven layer. **`standardize_spelling()`** applies `fix_spelling()`
+to every title, which in turn calls ~50 small `fix_*` routines to expand
+abbreviations and unify variants, then condenses unambiguous C-suite forms.
+
+```
+standardize_spelling()
++- fix_spelling()
+   +- fix_vice(), fix_executive(), fix_director(), fix_president(), ...   (~50 fix_* routines)
+   +- condense_abbreviations(), simplify_clevels()
+   +- remove_trailing_conjunctions(), fix_of()
+   +- spellcheck()   (hunspell)
+```
+
+## Examples
+
+```{r}
+fix_spelling("VP")                    # VICE PRESIDENT
+fix_spelling("SR D MARKETING")        # SENIOR DIRECTOR OF MARKETING
+fix_spelling("SECY")                  # SECRETARY
+fix_spelling("TRTEE")                 # TRUSTEE
+```
+
+An implicit "of" is inserted before a recognized subject:
+
+```{r}
+fix_spelling("VICE PRESIDENT FINANCE")   # VICE PRESIDENT OF FINANCE
+```
+
+Unambiguous C-suite forms are condensed; ambiguous ones are left expanded.
+(Note: EXECUTIVE DIRECTOR is normalized here but mapped to CEO later, by the
+step 07 crosswalk.)
+
+```{r}
+fix_spelling("CHIEF EXEC OFFICER")        # CEO
+fix_spelling("CHIEF FINANCIAL OFFICER")   # CFO
+fix_spelling("CHIEF ADVANCEMENT OFFICER") # unchanged (no standard abbreviation)
+```
+
+Individual routines can be called directly — useful when refining rules:
+
+```{r}
+fix_vice(c("EVP", "SVP", "V.P."))
+```
+
+**Input:** `TitleTxt4`. **Output:** `TitleTxt5`, spelling-normalized. Continue with
+[step 06](step-06-gen-status-codes.html).

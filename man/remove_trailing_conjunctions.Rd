@@ -6,6 +6,9 @@
 \usage{
 remove_trailing_conjunctions(TitleTxt)
 }
+\arguments{
+\item{TitleTxt}{A character vector of titles.}
+}
 \description{
 removes any trailing conjunctions (and, of, to)
 as well as any leading conjunctions

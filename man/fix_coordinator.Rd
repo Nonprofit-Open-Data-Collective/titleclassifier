@@ -6,6 +6,9 @@
 \usage{
 fix_coordinator(TitleTxt)
 }
+\arguments{
+\item{TitleTxt}{A character vector of titles.}
+}
 \description{
 condenses coordinator abbreviations to a standardized form
 note: instead of standardizing "CO" at the end of a title to coordinator,

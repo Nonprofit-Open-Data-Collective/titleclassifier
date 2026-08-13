@@ -4,7 +4,14 @@
 \alias{gen_status_codes}
 \title{generate status codes wrapper function}
 \usage{
-gen_status_codes(comp.data, title = "TitleTxt5")
+gen_status_codes(comp.data, title = "TitleTxt5", gs_status_codes = NULL)
+}
+\arguments{
+\item{comp.data}{A Part VII compensation data frame.}
+
+\item{title}{Name of the title column to operate on.}
+
+\item{gs_status_codes}{Optional status-code crosswalk data frame; if \code{NULL}, loaded from the bundled snapshot.}
 }
 \description{
 remove all quantifiers and qualifiers

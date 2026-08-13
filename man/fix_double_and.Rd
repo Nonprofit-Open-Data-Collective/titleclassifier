@@ -6,6 +6,9 @@
 \usage{
 fix_double_and(x)
 }
+\arguments{
+\item{x}{A character vector of titles.}
+}
 \description{
 Identifies cases with the pattern "title AND word AND word"
 and makes the substitution "title & word AND word".

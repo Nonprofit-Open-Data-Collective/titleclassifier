@@ -6,6 +6,9 @@
 \usage{
 fix_assistant(TitleTxt)
 }
+\arguments{
+\item{TitleTxt}{A character vector of titles.}
+}
 \description{
 condenses assistant abbreviations to a standardized form
 also condenses associate

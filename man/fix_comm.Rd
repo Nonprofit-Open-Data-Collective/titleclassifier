@@ -6,6 +6,9 @@
 \usage{
 fix_comm(TitleTxt)
 }
+\arguments{
+\item{TitleTxt}{A character vector of titles.}
+}
 \description{
 condenses communication and committee abbreviations to a standardized form
 }

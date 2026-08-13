@@ -6,6 +6,9 @@
 \usage{
 fix_admin(TitleTxt)
 }
+\arguments{
+\item{TitleTxt}{A character vector of titles.}
+}
 \description{
 condenses administration/administrator/administrating
 abbreviations to a standardized form

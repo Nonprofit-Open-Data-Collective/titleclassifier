@@ -6,6 +6,9 @@
 \usage{
 fix_officer(TitleTxt)
 }
+\arguments{
+\item{TitleTxt}{A character vector of titles.}
+}
 \description{
 condenses officer abbreviations to a standardized form
 }

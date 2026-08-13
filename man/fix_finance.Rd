@@ -6,6 +6,9 @@
 \usage{
 fix_finance(TitleTxt)
 }
+\arguments{
+\item{TitleTxt}{A character vector of titles.}
+}
 \description{
 condenses finance abbreviations to a standardized form
 financial is included

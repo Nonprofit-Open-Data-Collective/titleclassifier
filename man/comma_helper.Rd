@@ -6,6 +6,9 @@
 \usage{
 comma_helper(x)
 }
+\arguments{
+\item{x}{A character vector of titles.}
+}
 \description{
 returns 0,1,2 depending on whether a comma is used as a title separator,
 word separator, or just extraneous

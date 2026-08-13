@@ -6,6 +6,9 @@
 \usage{
 spellcheck(TitleTxt)
 }
+\arguments{
+\item{TitleTxt}{A character vector of titles.}
+}
 \description{
 correct small spelling mistakes
 right now only correcting president, treasurer, and trustee misspellings

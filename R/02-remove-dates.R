@@ -18,6 +18,8 @@
 #' then removing the date if it is present
 #' 
 #' @export
+#' @param df A Part VII compensation data frame.
+#' @param title Name of the title column to operate on.
 remove_dates <- function( df, title="F9_07_COMP_DTK_TITLE" )
 {
   x <- df[[ title ]]
@@ -27,7 +29,7 @@ remove_dates <- function( df, title="F9_07_COMP_DTK_TITLE" )
   # date.x = 1 if date was removed from title, 0 otherwise
   df$DATE.X <- has_date( x ) %>% as.numeric()
   df$TitleTxt2 <- remove_date( x )
-  cat("✔ remove dates step complete\n")
+  cat("[OK] remove dates step complete\n")
   return( df )
 }
 
@@ -41,19 +43,21 @@ remove_dates <- function( df, title="F9_07_COMP_DTK_TITLE" )
 #' converts ordinal numbers (1st) to their alphabetic counterpart (first)
 #'
 #' @export
+#' @param TitleTxt A character vector of titles.
 convert_ordinal <- function(TitleTxt)
 {
-  #substitute ordinal numbers
-  TitleTxt <- gsub( "1ST",  "FIRST",   TitleTxt )
-  TitleTxt <- gsub( "2ND",  "SECOND",  TitleTxt )
-  TitleTxt <- gsub( "3RD",  "THIRD",   TitleTxt )
-  TitleTxt <- gsub( "4TH",  "FOURTH",  TitleTxt )
-  TitleTxt <- gsub( "5TH",  "FIFTH",   TitleTxt )
-  TitleTxt <- gsub( "6TH",  "SIXTH",   TitleTxt )
-  TitleTxt <- gsub( "7TH",  "SEVENTH", TitleTxt )
-  TitleTxt <- gsub( "8TH",  "EIGHTH",  TitleTxt )
-  TitleTxt <- gsub( "9TH",  "NINTH",   TitleTxt )
-  TitleTxt <- gsub( "10TH", "TENTH",   TitleTxt )
+  #substitute ordinal numbers (anchored so multi-digit ordinals like "21ST"
+  # are not partially rewritten to "2FIRST")
+  TitleTxt <- gsub( "\\b1ST\\b",  "FIRST",   TitleTxt )
+  TitleTxt <- gsub( "\\b2ND\\b",  "SECOND",  TitleTxt )
+  TitleTxt <- gsub( "\\b3RD\\b",  "THIRD",   TitleTxt )
+  TitleTxt <- gsub( "\\b4TH\\b",  "FOURTH",  TitleTxt )
+  TitleTxt <- gsub( "\\b5TH\\b",  "FIFTH",   TitleTxt )
+  TitleTxt <- gsub( "\\b6TH\\b",  "SIXTH",   TitleTxt )
+  TitleTxt <- gsub( "\\b7TH\\b",  "SEVENTH", TitleTxt )
+  TitleTxt <- gsub( "\\b8TH\\b",  "EIGHTH",  TitleTxt )
+  TitleTxt <- gsub( "\\b9TH\\b",  "NINTH",   TitleTxt )
+  TitleTxt <- gsub( "\\b10TH\\b", "TENTH",   TitleTxt )
   return(TitleTxt)
 }
 
@@ -68,6 +72,7 @@ convert_ordinal <- function(TitleTxt)
 #' returns logical: TRUE if a string contains a date 
 #'
 #' @export
+#' @param TitleTxt A character vector of titles.
 has_date <- function(TitleTxt)
 {
   
@@ -78,8 +83,11 @@ has_date <- function(TitleTxt)
   format2 <- grepl( "\\b[[:digit:]]{2}-[[:digit:]]{2}\\b", TitleTxt )
   
   #mm/dd/yyyy format
+  # (kept intentionally broad: narrowing to exclude idioms like "24/7" also
+  # breaks glued dates such as "EFF02/15/23" and mm/yyyy dates like "12/2023",
+  # so the rare false positive is accepted -- see CODE-QUALITY-ASSESSMENT.md M2)
   format3 <- grepl( "\\d+/\\d+(/\\d+)*\\b", TitleTxt )
-  
+
   #mm-dd-yyyy format
   format4 <- grepl( "\\d+-\\d+(-\\d+)*\\b", TitleTxt )
   
@@ -101,6 +109,7 @@ has_date <- function(TitleTxt)
 #' removes date from raw title text
 #'
 #' @export
+#' @param TitleTxt A character vector of titles.
 remove_date <- function(TitleTxt)
 {
   ## \\d = digit
@@ -112,9 +121,9 @@ remove_date <- function(TitleTxt)
   # YY-YY format: e.g. DIRECTOR (17-18)
   TitleTxt <- gsub( "\\b[[:digit:]]{2}-[[:digit:]]{2}\\b", "", TitleTxt )
   
-  #mm/dd/yyyy format
+  #mm/dd/yyyy format (kept broad -- see has_date / assessment M2)
   TitleTxt <- gsub( "\\d+/\\d+(/\\d+)*\\b", "", TitleTxt )
-  
+
   #mm-dd-yyyy format
   TitleTxt <- gsub( "\\d+-\\d+(-\\d+)*\\b", "", TitleTxt )
   
@@ -122,9 +131,10 @@ remove_date <- function(TitleTxt)
   date <- paste0( "\\b", date.words, "\\b", collapse="|" )
   TitleTxt <- gsub( date, "", TitleTxt )
   
-  # replace R-1 with REGION
-  TitleTxt <- gsub( "R-[[:digit:]]{1,2}\\b", "REGION", TitleTxt )
-  TitleTxt <- gsub( "R[[:digit:]]{1,2}\\b", "REGION", TitleTxt )
+  # replace a standalone region code (R-1, R12) with REGION. The leading \\b
+  # keeps it from matching the trailing "R" of a word (e.g. DIRECTOR-1, MGR2).
+  TitleTxt <- gsub( "\\bR-[[:digit:]]{1,2}\\b", "REGION", TitleTxt )
+  TitleTxt <- gsub( "\\bR[[:digit:]]{1,2}\\b", "REGION", TitleTxt )
   
   #remove miscellaneous digits still lying around
   TitleTxt <- gsub("\\d[A-Z]*\\s", " ", TitleTxt)
@@ -137,7 +147,7 @@ remove_date <- function(TitleTxt)
   # clean up empty parentheses
   # "CFO ()"
   TitleTxt <- gsub(  "\\(\\s{0,3}\\)",  "",  TitleTxt )
-  TitleTxt <- gsub(  "\\b\\(",          "",  TitleTxt )
+  TitleTxt <- gsub(  "\\b\\(",         " ",  TitleTxt )  # space, not "", so CFO(INTERIM) doesn't merge
   TitleTxt <- gsub(  "\\s\\(",         " ",  TitleTxt )
   TitleTxt <- gsub(  "-\\)",           " ",  TitleTxt )
   TitleTxt <- gsub(  "\\)",            " ",  TitleTxt )

@@ -6,6 +6,9 @@
 \usage{
 standardize_to(TitleTxt)
 }
+\arguments{
+\item{TitleTxt}{A character vector of titles.}
+}
 \description{
 detects whether to is part of a date or not
 if it is, replace with "UNTIL", if not, leave be

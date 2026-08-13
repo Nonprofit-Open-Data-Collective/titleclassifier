@@ -6,6 +6,9 @@
 \usage{
 has_date(TitleTxt)
 }
+\arguments{
+\item{TitleTxt}{A character vector of titles.}
+}
 \description{
 returns logical: TRUE if a string contains a date
 }

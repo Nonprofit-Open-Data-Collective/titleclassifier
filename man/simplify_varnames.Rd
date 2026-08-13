@@ -6,6 +6,9 @@
 \usage{
 simplify_varnames(df)
 }
+\arguments{
+\item{df}{A Part VII compensation data frame.}
+}
 \description{
 simplify variable names
 }

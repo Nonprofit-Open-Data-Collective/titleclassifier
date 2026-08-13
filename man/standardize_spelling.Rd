@@ -6,6 +6,11 @@
 \usage{
 standardize_spelling(comp.data, title = "TitleTxt4")
 }
+\arguments{
+\item{comp.data}{A Part VII compensation data frame.}
+
+\item{title}{Name of the title column to operate on.}
+}
 \description{
 apply custom dictionary of common abbreviations and misspellings
 to standardize titles

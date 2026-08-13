@@ -6,6 +6,9 @@
 \usage{
 fix_emeritus(TitleTxt)
 }
+\arguments{
+\item{TitleTxt}{A character vector of titles.}
+}
 \description{
 condenses emeritus abbreviations to a standardized form
 }

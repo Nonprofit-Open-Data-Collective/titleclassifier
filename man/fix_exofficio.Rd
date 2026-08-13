@@ -6,6 +6,9 @@
 \usage{
 fix_exofficio(TitleTxt)
 }
+\arguments{
+\item{TitleTxt}{A character vector of titles.}
+}
 \description{
 condenses ex officio abbreviations to a standardized form
 }

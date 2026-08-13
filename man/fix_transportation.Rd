@@ -6,6 +6,9 @@
 \usage{
 fix_transportation(TitleTxt)
 }
+\arguments{
+\item{TitleTxt}{A character vector of titles.}
+}
 \description{
 condenses transportation abbreviations to a standardized form
 }

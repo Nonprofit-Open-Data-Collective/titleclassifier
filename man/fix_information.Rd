@@ -6,6 +6,9 @@
 \usage{
 fix_information(TitleTxt)
 }
+\arguments{
+\item{TitleTxt}{A character vector of titles.}
+}
 \description{
 condenses info abbreviations to a standardized form
 }

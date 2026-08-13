@@ -4,7 +4,7 @@
 \alias{add_status_flag}
 \title{add a boolean status flag to the compensation dataframe}
 \usage{
-add_status_flag(df, title, s.code)
+add_status_flag(df, title, s.code, variants)
 }
 \arguments{
 \item{df}{A compensation dataframe}
@@ -12,6 +12,8 @@ add_status_flag(df, title, s.code)
 \item{title}{Which version of the title string to use (defaults to "TitleTxt6")}
 
 \item{s.code}{Any of the unique status.qualifier strings from df.status (e.g. "FORMER")}
+
+\item{variants}{Regex alternation of status-code variants (from \code{get_variants()}).}
 }
 \description{
 Search for variants of a status code and add a boolean flag

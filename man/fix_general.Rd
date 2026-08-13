@@ -6,6 +6,9 @@
 \usage{
 fix_general(TitleTxt)
 }
+\arguments{
+\item{TitleTxt}{A character vector of titles.}
+}
 \description{
 condenses general abbreviations to a standardized form
 }

@@ -4,7 +4,12 @@
 \alias{categorize_titles}
 \title{categorize titles function}
 \usage{
-categorize_titles(comp.data)
+categorize_titles(comp.data, gs_title_taxonomy = NULL)
+}
+\arguments{
+\item{comp.data}{A Part VII compensation data frame.}
+
+\item{gs_title_taxonomy}{Optional title-taxonomy crosswalk; if \code{NULL}, loaded from the bundled snapshot.}
 }
 \description{
 categorizes the titles in comp.data

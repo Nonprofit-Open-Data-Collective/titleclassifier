@@ -6,6 +6,9 @@
 \usage{
 standardize_slash(TitleTxt)
 }
+\arguments{
+\item{TitleTxt}{A character vector of titles.}
+}
 \description{
 replaces slash with '&'
 }

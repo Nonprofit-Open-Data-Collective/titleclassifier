@@ -6,6 +6,9 @@
 \usage{
 fix_admissions(TitleTxt)
 }
+\arguments{
+\item{TitleTxt}{A character vector of titles.}
+}
 \description{
 condenses admissions abbreviations to a standardized form
 }

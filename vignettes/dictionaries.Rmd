@@ -1,0 +1,100 @@
+---
+title: "Dictionaries and crosswalks"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Dictionaries and crosswalks}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>", message = FALSE, warning = FALSE)
+library(titleclassifier)
+```
+
+The pipeline is driven by two kinds of reference data: **crosswalks** (curated
+lookup tables, maintained in a Google Sheet and bundled with the package as pinned
+CSV snapshots) and **word lists** (character vectors shipped as package data used by
+the regex-based cleaning steps).
+
+## Crosswalks
+
+The three crosswalks live in one Google Sheet and are cached in the package under
+`inst/extdata/crosswalks/`. The loader functions read the bundled snapshot by
+default and take `refresh = TRUE` to re-pull the live sheet.
+
+### Title standardization (`get_googlesheets_title_xwalk()`)
+
+Maps every observed title **variant** to a canonical `title.standard`, plus a
+`strata` / `strata.label` for board sub-roles. Used in step 07,
+`standardize_titles()`.
+
+```{r}
+xwalk <- get_googlesheets_title_xwalk()
+dim(xwalk)
+head(xwalk, 8)
+```
+
+### Title taxonomy (`get_googlesheets_title_taxonomy()`)
+
+Maps each canonical `title.standard` to its taxonomy dimensions: functional
+`domain.category` / `domain.label`, the BLS SOC occupation codes, and the
+binary role/hierarchy flags (`ceo`, `c.level`, `dir.vp`, `mgr`, `spec`, `board`,
+`pres`, `vp`, `sec`, `treas`, `mem`). Used in step 08, `categorize_titles()`.
+
+```{r}
+tax <- get_googlesheets_title_taxonomy()
+dim(tax)
+head(tax[, c("title.standard", "domain.category", "soc.label",
+             "ceo", "c.level", "board")], 8)
+```
+
+### Status codes (`get_googlesheets_status_codes()`)
+
+Maps status-qualifier **variants** (e.g. `ACTING`, `EMERITUS`, `INTERIM`) to a
+standardized `status.qualifier` (e.g. `INTERIM`, `FORMER`). Used in step 06,
+`gen_status_codes()`.
+
+```{r}
+sc <- get_googlesheets_status_codes()
+dim(sc)
+head(sc, 8)
+```
+
+## Word lists (package data)
+
+These character vectors are lazy-loaded package datasets used by the regex cleaning
+steps. Load any of them with `data()`.
+
+| Dataset | Used in | Purpose |
+|---------|---------|---------|
+| `date.words` | `remove_dates()` (02) | month/date tokens to detect and strip |
+| `number.words` | `gen_status_codes()` (06) | number words removed from titles |
+| `likely.titles` | `standardize_conj()` (03) | recognizable titles for split detection |
+| `likely.subjects` | `fix_of()` (05) | subjects that follow "of" in a title |
+| `possible.titles` | `fix_of()` (05) | candidate title tokens |
+| `former.words` | `gen_status_codes()` (06) | FORMER status variants |
+| `future.words` | `gen_status_codes()` (06) | FUTURE status variants |
+| `interim.words` | `gen_status_codes()` (06) | INTERIM status variants |
+| `regional.words` | `gen_status_codes()` (06) | REGIONAL status variants |
+| `possible.regional.list` | `gen_status_codes()` (06) | candidate regional tokens |
+
+```{r}
+data(number.words)
+head(number.words, 12)
+
+data(likely.titles)
+head(likely.titles, 12)
+```
+
+## Demo data
+
+| Dataset | Description |
+|---------|-------------|
+| `tinypartvii` | ~81k raw Part VII rows (10,000 orgs) in the modern schema, ready for `standardize_df()`. |
+| `raw.titles` | A small vector of raw title strings for quick experiments. |
+
+```{r}
+data(tinypartvii)
+str(tinypartvii[, 1:8], vec.len = 1)
+```

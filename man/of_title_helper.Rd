@@ -6,6 +6,9 @@
 \usage{
 of_title_helper(x)
 }
+\arguments{
+\item{x}{A character vector of titles.}
+}
 \description{
 finds instances where of should be in the title and replaces as necessary
 }

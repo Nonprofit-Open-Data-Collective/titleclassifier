@@ -1,0 +1,48 @@
+---
+title: "Step 02 - Remove dates"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Step 02 - Remove dates}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>", message = FALSE, warning = FALSE)
+library(titleclassifier)
+```
+
+Many titles carry start/end dates for a position. **`remove_dates()`** detects
+them, sets a `DATE.X` flag, and strips the date fragment.
+
+```
+remove_dates()
+|
++- convert_ordinal()  1ST/2ND/3RD -> FIRST/SECOND/THIRD
++- has_date()         TRUE/FALSE: does the string contain a date?
++- remove_date()      strip 'YY, YY-YY, mm/dd/yyyy, month names, trailing numbers
+```
+
+## Examples
+
+```{r}
+x <- c("TREASURER (ENDED 3/16/23)",
+       "DIRECTOR THRU 12/23",
+       "SECRETARY UNTIL JAN 2023",
+       "TRUSTEE (RESIGNED 1/24/23)",
+       "PRESIDENT")
+
+data.frame(title = x,
+           has_date = has_date(x),
+           cleaned  = remove_date(x))
+```
+
+Ordinals are spelled out first so later steps treat them consistently:
+
+```{r}
+convert_ordinal(c("1ST VICE PRESIDENT", "2ND LIEUTENANT GOVERNOR"))
+```
+
+**Input:** `TITLE_RAW` / cleaned title. **Output:** `TitleTxt2` (date-free text)
+and the `DATE.X` flag. Continue with
+[step 03](step-03-standardize-conj.html).

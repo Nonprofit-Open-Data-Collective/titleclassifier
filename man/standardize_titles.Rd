@@ -6,11 +6,16 @@
 \usage{
 standardize_titles(
   comp.data,
-  title = "TitleTxt6",
-  hours = "TOT.HOURS",
-  pay = "TOT.COMP",
-  officer = "F9_07_COMP_DTK_POS_OFF_X"
+  officer = "F9_07_COMP_DTK_POS_OFF_X",
+  gs_title_xwalk = NULL
 )
+}
+\arguments{
+\item{comp.data}{A Part VII compensation data frame.}
+
+\item{officer}{Name of the officer-flag column.}
+
+\item{gs_title_xwalk}{Optional title-standardization crosswalk; if \code{NULL}, loaded from the bundled snapshot.}
 }
 \description{
 Maps multiple variants of a title onto the standard form

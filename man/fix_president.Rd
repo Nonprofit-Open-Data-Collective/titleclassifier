@@ -6,6 +6,9 @@
 \usage{
 fix_president(TitleTxt)
 }
+\arguments{
+\item{TitleTxt}{A character vector of titles.}
+}
 \description{
 condenses president abbreviations to a standardized form
 ignores "presiding"

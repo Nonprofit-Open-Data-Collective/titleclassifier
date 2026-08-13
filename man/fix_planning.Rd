@@ -6,6 +6,9 @@
 \usage{
 fix_planning(TitleTxt)
 }
+\arguments{
+\item{TitleTxt}{A character vector of titles.}
+}
 \description{
 condenses planning abbreviations to a standardized form
 includes planned

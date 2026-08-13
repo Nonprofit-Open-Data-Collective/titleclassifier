@@ -12,6 +12,17 @@ basic_csuite_fixes(
   officer = "F9_07_COMP_DTK_POS_OFF_X"
 )
 }
+\arguments{
+\item{comp.data}{A Part VII compensation data frame.}
+
+\item{title}{Name of the title column to operate on.}
+
+\item{hours}{Name of the weekly-hours column.}
+
+\item{pay}{Name of the total-compensation column.}
+
+\item{officer}{Name of the officer-flag column.}
+}
 \description{
 applies conditional logic and creates some flags with helpful info
 }

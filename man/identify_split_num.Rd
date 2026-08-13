@@ -6,6 +6,9 @@
 \usage{
 identify_split_num(x)
 }
+\arguments{
+\item{x}{A character vector of titles.}
+}
 \description{
 identifies if a split is in a title using the & separator
 and returns the number of titles actually present
