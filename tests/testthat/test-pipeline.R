@@ -54,6 +54,52 @@ test_that("replace_cfo promotes finance officers using the numeric officer flag 
   expect_equal(replace_cfo("ACCOUNTANT", 40, 50000, NA), "ACCOUNTANT")
 })
 
+test_that("append_classification preserves originals verbatim and appends derived fields", {
+  skip_if_not(exists("tinypartvii"))
+  set.seed(1234)
+  d <- dplyr::sample_n(tinypartvii, 150)
+
+  # replicate classify_titles(preserve_input = TRUE) internals on the
+  # sequential (offline) pipeline: stamp a key, run, join back.
+  original <- as.data.frame(d)
+  original$.tc_row_id <- seq_len(nrow(original))
+
+  classified <- original |>
+    standardize_df() |>
+    remove_dates() |>
+    standardize_conj() |>
+    split_titles() |>
+    standardize_spelling() |>
+    gen_status_codes() |>
+    standardize_titles() |>
+    categorize_titles()
+
+  # the join key must survive the row-expanding, column-pruning pipeline
+  expect_true(".tc_row_id" %in% names(classified))
+
+  out <- append_classification(original, classified)
+
+  # every original column returns, none dropped or renamed away
+  expect_true(all(names(d) %in% names(out)))
+  expect_false(".tc_row_id" %in% names(out))
+
+  # original values are byte-identical to the input (looked up by key)
+  keyed <- dplyr::left_join(
+    original,
+    classified[c(".tc_row_id", setdiff(names(classified), names(original)))],
+    by = ".tc_row_id")
+  idx <- match(keyed$.tc_row_id, original$.tc_row_id)
+  for (cn in names(d))
+    expect_identical(as.character(keyed[[cn]]),
+                     as.character(original[[cn]][idx]), info = cn)
+
+  # derived classification fields are appended, one row per person-title
+  derived <- setdiff(names(out), names(d))
+  expect_true(all(c("title.standard", "strata", "title.v7", "dtk.comp") %in% derived))
+  expect_equal(nrow(out), nrow(classified))
+  expect_gte(nrow(out), nrow(d))
+})
+
 test_that("bundled crosswalks load offline", {
   expect_s3_class(get_googlesheets_status_codes(), "data.frame")
   expect_true(all(c("title.variant", "title.standard") %in%
