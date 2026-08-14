@@ -240,9 +240,14 @@ add_features <- function( df )
       "vp",    "num.vp",
       "treas", "num.treas",
       "sec",   "num.sec",
-      "mem",   "num.mem", 
+      "mem",   "num.mem",
 
       "URL"  )
+
+      # carry the preserve_input() join key through the select, when present,
+      # so classified rows can be mapped back to the original input rows.
+      if( ".tc_row_id" %in% names(df) )
+      { new.order <- c( new.order, ".tc_row_id" ) }
 
       df <- df[ new.order ]
 
