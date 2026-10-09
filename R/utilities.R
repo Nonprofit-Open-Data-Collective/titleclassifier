@@ -207,6 +207,19 @@ get_googlesheets_title_taxonomy <- function( refresh = FALSE ){
 
     gs_title_taxonomy[ is.na( gs_title_taxonomy ) ] <- ""
 
+    # categorize_titles() merges on title.standard, so a duplicated row would
+    # return every holder of that title twice (see FINDINGS.md F-001)
+    standard <- gs_title_taxonomy$title.standard
+    dupes <- standard[ duplicated( standard ) ] %>% sort()
+
+    if( length(dupes) > 0 )
+    {
+      warning( "Duplicate title.standard rows in title-taxonomy, keeping the first: ",
+               paste0( dupes, collapse=" ;; " ), call. = FALSE )
+    }
+
+    gs_title_taxonomy <- dplyr::filter( gs_title_taxonomy, ! duplicated( title.standard ) )
+
     gs_title_taxonomy <- as.data.frame(gs_title_taxonomy)
     .write_crosswalk_snapshot( gs_title_taxonomy, "title-taxonomy" )
     invisible( gs_title_taxonomy )

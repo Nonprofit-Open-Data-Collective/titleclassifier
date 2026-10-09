@@ -233,3 +233,110 @@ than applied in bulk.
 `R/identify-missing-titles.R` refers to an undefined `variant` (lines 114,
 125 and others), so the helper for unmatched titles errors out. The review
 files and `queue-add.csv` now cover its purpose. Fix it or remove it.
+
+## Taxonomy review (2026-10-08)
+
+A review of the `title-taxonomy` tab against the 2018 SOC table and the role
+plans in `synthid/dev/` (`PLAN-title-role-refinement.md`). Counts are from the
+2010-12 classified slice (35,930 rows). The full review and the phased plan
+are in `data-dev/CROSSWALK-REVIEW.md`.
+
+F-012 to F-015 are fixed in the snapshot by `07-taxonomy-fixes.R`, which logs
+every changed cell in `taxonomy-edits-log.csv` (266 cells, 198 rows).
+`tests/testthat/test-crosswalks.R` now checks for them. **Still to do:** enter
+the logged edits in the Google Sheet. The regression baseline keeps its own
+frozen crosswalks, so it did not change. On the 2023 demo data with the new
+snapshot:
+- rows with the ceo flag go from 42 to 137;
+- filings with at least one CEO go from 10.6% to 31.9%;
+- rows with a `soc.label` go from 3,709 to 560, because board rows no longer
+  carry the label "board".
+
+### F-012 CEO flag on the wrong titles (fixed in the snapshot; sheet pending)
+
+`EXECUTIVE DIRECTOR` had `c.level` but not `ceo`, although the instructions
+tab maps ED to ceo. ED is the most common title for the top staff job (673
+rows in the slice, against 378 for CEO). Meanwhile `ASSISTANT CEO`,
+`ASSOCIATE CEO`, `DEPUTY CEO`, `VICE CEO`, `PRESIDENT OF MEDICAL STAFF` and
+`POLITICAL DIRECTOR` had `ceo`.
+
+**Fixed:**
+- ceo added to EXECUTIVE DIRECTOR and GENERAL DIRECTOR.
+- The deputies moved to c.level.
+- PRESIDENT OF MEDICAL STAFF moved to spec (a physician).
+- POLITICAL DIRECTOR moved to emp + dir.vp.
+
+**Left as is:**
+- MANAGING DIRECTOR: holders are mixed (31% trustee box, median pay $21k,
+  24 hours a week), so the step-09 cascade should decide.
+- ORGANIZATION DIRECTOR: no holders in the slice.
+
+### F-013 Support and editorial titles filed as managers (fixed in the snapshot; sheet pending)
+
+EXECUTIVE ASSISTANT, EXECUTIVE SECRETARY, EDITOR and ORGANIZER had `mgr`.
+Moved to `spec`.
+
+### F-014 Employee level without the emp flag (fixed in the snapshot; sheet pending)
+
+BUSINESS AGENT and BUSINESS REPRESENTATIVE had `spec` with `emp` blank, so
+they counted in no group. Added `emp`. The test now requires every employee
+level to have `emp` and every board level to have `board`.
+
+### F-015 SOC codes and labels (fixed in the snapshot; sheet pending)
+
+Fixed:
+- **Codes that contradict the title:**
+  - CHIEF CIVIC PROGRAMS OFFICER and CIVIC DIRECTOR had 11-9051 (Food
+    Service Managers); changed to 11-9151.
+  - ATHLETE, SPORTS, SPORTS DIRECTOR and VICE PRESIDENT OF SOFTBALL had
+    27-2023 (Umpires). Now 27-2021, broad group only, 27-2022 and broad group
+    only.
+  - ARTIST had a detailed code from another broad group.
+- **Placeholders and whitespace:**
+  - the word "board" in every SOC column of 10 board rows;
+  - "xxx" and "missing" labels;
+  - trailing spaces in COMPTROLLER and WEBMASTER codes.
+- **Labels:** `soc.label` was hand-typed, and 88 of 219 labels did not match
+  an official title. It is now the official 2018 title of the most detailed
+  code given. Labels on rows without a code are unchanged.
+
+The Google Sheet shows the codes as text. **Downloading the sheet as .xlsx
+turns them into dates** (11-2033 becomes 48884), so read it as CSV or with
+googlesheets4.
+
+### F-016 Board taxonomy: rows with no board level, and an ambiguous `mem` (open, Phase 2)
+
+99.8% of board rows land on five standards: BOARD MEMBER, BOARD PRESIDENT,
+BOARD TREASURER, BOARD SECRETARY and BOARD VICE PRESIDENT. Of the 32 board
+taxonomy rows, 21 have no board level, including BOARD CHAIR, VICE CHAIR,
+COUNCIL CHAIR and PRESIDENT TREASURER. `mem` is "committee member" in the
+instructions tab, but the sheet uses it for a regular board member.
+
+**Proposal:** one `board.role` column (CHAIR / VICE CHAIR / SECRETARY /
+TREASURER / MEMBER). Turn the long-tail board standards into
+standardization-tab variants of the five, and move committee, advisory and
+ex officio to the status flags.
+
+### F-017 Context-dependent titles fixed to one role (open, Phase 3, with the step-09 cascade)
+
+| Title | Rows | Hard-coded mapping |
+|---|---|---|
+| VICE PRESIDENT | 1,998 | emp / dir.vp, although many holders tick the trustee box |
+| SECRETARY | 101 | emp / spec, with SOC "Secretaries and Administrative Assistants" |
+| CORPORATE SECRETARY | | same as SECRETARY |
+| DIRECTOR | 283 | emp / dir.vp |
+
+The standardization tab also sends PRESIDENT, CHAIR, DIRECTOR and SECRETARY to
+board standards. Together with F-005, these titles need an `ambiguous` marker
+and a decision in step 09 from the checkboxes, pay and hours, not in the
+crosswalk.
+
+### F-018 Domain vocabulary (open, Phase 4)
+
+74% of employee rows have the domain `operations / administration`, because
+executives are filed there. The overview tab defines a "General Management"
+domain that is not used. The labels are not a controlled list:
+- 28 rows have no category;
+- placeholders `xxx` and `industry-specific (operations?)`;
+- both `religion` and `religious`;
+- `marketing-pr`, `marketing-sales` and `comms-pr` side by side.

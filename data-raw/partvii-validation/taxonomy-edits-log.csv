@@ -1,0 +1,267 @@
+title.standard,column,old,new,finding,applied
+EXECUTIVE DIRECTOR,ceo,"",X,F-012,2026-10-08
+GENERAL DIRECTOR,ceo,"",X,F-012,2026-10-08
+ASSISTANT CEO,c.level,"",X,F-012,2026-10-08
+ASSISTANT CEO,ceo,X,"",F-012,2026-10-08
+ASSOCIATE CEO,c.level,"",X,F-012,2026-10-08
+ASSOCIATE CEO,ceo,X,"",F-012,2026-10-08
+DEPUTY CEO,c.level,"",X,F-012,2026-10-08
+DEPUTY CEO,ceo,X,"",F-012,2026-10-08
+VICE CEO,c.level,"",X,F-012,2026-10-08
+VICE CEO,ceo,X,"",F-012,2026-10-08
+PRESIDENT OF MEDICAL STAFF,spec,"",X,F-012,2026-10-08
+PRESIDENT OF MEDICAL STAFF,ceo,X,"",F-012,2026-10-08
+POLITICAL DIRECTOR,emp,"",X,F-012,2026-10-08
+POLITICAL DIRECTOR,dir.vp,"",X,F-012,2026-10-08
+POLITICAL DIRECTOR,ceo,X,"",F-012,2026-10-08
+EXECUTIVE ASSISTANT,spec,"",X,F-013,2026-10-08
+EXECUTIVE ASSISTANT,mgr,X,"",F-013,2026-10-08
+EXECUTIVE SECRETARY,spec,"",X,F-013,2026-10-08
+EXECUTIVE SECRETARY,mgr,X,"",F-013,2026-10-08
+EDITOR,spec,"",X,F-013,2026-10-08
+EDITOR,mgr,X,"",F-013,2026-10-08
+ORGANIZER,spec,"",X,F-013,2026-10-08
+ORGANIZER,mgr,X,"",F-013,2026-10-08
+BUSINESS AGENT,emp,"",X,F-014,2026-10-08
+BUSINESS REPRESENTATIVE,emp,"",X,F-014,2026-10-08
+ALTERNATE,soc.label,xxx,"",F-015,2026-10-08
+AMBASSADOR,soc.label,xxx,"",F-015,2026-10-08
+ASSISTANT TREASURER,soc.label,board,"",F-015,2026-10-08
+BOARD MEMBER,soc.label,board,"",F-015,2026-10-08
+BOARD PRESIDENT,soc.label,board,"",F-015,2026-10-08
+BOARD SECRETARY,soc.label,board,"",F-015,2026-10-08
+BOARD TREASURER,soc.label,board,"",F-015,2026-10-08
+BOARD VICE PRESIDENT,soc.label,board,"",F-015,2026-10-08
+COMMITTEE CHAIR,soc.label,board,"",F-015,2026-10-08
+DIRECTOR OF COMMITTEE,soc.label,board,"",F-015,2026-10-08
+FACULTY REPRESENTATIVE,soc.label,board,"",F-015,2026-10-08
+GOVERNANCE,soc.label,board,"",F-015,2026-10-08
+NA,soc.label,missing,"",F-015,2026-10-08
+OUTGOING,soc.label,xxx,"",F-015,2026-10-08
+ASSISTANT TREASURER,major.group,board,"",F-015,2026-10-08
+BOARD MEMBER,major.group,board,"",F-015,2026-10-08
+BOARD PRESIDENT,major.group,board,"",F-015,2026-10-08
+BOARD SECRETARY,major.group,board,"",F-015,2026-10-08
+BOARD TREASURER,major.group,board,"",F-015,2026-10-08
+BOARD VICE PRESIDENT,major.group,board,"",F-015,2026-10-08
+COMMITTEE CHAIR,major.group,board,"",F-015,2026-10-08
+DIRECTOR OF COMMITTEE,major.group,board,"",F-015,2026-10-08
+FACULTY REPRESENTATIVE,major.group,board,"",F-015,2026-10-08
+GOVERNANCE,major.group,board,"",F-015,2026-10-08
+ASSISTANT TREASURER,minor.group,board,"",F-015,2026-10-08
+BOARD MEMBER,minor.group,board,"",F-015,2026-10-08
+BOARD PRESIDENT,minor.group,board,"",F-015,2026-10-08
+BOARD SECRETARY,minor.group,board,"",F-015,2026-10-08
+BOARD TREASURER,minor.group,board,"",F-015,2026-10-08
+BOARD VICE PRESIDENT,minor.group,board,"",F-015,2026-10-08
+COMMITTEE CHAIR,minor.group,board,"",F-015,2026-10-08
+DIRECTOR OF COMMITTEE,minor.group,board,"",F-015,2026-10-08
+FACULTY REPRESENTATIVE,minor.group,board,"",F-015,2026-10-08
+GOVERNANCE,minor.group,board,"",F-015,2026-10-08
+ASSISTANT TREASURER,broad.group,board,"",F-015,2026-10-08
+BOARD MEMBER,broad.group,board,"",F-015,2026-10-08
+BOARD PRESIDENT,broad.group,board,"",F-015,2026-10-08
+BOARD SECRETARY,broad.group,board,"",F-015,2026-10-08
+BOARD TREASURER,broad.group,board,"",F-015,2026-10-08
+BOARD VICE PRESIDENT,broad.group,board,"",F-015,2026-10-08
+COMMITTEE CHAIR,broad.group,board,"",F-015,2026-10-08
+DIRECTOR OF COMMITTEE,broad.group,board,"",F-015,2026-10-08
+FACULTY REPRESENTATIVE,broad.group,board,"",F-015,2026-10-08
+GOVERNANCE,broad.group,board,"",F-015,2026-10-08
+ASSISTANT TREASURER,detailed.occupation,board,"",F-015,2026-10-08
+BOARD MEMBER,detailed.occupation,board,"",F-015,2026-10-08
+BOARD PRESIDENT,detailed.occupation,board,"",F-015,2026-10-08
+BOARD SECRETARY,detailed.occupation,board,"",F-015,2026-10-08
+BOARD TREASURER,detailed.occupation,board,"",F-015,2026-10-08
+BOARD VICE PRESIDENT,detailed.occupation,board,"",F-015,2026-10-08
+COMMITTEE CHAIR,detailed.occupation,board,"",F-015,2026-10-08
+DIRECTOR OF COMMITTEE,detailed.occupation,board,"",F-015,2026-10-08
+FACULTY REPRESENTATIVE,detailed.occupation,board,"",F-015,2026-10-08
+GOVERNANCE,detailed.occupation,board,"",F-015,2026-10-08
+CHIEF CIVIC PROGRAMS OFFICER,broad.group,11-9050,11-9150,F-015,2026-10-08
+CHIEF CIVIC PROGRAMS OFFICER,detailed.occupation,11-9051,11-9151,F-015,2026-10-08
+CIVIC DIRECTOR,broad.group,11-9050,11-9150,F-015,2026-10-08
+CIVIC DIRECTOR,detailed.occupation,11-9051,11-9151,F-015,2026-10-08
+ARTIST,detailed.occupation,27-2013,"",F-015,2026-10-08
+ATHLETE,detailed.occupation,27-2023,27-2021,F-015,2026-10-08
+SPORTS DIRECTOR,detailed.occupation,27-2023,27-2022,F-015,2026-10-08
+SPORTS,detailed.occupation,27-2023,"",F-015,2026-10-08
+VICE PRESIDENT OF SOFTBALL,detailed.occupation,27-2023,"",F-015,2026-10-08
+ACTOR,soc.label,"Actors, producers, and directors",Actors,F-015,2026-10-08
+ADMINISTRATIVE ASSISTANT,soc.label,Secretaries and administrative assistants,Secretaries and Administrative Assistants,F-015,2026-10-08
+ADMINISTRATOR,soc.label,Administrative services and facilities managers,Administrative Services Managers,F-015,2026-10-08
+ANALYST,soc.label,management analysts,Management Analysts,F-015,2026-10-08
+ARCHITECT,soc.label,"Architects, except naval","Architects, Except Naval",F-015,2026-10-08
+ARCHIVIST,soc.label,"Archivists, Curators, and Museum Technicians",Archivists,F-015,2026-10-08
+ARTIST,soc.label,Artists and related workers,Artists and Related Workers,F-015,2026-10-08
+ARTISTIC DIRECTOR,soc.label,Artists and related workers,Art Directors,F-015,2026-10-08
+ASSISTANT,soc.label,Secretaries and administrative assistants,Secretaries and Administrative Assistants,F-015,2026-10-08
+ASSISTANT CEO,soc.label,Chief executives,Chief Executives,F-015,2026-10-08
+ASSISTANT DIRECTOR,soc.label,General and operations manager,General and Operations Managers,F-015,2026-10-08
+ASSISTANT SECRETARY,soc.label,Secretaries and administrative assistants,Secretaries and Administrative Assistants,F-015,2026-10-08
+ASSISTANT VICE PRESIDENT,soc.label,General and operations manager,General and Operations Managers,F-015,2026-10-08
+ASSOCIATE CEO,soc.label,Chief executives,Chief Executives,F-015,2026-10-08
+ASSOCIATE DIRECTOR,soc.label,General and operations manager,General and Operations Managers,F-015,2026-10-08
+ATHLETE,soc.label,"Athletes, coaches, umpires, and related workers",Athletes and Sports Competitors,F-015,2026-10-08
+BAND DIRECTOR,soc.label,"Musicians, singers, and related workers",Music Directors and Composers,F-015,2026-10-08
+BOOKKEEPER,soc.label,"Bookkeeping, accounting, and auditing clerks","Bookkeeping, Accounting, and Auditing Clerks",F-015,2026-10-08
+BUSINESS AGENT,soc.label,Miscellaneous business operations specialists,"Business Operations Specialists, All Other",F-015,2026-10-08
+BUSINESS REPRESENTATIVE,soc.label,Business operations specialists,"Business Operations Specialists, All Other",F-015,2026-10-08
+CEO,soc.label,Chief executives,Chief Executives,F-015,2026-10-08
+CO-CEO,soc.label,Chief executives,Chief Executives,F-015,2026-10-08
+EXECUTIVE DIRECTOR,soc.label,Chief executives,Chief Executives,F-015,2026-10-08
+EXECUTIVE ADMINISTRATION,soc.label,Chief executives,Chief Executives,F-015,2026-10-08
+GENERAL DIRECTOR,soc.label,Chief executives,Chief Executives,F-015,2026-10-08
+MANAGING DIRECTOR,soc.label,Chief executives,Chief Executives,F-015,2026-10-08
+ORGANIZATION DIRECTOR,soc.label,Chief executives,Chief Executives,F-015,2026-10-08
+CHIEF FINANCIAL OFFICER,soc.label,Financial manager,Financial Managers,F-015,2026-10-08
+CFO,soc.label,Financial manager,Financial Managers,F-015,2026-10-08
+CHAPLAIN,soc.label,Religious workers,"Religious Workers, All Other",F-015,2026-10-08
+CHIEF ADMINISTRATIVE OFFICER,soc.label,General and operations manager,General and Operations Managers,F-015,2026-10-08
+CHIEF ADVANCEMENT OFFICER,soc.label,General and operations manager,General and Operations Managers,F-015,2026-10-08
+CHIEF ARCHITECT,soc.label,"Architects, except naval/ architectural manager (11-9041)","Architects, Except Naval",F-015,2026-10-08
+CHIEF ARTISTIC OFFICER,soc.label,General and operations manager,General and Operations Managers,F-015,2026-10-08
+CHIEF BUSINESS DEVELOPMENT OFFICER,soc.label,General and operations manager,General and Operations Managers,F-015,2026-10-08
+CHIEF CIVIC PROGRAMS OFFICER,soc.label,Social and community service managers,Social and Community Service Managers,F-015,2026-10-08
+CHIEF COLLECTIONS OFFICER,soc.label,General and operations manager,General and Operations Managers,F-015,2026-10-08
+CHIEF CONTENT OFFICER,soc.label,General and operations manager,General and Operations Managers,F-015,2026-10-08
+CHIEF CURATOR,soc.label,General and operations manager,General and Operations Managers,F-015,2026-10-08
+CHIEF DEVELOPMENT OFFICER,soc.label,General and operations manager,General and Operations Managers,F-015,2026-10-08
+CHIEF DIGITAL OFFICER,soc.label,General and operations manager,General and Operations Managers,F-015,2026-10-08
+CHIEF ENGAGEMENT OFFICER,soc.label,General and operations manager,General and Operations Managers,F-015,2026-10-08
+CHIEF HISTORIAN,soc.label,General and operations manager,General and Operations Managers,F-015,2026-10-08
+CHIEF HUMAN RESOURCES OFFICER,soc.label,General and operations manager,General and Operations Managers,F-015,2026-10-08
+CHIEF IMAM,soc.label,Religious workers,"Religious Workers, All Other",F-015,2026-10-08
+CHIEF INFORMATION OFFICER,soc.label,General and operations manager,General and Operations Managers,F-015,2026-10-08
+CHIEF INNOVATION OFFICER,soc.label,General and operations manager,General and Operations Managers,F-015,2026-10-08
+CHIEF INSIGHTS OFFICER,soc.label,General and operations manager,General and Operations Managers,F-015,2026-10-08
+CHIEF INSTITUTIONAL ADVANCEMENT OFFICER,soc.label,General and operations manager,General and Operations Managers,F-015,2026-10-08
+CHIEF LEGAL OFFICER,soc.label,General and operations manager,General and Operations Managers,F-015,2026-10-08
+CHIEF MARKETING OFFICER,soc.label,General and operations manager,General and Operations Managers,F-015,2026-10-08
+CHIEF MECHANICAL OFFICER,soc.label,General and operations manager,General and Operations Managers,F-015,2026-10-08
+CHIEF OPERATING OFFICER,soc.label,Chief executives,Chief Executives,F-015,2026-10-08
+CHIEF PARTNERSHIP OFFICER,soc.label,General and operations manager,General and Operations Managers,F-015,2026-10-08
+CHIEF PHILANTHROPY OFFICER,soc.label,General and operations manager,General and Operations Managers,F-015,2026-10-08
+CHIEF PROGRAMS OFFICER,soc.label,General and operations manager,General and Operations Managers,F-015,2026-10-08
+CHIEF RELATIONS OFFICER,soc.label,General and operations manager,General and Operations Managers,F-015,2026-10-08
+CHIEF SCIENTIFIC OFFICER,soc.label,General and operations manager,General and Operations Managers,F-015,2026-10-08
+CHIEF STRATEGY OFFICER,soc.label,General and operations manager,General and Operations Managers,F-015,2026-10-08
+CHIEF SUSTAINABILITY OFFICER,soc.label,General and operations manager,General and Operations Managers,F-015,2026-10-08
+CHIEF TECHNOLOGY OFFICER,soc.label,General and operations manager,General and Operations Managers,F-015,2026-10-08
+CIVIC DIRECTOR,soc.label,Social and community service managers,Social and Community Service Managers,F-015,2026-10-08
+CLUB MANAGER,soc.label,Miscellaneous Managers,"Managers, All Other",F-015,2026-10-08
+COMMUNICATIONS,soc.label,Miscellaneous Media and Communication Workers,"Media and Communication Workers, All Other",F-015,2026-10-08
+COMPOSER,soc.label,"Musicians, singers, and related workers",Music Directors and Composers,F-015,2026-10-08
+COMPTROLLER,soc.label,Miscellaneous Financial Specialists,"Financial Specialists, All Other",F-015,2026-10-08
+CONDUCTOR,soc.label,"Musicians, singers, and related workers","Musicians, Singers, and Related Workers",F-015,2026-10-08
+COO,soc.label,General and operations manager,General and Operations Managers,F-015,2026-10-08
+CORPORATE SECRETARY,soc.label,Secretaries and administrative assistants,Secretaries and Administrative Assistants,F-015,2026-10-08
+CURATOR,soc.label,"Archivists, Curators, and Museum Technicians",Curators,F-015,2026-10-08
+DEAN,soc.label,Education and childcare administrators,"Education Administrators, Postsecondary",F-015,2026-10-08
+DEPUTY DIRECTOR,soc.label,General and operations manager,General and Operations Managers,F-015,2026-10-08
+DIRECTOR OF ADMINISTRATION,soc.label,Administrative services and facilities managers,Administrative Services Managers,F-015,2026-10-08
+DIRECTOR OF ADVANCEMENT,soc.label,Public relations and fundraising managers,Fundraising Managers,F-015,2026-10-08
+DIRECTOR OF BUSINESS DEVELOPMENT,soc.label,General and operations manager,General and Operations Managers,F-015,2026-10-08
+DIRECTOR OF DEVELOPMENT,soc.label,Public relations and fundraising managers,Fundraising Managers,F-015,2026-10-08
+DIRECTOR OF EXTERNAL AFFAIRS,soc.label,Public relations and fundraising managers,Public Relations Managers,F-015,2026-10-08
+DIRECTOR OF FACILITIES,soc.label,Administrative services and facilities managers,Administrative Services Managers,F-015,2026-10-08
+DIRECTOR OF FINANCE,soc.label,financial manager,Financial Managers,F-015,2026-10-08
+DIRECTOR OF FINANCE AND ADMINISTRATION,soc.label,financial manager,Financial Managers,F-015,2026-10-08
+DIRECTOR OF FINANCE AND OPERATIONS,soc.label,financial manager,Financial Managers,F-015,2026-10-08
+DIRECTOR OF FUNDRAISING,soc.label,Public relations and fundraising managers,Fundraising Managers,F-015,2026-10-08
+DIRECTOR OF HUMAN RESOURCES,soc.label,Human resources managers,Human Resources Managers,F-015,2026-10-08
+DIRECTOR OF INFORMATION TECHNOLOGY,soc.label,Computer and information system manager,Computer and Information Systems Managers,F-015,2026-10-08
+DIRECTOR OF MARKETING,soc.label,Marketing and sales managers,Marketing Managers,F-015,2026-10-08
+DIRECTOR OF MEMBERSHIP,soc.label,Public relations and fundraising managers,Fundraising Managers,F-015,2026-10-08
+DIRECTOR OF MUSIC,soc.label,"Musicians, singers, and related workers",Music Directors and Composers,F-015,2026-10-08
+DIRECTOR OF OPERATIONS,soc.label,General and operations manager,General and Operations Managers,F-015,2026-10-08
+DIRECTOR OF PRODUCTION,soc.label,"Actors, producers, and directors",Producers and Directors,F-015,2026-10-08
+DIRECTOR OF PUBLIC RELATIONS,soc.label,Public relations and fundraising managers,Public Relations Managers,F-015,2026-10-08
+DIRECTOR OF RESEARCH,soc.label,"Life, physical, and social science and research occupations","Life, Physical, and Social Science Occupations",F-015,2026-10-08
+DIRECTOR OF TECHNOLOGY,soc.label,Computer and information system manager,Computer and Information Systems Managers,F-015,2026-10-08
+EDITOR,soc.label,Writers and editors,Editors,F-015,2026-10-08
+EDITOR IN CHIEF,soc.label,Writers and editors,Editors,F-015,2026-10-08
+ELDER,soc.label,Religious workers,"Religious Workers, All Other",F-015,2026-10-08
+EVENT COORDINATOR,soc.label,"Meeting, convention, and event planners","Meeting, Convention, and Event Planners",F-015,2026-10-08
+EVENTS,soc.label,"Meeting, convention, and event planners","Meeting, Convention, and Event Planners",F-015,2026-10-08
+EXECUTIVE ARTISTIC DIRECTOR,soc.label,Artists and related workers,Art Directors,F-015,2026-10-08
+EXECUTIVE EDITOR,soc.label,Writers and editors,Editors,F-015,2026-10-08
+EXECUTIVE PRODUCER,soc.label,"Actors, producers, and directors",Producers and Directors,F-015,2026-10-08
+EXECUTIVE SECRETARY,soc.label,Secretaries and administrative assistants,Executive Secretaries and Executive Administrative Assistants,F-015,2026-10-08
+EXECUTIVE SENIOR VICE PRESIDENT,soc.label,General and operations manager,General and Operations Managers,F-015,2026-10-08
+EXECUTIVE VICE PRESIDENT,soc.label,General and operations manager,General and Operations Managers,F-015,2026-10-08
+FINANCE MANAGER,soc.label,financial manager,Financial Managers,F-015,2026-10-08
+FINANCE OFFICER,soc.label,financial manager,Financial Managers,F-015,2026-10-08
+FOUNDATION MANAGER,soc.label,Public relations and fundraising managers,Fundraising Managers,F-015,2026-10-08
+FOUNDER,soc.label,General and operations manager,General and Operations Managers,F-015,2026-10-08
+GENERAL MANAGER,soc.label,General and operations manager,General and Operations Managers,F-015,2026-10-08
+HISTORIAN,soc.label,Miscellaneous social scientists and related workers,Historians,F-015,2026-10-08
+HOSPITALITY,soc.label,"Miscellaneous Sales Representatives, Services","Sales Representatives of Services, Except Advertising, Insurance, Financial Services, and Travel",F-015,2026-10-08
+IMAM,soc.label,Religious workers,"Religious Workers, All Other",F-015,2026-10-08
+INFORMATION TECHNOLOGY MANAGER,soc.label,Computer and information system manager,Computer and Information Systems Managers,F-015,2026-10-08
+INSTRUCTOR,soc.label,Educational instruction and library occupations,Educational Instruction and Library Occupations,F-015,2026-10-08
+LEGAL ADVISOR,soc.label,Miscellaneous Legal Support Workers,"Legal Support Workers, All Other",F-015,2026-10-08
+LIBRARIAN,soc.label,Librarians and media collections specialists,Librarians and Media Collections Specialists,F-015,2026-10-08
+MUSIC DIRECTOR,soc.label,"Musicians, singers, and related workers",Music Directors and Composers,F-015,2026-10-08
+MUSICIAN,soc.label,"Musicians, singers, and related workers",Music Directors and Composers,F-015,2026-10-08
+OFFICE ADMINISTRATOR,soc.label,General and operations manager,General and Operations Managers,F-015,2026-10-08
+OFFICER MANAGER,soc.label,General and operations manager,General and Operations Managers,F-015,2026-10-08
+OPERATIONS MANAGER,soc.label,General and operations manager,General and Operations Managers,F-015,2026-10-08
+PRODUCER,soc.label,"Actors, producers, and directors",Producers and Directors,F-015,2026-10-08
+PRODUCING DIRECTOR,soc.label,"Actors, producers, and directors",Producers and Directors,F-015,2026-10-08
+PRODUCTION,soc.label,"Actors, producers, and directors",Producers and Directors,F-015,2026-10-08
+PRODUCTION MANAGER,soc.label,"Actors, producers, and directors",Producers and Directors,F-015,2026-10-08
+PROVOST,soc.label,Education and childcare administrators,"Education Administrators, Postsecondary",F-015,2026-10-08
+PUBLIC RELATIONS,soc.label,Public relations specialists,Public Relations Specialists,F-015,2026-10-08
+PUBLIC RELATIONS ASSOCIATE,soc.label,Public relations specialists,Public Relations Specialists,F-015,2026-10-08
+PUBLISHER,soc.label,Miscellaneous Media and Communication Workers,"Media and Communication Workers, All Other",F-015,2026-10-08
+REGIONAL VICE PRESIDENT,soc.label,General and operations manager,General and Operations Managers,F-015,2026-10-08
+REGISTRAR,soc.label,Miscellaneous Educational Instruction and Library Workers,"Educational Instruction and Library Workers, All Other",F-015,2026-10-08
+SECRETARY,soc.label,Secretaries and administrative assistants,Secretaries and Administrative Assistants,F-015,2026-10-08
+SECRETARY GENERAL,soc.label,Chief executives,Chief Executives,F-015,2026-10-08
+SENIOR CURATOR,soc.label,"Archivists, Curators, and Museum Technicians",Curators,F-015,2026-10-08
+SENIOR DIRECTOR OF OPERATIONS,soc.label,General and operations manager,General and Operations Managers,F-015,2026-10-08
+SENIOR DIRECTOR OF STRATEGY AND ENGAGEMENT,soc.label,General and operations manager,General and Operations Managers,F-015,2026-10-08
+SENIOR EDITOR,soc.label,Writers and editors,Editors,F-015,2026-10-08
+SENIOR EXECUTIVE VICE PRESIDENT,soc.label,General and operations manager,General and Operations Managers,F-015,2026-10-08
+SENIOR INSTRUCTOR,soc.label,Educational instruction and library occupations,Educational Instruction and Library Occupations,F-015,2026-10-08
+SENIOR VICE PRESIDENT,soc.label,General and operations manager,General and Operations Managers,F-015,2026-10-08
+SENIOR VICE PRESIDENT OF ADVANCEMENT,soc.label,Public relations and fundraising managers,Fundraising Managers,F-015,2026-10-08
+SENIOR VICE PRESIDENT OF BUSINESS DEVELOPMENT,soc.label,General and operations manager,General and Operations Managers,F-015,2026-10-08
+SENIOR VICE PRESIDENT OF FINANCE AND ADMINISTRATION,soc.label,financial manager,Financial Managers,F-015,2026-10-08
+SENIOR VICE PRESIDENT OF PRODUCTION,soc.label,"Actors, producers, and directors",Producers and Directors,F-015,2026-10-08
+SPORTS,soc.label,"Athletes, coaches, umpires, and related workers","Athletes, Coaches, Umpires, and Related Workers",F-015,2026-10-08
+SPORTS DIRECTOR,soc.label,"Athletes, coaches, umpires, and related workers",Coaches and Scouts,F-015,2026-10-08
+STATION MANAGER,soc.label,General and operations manager,General and Operations Managers,F-015,2026-10-08
+TEACHER,soc.label,Educational instruction and library occupations,Educational Instruction and Library Occupations,F-015,2026-10-08
+VICE PRESIDENT,soc.label,General and operations manager,General and Operations Managers,F-015,2026-10-08
+VICE PRESIDENT OF ADMINISTRATION,soc.label,Administrative services and facilities managers,Administrative Services Managers,F-015,2026-10-08
+VICE PRESIDENT OF ADVANCEMENT,soc.label,Public relations and fundraising managers,Fundraising Managers,F-015,2026-10-08
+VICE PRESIDENT OF BUSINESS DEVELOPMENT,soc.label,General and operations manager,General and Operations Managers,F-015,2026-10-08
+VICE PRESIDENT OF BUSINESS OPERATIONS,soc.label,General and operations manager,General and Operations Managers,F-015,2026-10-08
+VICE PRESIDENT OF DEVELOPMENT,soc.label,Public relations and fundraising managers,Fundraising Managers,F-015,2026-10-08
+VICE PRESIDENT OF EXHIBITS,soc.label,Designers,Set and Exhibit Designers,F-015,2026-10-08
+VICE PRESIDENT OF FACILITIES,soc.label,Administrative services and facilities managers,Facilities Managers,F-015,2026-10-08
+VICE PRESIDENT OF FINANCE,soc.label,Financial managers,Financial Managers,F-015,2026-10-08
+VICE PRESIDENT OF FINANCE AND OPERATIONS,soc.label,Financial managers,Financial Managers,F-015,2026-10-08
+VICE PRESIDENT OF FUNDRAISING,soc.label,Public relations and fundraising managers,Fundraising Managers,F-015,2026-10-08
+VICE PRESIDENT OF HEALTH,soc.label,Medical and health services managers,Medical and Health Services Managers,F-015,2026-10-08
+VICE PRESIDENT OF HOSPITALITY,soc.label,Lodging managers,Lodging Managers,F-015,2026-10-08
+VICE PRESIDENT OF HUMAN RESOURCES,soc.label,Human resources managers,Human Resources Managers,F-015,2026-10-08
+VICE PRESIDENT OF INFORMATION TECHNOLOGY,soc.label,Computer and information system manager,Computer and Information Systems Managers,F-015,2026-10-08
+VICE PRESIDENT OF INSTITUTIONAL ADVANCEMENT,soc.label,Public relations and fundraising managers,Fundraising Managers,F-015,2026-10-08
+VICE PRESIDENT OF LEGAL,soc.label,legal occupations,Legal Occupations,F-015,2026-10-08
+VICE PRESIDENT OF MARKETING,soc.label,Marketing and sales managers,Marketing Managers,F-015,2026-10-08
+VICE PRESIDENT OF MEDICAL AFFAIRS,soc.label,Medical and health services managers,Medical and Health Services Managers,F-015,2026-10-08
+VICE PRESIDENT OF MEMBERSHIP,soc.label,Public relations and fundraising managers,Fundraising Managers,F-015,2026-10-08
+VICE PRESIDENT OF MUSIC,soc.label,"Musicians, singers, and related workers",Music Directors and Composers,F-015,2026-10-08
+VICE PRESIDENT OF OPERATIONS,soc.label,General and operations manager,General and Operations Managers,F-015,2026-10-08
+VICE PRESIDENT OF PRODUCTION,soc.label,"Actors, producers, and directors",Producers and Directors,F-015,2026-10-08
+VICE PRESIDENT OF PUBLIC RELATIONS,soc.label,Public relations and fundraising managers,Public Relations Managers,F-015,2026-10-08
+VICE PRESIDENT OF RESEARCH,soc.label,"Life, physical, and social science and research occupations","Life, Physical, and Social Science Occupations",F-015,2026-10-08
+VICE PRESIDENT OF SALES,soc.label,Marketing and sales managers,Marketing Managers,F-015,2026-10-08
+VICE PRESIDENT OF SALES AND MARKETING,soc.label,Marketing and sales managers,Marketing Managers,F-015,2026-10-08
+VICE PRESIDENT OF SOFTBALL,soc.label,"Athletes, coaches, umpires, and related workers","Athletes, Coaches, Umpires, and Related Workers",F-015,2026-10-08
+VICE PRESIDENT OF STRATEGY,soc.label,General and operations manager,General and Operations Managers,F-015,2026-10-08
+VICE PRESIDENT OF TECHNOLOGY,soc.label,Computer and information system manager,Computer and Information Systems Managers,F-015,2026-10-08
+WRITER,soc.label,Writers and editors,Editors,F-015,2026-10-08

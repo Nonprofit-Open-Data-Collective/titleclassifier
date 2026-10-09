@@ -157,11 +157,15 @@ Recorded in this folder (committed):
 | `taxonomy-additions.csv` | new standards and their taxonomy rows |
 | `cleaning-issues.csv` | titles a cleaning step gets wrong, for code fixes |
 | `applied-log.csv` | what `06-apply-decisions.R` changed, and when |
+| `taxonomy-edits-log.csv` | cells of existing taxonomy rows that `07-taxonomy-fixes.R` changed (role flags, SOC) |
 | `FINDINGS.md` | the findings log: patterns, rule proposals, code fixes, metrics after each round |
 
 The crosswalk CSVs in `inst/extdata/crosswalks/` are snapshots of the Google
 Sheet, and `get_googlesheets_*(refresh = TRUE)` overwrites them. Enter the rows
-in `applied-log.csv` in the sheet as well before anyone refreshes.
+in `applied-log.csv` and `taxonomy-edits-log.csv` in the sheet as well before
+anyone refreshes. `tests/testthat/test-crosswalks.R` checks the snapshots
+(unique standards, flags, valid SOC codes) and fails if a refresh brings back
+a fixed error.
 
 Code fixes for `fix_cleaning` findings change the step functions in `R/`. Each
 one cites its finding in `FINDINGS.md`, and the regression baseline
