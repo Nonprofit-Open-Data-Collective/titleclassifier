@@ -52,3 +52,14 @@ suite (see below) and drop the exports:
   check WARNING; replace with ASCII or escape as `✔` if we want a clean check.
 - **Regression baseline** — re-run `tests/regression/check-regression.R` after any pipeline
   change; re-baseline (`data-raw/demo/build-demo.R`) only for intentional output changes.
+
+## Crosswalk review for odd mappings (open, 2026-10-09)
+
+Some mappings look wrong: staff titles mapped to board standards (VOLUNTEER
+COORDINATOR, YOUTH DIRECTOR), inconsistent assistant board offices, a pattern
+rule that makes YOUTH SOCCER COACH a board member, frequent titles left
+uncoded (EXECUTIVE OFFICER), and status-code contradictions (NEW, PRESENT).
+They are listed in `data-dev/CROSSWALK-ODDITIES.md`. That file's section 6 is
+the task: review the full crosswalk, the pattern rules and the status codes
+for similar issues, using the checkbox and pay evidence in the calibration
+sample. Then re-measure and rebaseline.
