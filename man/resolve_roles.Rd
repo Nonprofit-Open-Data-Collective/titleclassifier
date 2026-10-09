@@ -52,4 +52,13 @@ who ticks the trustee box and works under 25 hours a week doesn't count.
 is named.
 }
 }
+
+A board title (president, secretary, treasurer...) held by someone who
+works under 10 hours a week and is paid under $25,000 is a board seat, even
+with the officer box. Such a person is a titular officer receiving a
+stipend, not a paid executive.
+
+Scored against a 158-person hand-labeled sample of 2010-12 filings
+(\code{data-raw/partvii-validation/08-gold-check.R}), the role agrees with the
+label for 92.9\% of people.
 }

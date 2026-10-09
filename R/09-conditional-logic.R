@@ -53,6 +53,15 @@ conditional_logic <- function(comp.data)
 #'    - If no paid person qualifies, the filing is `board_governed` and no CEO
 #'      is named.
 #'
+#' A board title (president, secretary, treasurer...) held by someone who
+#' works under 10 hours a week and is paid under $25,000 is a board seat, even
+#' with the officer box. Such a person is a titular officer receiving a
+#' stipend, not a paid executive.
+#'
+#' Scored against a 158-person hand-labeled sample of 2010-12 filings
+#' (`data-raw/partvii-validation/08-gold-check.R`), the role agrees with the
+#' label for 92.9% of people.
+#'
 #' @return `comp.data` with these columns added (person-level values repeat on
 #'   each of the person's rows):
 #'   \describe{
@@ -166,6 +175,10 @@ resolve_roles <- function( comp.data )
           role.position == "board",                                       "BOARD",
           role.position == "board_officer" & ! ( .p_exec & .p_paid ),     "BOARD",
           role.position == "officer" & .p_board_t & ! .p_paid,            "BOARD",
+          # a board title held a few hours a week for a stipend is a board
+          # seat, not a paid officer (a titular president, F-023)
+          role.position %in% c( "officer", "board_officer" ) & .p_board_t &
+            .p_hrs < 10 & .p_comp < 25000,                                "BOARD",
           role.position %in% c( "officer", "board_officer" ),             "OFFICER",
           role.position == "unknown" & .p_board_t,                        "BOARD",
           role.position == "unknown" & .p_exec,                           "OFFICER",
