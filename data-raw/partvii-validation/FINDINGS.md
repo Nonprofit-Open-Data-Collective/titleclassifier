@@ -709,3 +709,60 @@ The labelers also found gaps in the guide:
   than CEO;
 - stipends for officers other than the president;
 - related-organization executives.
+
+### F-025 A 2019-2023 sample for calibrating step 09 at scale (sample drawn)
+
+The labeled set (F-024) is for measuring accuracy, not for training. The
+synthid plan calls for something else: **silver labels** from full-990 filers.
+These are the step 09 roles in strata where the checkboxes, pay and title
+agree. They come first, by stratum, and the lessons then carry over to 990-EZ
+filers, which have no checkboxes. `12-panel-sample.R` draws the sample.
+
+**Source:** NCCS `efile_v2_3` Parquet tables for tax years 2019-2023:
+- Part I summary, with total expenses for 990 and 990-EZ returns;
+- Part VII compensation.
+
+Files are stored in `~/Documents/PARTVII/efile` (about 880 MB). Tax year 2024
+was left out because it is still incomplete: its Part I file is 246 MB,
+against 305 MB for 2023.
+
+**Frame:** 2,538,408 filings from 647,098 organizations, keeping one filing
+per organization-year (the latest submission). 355,674 organizations (55%)
+file in all five years.
+
+**Size strata, by total expenses.** $0 is its own bin.
+
+| Share of filings with any paid person | $0 | $1-150k |
+|---|---|---|
+| 990 | 2.9% | 16% |
+| 990-EZ | 0.9% | 15% |
+
+- $0 filers are 1.2% of filings. Their median board is smaller: 4 people,
+  against 6, on the 990.
+- 43% of $0 organizations report expenses in another year, so many are
+  dormant years rather than dormant organizations.
+- The 256 negative-expense filings are put in $0.
+- 990-EZ returns with no expense figure (19,037) get a "missing" bin.
+
+**Other strata:**
+- paid people on Part VII: 0, 1, 2-4, 5+;
+- form: 990 or 990-EZ.
+
+**Sample:** 60,520 filings from 35,396 organizations.
+- **Panel:** 6,027 organizations that file all five years, stratified by their
+  2019 cell and kept in every year. That gives 30,135 filings and supports the
+  cross-time consistency check.
+- **Fresh:** 30,385 filings, about 6,000 a year from organizations outside the
+  panel.
+- **Allocation:** proportional to the square root of each cell's population,
+  with a floor of 25 per cell. Each filing carries a weight (cell population /
+  sample).
+- **Large organizations are well represented:** 2,134 filings over $100m and
+  5,679 at $10m-100m. The 990-EZ part has about 17,000 filings.
+
+`panel-sample-cells.csv` gives the counts by cell.
+
+**Next:** run steps 01-09 on the sampled filings, then:
+- calibrate by stratum: how often the checkboxes, title and pay agree;
+- check roles across time in the panel;
+- build the silver label set.
