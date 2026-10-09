@@ -787,3 +787,88 @@ Four 990-EZ board officers gained; none lost.
 
 On the 2023 demo, 15 board-titled people move from STAFF to BOARD. The
 regression reference is rebuilt: md5 `e74d1834...`, 4,135 x 111.
+
+### F-026 Step 09 calibrated on the 2019-2023 sample (done)
+
+Steps 01-09 ran on the 60,520-filing sample (F-025) with main at 1f06d84,
+which includes F-027 and the PRESIDENT & CEO fix. The run gives 704,000
+person-title rows, or 668,168 people.
+
+The scripts, all under `data-raw/partvii-validation/`:
+- `13-panel-run.R` runs the pipeline;
+- `15-panel-synthid.R` links the panel's people across years;
+- `14-panel-calibrate.R` produces the tables in `panel-results/`.
+
+Rates are per person and weighted to the population with the design weights.
+Large outputs stay in `~/Documents/PARTVII/sample/`.
+
+**1. Calibration by stratum (full 990):**
+
+| Size | Title mapped | Board title has trustee box | Trustee box has board title | Paid exec title has officer box | Filings with a CEO, if anyone is paid |
+|---|---|---|---|---|---|
+| $0 | 96.5% | 80% | 94% | 80% | 84% |
+| $1-150k | 97.5% | 77% | 94% | 75% | 64% |
+| $150k-1m | 97.1% | 86% | 94% | 77% | 89% |
+| $1m-10m | 97.1% | 95% | 96% | 80% | 96% |
+| $10m-100m | 93.0% | 90% | 96% | 65% | 98% |
+| $100m+ | 86.2% | 91% | 92% | 53% | 98% |
+
+- **Titles map well** except in the largest organizations, where specialized
+  clinical and academic titles cluster.
+- **The trustee box is reliable.** 92-96% of trustee boxes come with a board
+  title. Small organizations often leave the box blank for board titles
+  (77-80%).
+- **Large organizations often report executives as highly compensated
+  employees** rather than ticking the officer box: 53% at $100m+. That is why
+  step 09 does not depend on the box alone.
+- **Small organizations are often board-run.** CEO coverage rises with size,
+  from 64% at $1-150k to 98%. The rest are `board_governed`.
+- **Step 09 overrides the title-only default for 3-9% of people.**
+- **The 990-EZ override for filings with 5+ paid people fell from 73% to 13%**
+  after F-027.
+
+**2. Cross-time consistency (panel, by synthid EMP_ID).** 343,127 person-years
+link to 113,915 people, giving 226,821 consecutive-year pairs. synthid finds
+4% more pairs than exact name matching (218,637).
+- **96-98% of people keep their role from one year to the next.** By role:
+
+  | Role | Same role next year |
+  |---|---|
+  | BOARD | 99.1% |
+  | PROFESSIONAL | 93.5% |
+  | CEO | 91.9% |
+  | OFFICER | 90.5% |
+  | STAFF | 87.3% |
+  | MANAGER | 86.2% |
+
+- **Flips are rare:** each type is at most 0.3% of pairs. The most common are
+  BOARD <-> CEO, BOARD <-> OFFICER and BOARD <-> STAFF. These are the
+  working-board and stipend boundary cases.
+- **The CEO is the same person the next year in 88-92% of organization-year
+  pairs.** That fits typical nonprofit executive turnover of about 10% a year.
+  With exact names the rate was 2-4 points lower.
+- **The CEO rarely disappears and reappears.** 2.7% of filings have a CEO one
+  year and none the next; 2.4% have none and then one.
+
+**3. Silver labels:** 443,093 of 557,360 full-990 people (79.5%) have a title,
+checkboxes and pay that all agree with their step 09 role. They are saved in
+`silver-labels.rds`.
+
+| Role | Silver labels |
+|---|---|
+| BOARD | 401,095 |
+| CEO | 15,690 |
+| OFFICER | 11,581 |
+| MANAGER | 6,963 |
+| PROFESSIONAL | 5,349 |
+| STAFF | 2,415 |
+
+Every size stratum has hundreds to thousands of non-board labels. This is the
+training base for the no-checkbox model the synthid plan proposes for 990-EZ
+filers (P4).
+
+**Run-to-run effect of the fixes.** Earlier runs are archived in
+`run1-pre-patterns/` and `run2-pre-28/`.
+- **The PRESIDENT & CEO fix raised designated CEOs at $100m+ from 60% to 65%,**
+  and imputed CEOs fell from 35% to 30%.
+- **Pattern matching raised title coverage** by about 1 point in most strata.
