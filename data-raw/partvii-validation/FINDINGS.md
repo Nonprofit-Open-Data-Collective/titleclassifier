@@ -616,3 +616,96 @@ functional manager, such as a maintenance manager or a lodge manager, whom the
 labelers call MANAGER. That case is 4 of the remaining 11 misses. A possible
 next rule would leave a functional manager title (a specific department) out
 of imputation.
+
+**Update 2026-10-09.** The user decided the two split cases. Both are CEOs:
+- **C07, the irrigation company president** (paid $7,140, 20 hours a week).
+  Rule: a paid president is the CEO when no one else in the filing has a CEO
+  title.
+- **C12, the youth orchestra's music director** (the only paid staffer, 40
+  hours a week). Here "director" means the organization's head, not a
+  department head.
+
+`relabel-consensus.csv` now records who decided each case: both agents, or
+the user. `09-gold-check.R` applies all 22 relabels. Both decisions match
+step 09, which raises agreement from 92.9% to **94.2%**:
+
+| Role | Precision | Recall |
+|---|---|---|
+| CEO | 0.78 | 0.95 |
+| BOARD | 0.98 | 0.97 |
+| OFFICER | 0.88 | 0.93 |
+| MANAGER | 1.00 | 0.69 |
+
+Three CEO false positives remain. Each is a maintenance or lodge manager who is
+the top-paid person in a board-run filing, and the agents agreed on MANAGER for
+them. The user's rule for C07 (no other CEO title, so CEO) may apply to them too.
+
+### F-024 Role labels v2: refreshed to the current standard and doubled (done)
+
+The August labels used the old vocabulary:
+- CFO, COO and C_LEVEL_OTHER as separate roles;
+- KEY_EMPLOYEE instead of PROFESSIONAL / STAFF;
+- one BOARD_OFFICER covering vice chair, secretary and treasurer.
+
+They also covered full-990, paid filings only, and two people appeared twice.
+`gold-check/gold-v2.csv` replaces them with **316 people**, labeled in the role
+standard and board roles of `gold-check/LABELING-GUIDE-v2.md`:
+- **156 August people,** after removing the two duplicates.
+  - 132 mapped mechanically (CEO -> CEO, CFO -> OFFICER,
+    BOARD_CHAIR -> BOARD / CHAIR, ...).
+  - 24 that needed judgment were relabeled. These were PROFESSIONAL vs STAFF,
+    board posts the title doesn't name, and DUAL with no seat given.
+  - Title columns are recomputed with the current pipeline.
+- **160 new people** in 10 strata covering each part of step 09's decision,
+  including 40 from 990-EZ filings. There is at most one person per filing.
+  The strata are designated, imputed and board-governed leaders, board titles
+  with the officer box, paid ambiguous titles, professional, staff, manager,
+  990-EZ paid and 990-EZ unpaid. `10-gold-v2-build.R` builds them, seed 2026.
+
+Labeling:
+- Two blind agents labeled the 184 open cases. They agreed on 178 (97%).
+- The six splits and the Elks lodge manager were settled at the user's
+  request (`v2-user-decisions.csv`). The manager is CEO: a full-time paid role
+  running the lodge, with no other staff.
+- The guide adds the user's rules for:
+  - a paid president with no other CEO title;
+  - a "director" who heads the organization;
+  - the top-paid person in a board-run organization (part-time with no
+    staff, versus full-time with staff, versus head of one function);
+  - unpaid full-time leaders, such as a religious order's president.
+- `11-gold-v2-assemble.R` builds `gold-v2.csv`, and `09-gold-check.R` scores
+  it into `gold-v2-results.csv`.
+
+Step 09 against v2 (312 scored, 4 UNSURE): **86.5%**.
+
+| Set | People | Agreement |
+|---|---|---|
+| August | 153 | 93.5% |
+| New | 159 | 79.9% |
+| Full 990 | 272 | 88.6% |
+| 990-EZ | 40 | **72.5%** |
+
+| Role | Precision | Recall |
+|---|---|---|
+| CEO | 0.73 | 0.96 |
+| OFFICER | 0.80 | 0.67 |
+| MANAGER | 0.95 | 0.64 |
+| PROFESSIONAL | 0.86 | 0.95 |
+| STAFF | 0.24 | 0.58 |
+| BOARD | 0.95 | 0.89 |
+
+Board seats get the right board role 97% of the time.
+
+Weak spots to work on:
+- **STAFF is over-assigned.** Eight managers and six board members are called
+  STAFF.
+- **990-EZ.**
+- **No unpaid CEO.** Step 09 never makes an unpaid full-time officer the CEO
+  (the Little Sisters of the Poor case, guide rule 7). That rule is pending,
+  until the round-2 cleaning work in R/05 and R/06 merges.
+
+The labelers also found gaps in the guide:
+- when a paid executive who also ticks the trustee box should be DUAL rather
+  than CEO;
+- stipends for officers other than the president;
+- related-organization executives.
