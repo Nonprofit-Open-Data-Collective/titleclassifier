@@ -6,8 +6,9 @@
 # Inputs, from the synthid repository (set SYNTHID_DEV to move them):
 #   data/slice_2010_2012_1000eins.rds  raw Part VII rows, 3,027 filings
 #   gold_sample_labeled.csv            158 labeled people (gold_role)
-# If gold-check/relabel-consensus.csv exists, its gold_role replaces the
-# original label for the cases both relabelers agreed on.
+# If gold-check/relabel-consensus.csv exists, its gold_role (both relabeling
+# agents agreed, or the user decided a split) replaces the
+# original label.
 #
 # Writes gold-check/gold-check-results.csv (one row per labeled person).
 #
@@ -26,10 +27,10 @@ g <- utils::read.csv(file.path(S, "gold_sample_labeled.csv"), colClasses = "char
 cons <- file.path(out_dir, "relabel-consensus.csv")
 if (file.exists(cons)) {
   rc <- utils::read.csv(cons, colClasses = "character")
-  rc <- rc[rc$agree == "TRUE", ]
+  rc <- rc[nzchar(rc$gold_role), ]   # both agents agreed, or the user decided
   i <- match(paste(rc$OBJECTID, rc$title.raw, rc$comp), paste(g$OBJECTID, g$title.raw, g$comp))
   g$gold_role[i] <- rc$gold_role
-  g$gold_source[i] <- "relabel consensus (2 agents)"
+  g$gold_source[i] <- ifelse(rc$decided_by == "both agents", "relabel consensus (2 agents)", rc$decided_by)
   message(sprintf("applied %d relabels from relabel-consensus.csv", length(i)))
 }
 
