@@ -1,0 +1,122 @@
+"position","head","title.standard","rule","support","precision"
+"prefix","ACTIVE","BOARD MEMBER","majority",6,0.833
+"prefix","ADVISORY","BOARD MEMBER","majority",8,1
+"prefix","AFFILIATE","BOARD MEMBER","majority",5,1
+"prefix","ALPHA","BOARD MEMBER","majority",16,1
+"prefix","ALT","BOARD MEMBER","majority",11,1
+"prefix","ALTERNATE","BOARD MEMBER","majority",16,0.875
+"prefix","ASSISTANT CHIEF","CHIEF","majority",6,0.833
+"prefix","AWARDS","BOARD MEMBER","majority",5,0.8
+"prefix","BASEBALL","BOARD MEMBER","majority",7,0.857
+"prefix","BETA","BOARD MEMBER","majority",16,1
+"prefix","BOARD","BOARD MEMBER","majority",107,0.822
+"prefix","BOARD MEMBER","BOARD MEMBER","majority",52,0.865
+"prefix","BOARD MEMBER AND","BOARD MEMBER","majority",18,0.833
+"prefix","CEO","CEO","majority",42,0.905
+"prefix","CFO","CHIEF FINANCIAL OFFICER","majority",18,0.889
+"prefix","CHIEF MARKETING","CHIEF MARKETING OFFICER","level",7,1
+"prefix","COMMITTEE","BOARD MEMBER","majority",18,0.944
+"prefix","COMMUNITY","BOARD MEMBER","majority",29,0.828
+"prefix","DEAN","DEAN","majority",22,1
+"prefix","DELTA","BOARD MEMBER","majority",12,1
+"prefix","DIRECTOR OF MARKETING","DIRECTOR OF MARKETING","level",8,1
+"prefix","EPSILON","BOARD MEMBER","majority",13,1
+"prefix","EQUIPMENT","BOARD MEMBER","majority",9,1
+"prefix","EVENTS","BOARD MEMBER","majority",5,0.8
+"prefix","GAMMA","BOARD MEMBER","majority",16,1
+"prefix","GOVERNOR","BOARD MEMBER","majority",10,1
+"prefix","HONORARY","BOARD MEMBER","majority",16,0.938
+"prefix","INDIVIDUAL TRUSTEE","BOARD MEMBER","majority",5,0.8
+"prefix","IOTA","BOARD MEMBER","majority",11,1
+"prefix","KAPPA","BOARD MEMBER","majority",13,1
+"prefix","LEADERSHIP","BOARD MEMBER","majority",5,0.8
+"prefix","MANAGER","MANAGER","majority",27,0.852
+"prefix","MASTER","BOARD MEMBER","majority",5,0.8
+"prefix","MEMBER","BOARD MEMBER","majority",65,0.862
+"prefix","MEMBER BOARD","BOARD MEMBER","majority",8,0.875
+"prefix","NEWSLETTER","BOARD MEMBER","majority",5,0.8
+"prefix","NUMBER","BOARD MEMBER","majority",9,1
+"prefix","NURSE","NURSE","majority",8,0.875
+"prefix","PARENT","BOARD MEMBER","majority",12,0.833
+"prefix","REGIONAL BOARD","BOARD MEMBER","majority",6,1
+"prefix","REGIONAL COUNCIL","BOARD MEMBER","majority",5,0.8
+"prefix","REPRESENTATIVE","BOARD MEMBER","majority",13,1
+"prefix","SCHOOL BOARD","BOARD MEMBER","majority",5,1
+"prefix","SENIOR VICE","BOARD VICE PRESIDENT","majority",9,0.889
+"prefix","SERGEANT","BOARD MEMBER","majority",9,1
+"prefix","SOCIAL","BOARD MEMBER","majority",9,0.889
+"prefix","STUDENT","BOARD MEMBER","majority",13,0.923
+"prefix","THETA","BOARD MEMBER","majority",9,1
+"prefix","TRAVEL","BOARD MEMBER","majority",8,0.875
+"prefix","TRUSTEE","BOARD MEMBER","majority",68,0.868
+"prefix","UNION TRUSTEE","BOARD MEMBER","majority",5,1
+"prefix","VICE PRESIDENT MEMBER","BOARD VICE PRESIDENT","majority",6,0.833
+"prefix","VICE PRESIDENT OF BUSINESS","VICE PRESIDENT OF BUSINESS DEVELOPMENT","level",12,1
+"prefix","VICE PRESIDENT OF EDUCATION","VICE PRESIDENT OF EDUCATION","level",6,1
+"prefix","VICE PRESIDENT OF FINANCE","VICE PRESIDENT OF FINANCE","level",22,0.955
+"prefix","VICE PRESIDENT OF STRATEGY","VICE PRESIDENT OF STRATEGY","level",20,1
+"prefix","VOTING","BOARD MEMBER","majority",6,1
+"prefix","YOUTH","BOARD MEMBER","majority",16,0.875
+"suffix","ADJUTANT","BOARD SECRETARY","majority",5,0.8
+"suffix","ALTERNATE","BOARD MEMBER","majority",5,1
+"suffix","APPOINTEE","BOARD MEMBER","majority",5,1
+"suffix","ARTISTIC DIRECTOR","ARTISTIC DIRECTOR","level",8,1
+"suffix","BOARD MEMBER","BOARD MEMBER","majority",99,0.889
+"suffix","BOARD REPRESENTATIVE","BOARD MEMBER","majority",11,1
+"suffix","CHAIR","BOARD MEMBER","majority",261,0.881
+"suffix","CHAPLAIN","BOARD MEMBER","majority",7,1
+"suffix","CHIEF MEDICAL OFFICER","CHIEF","majority",5,0.8
+"suffix","CHIEF OF STAFF","CHIEF","majority",5,1
+"suffix","CIO","CHIEF INFORMATION OFFICER","level",7,1
+"suffix","CLO","CHIEF LEGAL OFFICER","level",5,1
+"suffix","CNO","CHIEF NURSING OFFICER","majority",5,0.8
+"suffix","COMMISSIONER","BOARD MEMBER","majority",17,0.882
+"suffix","COMMITTEE","BOARD MEMBER","majority",107,0.869
+"suffix","COMMITTEE CHAIR","BOARD MEMBER","majority",70,0.971
+"suffix","COMMITTEE MEMBER","BOARD MEMBER","majority",22,1
+"suffix","COMMODORE","BOARD VICE PRESIDENT","majority",5,0.8
+"suffix","COMPLIANCE OFFICER","CHIEF OFFICER","majority",5,0.8
+"suffix","COUNCIL","BOARD MEMBER","majority",21,0.905
+"suffix","COUNCIL MEMBER","BOARD MEMBER","majority",10,1
+"suffix","COUNCIL REPRESENTATIVE","BOARD MEMBER","majority",5,1
+"suffix","COUNCILOR","BOARD MEMBER","majority",12,1
+"suffix","DEAN","DEAN","majority",5,1
+"suffix","DELEGATE","BOARD MEMBER","majority",22,0.909
+"suffix","DEVELOPMENT CHAIR","BOARD MEMBER","majority",5,1
+"suffix","DIRECTOR OF DEVELOPMENT","DIRECTOR OF DEVELOPMENT","level",6,1
+"suffix","DIRECTOR OF FINANCE","DIRECTOR OF FINANCE","level",8,1
+"suffix","DIRECTOR OF OPERATIONS","DIRECTOR OF OPERATIONS","level",9,1
+"suffix","DIRECTOR OF PROGRAMS","DIRECTOR OF PROGRAMS","level",5,1
+"suffix","EXOFFICIO","BOARD MEMBER","majority",5,1
+"suffix","FIRE CHIEF","CHIEF","majority",5,0.8
+"suffix","FOREMAN","FOREMAN","majority",6,0.833
+"suffix","GENERAL COUNSEL","GENERAL COUNSEL","majority",5,0.8
+"suffix","GUARD","BOARD MEMBER","majority",6,1
+"suffix","KNIGHT","BOARD VICE PRESIDENT","majority",10,0.8
+"suffix","LAMBDA","BOARD MEMBER","majority",6,1
+"suffix","LIAISON","BOARD MEMBER","majority",21,0.857
+"suffix","MEMBER","BOARD MEMBER","majority",113,0.912
+"suffix","NU","BOARD MEMBER","majority",9,1
+"suffix","NURSE","NURSE","majority",8,0.875
+"suffix","OMEGA","BOARD MEMBER","majority",8,1
+"suffix","OMICRON","BOARD MEMBER","majority",8,1
+"suffix","OPERATIONS MANAGER","OPERATIONS","majority",5,1
+"suffix","PARENT","BOARD MEMBER","majority",5,0.8
+"suffix","PASTOR","PASTOR","majority",10,0.8
+"suffix","PHI","BOARD MEMBER","majority",7,1
+"suffix","PHYSICIAN","DOCTOR","majority",24,0.917
+"suffix","PI","BOARD MEMBER","majority",8,1
+"suffix","PROGRAMS MANAGER","MANAGER","majority",5,1
+"suffix","PSI","BOARD MEMBER","majority",8,1
+"suffix","REPRESENTATIVE","BOARD MEMBER","majority",300,0.963
+"suffix","RHO","BOARD MEMBER","majority",7,1
+"suffix","SCHOOL PRINCIPAL","HEAD OF DIVISION","majority",5,0.8
+"suffix","SIGMA","BOARD MEMBER","majority",6,1
+"suffix","STEWARD","BOARD MEMBER","majority",10,0.9
+"suffix","TAU","BOARD MEMBER","majority",9,1
+"suffix","TRUSTEE","BOARD MEMBER","majority",125,0.864
+"suffix","UPSILON","BOARD MEMBER","majority",6,1
+"suffix","VICE PRESIDENT OF FINANCE","VICE PRESIDENT OF FINANCE","level",7,1
+"suffix","VICE PRESIDENT OF OPERATIONS","VICE PRESIDENT OF OPERATIONS","level",7,1
+"suffix","VOTING","BOARD MEMBER","majority",8,1
+"suffix","XI","BOARD MEMBER","majority",6,1

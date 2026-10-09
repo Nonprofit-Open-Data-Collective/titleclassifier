@@ -7,7 +7,8 @@
 standardize_titles(
   comp.data,
   officer = "F9_07_COMP_DTK_POS_OFF_X",
-  gs_title_xwalk = NULL
+  gs_title_xwalk = NULL,
+  title_patterns = NULL
 )
 }
 \arguments{
@@ -16,6 +17,9 @@ standardize_titles(
 \item{officer}{Name of the officer-flag column.}
 
 \item{gs_title_xwalk}{Optional title-standardization crosswalk; if \code{NULL}, loaded from the package data.}
+
+\item{title_patterns}{Optional head rules for titles the crosswalk does not
+list; if \code{NULL}, loaded from the package data (\link{title.patterns}).}
 }
 \description{
 Maps multiple variants of a title onto the standard form

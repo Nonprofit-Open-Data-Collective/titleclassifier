@@ -1,0 +1,201 @@
+id,status,standard,reason
+P001,map,BOARD MEMBER,liaison to outside body; 100% trustee unpaid 1 hr
+P002,map,BOARD MEMBER,representative on board; 100% trustee unpaid
+P003,map,ACCOUNTING DIRECTOR,raw is Accounting & Reporting (REPORTING misread as REPRESENTATIVE); paid 45 hrs finance role
+P004,map,BOARD MEMBER,representative; 990-EZ unpaid 0.5 hr
+P005,map,BOARD MEMBER,union delegate to AFL-CIO; 81% trustee 1 hr; delegate precedent
+P006,map,BOARD MEMBER,alternate representative; 990-EZ unpaid
+P007,map,BOARD MEMBER,raw mostly APPOINTED TR; 79% trustee but only 38% officer so TR likely trustee not treasurer; board either way
+P008,map,BOARD MEMBER,constituency representative; 100% trustee unpaid
+P009,map,BOARD MEMBER,constituency representative; 100% trustee unpaid
+P010,map,BOARD MEMBER,representative; 100% trustee unpaid
+P011,map,ASSISTANT DIRECTOR,paid 45 hrs staff assistant director
+P012,map,BOARD MEMBER,regional representative; 100% trustee unpaid
+P013,map,BOARD MEMBER,union council (MEC) chair; officer box unpaid; committee/council chair rule
+P014,map,BOARD MEMBER,bargaining committee chair; 1 hr; committee chair rule
+P015,map,BOARD MEMBER,piece of chair/president/BOD/mentor; unpaid
+P016,map,BOARD MEMBER,board liaison; 100% trustee unpaid
+P017,map,BOARD MEMBER,board member with date fragment
+P018,map,BOARD MEMBER,board member deceased in year
+P019,map,BOARD MEMBER,generic board placeholder; 100% trustee unpaid 1 hr
+P020,map,BOARD MEMBER,system representative on board; officer+trustee 100% unpaid
+P021,map,BOARD MEMBER,fundraiser committee chair; 75% trustee unpaid
+P022,map,BOARD MEMBER,committee chair; 100% trustee unpaid
+P023,map,BOARD MEMBER,committee co-chair; unpaid 2 hrs
+P024,map,BOARD MEMBER,committee member; 100% trustee unpaid
+P025,map,CEO,CEO with org suffix; paid 40 hrs
+P026,map,CEO,CEO of affiliate; paid 50 hrs
+P027,map,CEO,former president/CEO/secretary; paid 40 hrs
+P028,map,CEO,CEO of affiliate DMC; paid 50 hrs
+P029,map,CEO,CEO with effective-date fragment
+P030,map,CEO,president/CEO/governor; paid 40 hrs
+P031,map,CEO,CEO of health system; paid 50 hrs
+P032,map,CEO,CEO with date fragment
+P033,map,CEO,CEO of hospital unit; paid 40 hrs
+P034,map,CHIEF FINANCIAL OFFICER,CFO combined title; paid 40 hrs
+P035,map,CHIEF FINANCIAL OFFICER,CFO of affiliate; paid 50 hrs
+P036,map,CHIEF FINANCIAL OFFICER,VP and CFO of affiliate; paid 50 hrs
+P037,map,CHIEF FINANCIAL OFFICER,SVP & CFO; paid 48 hrs
+P038,map,BOARD MEMBER,committee co-chair; unpaid volunteer
+P039,map,BOARD MEMBER,committee chair; trustee unpaid 2 hrs
+P040,map,BOARD MEMBER,committee chair; trustee unpaid
+P041,map,BOARD MEMBER,class of trustees; 100% trustee
+P042,map,BOARD MEMBER,council member; 100% trustee unpaid
+P043,ambiguous,,COM likely communications & social media; officer-box holders at 2 hrs but 80% paid; board vs staff unclear
+P044,map,BOARD MEMBER,committee role; 100% trustee unpaid
+P045,not_a_title,,truncated fragment COMMUNITY AS; no recoverable role
+P046,map,BOARD MEMBER,volunteer project role; 100% trustee unpaid
+P047,map,DOCTOR,physician; paid 50 hrs
+P048,map,DEAN,dean of arts & science; paid
+P049,map,DEAN,dean of grad studies; paid
+P050,map,DEAN,dean of school; paid
+P051,map,DEAN,dean of school; paid
+P052,map,DEAN,dean of school; paid
+P053,map,DIRECTOR,director of adoptions; mostly paid 20 hrs staff program director
+P054,map,DIRECTOR OF OPERATIONS,arts and campus operations; paid 40 hrs
+P055,map,DIRECTOR,arts & cultural director; paid 40 hrs; no closer standard
+P056,map,DIRECTOR OF MARKETING,brand advertising; paid 40 hrs
+P057,map,DIRECTOR OF LEGAL AFFAIRS,business and legal affairs; paid 40 hrs
+P058,map,CLINICAL DIRECTOR,clinic services director; paid 40 hrs
+P059,map,DIRECTOR OF EVENTS,conventions and meetings; paid 40 hrs
+P060,map,BOARD MEMBER,director of business association (likely outside affiliation); EZ unpaid 2 hrs
+P061,map,BOARD TREASURER,volunteer finance/disbursements officer; officer+trustee unpaid 2 hrs
+P062,map,DIRECTOR OF FINANCE,finance director; paid 35 hrs
+P063,map,DIRECTOR OF BUDGET AND ANALYTICS,FP&A director; paid 40 hrs
+P064,map,DIRECTOR OF SALES,global sales and marketing; paid 40 hrs
+P065,map,DIRECTOR,home medical services director; paid 40 hrs
+P066,map,DIRECTOR OF BUSINESS DEVELOPMENT,emerging markets; paid 40 hrs
+P067,map,DIRECTOR OF PROGRAMS,program director variant; paid 40 hrs
+P068,map,DIRECTOR OF PROGRAMS,program solutions; paid 40 hrs
+P069,map,DIRECTOR OF COMMUNICATIONS,publications & communications (COMM misread as committee); paid 40 hrs
+P070,map,DIRECTOR,hire network director (NATIONAL misread); paid 40 hrs
+P071,map,DIRECTOR OF RESEARCH,truncated research; mixed holders due to combos but title is research director
+P072,map,DIRECTOR,director of reviews; paid 30 hrs
+P073,map,BOARD MEMBER,100% trustee unpaid 1 hr
+P074,map,DIRECTOR OF OPERATIONS,supply chain operations; paid 41 hrs
+P075,map,DIRECTOR OF DEVELOPMENT,ticketing & development; paid 40 hrs
+P076,map,BOARD MEMBER,committee chair; officer+trustee unpaid
+P077,map,BOARD MEMBER,committee member; 100% trustee unpaid
+P078,map,EXECUTIVE CHEF,executive chef and dining manager; paid 40 hrs
+P079,map,EXECUTIVE VICE PRESIDENT,COO & EVP; paid 40 hrs
+P080,map,DIRECTOR OF OPERATIONS,ex-officio staff director of operations; paid
+P081,map,BOARD MEMBER,ex officio hospital chief of staff on board; 87% trustee 1.5 hrs
+P082,map,BOARD MEMBER,committee member; trustee unpaid
+P083,map,BOARD MEMBER,sport representative; trustee unpaid
+P084,map,BOARD MEMBER,committee chair; trustee unpaid
+P085,map,BOARD MEMBER,event chair; trustee unpaid
+P086,map,BOARD MEMBER,liaison; EZ unpaid 2 hrs
+P087,map,BOARD MEMBER,committee chair; trustee unpaid
+P088,map,BOARD MEMBER,event co-chair; unpaid
+P089,map,BOARD MEMBER,governing body member; 100% trustee
+P090,ambiguous,,GOV AFF = government affairs fragment of VP/program director/staff combos; level mixed; cleaning should read government
+P091,map,BOARD MEMBER,governor; 100% trustee unpaid
+P092,map,DIRECTOR OF LEGISLATIVE AFFAIRS,head of government liaison; paid 40 hrs
+P093,map,MANAGER,health services manager; paid 34 hrs
+P094,map,BOARD MEMBER,honorary life member; trustee unpaid
+P095,map,MANAGER,headquarters manager; paid 40 hrs
+P096,map,BOARD MEMBER,committee chair; EZ unpaid
+P097,map,BOARD MEMBER,delegate; trustee unpaid
+P098,ambiguous,,truncated IHS C(H); paid 40 hrs with trustee box; unclear chair vs chief vs staff
+P099,map,BOARD MEMBER,representative; EZ unpaid
+P100,map,BOARD VICE PRESIDENT,lodge knight is a vice officer (P2)
+P101,map,BOARD MEMBER,committee liaison; trustee unpaid
+P102,map,BOARD MEMBER,committee chair; trustee unpaid
+P103,map,MANAGER,manager with truncated suffix; paid
+P104,map,PROGRAMS MANAGER,program manager; paid 40 hrs
+P105,ambiguous,,describes outside employment (plant protection manager); holders EZ unpaid 0 hrs; filer role unknown
+P106,map,BOARD MEMBER,committee chair; trustee unpaid
+P107,map,BOARD MEMBER,chapter member advisor; mostly officer/trustee unpaid 3 hrs
+P108,map,BOARD MEMBER,member integration role; trustee unpaid
+P109,map,BOARD MEMBER,committee member; trustee unpaid
+P110,map,DOCTOR,specialty physician; paid 45 hrs
+P111,map,BOARD MEMBER,union representative on board; trustee unpaid
+P112,map,BOARD MEMBER,committee chair; trustee unpaid
+P113,map,BOARD MEMBER,nurse chairperson; officer box 0.9 hr; committee chair rule
+P114,map,NURSE,nurse practitioner/supervisor; paid 35 hrs
+P115,map,BOARD MEMBER,constituency representative; trustee unpaid
+P116,map,BOARD MEMBER,post representative; EZ unpaid
+P117,map,BOARD MEMBER,committee chair; trustee unpaid
+P118,map,PROGRAMS DIRECTOR,fund program director; paid 20 hrs
+P119,map,BOARD MEMBER,local arrangements chair; trustee unpaid
+P120,map,BOARD MEMBER,area board member
+P121,map,BOARD MEMBER,state chair; trustee unpaid
+P122,map,BOARD MEMBER,representative of state secretaries; unpaid
+P123,map,BOARD MEMBER,chapter member replacing another; trustee unpaid
+P124,map,DOCTOR,research physician; paid 40 hrs
+P125,map,BOARD MEMBER,committee co-chair; trustee unpaid
+P126,map,BOARD MEMBER,committee chair; trustee unpaid
+P127,map,BOARD MEMBER,volunteer safety/medical director and board member; EZ unpaid 3 hrs
+P128,map,BOARD MEMBER,liaison; officer+trustee unpaid
+P129,map,DIRECTOR OF PROGRAMS,senior director of insurance program; paid 40 hrs
+P130,map,DIRECTOR OF EDUCATION,senior director of learning; paid
+P131,map,DIRECTOR,senior director of quality; paid 40 hrs
+P132,map,DIRECTOR,senior director; paid 50 hrs
+P133,map,DIRECTOR OF BUSINESS DEVELOPMENT,corporate partnerships; paid 40 hrs
+P134,map,COMPLIANCE DIRECTOR,compliance training senior director; paid
+P135,map,DIRECTOR OF FACILITIES,senior director of facilities; paid
+P136,map,DIRECTOR OF FINANCE,homecare finance senior director; paid
+P137,map,VICE PRESIDENT OF EDUCATION,SVP education & training; paid 55 hrs
+P138,map,GENERAL COUNSEL,SVP gov affairs + general counsel/clerk; paid 65 hrs
+P139,map,SENIOR VICE PRESIDENT,SVP investor relations; paid
+P140,map,SENIOR VICE PRESIDENT,SVP network & senior services; paid
+P141,map,SENIOR VICE PRESIDENT,SVP with fragment; paid 40 hrs
+P142,map,SENIOR VICE PRESIDENT,SVP agency development; paid
+P143,map,SENIOR VICE PRESIDENT,SVP assisted living (ASSISTED misread); paid
+P144,map,VICE PRESIDENT OF SALES,SVP convention sales; paid
+P145,map,CHIEF MEDICAL OFFICER,SVP physician-in-chief; paid 55 hrs
+P146,map,VICE PRESIDENT OF STRATEGY,SVP planning & measurement; paid
+P147,map,VICE PRESIDENT OF RESEARCH,SVP therapeutics development; paid
+P148,map,GENERAL COUNSEL,SVP university counsel & secretary; paid
+P149,map,VICE PRESIDENT OF HEALTH,SVP population health/behavioral medicine; paid
+P150,map,DOCTOR,director who is physician; paid 20 hrs (precedent DIRECTOR AND PHYSICIAN)
+P151,map,BOARD MEMBER,volunteer snack shack manager; unpaid 1 hr (snack bar precedent)
+P152,ambiguous,,social action role on EZ; 67% paid 5 hrs; committee vs staff unclear
+P153,map,BOARD MEMBER,district co-chair; EZ unpaid
+P154,ambiguous,,ST likely secretary-treasurer combined with director; officer 100% unpaid; officer vs member unclear
+P155,map,INTERN,summer intern; paid
+P156,map,PROGRAMS MANAGER,supported employment program manager; paid 40 hrs
+P157,map,BOARD MEMBER,representative; EZ unpaid
+P158,map,BOARD MEMBER,league representative; trustee unpaid
+P159,map,BOARD MEMBER,temple representative; trustee unpaid
+P160,map,BOARD TREASURER,treasurer and finance committee chair; unpaid
+P161,map,BOARD TREASURER,treasurer with resigned fragment; unpaid
+P162,map,BOARD TREASURER,volunteer association treasurer; EZ unpaid
+P163,map,BOARD MEMBER,outside affiliation (CFO of TECO); holders trustee 0% officer unpaid
+P164,map,BOARD TREASURER,treasurer/uniforms; EZ unpaid
+P165,map,BOARD TREASURER,treasurer of baseball league; EZ unpaid
+P166,map,VICE PRESIDENT OF FINANCE,treasurer/VP business & finance; paid 40 hrs
+P167,map,SCIENTIST,TREE misread as TREASURER; crop breeder paid 40 hrs
+P168,map,BOARD TREASURER,treasurer pro tem; officer+trustee 2 hrs
+P169,map,BOARD MEMBER,trustee immediate past president; unpaid
+P170,map,BOARD MEMBER,trustee with former fragment
+P171,map,BOARD MEMBER,trustee withdrew during year
+P172,map,VICE PRESIDENT OF LENDING,VP credit manager; paid 40 hrs
+P173,map,VICE PRESIDENT OF FINANCE,VP accounting & financial reporting; paid 41 hrs
+P174,map,BOARD VICE PRESIDENT,union VP for adjunct faculty; officer box 3 hrs
+P175,map,BOARD VICE PRESIDENT,volunteer VP; EZ unpaid
+P176,map,CHIEF DEVELOPMENT OFFICER,VP chief development officer; paid 40 hrs
+P177,map,VICE PRESIDENT,VP of unknown acronym; paid
+P178,map,VICE PRESIDENT OF EDUCATION,ED = education & workforce development; paid
+P179,map,VICE PRESIDENT OF FINANCE,VP finance & planning/treasurer; paid 50 hrs
+P180,map,VICE PRESIDENT OF OPERATIONS,hostel operations; paid
+P181,map,BOARD VICE PRESIDENT,VP fundraising; EZ unpaid 1 hr
+P182,map,VICE PRESIDENT OF MARKETING,institutional relations & marketing; paid
+P183,map,BOARD VICE PRESIDENT,regional VP; officer+trustee unpaid
+P184,map,BOARD VICE PRESIDENT,VP nominations; officer+trustee unpaid
+P185,map,CHIEF NURSING OFFICER,VP nursing/CNO; paid
+P186,map,VICE PRESIDENT OF SALES,sales operations VP; paid
+P187,map,VICE PRESIDENT OF HEALTH CARE OPERATIONS,physician group operations; paid 55 hrs
+P188,map,VICE PRESIDENT OF BUSINESS DEVELOPMENT,physician services/business development; paid
+P189,map,VICE PRESIDENT,VP portfolio (truncated); paid
+P190,map,VICE PRESIDENT,VP regulatory (truncated); paid
+P191,map,BOARD VICE PRESIDENT,2nd VP rentals; officer unpaid 3 hrs
+P192,map,BOARD VICE PRESIDENT,volunteer VP; officer+trustee unpaid
+P193,map,VICE PRESIDENT,VP tax and public finance policy; paid 50 hrs
+P194,map,VICE PRESIDENT,VP veterinary medicine; paid
+P195,map,BOARD VICE PRESIDENT,WGA West vice president; trustee unpaid
+P196,map,BOARD VICE PRESIDENT,misspelled vice chair; officer unpaid
+P197,map,REGIONAL MANAGER,state manager; paid 40 hrs
+P198,map,BOARD MEMBER,committee chair; EZ unpaid
+P199,map,BOARD MEMBER,commissioner; trustee unpaid
+P200,map,BOARD MEMBER,volunteer youth services director; EZ unpaid 1 hr (YOUTH DIRECTOR precedent)

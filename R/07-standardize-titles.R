@@ -13,26 +13,109 @@
 #' @param comp.data A Part VII compensation data frame.
 #' @param officer Name of the officer-flag column.
 #' @param gs_title_xwalk Optional title-standardization crosswalk; if `NULL`, loaded from the package data.
+#' @param title_patterns Optional head rules for titles the crosswalk does not
+#'   list; if `NULL`, loaded from the package data ([title.patterns]).
 standardize_titles <- function(comp.data,
                                officer = "F9_07_COMP_DTK_POS_OFF_X",
-                               gs_title_xwalk=NULL)
+                               gs_title_xwalk=NULL,
+                               title_patterns=NULL)
 {
-  
-  # load title standardization 
+
+  # load title standardization
   # crosswalk from the package data
   if( is.null(gs_title_xwalk) )
   { gs_title_xwalk <- get_title_xwalk() }
-  
-  comp.data <- basic_csuite_fixes( comp.data, officer = officer ) 
-  
-  comp.data <- 
-    merge( comp.data, gs_title_xwalk, 
-           by.x="TitleTxt7", 
-           by.y="title.variant", 
+  if( is.null(title_patterns) )
+  { title_patterns <- get_title_patterns() }
+
+  comp.data <- basic_csuite_fixes( comp.data, officer = officer )
+
+  comp.data <-
+    merge( comp.data, gs_title_xwalk,
+           by.x="TitleTxt7",
+           by.y="title.variant",
            all.x=T )
-  
+
+  # titles the crosswalk does not list: fall back to a learned head rule
+  # (title.patterns; Part VII review, tiers 3-4). title.match records how the
+  # standard was found: "exact", "pattern", or NA when neither applies.
+  comp.data$title.match <- ifelse( is.na( comp.data$title.standard ), NA_character_, "exact" )
+  miss <- is.na( comp.data$title.standard )
+  if( any( miss ) ) {
+    pat <- match_title_patterns( comp.data$TitleTxt7[ miss ], title_patterns, gs_title_xwalk$title.variant )
+    comp.data$title.standard[ miss ] <- pat
+    comp.data$title.match[ which( miss )[ ! is.na( pat ) ] ] <- "pattern"
+  }
+
   cat( "[OK] standardize titles step complete\n" )
   return(comp.data)
+}
+
+
+#' @title
+#' title heads
+#'
+#' @description
+#' The longest proper suffix and the longest proper prefix of each title that
+#' is a crosswalk variant, as whole words: FINANCE COMMITTEE MEMBER has the
+#' suffix head COMMITTEE MEMBER; VICE PRESIDENT OF X has the prefix head VICE
+#' PRESIDENT. A title is never its own head.
+#'
+#' @export
+#' @param titles A character vector of standardized titles (TitleTxt7).
+#' @param variants The crosswalk's title variants.
+#' @return A data frame with columns suffix and prefix (NA when none).
+title_heads <- function( titles, variants )
+{
+  ut <- unique( titles[ ! is.na( titles ) & titles != "" ] )
+  one <- function( t ) {
+    w <- strsplit( t, " ", fixed = TRUE )[[1]]
+    n <- length( w )
+    if( n < 2 ) return( c( NA_character_, NA_character_ ) )
+    suf <- vapply( 2:n,     function(k) paste( w[k:n], collapse = " " ), "" )
+    pre <- vapply( (n-1):1, function(k) paste( w[1:k], collapse = " " ), "" )
+    s <- suf[ suf %in% variants ]; p <- pre[ pre %in% variants ]
+    c( if( length(s) ) s[1] else NA_character_, if( length(p) ) p[1] else NA_character_ )
+  }
+  h <- if( length( ut ) ) do.call( rbind, lapply( ut, one ) ) else matrix( character(0), 0, 2 )
+  i <- match( titles, ut )
+  data.frame( suffix = h[ i, 1 ], prefix = h[ i, 2 ], stringsAsFactors = FALSE )
+}
+
+
+#' @title
+#' match titles to learned head rules
+#'
+#' @description
+#' For titles the crosswalk does not list, returns the title.standard of the
+#' rule for the title's longest suffix head or longest prefix head
+#' ([title_heads()]); when both have a rule, the more precise one wins (the
+#' suffix on a tie). A title whose longest head has no rule stays NA: rules
+#' were learned and validated on longest heads only, and context-dependent
+#' heads such as DIRECTOR or PRESIDENT deliberately have none (F-017).
+#'
+#' @export
+#' @param titles A character vector of standardized titles (TitleTxt7).
+#' @param patterns The head rules; defaults to [get_title_patterns()].
+#' @param variants The crosswalk's title variants; defaults to the variants of [get_title_xwalk()].
+#' @return A character vector of title.standard values (NA when no rule applies).
+match_title_patterns <- function( titles,
+                                  patterns = get_title_patterns(),
+                                  variants = get_title_xwalk()$title.variant )
+{
+  out <- rep( NA_character_, length( titles ) )
+  if( ! length( titles ) || is.null( patterns ) || ! nrow( patterns ) ) return( out )
+  h <- title_heads( titles, variants )
+  pk <- paste( patterns$position, patterns$head, sep = "|" )
+  is <- match( paste( "suffix", h$suffix, sep = "|" ), pk )
+  ip <- match( paste( "prefix", h$prefix, sep = "|" ), pk )
+  is[ is.na( h$suffix ) ] <- NA; ip[ is.na( h$prefix ) ] <- NA
+  ps <- patterns$precision[ is ]; pp <- patterns$precision[ ip ]
+  use_s <- ! is.na( is ) & ( is.na( ip ) | ps >= pp )
+  out[ use_s ] <- patterns$title.standard[ is[ use_s ] ]
+  use_p <- ! use_s & ! is.na( ip )
+  out[ use_p ] <- patterns$title.standard[ ip[ use_p ] ]
+  out
 }
 
 

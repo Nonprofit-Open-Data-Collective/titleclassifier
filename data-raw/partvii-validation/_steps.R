@@ -41,5 +41,13 @@ step_7 <- function(d, gs_title_xwalk) {
   d$title.standard <- x$title.standard[i]
   d$strata <- x$strata[i]
   d$strata.label <- x$strata.label[i]
+  # the same head-rule fallback as standardize_titles()
+  d$title.match <- ifelse(is.na(d$title.standard), NA_character_, "exact")
+  miss <- which(is.na(d$title.standard))
+  if (length(miss) && exists("get_title_patterns")) {
+    pat <- match_title_patterns(d$TitleTxt7[miss], get_title_patterns(), gs_title_xwalk$title.variant)
+    d$title.standard[miss] <- pat
+    d$title.match[miss[!is.na(pat)]] <- "pattern"
+  }
   d
 }

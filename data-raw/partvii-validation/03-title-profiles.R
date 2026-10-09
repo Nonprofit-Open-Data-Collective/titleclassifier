@@ -22,7 +22,7 @@ dbExecute(con, sprintf("CREATE VIEW pc AS SELECT * FROM %s", pc))
 # ---- profile per TitleTxt7 ------------------------------------------------------
 prof <- as.data.table(dbGetQuery(con, "
   SELECT TitleTxt7,
-         any_value(\"title.standard\") AS title_standard,
+         any_value(\"title.standard\") AS title_standard, any_value(\"title.match\") AS title_match,
          count(DISTINCT \"title.standard\") AS n_standards,
          count(*) AS n_rows, count(DISTINCT OBJECTID) AS n_filings, count(DISTINCT EIN2) AS n_orgs,
          min(TAX_YEAR) AS first_year, max(TAX_YEAR) AS last_year,
@@ -50,7 +50,8 @@ tx <- as.data.table(get_googlesheets_title_taxonomy())
 tx_dups <- tx[duplicated(title.standard), unique(title.standard)]
 if (length(tx_dups)) message("taxonomy rows duplicated for: ", paste(tx_dups, collapse = ", "), " (first row kept)")
 tx <- tx[!duplicated(title.standard)]
-prof[, crosswalk := fifelse(is.na(title_standard), "missing", "mapped")]
+# "mapped" = exact crosswalk match, "pattern" = head rule (title.patterns), "missing" = neither
+prof[, crosswalk := fifelse(is.na(title_standard), "missing", fifelse(!is.na(title_match) & title_match == "pattern", "pattern", "mapped"))]
 prof <- merge(prof, tx, by.x = "title_standard", by.y = "title.standard", all.x = TRUE, sort = FALSE)
 flagcols <- intersect(c("emp", "ceo", "c.level", "dir.vp", "mgr", "spec", "board", "pres", "vp", "sec", "treas", "mem"), names(tx))
 prof[, tax_flags := apply(.SD, 1, function(r) paste(flagcols[!is.na(r) & r == "X"], collapse = " ")), .SDcols = flagcols]
@@ -87,7 +88,7 @@ setorder(prof, -n_rows, TitleTxt7)
 prof[, rank := .I]
 prof[, cum_pct_rows := cumsum(n_rows) / sum(n_rows)]
 prof[, id := sprintf("T%07d", rank)]
-prof[, queue := fcase(crosswalk == "missing", "ADD", inspect, "INSPECT", default = "CONFIRM")]
+prof[, queue := fcase(crosswalk == "missing", "ADD", crosswalk == "pattern", "PATTERN", inspect, "INSPECT", default = "CONFIRM")]
 # tiers by frequency (person-title rows): 1 = 1,000+ rows (about 93% of rows),
 # 2 = 100-999, 3 = under 100 rows but in 5+ filings, 4 = the long tail
 prof[, tier := fcase(n_rows >= 1000, 1L, n_rows >= 100, 2L, n_filings >= 5, 3L, default = 4L)]
