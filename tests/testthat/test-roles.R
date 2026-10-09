@@ -92,3 +92,16 @@ test_that("a president paid a stipend for a few hours a week is a board chair (F
   expect_equal(rf$role.board[rf$person.id == "f1"], "CHAIR")
   expect_equal(rf$role.final[rf$person.id == "f2"], "CEO")
 })
+
+test_that("on a 990-EZ, a board title paid a small fee for a few hours is a board seat", {
+  f <- rbind(
+    person("G", "g1", "BOARD MEMBER", board.role = "MEMBER", comp = 600, hours = 2, formtype = "990EZ",
+           title.raw = "DIRECTOR"),
+    person("G", "g2", "BOARD TREASURER", board.role = "TREASURER", comp = 40000, hours = 30, formtype = "990EZ",
+           title.raw = "TREASURER"))
+  rf <- resolve_roles(f)
+  expect_equal(rf$role.final[rf$person.id == "g1"], "BOARD")
+  expect_equal(rf$role.board[rf$person.id == "g1"], "MEMBER")
+  # a real paid job stays staff-side
+  expect_false(rf$role.final[rf$person.id == "g2"] == "BOARD")
+})

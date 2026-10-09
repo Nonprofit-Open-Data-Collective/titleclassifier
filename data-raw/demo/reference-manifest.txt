@@ -3,7 +3,7 @@ source_file: F9-P07-T01-COMPENSATION-2023.CSV
 seed: 1234   target_rows: 4000
 demo_rows: 4000   demo_orgs: 493
 reference_rows: 4135   reference_cols: 111
-reference_hash_md5: 658b8f0eb2931ea1f5198c8234eda6bf
+reference_hash_md5: e74d18341227b80a78fd07ba15f0aee9
 title.standard_NA_rate: 0.044
 
 per-column NA rate:
@@ -113,7 +113,7 @@ per-column NA rate:
   url: 0
   role.position: 0
   role.final: 0
-  role.board: 0.1378
+  role.board: 0.1342
   role.ceo: 0.9449
   role.source: 0
   role.primary: 0

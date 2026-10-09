@@ -56,11 +56,13 @@ conditional_logic <- function(comp.data)
 #' A board title (president, secretary, treasurer...) held by someone who
 #' works under 10 hours a week and is paid under $25,000 is a board seat, even
 #' with the officer box. Such a person is a titular officer receiving a
-#' stipend, not a paid executive.
+#' stipend, not a paid executive. On a 990-EZ, which has no boxes, the same
+#' holds for a board title paid a small fee.
 #'
-#' Scored against a 158-person hand-labeled sample of 2010-12 filings
-#' (`data-raw/partvii-validation/09-gold-check.R`), the role agrees with the
-#' label for 92.9% of people.
+#' Scored against the 316-person labeled set of 2010-12 filings
+#' (`data-raw/partvii-validation/09-gold-check.R`, `gold-check/gold-v2.csv`),
+#' the role agrees with the label for 87.8% of people: 88.6% on full 990
+#' returns and 82.5% on 990-EZ returns.
 #'
 #' @return `comp.data` with these columns added (person-level values repeat on
 #'   each of the person's rows):
@@ -125,7 +127,7 @@ resolve_roles <- function( comp.data )
              .cb_tru = cb_tru, .cb_off = cb_off, .ceo_t = level == "CEO",
              .exec = exec_title, .board_t = board_title, .pres = pres_chair,
              .lead = lead_title, .level = level, .brole = brole,
-             .interim = box( d$interim.x ) ) ]
+             .interim = box( d$interim.x ), .boxes = boxes ) ]
 
   # ---- 2. one position per person ----------------------------------------------
   rank <- c( officer = 1L, board_officer = 2L, board = 3L, staff = 4L, unknown = 5L )
@@ -180,6 +182,10 @@ resolve_roles <- function( comp.data )
           role.position %in% c( "officer", "board_officer" ) & .p_board_t &
             .p_hrs < 10 & .p_comp < 25000,                                "BOARD",
           role.position %in% c( "officer", "board_officer" ),             "OFFICER",
+          # the same on a 990-EZ, which has no boxes to say "board": a paid
+          # board title with a few hours and a small fee is a board seat
+          role.position == "staff" & ! .boxes & .p_board_t &
+            .p_hrs < 10 & .p_comp < 25000,                                "BOARD",
           role.position == "unknown" & .p_board_t,                        "BOARD",
           role.position == "unknown" & .p_exec,                           "OFFICER",
           .level %in% c( "MANAGER", "PROFESSIONAL", "STAFF" ),            .level,
