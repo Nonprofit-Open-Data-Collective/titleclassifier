@@ -31,6 +31,12 @@ gen_status_codes <- function( comp.data, title="TitleTxt5", gs_status_codes=NULL
   TitleTxt <- gsub( "\\bEND$",  "FORMER", TitleTxt )
   TitleTxt <- gsub( "\\bNEW$",  "FORMER", TitleTxt )
 
+  # 'IMMEDIATE PA' is a truncated IMMEDIATE PAST (PRESIDENT), not Pennsylvania
+  TitleTxt <- gsub( "\\bIMM(EDIATE|ED)?\\.?\\s+PA$", "IMMEDIATE PAST PRESIDENT", TitleTxt )
+  # other truncations that would otherwise leave a one-letter title
+  TitleTxt <- gsub( "\\bPAST\\s+P$", "PAST PRESIDENT", TitleTxt )
+  TitleTxt <- gsub( "\\bNON[- ]?VOTING\\s+M$", "NON-VOTING MEMBER", TitleTxt )
+
   # flag co- titles and strip the prefix, so CO-PRESIDENT is a PRESIDENT with
   # CO.X = TRUE and CO-FOUNDER is a FOUNDER (Part VII review, policy P3)
   comp.data$CO.X <- grepl( "\\bCO-", TitleTxt )
@@ -133,13 +139,64 @@ gen_status_codes <- function( comp.data, title="TitleTxt5", gs_status_codes=NULL
 
   # clean up trailing ands
   x <- gsub( " AND$", "", x )
-  
+
+  # dangling words and punctuation left by splits (Part VII review F-007):
+  # 'PAST - PRESIDENT' -> AND PRESIDENT, 'VP-AT-LARGE' -> VICE PRESIDENT OF,
+  # 'DIRECTOR: THROUGH ...' -> DIRECTOR:
+  x <- gsub( "^AND\\s+", "", x )
+  x <- gsub( "\\s+OF$", "", x )
+  x <- gsub( "\\s*[:;,]+$", "", x )
+  x <- trimws( x )
+
   comp.data[[title]] <- x
-  
+  comp.data <- drop_fragment_titles( comp.data, title )
+
   cat( "[OK] generate status codes step complete\n" )
 
   return( comp.data )
 
+}
+
+
+#' @title
+#' drop fragment titles
+#'
+#' @description
+#' After a multi-title entry is split, a status qualifier or a stray letter can
+#' be left as a "title" of its own: 'DIRECTOR - THRU 6/16' gives DIRECTOR and
+#' THRU, 'DIRECTOR - PAST' gives PAST, 'DIRECTOR & S' gives S (Part VII review,
+#' F-007). Such a fragment sets the matching status flag on the person (FORMER,
+#' PARTIAL or FUTURE) and is dropped when the person has another title; when it
+#' is the only title, the title becomes empty.
+#'
+#' @param df A Part VII data frame after the status-code steps.
+#' @param title Name of the title column.
+drop_fragment_titles <- function( df, title = "TitleTxt6" )
+{
+  df <- as.data.frame( dplyr::ungroup( df ) )
+  x <- df[[title]]
+  former  <- c( "PAST", "FORMER", "RESIGNED", "TERM ENDED", "ENDED", "RETIRED", "DECEASED" )
+  partial <- c( "THRU", "THROUGH", "UNTIL", "PART YEAR", "PARTIAL YEAR", "PARTIAL", "PART TIME YEAR" )
+  future  <- c( "NEW", "INCOMING", "ELECT", "BEGINNING", "SINCE", "AS OF" )
+  is_frag <- x %in% c( former, partial, future ) | ( nchar( x ) == 1 & grepl( "^[A-Z]$", x ) )
+  if( ! any( is_frag ) ) return( df )
+
+  pid <- df$PERSONID
+  set_flag <- function( flag, words ) {
+    hit <- unique( pid[ x %in% words ] )
+    if( length( hit ) && flag %in% names( df ) ) df[[ flag ]][ pid %in% hit ] <<- 1
+  }
+  set_flag( "FORMER.X", former )
+  set_flag( "PARTIAL.X", partial )
+  set_flag( "FUTURE.X", future )
+  if( "PARTIAL" %in% names( df ) && "PARTIAL.X" %in% names( df ) )
+    df$PARTIAL <- as.logical( df$PARTIAL ) | df$PARTIAL.X == 1
+
+  # drop a fragment when the person has a real title; otherwise blank it
+  has_title <- pid %in% unique( pid[ ! is_frag & x != "" ] )
+  df[[title]][ is_frag & ! has_title ] <- ""
+  df <- df[ ! ( is_frag & has_title ), , drop = FALSE ]
+  return( df )
 }
 
 
