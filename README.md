@@ -54,7 +54,8 @@ df <- d %>%
   standardize_spelling() %>%     # step 05
   gen_status_codes() %>%         # step 06
   standardize_titles() %>%       # step 07
-  categorize_titles()            # step 08
+  categorize_titles() %>%        # step 08
+  conditional_logic()            # step 09: resolve roles from checkboxes, pay, title
 ```
 
 

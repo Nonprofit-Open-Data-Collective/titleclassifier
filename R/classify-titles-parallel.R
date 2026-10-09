@@ -25,7 +25,8 @@ process_chunk <- function( chunk,
       standardize_spelling() %>%
       gen_status_codes( gs_status_codes=gs_status_codes ) %>%
       standardize_titles( gs_title_xwalk=gs_title_xwalk ) %>%
-      categorize_titles( gs_title_taxonomy=gs_title_taxonomy )
+      categorize_titles( gs_title_taxonomy=gs_title_taxonomy ) %>%
+      conditional_logic()
       
   })
   

@@ -35,3 +35,18 @@ utils::globalVariables(c(
   "date.words", "number.words", "likely.subjects", "likely.titles",
   "possible.titles", "tinypartvii", "status.codes", "title.xwalk", "title.taxonomy"
 ))
+
+# resolve_roles() (step 09) uses data.table's `:=` and `by`; the package
+# imports data.table without attaching it, so it must say it is aware of it.
+.datatable.aware <- TRUE
+
+# columns and helpers named inside resolve_roles()'s data.table calls
+utils::globalVariables(c(
+  ":=", ".", ".I", ".N", ".row", ".pos", ".src", ".comp", ".hrs", ".paid", ".cb_tru", ".cb_off",
+  ".ceo_t", ".exec", ".board_t", ".pres", ".lead", ".level", ".brole", ".interim",
+  ".rank", ".pmin", ".primary", ".p_paid", ".p_comp", ".p_hrs", ".p_ceo_t", ".p_exec",
+  ".p_board_t", ".p_lead", ".p_off", ".p_tru", ".p_pres", ".p_interim", ".desig",
+  ".chair_pattern", ".elig", ".n_desig", ".any_paid", ".best", ".k", ".brole_t",
+  "role.position", "role.final", "role.board", "role.ceo", "role.source",
+  "role.primary", "org.leadership", "object.id", "person.id"
+))

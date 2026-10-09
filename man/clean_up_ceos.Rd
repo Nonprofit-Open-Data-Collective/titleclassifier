@@ -10,5 +10,7 @@ clean_up_ceos(comp.data)
 \item{comp.data}{A Part VII compensation data frame.}
 }
 \description{
-removes all duplicate instances of ceos within a single org
+Removes duplicate CEO rows within a filing. Not used by the pipeline:
+\code{resolve_roles()} marks one row per person (\code{role.primary}) instead of
+dropping rows.
 }
