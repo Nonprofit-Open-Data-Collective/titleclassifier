@@ -31,8 +31,10 @@ gen_status_codes <- function( comp.data, title="TitleTxt5", gs_status_codes=NULL
   TitleTxt <- gsub( "\\bEND$",  "FORMER", TitleTxt )
   TitleTxt <- gsub( "\\bNEW$",  "FORMER", TitleTxt )
 
-  # flag but don't remove co- titles
+  # flag co- titles and strip the prefix, so CO-PRESIDENT is a PRESIDENT with
+  # CO.X = TRUE and CO-FOUNDER is a FOUNDER (Part VII review, policy P3)
   comp.data$CO.X <- grepl( "\\bCO-", TitleTxt )
+  TitleTxt <- gsub( "\\bCO-\\s*", "", TitleTxt )
 
   # remove numbers
   numbers <- paste0( "\\b", number.words, "\\b", collapse="|" )
@@ -124,7 +126,8 @@ gen_status_codes <- function( comp.data, title="TitleTxt5", gs_status_codes=NULL
   x <- gsub( "\\bCO- {1,3}", "CO-", x )
   x <- gsub( "-$", "", x )
   x <- gsub( "-", " ", x )
-  x <- gsub( "CO ", "CO-", x )
+  x <- gsub( "\\bCO ", "CO-", x )   # \\b: not inside words (DISCO MANAGER)
+  x <- gsub( "\\bCO-\\s*", "", x )   # P3: a co- prefix restored above is stripped again
   x <- gsub(  "\\s{2,4}",  " ",  x )
   x <- trimws( x )
 

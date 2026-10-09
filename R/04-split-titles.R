@@ -92,8 +92,9 @@ apply_misc_split_rules <- function(x)
              "SECRETARY & TREASURER", x )
   x <- gsub( "TREASURER AND S$", "TREASURER & SECRETARY", x ) 
 
-  # split all FOUNDER titles
-  x <- gsub( "\\bFOUNDER\\b", "& FOUNDER & ", x )
+  # split all FOUNDER titles, keeping a CO- prefix with its FOUNDER (step 6
+  # strips CO- and sets CO.X) so CO-FOUNDER does not leave a stray "CO-" title
+  x <- gsub( "\\b(CO-\\s*)?FOUNDER\\b", "& \\1FOUNDER & ", x )
   x <- gsub( "\\bFOUNDING\\b", "FOUNDER  & ", x )
   # tidy the ampersands the FOUNDER rules can introduce so strsplit() on "&"
   # doesn't yield empty title fragments (e.g. leading "& FOUNDER")

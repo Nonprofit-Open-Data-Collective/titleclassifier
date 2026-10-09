@@ -24,6 +24,13 @@ tx <- fread(tx_path, colClasses = "character", na.strings = NULL)
 ch <- fread(file.path(pv_repo, "crosswalk-changes.csv"), colClasses = "character", na.strings = NULL)
 ta <- if (file.exists(f <- file.path(pv_repo, "taxonomy-additions.csv"))) fread(f, colClasses = "character", na.strings = NULL) else data.table()
 
+# drafts (reviewer "Claude (draft)" or a script) are not applied until a person
+# confirms them by putting their own name in `reviewer`
+is_draft <- function(r) grepl("(draft)", r, fixed = TRUE)
+if (any(is_draft(ch$reviewer))) message(sprintf("skipping %d unconfirmed draft decisions", sum(is_draft(ch$reviewer))))
+ch <- ch[!is_draft(reviewer)]
+if (nrow(ta)) ta <- ta[!is_draft(reviewer)]
+
 # new taxonomy rows
 if (nrow(ta)) {
   flagcols <- c("emp", "ceo", "c.level", "dir.vp", "mgr", "spec", "board", "pres", "vp", "sec", "treas", "mem")
