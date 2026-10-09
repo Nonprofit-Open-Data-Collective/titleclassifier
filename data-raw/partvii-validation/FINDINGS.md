@@ -42,15 +42,24 @@ cleaning fixes and pattern rules more than crosswalk rows.
 
 ## Findings
 
-### F-001 Duplicate taxonomy row for COMPTROLLER (open, fix ready)
+### F-001 Duplicate taxonomy row for COMPTROLLER (fixed in the snapshot; sheet pending)
 
-`xwalk-title-taxonomy.csv` has two rows for `COMPTROLLER` (lines 130-131):
+`xwalk-title-taxonomy.csv` had two rows for `COMPTROLLER` (lines 130-131):
 one with SOC codes, one without. `categorize_titles()` merges on
-`title.standard`, so every COMPTROLLER and CONTROLLER person-row comes out
+`title.standard`, so every COMPTROLLER and CONTROLLER person-row came out
 twice. That's about 42,000 people counted twice in this panel.
 
-**Fix:** delete the row without SOC codes, in the snapshot and in the Google
-Sheet. `03-title-profiles.R` keeps the first row until then.
+**Fixed 2026-10-08:** deleted the row without SOC codes from
+`inst/extdata/crosswalks/xwalk-title-taxonomy.csv`. Tests and the regression
+check pass.
+- The regression baseline uses its own frozen copy (`data-raw/demo/`), which
+  keeps the duplicate on purpose, so the baseline did not change.
+- **Still to do:** delete the same row in the Google Sheet (title-taxonomy
+  tab). Otherwise `get_googlesheets_title_taxonomy(refresh = TRUE)` brings
+  the duplicate back.
+
+`03-title-profiles.R` also keeps only the first row of any duplicated
+standard, as a guard.
 
 ### F-002 Standards with no taxonomy row (open)
 
