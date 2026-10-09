@@ -11,31 +11,157 @@ vignette: >
 knitr::opts_chunk$set(collapse = TRUE, comment = "#>", message = FALSE, warning = FALSE)
 library(titleclassifier)
 library(dplyr)
+# the pipeline steps print a progress line; keep it out of the tables
+quiet <- function(x) { utils::capture.output(x <- force(x)); x }
 ```
 
-The crosswalk maps each title to one role, but some titles mean different things
-in different organizations:
-- A **PRESIDENT** is the paid chief executive in one organization and a volunteer
-  board chair in the next.
+The crosswalk maps each title to one role, but some titles mean different
+things in different organizations:
+
+- A **PRESIDENT** is the paid chief executive in one organization and a
+  volunteer board chair in the next.
 - A **VICE PRESIDENT** may sit on the board or on staff.
 - A **DIRECTOR** may be a board member or a department head.
 
-**`conditional_logic()`** settles these with what the filer reported about each
-person: the Part VII checkboxes (trustee, officer, key employee, highly
-compensated), pay, and hours. It also names the chief executive when no title
-does.
+**`conditional_logic()`** (a wrapper for `resolve_roles()`) settles these with
+what the filer reported about each person: the Part VII checkboxes (trustee,
+officer, key employee, highly compensated), pay and hours. It also names the
+chief executive when no title does, and decides that a filing has none when
+the board runs the organization.
+
+## Before and after
+
+Four example filings, built by hand. "Before" is the title-only answer from
+steps 07-08. "After" is step 09's answer for each person.
+
+```{r, include = FALSE}
+# one hand-built filing: a row per person
+filing <- function(id, form, people) {
+  d <- titleclassifier::tinypartvii[rep(1, nrow(people)), ]
+  d$OBJECTID <- id; d$RETURN_TYPE <- form
+  d$F9_07_COMP_DTK_TITLE <- people$title
+  d$F9_07_COMP_DTK_NAME_PERS <- paste(id, seq_len(nrow(people)))
+  d$F9_07_COMP_DTK_AVE_HOUR_WEEK <- as.character(people$hours)
+  d$F9_07_COMP_DTK_AVE_HOUR_WEEK_RL <- "0"
+  d$F9_07_COMP_DTK_COMP_ORG <- as.character(people$pay)
+  d$F9_07_COMP_DTK_COMP_RLTD <- "0"; d$F9_07_COMP_DTK_COMP_OTH <- "0"; d$F9_07_COMP_DTK_EMPL_BEN <- "0"
+  box <- function(b) if (form == "990EZ") "" else ifelse(grepl(b, people$boxes), "X", "")
+  d$F9_07_COMP_DTK_POS_INDIV_TRUST_X <- box("T"); d$F9_07_COMP_DTK_POS_INST_TRUST_X <- ""
+  d$F9_07_COMP_DTK_POS_OFF_X <- box("O"); d$F9_07_COMP_DTK_POS_KEY_EMPL_X <- box("K")
+  d$F9_07_COMP_DTK_POS_HIGH_COMP_X <- box("H"); d$F9_07_COMP_DTK_POS_FORMER_X <- ""
+  rownames(d) <- NULL
+  d
+}
+p <- function(...) data.frame(..., stringsAsFactors = FALSE)
+A <- filing("A large organization (990)", "990", p(
+  title = c("President & CEO", "Chair of the Board", "Treasurer", "Director", "Chief Financial Officer",
+            "VP of Development", "Director of Nursing", "Staff Physician"),
+  pay   = c(410000, 0, 0, 0, 260000, 190000, 175000, 320000),
+  hours = c(55, 5, 3, 2, 50, 45, 40, 40),
+  boxes = c("O", "TO", "TO", "T", "O", "K", "H", "H")))
+B <- filing("B paid president, no CEO title (990)", "990", p(
+  title = c("President", "Vice President", "Secretary", "Program Director"),
+  pay   = c(85000, 0, 0, 42000), hours = c(40, 2, 2, 40), boxes = c("TO", "T", "TO", "")))
+C <- filing("C run by its board (990)", "990", p(
+  title = c("President", "Secretary", "Treasurer", "Bookkeeper"),
+  pay   = c(6000, 0, 0, 18000), hours = c(5, 2, 2, 10), boxes = c("TO", "TO", "TO", "")))
+D <- filing("D small organization (990-EZ)", "990EZ", p(
+  title = c("President", "Administrator", "Director of Operations", "Secretary", "Treasurer"),
+  pay   = c(38000, 30000, 0, 0, 0), hours = c(40, 40, 10, 2, 2), boxes = ""))
+steps08 <- function(d) d |> standardize_df() |> remove_dates() |> standardize_conj() |> split_titles() |>
+  standardize_spelling() |> gen_status_codes() |> standardize_titles() |> categorize_titles()
+ex  <- quiet(steps08(rbind(A, B, C, D)))
+res <- quiet(conditional_logic(ex))
+res$rules.only <- quiet(resolve_roles(ex, use_model = FALSE))$role.final
+show <- function(id) {
+  r <- res[res$object.id == id & res$role.primary, ]
+  r <- r[order(as.integer(sub(".* ", "", r$dtk.name))), ]
+  if (r$formtype[1] == "990EZ") r$role.method <- paste0(r$role.method, " (rules alone: ", r$rules.only, ")")
+  boxes <- with(r, paste0(ifelse(dtk.indiv.trustee.x %in% 1, "T", ""), ifelse(dtk.officer.x %in% 1, "O", ""),
+                          ifelse(dtk.key.empl.x %in% 1, "K", ""), ifelse(dtk.high.comp.x %in% 1, "H", "")))
+  before <- ifelse(nzchar(r$board.role), paste("BOARD", r$board.role), r$emp.level)
+  after  <- ifelse(r$role.final == "BOARD", paste("BOARD", r$role.board),
+            ifelse(r$role.final == "CEO", paste0("CEO (", r$role.ceo, ")"), r$role.final))
+  knitr::kable(data.frame(title = r$title.raw, pay = format(r$tot.comp, big.mark = ","), hours = r$tot.hours,
+                          boxes = if (r$formtype[1] == "990EZ") "none on a 990-EZ" else boxes,
+                          `before: title only` = before, `after: step 09` = after,
+                          method = r$role.method, check.names = FALSE), row.names = FALSE,
+               caption = sprintf("%s. org.leadership: %s", id, r$org.leadership[1]))
+}
+```
+
+Boxes: **T** trustee, **O** officer, **K** key employee, **H** highly
+compensated.
+
+```{r, echo = FALSE}
+show("A large organization (990)")
+```
+
+The checkboxes settle most of filing A. The CEO is `designated` by a
+CEO-level title in an officer position. The board titles with the trustee box
+are board seats. The paid staff keep the level their title implies.
+
+```{r, echo = FALSE}
+show("B paid president, no CEO title (990)")
+```
+
+No title in filing B names a CEO, but the president is paid $85,000 for 40
+hours a week and ticks the officer box: the president is the `imputed` CEO.
+The unpaid vice president is a board seat (VICE CHAIR), not a staff officer.
+
+```{r, echo = FALSE}
+show("C run by its board (990)")
+```
+
+Filing C pays its president a $6,000 stipend for 5 hours a week. A board title
+held under 10 hours a week for under $25,000 is a board seat, even with the
+officer box. No paid person qualifies as a leader (the bookkeeper is staff),
+so the filing is `board_governed`: no CEO is named.
+
+```{r, echo = FALSE}
+show("D small organization (990-EZ)")
+```
+
+A 990-EZ has no checkboxes. When the xgboost package is installed, roles on a
+990-EZ come from the no-checkbox model, and `role.method` says `model`.
+Without xgboost, or with `resolve_roles(use_model = FALSE)`, the rules decide.
+Here they disagree on two people:
+- **Director of Operations.** The rules read the title as a department head
+  (MANAGER). The model reads an unpaid person working 10 hours a week in a
+  small filing as a volunteer board member.
+- **Administrator.** The model makes the second paid full-timer an officer
+  rather than a manager.
+
+[Rules and models](classifiers.html) explains the difference.
+
+## What it does
 
 ```
 conditional_logic()  ->  resolve_roles()
 |
-+- position, per row       checkboxes first: trustee box = board, officer box = officer,
-|                          both = working board; a paid executive title counts as an
-|                          officer even without the box; 990-EZ returns use title and pay
-+- one role per person     split titles (PRESIDENT/CEO) resolve to one person, one role
-+- leadership, per filing  a CEO-level title in an officer position = designated CEO;
-                           else the highest-paid plausible leader = imputed CEO;
-                           else the filing is board-governed (no CEO is named)
++- 1. position, per row       trustee box = board; officer box = officer; both = board_officer;
+|                             key-employee or high-comp box = staff; a paid CEO- or
+|                             officer-level title counts as an officer without the box
++- 2. one role per person     a person with split titles (PRESIDENT & TREASURER) gets
+|                             the most senior position; role.primary marks one row
++- 3. leadership, per filing  a CEO-level title in an officer position = designated CEO;
+|                             else the highest-paid plausible leader = imputed CEO;
+|                             else board_governed (paid people, no leader) or no_paid
++- 4. final role              CEO, OFFICER, MANAGER, PROFESSIONAL, STAFF or BOARD,
+|                             and for BOARD the board role
++- 5. 990-EZ                  the no-checkbox model replaces the rules' answer
 ```
+
+Three thresholds keep token pay from making a leader:
+
+* **Imputed CEO.** A leader with no CEO title must work at least 15 hours a
+  week or earn at least $25,000, and have the officer box or a leadership
+  title.
+* **Board chair pattern.** A paid board chair with the trustee box who works
+  under 25 hours a week is not imputed as CEO.
+* **Stipend rule.** A board title held under 10 hours a week for under
+  $25,000 is a board seat, with or without the officer box. On a 990-EZ the
+  same holds for a board title paid a small fee.
 
 ## Columns added
 
@@ -43,21 +169,42 @@ conditional_logic()  ->  resolve_roles()
 |---|---|
 | `role.final` | CEO, OFFICER, MANAGER, PROFESSIONAL, STAFF, BOARD |
 | `role.board` | for BOARD: CHAIR, VICE CHAIR, SECRETARY, TREASURER, MEMBER |
-| `role.ceo` | for CEO: designated, co-ceo, interim, imputed |
+| `role.ceo` | for CEO: designated, co-ceo, interim, imputed, model |
 | `role.position` | board, officer, board_officer, staff, unknown |
-| `role.source` | checkbox, title+pay, title |
+| `role.source` | what settled the position: checkbox, title+pay, title |
+| `role.method` | rules, or model (990-EZ with xgboost installed) |
 | `role.primary` | TRUE on one row per person (count people with it) |
-| `org.leadership` | per filing: designated, imputed, board_governed, no_paid |
+| `org.leadership` | per filing: designated, imputed, model, board_governed, no_paid |
 
-The crosswalk's own `emp.level` and `board.role`, and the legacy flags, are left
-as they were: `role.final` is the resolved answer, the crosswalk columns the
-title-only default.
+The crosswalk's own `emp.level` and `board.role` are kept: `role.final` is the
+resolved answer, the crosswalk columns the title-only default.
+[Taxonomy](taxonomy.html#roles) defines each value.
+
+## Assets
+
+| Asset | Type | Used for | Load it with |
+|---|---|---|---|
+| `emp.level`, `board.role` | columns of `title.taxonomy` (from step 08) | the title-only role each rule starts from | `get_title_taxonomy()` |
+| the role model | xgboost model file, `inst/extdata/role-model/` | roles on 990-EZ filings | `predict_roles()`; features from `role_model_features()` |
+
+```{r}
+system.file("extdata", "role-model", package = "titleclassifier") |> list.files()
+```
+
+```{r, eval = requireNamespace("xgboost", quietly = TRUE)}
+# the model's input: one row per person-title, no checkboxes
+X <- role_model_features(ex[ex$object.id == "D small organization (990-EZ)", ])
+dim(X)
+head(colnames(X), 12)
+predict_roles(ex[ex$object.id == "D small organization (990-EZ)", ])
+```
+
+## Try it on the demo data
 
 ```{r}
 data(tinypartvii)
 set.seed(8)
-d <- dplyr::sample_n(tinypartvii, 250)
-
+d <- dplyr::sample_n(tinypartvii, 1500)
 df <- d |>
   standardize_df() |> remove_dates() |> standardize_conj() |>
   split_titles() |> standardize_spelling() |> gen_status_codes() |>
@@ -65,7 +212,7 @@ df <- d |>
 
 people <- dplyr::filter(df, role.primary)
 table(people$role.final)
-table(people$role.board)
+table(people$formtype, people$role.method)
 ```
 
 Titles the crosswalk files as board seats but that resolve otherwise, here a
@@ -86,11 +233,6 @@ df |>
   dplyr::count(formtype, org.leadership)
 ```
 
-`board_governed` is a valid answer, not a gap: a filing that pays people but
-has no plausible paid leader is run by its board. A board title held under 10
-hours a week for under $25,000 stays a board seat even with the officer box (a
-titular president with a stipend). An imputed leader must work
-at least 15 hours a week or earn at least $25,000.
-
 **Input:** the output of `categorize_titles()`. **Output:** the same rows with
-the role columns added.
+the role columns added. See [Performance](performance.html) for how often the
+roles agree with hand labels.

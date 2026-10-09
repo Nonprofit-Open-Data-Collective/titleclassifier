@@ -11,47 +11,76 @@ vignette: >
 knitr::opts_chunk$set(collapse = TRUE, comment = "#>", message = FALSE, warning = FALSE)
 library(titleclassifier)
 library(dplyr)
+# example titles as a Part VII frame, one person per title
+example_frame <- function(titles) {
+  d <- titleclassifier::tinypartvii[rep(1, length(titles)), ]
+  d$F9_07_COMP_DTK_TITLE <- titles
+  d$F9_07_COMP_DTK_NAME_PERS <- sprintf("PERSON %02d", seq_along(titles))
+  rownames(d) <- NULL
+  d
+}
+# the pipeline steps print a progress line; keep it out of the tables
+quiet <- function(x) { utils::capture.output(x <- force(x)); x }
 ```
 
-With separators normalized to `&`, **`split_titles()`** expands a row that holds
-several roles into one row per role, duplicating the person's other data.
+With the separators reduced to `&`, **`split_titles()`** turns a row that
+holds several roles into one row per role. The person's name, pay, hours and
+checkboxes repeat on each row; `Num.Titles` numbers the rows. A few common
+pairs are collapsed to one title rather than split: "PRESIDENT & CEO" is a CEO.
+
+## Before and after
+
+```{r, echo = FALSE}
+x <- c("Sec/Treas", "Board Member; Treasurer", "Chief Exec Officer / Founder", "EVP & COO",
+       "President & CEO", "Trustee & Treasurer", "Founder & Executive Director",
+       "VP Finance and Administration", "Executive Director")
+out <- quiet(split_titles(standardize_conj(remove_dates(standardize_df(example_frame(x))))))
+out <- out[order(out$F9_07_COMP_DTK_NAME_PERS, out$Num.Titles), ]
+knitr::kable(data.frame(person = out$F9_07_COMP_DTK_NAME_PERS,
+                        `before (TitleTxt3)` = out$TitleTxt3,
+                        `after (TitleTxt4)` = out$TitleTxt4,
+                        Num.Titles = out$Num.Titles, check.names = FALSE), row.names = FALSE)
+```
+
+Nine people become `r nrow(out)` rows.
+
+## What it does
 
 ```
 split_titles()
 |
-+- apply_misc_split_rules()  regex fixes for tricky edge cases
-+- identify_split_num()      how many distinct titles does the string hold?
-+- remove_first_split()      peel the text before the first "&"
++- apply_misc_split_rules()  fixes for edge cases (PRESIDENT & CEO -> CEO, ...)
++- identify_split_num()      how many titles does the string hold?
++- remove_first_split()      peel off the text before the first "&", repeat
 ```
 
-## Counting and peeling
+Later steps work on one title per row. The person-level view comes back in
+[step 08](step-08-categorize-titles.html), which counts each person once
+(`title.count`, `title.order`), and [step 09](step-09-conditional-logic.html),
+which gives each person one role.
+
+## Assets
+
+Step 04 uses no crosswalk or word list: it relies on the `&` separators that
+step 03 wrote.
+
+## Try it
 
 ```{r}
 identify_split_num("CFO & TREASURER & DIRECTOR")   # 3
 remove_first_split("CFO & TREASURER & DIRECTOR")   # " TREASURER & DIRECTOR"
 ```
 
-## In the pipeline
-
-A single multi-title row becomes several rows, each carrying a `Num.Titles` index:
-
 ```{r}
 data(tinypartvii)
-set.seed(4)
 d <- dplyr::sample_n(tinypartvii, 120)
-
-df <- d |>
-  standardize_df() |>
-  remove_dates() |>
-  standardize_conj() |>
-  split_titles()
-
+df <- d |> standardize_df() |> remove_dates() |> standardize_conj() |> split_titles()
 df |>
   dplyr::filter(grepl("&", TitleTxt3)) |>
   dplyr::select(F9_07_COMP_DTK_NAME_PERS, Num.Titles, TitleTxt3, TitleTxt4) |>
-  head(10)
+  head(8)
 ```
 
-**Input:** `TitleTxt3`. **Output:** expanded rows with a single-title `TitleTxt4`
-and a within-person `Num.Titles`. Continue with
-[step 05](step-05-standardize-spelling.html).
+**Input:** `TitleTxt3`. **Output:** one row per title, with the single title
+in `TitleTxt4` and its position within the person's entry in `Num.Titles`.
+Continue with [step 05](step-05-standardize-spelling.html).

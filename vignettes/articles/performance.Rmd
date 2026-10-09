@@ -1,0 +1,261 @@
+---
+title: "Performance"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>", message = FALSE, warning = FALSE, echo = FALSE)
+# the tables come from the validation scripts in data-raw/partvii-validation/
+RES <- file.path("..", "..", "data-raw", "partvii-validation", "panel-results")
+rd  <- function(f) utils::read.csv(file.path(RES, f), check.names = FALSE, stringsAsFactors = FALSE)
+pct <- function(x) ifelse(is.na(x), "", paste0(formatC(x, format = "f", digits = 1), "%"))
+big <- function(x) ifelse(is.na(x), "", format(x, big.mark = ",", trim = TRUE))
+kt  <- function(d, ...) knitr::kable(d, row.names = FALSE, align = c("l", rep("r", ncol(d) - 1)), ...)
+size_order <- c("$0", "$1-150k", "$150k-1m", "$1m-10m", "$10m-100m", "$100m+", "missing")
+cov  <- rd("perf-coverage.csv")
+gold <- rd("perf-gold.csv")
+```
+
+How much of Part VII does `titleclassifier` code, and how often is it right?
+This page reports two kinds of evidence:
+
+* **Coverage**: the share of titles that reach a standard title, measured on
+  a large stratified sample of recent filings.
+* **Accuracy**: agreement with hand labels, broken out by form, role, pay and
+  organization size. It is backed by checks that need no labels:
+  agreement with the filer's own checkboxes, and stability over time.
+
+Every number comes from the scripts in `data-raw/partvii-validation/` of the
+source repository, run on the NCCS efile tables (release `efile_v2_3`).
+
+## The data
+
+| Data set | What it is | Used for |
+|---|---|---|
+| **Calibration sample** | 60,520 filings from 2019-2023: 6,000 organizations followed for all five years, plus 6,000 fresh organizations a year. Stratified by form (990, 990-EZ), size (total expenses, Part I) and number of paid people, with design weights | coverage; checkbox agreement; stability over time |
+| **Hand-labeled set** | 316 people on 2010-2012 filings (276 on full 990s, 40 on 990-EZs), drawn to over-represent hard cases: paid presidents, board-run organizations, managers. Each was labeled from the whole filing in two independent passes, with disagreements settled by hand | accuracy |
+| **Form switchers** | 23,931 people at organizations that filed a 990-EZ one year and a full 990 the next (or the reverse), matched across years with [synthid](https://github.com/Nonprofit-Open-Data-Collective/synthid). Their full-990 role, decided with the checkboxes, labels their 990-EZ year | accuracy on 990-EZ returns |
+
+Size bins are total expenses: $0, $1-150k, $150k-1m, $1m-10m, $10m-100m and
+$100m+. Filers reporting $0 get their own bin because they almost never pay
+anyone.
+
+## Coverage
+
+A title row is **coded** when step 07 finds its standard title, by exact match
+in the crosswalk or by a pattern rule. It is **uncoded** when neither applies.
+A few coded titles are not job titles at all (blank, "SEE SCHEDULE O").
+
+```{r}
+ov <- cov[cov$group == "all (weighted)", ]
+```
+
+Weighted to the population of 2019-2023 filers, **`r pct(ov$exact + ov$pattern)`
+of title rows are coded** (`r pct(ov$exact)` exactly and `r pct(ov$pattern)` by
+pattern) and **`r pct(ov$uncoded)` remain uncoded**. Every person still gets a
+role: step 09 resolves an uncoded title from the checkboxes, pay and hours.
+
+```{r}
+d <- cov
+d$group <- c("All filings (sample)", "All filings (weighted)", "990-EZ", "990")[match(d$group, c("all (sample)", "all (weighted)", "990EZ", "990"))]
+kt(data.frame(Filings = d$group, `Title rows` = big(d$title_rows), Exact = pct(d$exact),
+              Pattern = pct(d$pattern), `Non-job title` = pct(d$non_job_title),
+              Uncoded = pct(d$uncoded), `People with a role` = pct(d$people_with_role),
+              check.names = FALSE))
+```
+
+By size, coverage is highest for small and mid-sized organizations and lowest
+for the largest. Their Part VII lists many specialized staff, and their titles
+often include unit or system names ("HOSPITAL GROUP RETURN SCHE", "MEMBER AND
+PHYSICIAN AND NGPG"):
+
+```{r}
+s <- rd("perf-coverage-by-size.csv")
+s <- s[order(s$form != "990", match(s$size, size_order)), ]
+kt(data.frame(Form = s$form, Size = s$size, `Title rows` = big(s$title_rows),
+              Coded = pct(s$exact + s$pattern), Uncoded = pct(s$uncoded), check.names = FALSE))
+```
+
+Uncoded titles are a long tail. The `r big(20723)` distinct uncoded titles in
+the sample are mostly one-offs: the 25 most common account for only 2.3% of
+uncoded rows. The most common are truncations, acronyms and organization
+names ("TAF", "AHF", "CLASS A POS", "DIRECTOR CATALIGHT"), which a crosswalk
+entry would fix one at a time.
+
+```{r}
+u <- head(rd("perf-uncoded-top.csv"), 10)
+kt(data.frame(`Uncoded title` = u$title, Rows = u$rows, check.names = FALSE))
+```
+
+## Accuracy
+
+Accuracy is the share of hand-labeled people whose resolved role
+(`role.final`) matches the label. A person labeled DUAL (a board seat and a
+paid executive job at once) counts as correct when resolved as CEO, OFFICER
+or BOARD.
+
+```{r}
+a <- gold[gold$breakdown == "all", ]
+```
+
+**Overall, `r pct(a$accuracy)` of `r a$people` labeled people get the right
+role.** Board members on the right seat: `r pct(rd("perf-gold-board-role.csv")$right_board_role)`
+of correctly identified board members also get the right board role (chair,
+vice chair, secretary, treasurer or member).
+
+### By form
+
+```{r}
+g <- gold[gold$breakdown == "form", ]
+kt(data.frame(Form = g$group, People = g$people, Accuracy = pct(g$accuracy),
+              Method = c("rules, with checkboxes", "model, no checkboxes")))
+```
+
+On 990-EZ returns the model replaced rules that scored 82.5% on the same 40
+people. On 23,931 form switchers, the model agrees with the full-990-year role
+more often than the rules do:
+
+```{r}
+sw <- rd("switch-scores.csv")
+kt(data.frame(`990-EZ people` = c("All matched", "Same title both years", "... not on the board", "... paid in the 990-EZ year"),
+              People = big(sw$people), Rules = pct(sw$step09), Model = pct(sw$model), check.names = FALSE))
+```
+
+These scores come from the first version of the model, before the switchers
+were added to its training data. The shipped model, scored on the half of the
+switchers it did not train on, agrees 96.7% (rules 95.1%) on people with the
+same title in both years, and 74.0% (rules 63.6%) on those not on the board.
+
+### By role
+
+Recall is the share of people with a given label who get that role. Precision
+is the share of people given a role whose label matches it.
+
+```{r}
+r <- gold[gold$breakdown == "labeled role", ]
+p <- rd("perf-gold-precision.csv")
+m <- data.frame(Role = r$group, Labeled = r$people, Recall = pct(r$accuracy))
+m$Resolved <- p$predicted[match(m$Role, p$role)]
+m$Precision <- pct(p$precision[match(m$Role, p$role)])
+m$Resolved[is.na(m$Resolved)] <- ""
+kt(m)
+```
+
+Board members, who are most of the people on Part VII, and chief executives are
+identified reliably. The hard boundaries are below the CEO: officers versus
+managers versus staff. Those lines depend on duties that a title, pay and
+hours only partly reveal. STAFF is the weakest role: few people on Part VII
+are rank-and-file staff, and step 09 assigns STAFF to more people than are
+labeled so.
+
+### By pay
+
+```{r}
+g <- gold[gold$breakdown == "pay", ]
+kt(data.frame(`Paid by the organization` = g$group, People = g$people, Accuracy = pct(g$accuracy), check.names = FALSE))
+```
+
+Unpaid people are almost all board members, and nearly always classified
+correctly. Paid people carry the hard cases: is a paid president the CEO,
+is a paid director a board member or a department head?
+
+### By size
+
+```{r}
+g <- gold[gold$breakdown == "size", ]
+kt(data.frame(Size = g$group, People = g$people, Accuracy = pct(g$accuracy)))
+```
+
+The labeled set has no $0 filers and only 10 people at $100m+ organizations,
+so the size breakdown is indicative only. The checks below cover every size
+at scale.
+
+## Checks at scale
+
+These checks use the calibration sample and need no labels. They measure
+consistency: they flag problems, but agreement does not prove the answer is
+right.
+
+### Agreement with the filer's checkboxes
+
+On a full 990 the filer ticks a box for each person's position. A board title
+should come with the trustee box, and a paid executive title with the officer
+box:
+
+```{r}
+c2 <- rd("calibration-by-size.csv")
+c2 <- c2[c2$return_type == "990", ]
+c2 <- c2[order(match(c2$size, size_order)), ]
+kt(data.frame(Size = c2$size, People = big(c2$people),
+              `Board title has trustee box` = pct(c2$board_title_has_trustee_box),
+              `Trustee box has board title` = pct(c2$trustee_box_has_board_title),
+              `Paid executive title has officer box` = pct(c2$paid_exec_title_has_officer_box),
+              `Step 09 changes the title's role` = pct(c2$step09_overrides_title),
+              check.names = FALSE))
+```
+
+Nearly every trustee box goes with a board title (92-96% at every size). The
+reverse is weaker at small organizations: at $1-150k only 77% of board titles
+carry the trustee box, because board officers there often tick only the
+officer box. At $100m+ only 53% of paid executive titles carry the officer
+box: large organizations list many vice presidents as key employees rather
+than corporate officers. Step 09 treats a paid executive title as an officer
+position with or without the box.
+
+### Finding the chief executive
+
+The share of filings that pay someone and in which step 09 names a CEO, and
+how the leadership was found:
+
+```{r}
+c3 <- rd("calibration-by-size.csv")
+c3 <- c3[order(c3$return_type != "990", match(c3$size, size_order)), ]
+kt(data.frame(Form = c3$return_type, Size = c3$size, Filings = big(c3$filings),
+              `CEO named, paying filings` = pct(c3$ceo_if_paid),
+              Designated = pct(c3$designated), Imputed = pct(c3$imputed),
+              `Board-governed` = pct(c3$board_governed), `No one paid` = pct(c3$no_paid),
+              check.names = FALSE))
+```
+
+Among full-990 filings that pay anyone, a CEO is named in 64% at $1-150k and
+over 95% from $1m up. The rest are `board_governed`: small organizations
+whose only paid people are a bookkeeper or a part-time helper, or whose paid
+president works a few hours for a stipend.
+
+### Stability over time
+
+For the 6,000 organizations followed for five years, people were matched from
+one year to the next with synthid. A person's role should rarely change from
+one year to the next, and neither should the CEO:
+
+```{r}
+st <- rd("crosstime-role-stability.csv")
+ce <- rd("crosstime-ceo.csv")
+st <- merge(st, ce, by = c("return_type", "size"), all = TRUE)
+st <- st[order(st$return_type != "990", match(st$size, size_order)), ]
+kt(data.frame(Form = st$return_type, Size = st$size, `Person-years` = big(st$pairs),
+              `Same role` = pct(st$same_role), `Org-years` = big(st$org_year_pairs),
+              `Same CEO` = pct(st$same_ceo), check.names = FALSE))
+```
+
+```{r}
+br <- rd("crosstime-by-role.csv")
+kt(data.frame(`Role in year 1` = br$role0, `Person-years` = big(br$pairs), `Same role in year 2` = pct(br$same_role),
+              check.names = FALSE))
+```
+
+95-98% of people keep their role from one year to the next, and in most
+groups 88-92% of organizations keep the same CEO. Some change is real (CEOs turn over, board
+members become officers), so these rates are a floor on consistency, not an
+error rate.
+
+## Reproducing these numbers
+
+The scripts run in order; each states its inputs at the top.
+
+| Script | Produces |
+|---|---|
+| `12-panel-sample.R`, `13-panel-run.R` | the calibration sample and its classification |
+| `14-panel-calibrate.R`, `15-panel-synthid.R` | checkbox agreement, CEO coverage, stability over time |
+| `09-gold-check.R` | accuracy on the hand-labeled set |
+| `18-switch-labels.R`, `20-role-model-ship.R` | the form-switcher test set and the shipped model |
+| `21-performance.R` | the coverage tables and the accuracy breakdowns on this page |

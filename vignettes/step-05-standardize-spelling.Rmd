@@ -10,51 +10,84 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(collapse = TRUE, comment = "#>", message = FALSE, warning = FALSE)
 library(titleclassifier)
+# example titles as a Part VII frame, one person per title
+example_frame <- function(titles) {
+  d <- titleclassifier::tinypartvii[rep(1, length(titles)), ]
+  d$F9_07_COMP_DTK_TITLE <- titles
+  d$F9_07_COMP_DTK_NAME_PERS <- sprintf("PERSON %02d", seq_along(titles))
+  rownames(d) <- NULL
+  d
+}
+# the pipeline steps print a progress line; keep it out of the tables
+quiet <- function(x) { utils::capture.output(x <- force(x)); x }
 ```
 
-The dictionary-driven layer. **`standardize_spelling()`** applies `fix_spelling()`
-to every title, which in turn calls ~50 small `fix_*` routines to expand
-abbreviations and unify variants, then condenses unambiguous C-suite forms.
+The dictionary layer. **`standardize_spelling()`** expands abbreviations,
+fixes common misspellings and truncations, and writes each kind of title one
+way, so that the crosswalk in [step 07](step-07-standardize-titles.html) needs
+one entry per title rather than one per spelling.
+
+## Before and after
+
+```{r, echo = FALSE}
+x <- c("Exec. Dir.", "Sec", "Treas", "Asst. Secretary", "Dir of Development", "Dir. of Ops.",
+       "Chief Exec Officer", "Chief Operating Officer", "Exec. V.P.", "SVP, Marketing",
+       "VP Finance and Administration", "VP of HR", "Gen. Counsel", "Chairman of the Board",
+       "Chairperson", "Board Pres.", "Mgr, IT", "Dir of Nursing")
+out <- quiet(standardize_spelling(split_titles(standardize_conj(remove_dates(standardize_df(example_frame(x)))))))
+out <- out[order(out$F9_07_COMP_DTK_NAME_PERS), ]
+knitr::kable(data.frame(`before (TitleTxt4)` = out$TitleTxt4, `after (TitleTxt5)` = out$TitleTxt5,
+                        check.names = FALSE), row.names = FALSE)
+```
+
+## What it does
 
 ```
 standardize_spelling()
 +- fix_spelling()
-   +- fix_vice(), fix_executive(), fix_director(), fix_president(), ...   (~50 fix_* routines)
+   +- fix_vice(), fix_executive(), fix_director(), fix_president(), ...   (about 50 fix_* routines)
    +- condense_abbreviations(), simplify_clevels()
    +- remove_trailing_conjunctions(), fix_of()
    +- spellcheck()   (hunspell)
 ```
 
-## Examples
+* Each `fix_*` routine handles one word family: `fix_vice()` turns VP, V.P.,
+  VICE-PRES and EVP into their full forms, `fix_director()` handles DIR, DIRS,
+  DRCTR, and so on.
+* `fix_of()` inserts the implicit "of" between a title and its subject:
+  VICE PRESIDENT FINANCE becomes VICE PRESIDENT OF FINANCE.
+* Unambiguous C-suite titles are condensed (CHIEF EXECUTIVE OFFICER becomes
+  CEO, CHIEF FINANCIAL OFFICER becomes CFO). Titles without a standard
+  abbreviation stay spelled out.
+* `spellcheck()` suggests a dictionary spelling for a word no routine knows.
+
+## Assets
+
+| Asset | Type | Used for | Load it with |
+|---|---|---|---|
+| `possible.titles` | word list (package data) | title words that can precede an implicit "of" | `data(possible.titles)` |
+| `likely.subjects` | word list (package data) | subjects that follow "of" (FINANCE, DEVELOPMENT, ...) | `data(likely.subjects)` |
+| the `fix_*` routines | R functions | the abbreviation and spelling rules themselves | `?fix_spelling`, `?fix_vice`, ... |
+| hunspell | R package (Imports) | the spell-check dictionary | `hunspell::dictionary("en_US")` |
 
 ```{r}
-fix_spelling("VP")                    # VICE PRESIDENT
-fix_spelling("SR D MARKETING")        # SENIOR DIRECTOR OF MARKETING
-fix_spelling("SECY")                  # SECRETARY
-fix_spelling("TRTEE")                 # TRUSTEE
+data(possible.titles)
+head(possible.titles, 10)
+data(likely.subjects)
+head(likely.subjects, 15)
 ```
 
-An implicit "of" is inserted before a recognized subject:
+## Try it
 
 ```{r}
-fix_spelling("VICE PRESIDENT FINANCE")   # VICE PRESIDENT OF FINANCE
-```
-
-Unambiguous C-suite forms are condensed; ambiguous ones are left expanded.
-(Note: EXECUTIVE DIRECTOR is normalized here but mapped to CEO later, by the
-step 07 crosswalk.)
-
-```{r}
+fix_spelling("VP")                        # VICE PRESIDENT
+fix_spelling("SR D MARKETING")            # SENIOR DIRECTOR OF MARKETING
+fix_spelling("SECY")                      # SECRETARY
+fix_spelling("VICE PRESIDENT FINANCE")    # VICE PRESIDENT OF FINANCE
 fix_spelling("CHIEF EXEC OFFICER")        # CEO
-fix_spelling("CHIEF FINANCIAL OFFICER")   # CFO
-fix_spelling("CHIEF ADVANCEMENT OFFICER") # unchanged (no standard abbreviation)
-```
-
-Individual routines can be called directly — useful when refining rules:
-
-```{r}
+fix_spelling("CHIEF ADVANCEMENT OFFICER") # unchanged: no standard abbreviation
 fix_vice(c("EVP", "SVP", "V.P."))
 ```
 
-**Input:** `TitleTxt4`. **Output:** `TitleTxt5`, spelling-normalized. Continue with
-[step 06](step-06-gen-status-codes.html).
+**Input:** `TitleTxt4`. **Output:** `TitleTxt5`, with standard spelling.
+Continue with [step 06](step-06-gen-status-codes.html).

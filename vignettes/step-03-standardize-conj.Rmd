@@ -10,48 +10,78 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(collapse = TRUE, comment = "#>", message = FALSE, warning = FALSE)
 library(titleclassifier)
+# example titles as a Part VII frame, one person per title
+example_frame <- function(titles) {
+  d <- titleclassifier::tinypartvii[rep(1, length(titles)), ]
+  d$F9_07_COMP_DTK_TITLE <- titles
+  d$F9_07_COMP_DTK_NAME_PERS <- sprintf("PERSON %02d", seq_along(titles))
+  rownames(d) <- NULL
+  d
+}
+# the pipeline steps print a progress line; keep it out of the tables
+quiet <- function(x) { utils::capture.output(x <- force(x)); x }
 ```
 
-People list multiple roles with no standard punctuation ("CEO AND BOARD PRESIDENT",
-"VP OF FINANCE AND ADMINISTRATION"). **`standardize_conj()`** normalizes the
-connectors so that step 04 can split reliably, converting genuine separators into a
-single `&` while leaving compound titles intact.
+People list several roles in one title with no standard punctuation: "CEO AND
+BOARD PRESIDENT", "SEC/TREAS", "BOARD MEMBER; TREASURER". Other titles use the
+same words inside a single role: "VP OF FINANCE AND ADMINISTRATION".
+**`standardize_conj()`** turns every connector that separates two titles into
+a single `&`, so that [step 04](step-04-split-titles.html) can split on it, and
+leaves compound titles whole.
+
+## Before and after
+
+```{r, echo = FALSE}
+x <- c("Sec/Treas", "Secretary, Treasurer", "Board Member; Treasurer", "Chief Exec Officer / Founder",
+       "President and CEO", "VP Finance and Administration", "SVP, Marketing", "VP, Marketing",
+       "Chairman of the Board", "Director to 5/22", "Trustee, Ex-Officio", "Mgr, IT")
+out <- quiet(standardize_conj(remove_dates(standardize_df(example_frame(x)))))
+knitr::kable(data.frame(`before (TitleTxt2)` = out$TitleTxt2, `after (TitleTxt3)` = out$TitleTxt3,
+                        check.names = FALSE))
+```
+
+## What it does
 
 ```
 standardize_conj()
 |
-+- standardize_and()        AND -> & when both sides are valid titles
-+- standardize_to()         parenthetical / trailing TO -> UNTIL (dates)
-+- standardize_of()         AS OF -> SINCE; drop dangling OF; FOR -> OF
-+- standardize_comma()      comma as separator / "of" / redundant
-+- standardize_slash()      slash as separator / "of" / redundant
-+- standardize_and()        re-applied to catch newly created cases
-+- standardize_separator()  ";" and "\\" -> &
++- standardize_and()        AND -> & when both sides are titles
++- standardize_to()         a trailing TO -> UNTIL (left by a removed date)
++- standardize_of()         AS OF -> SINCE; drop a dangling OF; FOR -> OF
++- standardize_comma()      a comma as separator, as "of", or as filler
++- standardize_slash()      a slash as separator, as "of", or as filler
++- standardize_and()        again, for cases the steps above created
++- standardize_separator()  ";" and "\" -> &
 ```
 
-## The trick: separator vs. compound
+The decision for AND, a comma or a slash is the same: if the words on both
+sides are recognizable titles, the connector separates two roles and becomes
+`&`. If the words after it are a subject (FINANCE, MARKETING), it means "of".
+Otherwise it is dropped.
 
-The `and`/`&` decision checks whether both sides look like real titles:
+## Assets
+
+| Asset | Type | Used for | Load it with |
+|---|---|---|---|
+| `likely.titles` | word list (package data) | titles that, found on both sides of a connector, make it a separator | `data(likely.titles)` |
 
 ```{r}
-standardize_and("CEO AND BOARD PRESIDENT")        # separator -> &
-standardize_and("VP OF FINANCE AND ADMINISTRATION") # compound  -> unchanged
+data(likely.titles)
+length(likely.titles)
+head(likely.titles, 20)
 ```
 
-Commas and slashes are disambiguated the same way — separator, "of", or filler:
+## Try it
 
 ```{r}
-standardize_comma("SECRETARY, TREASURER")   # separator
-standardize_comma("VP, MARKETING")          # "of"
-standardize_slash("SECRETARY/TREASURER")    # separator
+standardize_and("CEO AND BOARD PRESIDENT")           # separator -> &
+standardize_and("VP OF FINANCE AND ADMINISTRATION")  # compound  -> unchanged
+standardize_comma("SECRETARY, TREASURER")            # separator
+standardize_comma("VP, MARKETING")                   # "of"
+standardize_slash("SECRETARY/TREASURER")             # separator
+standardize_to("DIRECTOR TO")                        # -> DIRECTOR UNTIL
+standardize_of("VICE PRESIDENT AS OF")               # -> VICE PRESIDENT SINCE
 ```
 
-"TO" and "OF" at the end of a title usually belonged to a (removed) date phrase:
-
-```{r}
-standardize_to("DIRECTOR TO")               # -> "DIRECTOR UNTIL"
-standardize_of("VICE PRESIDENT AS OF")      # -> "VICE PRESIDENT SINCE"
-```
-
-**Input:** `TitleTxt2`. **Output:** `TitleTxt3` with `&` as the single title
-separator. Continue with [step 04](step-04-split-titles.html).
+**Input:** `TitleTxt2`. **Output:** `TitleTxt3`, with `&` as the only
+separator between titles. Continue with [step 04](step-04-split-titles.html).

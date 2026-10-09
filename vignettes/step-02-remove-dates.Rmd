@@ -10,39 +10,69 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(collapse = TRUE, comment = "#>", message = FALSE, warning = FALSE)
 library(titleclassifier)
+# example titles as a Part VII frame, one person per title
+example_frame <- function(titles) {
+  d <- titleclassifier::tinypartvii[rep(1, length(titles)), ]
+  d$F9_07_COMP_DTK_TITLE <- titles
+  d$F9_07_COMP_DTK_NAME_PERS <- sprintf("PERSON %02d", seq_along(titles))
+  rownames(d) <- NULL
+  d
+}
+# the pipeline steps print a progress line; keep it out of the tables
+quiet <- function(x) { utils::capture.output(x <- force(x)); x }
 ```
 
-Many titles carry start/end dates for a position. **`remove_dates()`** detects
-them, sets a `DATE.X` flag, and strips the date fragment.
+Filers often add the dates a person held a position to the title.
+**`remove_dates()`** detects them, sets a `DATE.X` flag, and strips the date.
+The words left behind (THRU, UNTIL, SINCE) are read as status qualifiers in
+[step 06](step-06-gen-status-codes.html).
+
+## Before and after
+
+```{r, echo = FALSE}
+x <- c("Board Member (thru 6/2023)", "Treasurer until Jan 2023", "Trustee (Through 12/2022)",
+       "Director to 5/22", "President 2021-2023", "Secretary (resigned 3/16/23)",
+       "1st Vice President", "2nd Vice Chair", "Executive Director")
+out <- quiet(remove_dates(standardize_df(example_frame(x))))
+knitr::kable(data.frame(`before (step 01)` = out$F9_07_COMP_DTK_TITLE,
+                        `after (TitleTxt2)` = out$TitleTxt2,
+                        DATE.X = out$DATE.X, check.names = FALSE))
+```
+
+## What it does
 
 ```
 remove_dates()
 |
 +- convert_ordinal()  1ST/2ND/3RD -> FIRST/SECOND/THIRD
-+- has_date()         TRUE/FALSE: does the string contain a date?
++- has_date()         does the string contain a date?        -> DATE.X
 +- remove_date()      strip 'YY, YY-YY, mm/dd/yyyy, month names, trailing numbers
 ```
 
-## Examples
+Ordinals are spelled out first, so "1ST VICE PRESIDENT" is not read as a date.
+The ordinal itself (FIRST, SECOND) is removed later, in step 06.
+
+## Assets
+
+| Asset | Type | Used for | Load it with |
+|---|---|---|---|
+| `date.words` | word list (package data) | month names and abbreviations that mark a date | `data(date.words)` |
 
 ```{r}
-x <- c("TREASURER (ENDED 3/16/23)",
-       "DIRECTOR THRU 12/23",
-       "SECRETARY UNTIL JAN 2023",
-       "TRUSTEE (RESIGNED 1/24/23)",
-       "PRESIDENT")
-
-data.frame(title = x,
-           has_date = has_date(x),
-           cleaned  = remove_date(x))
+data(date.words)
+head(date.words, 15)
 ```
 
-Ordinals are spelled out first so later steps treat them consistently:
+## Try it
 
 ```{r}
+x <- c("TREASURER (ENDED 3/16/23)", "DIRECTOR THRU 12/23",
+       "SECRETARY UNTIL JAN 2023", "PRESIDENT")
+data.frame(title = x, has_date = has_date(x), cleaned = remove_date(x))
+
 convert_ordinal(c("1ST VICE PRESIDENT", "2ND LIEUTENANT GOVERNOR"))
 ```
 
-**Input:** `TITLE_RAW` / cleaned title. **Output:** `TitleTxt2` (date-free text)
-and the `DATE.X` flag. Continue with
+**Input:** the cleaned title from step 01. **Output:** `TitleTxt2`, the title
+without dates, and the `DATE.X` flag. Continue with
 [step 03](step-03-standardize-conj.html).

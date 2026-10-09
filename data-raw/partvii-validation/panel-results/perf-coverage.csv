@@ -1,0 +1,5 @@
+group,title_rows,exact,pattern,non_job_title,uncoded,people_with_role
+all (sample),700088,93.7,1,0.3,5,100
+all (weighted),700088,95.2,0.8,0.2,3.8,100
+990EZ,115436,95.5,0.8,0.2,3.4,100
+990,584652,93.4,1,0.3,5.3,100

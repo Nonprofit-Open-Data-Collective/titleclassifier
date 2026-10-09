@@ -1,20 +1,31 @@
 Package: titleclassifier
 Title: Clean, Standardize, and Classify Nonprofit Executive Titles
 Version: 0.0.0.9000
-Authors@R:
+Authors@R: c(
+    person(given = "Jesse",
+           family = "Lecy",
+           role = c("aut", "cre"),
+           email = "jdlecy@gmail.com",
+           comment = c(ORCID = "0000-0003-4974-0782")),
     person(given = "Kevin",
            family = "Cui",
-           role = c("aut", "cre"),
-           email = "kc734@cornell.edu")
+           role = "aut",
+           email = "kc734@cornell.edu"))
 Description: Tools to transform the raw, free-text officer and key-employee
     titles reported on IRS Form 990 Part VII into a structured, analysis-ready
     taxonomy. The pipeline standardizes the raw compensation table, removes
     dates, normalizes conjunctions and separators, splits multi-title strings,
     harmonizes spelling and abbreviations, flags status qualifiers, maps titles
     to canonical forms via a crosswalk, and assigns taxonomy categories with
-    organization-level features. Includes helpers to fetch Part VII tables
+    organization-level features, and resolves each person's role (chief
+    executive, officer, manager, professional, staff, or board seat) from the
+    filer's checkboxes, pay and hours, with a model for 990-EZ returns, which
+    have no checkboxes. Includes helpers to fetch Part VII tables
     directly from the public NCCS efile store.
 License: MIT + file LICENSE
+URL: https://nonprofit-open-data-collective.github.io/titleclassifier/,
+    https://github.com/Nonprofit-Open-Data-Collective/titleclassifier
+BugReports: https://github.com/Nonprofit-Open-Data-Collective/titleclassifier/issues
 Encoding: UTF-8
 LazyData: true
 Imports:
