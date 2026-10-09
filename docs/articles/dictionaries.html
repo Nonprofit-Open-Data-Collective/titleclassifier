@@ -6,17 +6,21 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Dictionaries and crosswalks • titleclassifier</title>
-<script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/Source_Sans_3-0.4.10/font.css" rel="stylesheet">
+<link href="../deps/Source_Code_Pro-0.4.10/font.css" rel="stylesheet">
+<link href="../deps/Zilla_Slab-0.4.10/font.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Dictionaries and crosswalks">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
+<meta property="og:title" content="Dictionaries and crosswalks">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
-    <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
+    <nav class="navbar navbar-expand-lg fixed-top " aria-label="Site navigation"><div class="container">
 
     <a class="navbar-brand me-2" href="../index.html">titleclassifier</a>
 
@@ -30,7 +34,7 @@
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
 <li class="nav-item"><a class="nav-link" href="../articles/workflow.html">Workflow</a></li>
-<li class="nav-item dropdown">
+<li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-pipeline-steps" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Pipeline steps</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-pipeline-steps">
 <li><a class="dropdown-item" href="../articles/step-01-standardize-df.html">01 - Standardize the data frame</a></li>
@@ -41,14 +45,29 @@
     <li><a class="dropdown-item" href="../articles/step-06-gen-status-codes.html">06 - Generate status codes</a></li>
     <li><a class="dropdown-item" href="../articles/step-07-standardize-titles.html">07 - Standardize titles</a></li>
     <li><a class="dropdown-item" href="../articles/step-08-categorize-titles.html">08 - Categorize titles</a></li>
+    <li><a class="dropdown-item" href="../articles/step-09-conditional-logic.html">09 - Resolve roles</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><a class="dropdown-item" href="../articles/classifiers.html">Rules and models</a></li>
+    <li><a class="dropdown-item" href="../articles/dictionaries.html">Dictionaries and crosswalks</a></li>
   </ul>
 </li>
+<li class="nav-item"><a class="nav-link" href="../articles/taxonomy.html">Taxonomy</a></li>
+<li class="nav-item"><a class="nav-link" href="../articles/performance.html">Performance</a></li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
 </form></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-lightswitch" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true" aria-label="Light switch"><span class="fa fa-sun"></span></button>
+  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-lightswitch">
+<li><button class="dropdown-item" data-bs-theme-value="light"><span class="fa fa-sun"></span> Light</button></li>
+    <li><button class="dropdown-item" data-bs-theme-value="dark"><span class="fa fa-moon"></span> Dark</button></li>
+    <li><button class="dropdown-item" data-bs-theme-value="auto"><span class="fa fa-adjust"></span> Auto</button></li>
+  </ul>
+</li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/Nonprofit-Open-Data-Collective/titleclassifier/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
@@ -65,71 +84,116 @@
       <h1>Dictionaries and crosswalks</h1>
             
       
-
+      <small class="dont-index">Source: <a href="https://github.com/Nonprofit-Open-Data-Collective/titleclassifier/blob/HEAD/vignettes/dictionaries.Rmd" class="external-link"><code>vignettes/dictionaries.Rmd</code></a></small>
       <div class="d-none name"><code>dictionaries.Rmd</code></div>
     </div>
 
     
     
-<p>The pipeline is driven by two kinds of reference data: <strong>crosswalks</strong> (curated lookup tables, maintained in a Google Sheet and bundled with the package as pinned CSV snapshots) and <strong>word lists</strong> (character vectors shipped as package data used by the regex-based cleaning steps).</p>
+<p>The pipeline is driven by two kinds of reference data: <strong>crosswalks</strong> (curated lookup tables shipped as package data) and <strong>word lists</strong> (character vectors shipped as package data used by the regex-based cleaning steps).</p>
 <div class="section level2">
 <h2 id="crosswalks">Crosswalks<a class="anchor" aria-label="anchor" href="#crosswalks"></a>
 </h2>
-<p>The three crosswalks live in one Google Sheet and are cached in the package under <code>inst/extdata/crosswalks/</code>. The loader functions read the bundled snapshot by default and take <code>refresh = TRUE</code> to re-pull the live sheet.</p>
+<p>The four crosswalks are package data (<code>title.xwalk</code>, <code>title.patterns</code>, <code>title.taxonomy</code>, <code>status.codes</code>). Their source is the CSV tables in <code>data-raw/crosswalks/</code> of the source repository: edit a table, then run <code>data-raw/crosswalks/build-crosswalks.R</code> to rebuild the package data. (Until October 2026 the crosswalks were kept in a Google Sheet; it is retired, and an export of every tab is archived in <code>data-raw/crosswalks/archive/</code>.)</p>
 <div class="section level3">
-<h3 id="title-standardization-get_googlesheets_title_xwalk">Title standardization (<code>get_googlesheets_title_xwalk()</code>)<a class="anchor" aria-label="anchor" href="#title-standardization-get_googlesheets_title_xwalk"></a>
+<h3 id="title-standardization-get_title_xwalk">Title standardization (<code>get_title_xwalk()</code>)<a class="anchor" aria-label="anchor" href="#title-standardization-get_title_xwalk"></a>
 </h3>
 <p>Maps every observed title <strong>variant</strong> to a canonical <code>title.standard</code>, plus a <code>strata</code> / <code>strata.label</code> for board sub-roles. Used in step 07, <code><a href="../reference/standardize_titles.html">standardize_titles()</a></code>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">xwalk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_googlesheets_title_xwalk.html">get_googlesheets_title_xwalk</a></span><span class="op">(</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">xwalk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_title_xwalk.html">get_title_xwalk</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">xwalk</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 5374    4</span></span>
+<span><span class="co">#&gt; [1] 9181    4</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">xwalk</span>, <span class="fl">8</span><span class="op">)</span></span>
-<span><span class="co">#&gt;              title.variant           title.standard strata strata.label</span></span>
-<span><span class="co">#&gt; 1               ACCOUNTANT               ACCOUNTANT                    </span></span>
-<span><span class="co">#&gt; 2      ACCOUNTING DIRECTOR      ACCOUNTING DIRECTOR                    </span></span>
-<span><span class="co">#&gt; 3                    ACTOR                    ACTOR                    </span></span>
-<span><span class="co">#&gt; 4   ADMINISTRATION OFFICER   ADMINISTRATION OFFICER                    </span></span>
-<span><span class="co">#&gt; 5 ADMINISTRATION ASSISTANT ADMINISTRATIVE ASSISTANT                    </span></span>
-<span><span class="co">#&gt; 6 ADMINISTRATIVE ASSISTANT ADMINISTRATIVE ASSISTANT                    </span></span>
-<span><span class="co">#&gt; 7           ADMINISTRATION            ADMINISTRATOR                    </span></span>
-<span><span class="co">#&gt; 8            ADMINISTRATOR            ADMINISTRATOR</span></span></code></pre></div>
+<span><span class="co">#&gt;                title.variant title.standard strata strata.label</span></span>
+<span><span class="co">#&gt; 1                                  NO TITLE                    </span></span>
+<span><span class="co">#&gt; 2               AAA DIRECTOR       DIRECTOR                    </span></span>
+<span><span class="co">#&gt; 3 AAC ATHLETE REPRESENTATIVE   BOARD MEMBER                    </span></span>
+<span><span class="co">#&gt; 4              AAFP DELEGATE   BOARD MEMBER                    </span></span>
+<span><span class="co">#&gt; 5               AAJ DELEGATE   BOARD MEMBER                    </span></span>
+<span><span class="co">#&gt; 6               AAJ GOVERNOR   BOARD MEMBER                    </span></span>
+<span><span class="co">#&gt; 7              AAJ PRESIDENT   BOARD MEMBER                    </span></span>
+<span><span class="co">#&gt; 8            AAMD LEADERSHIP   BOARD MEMBER</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="title-taxonomy-get_googlesheets_title_taxonomy">Title taxonomy (<code>get_googlesheets_title_taxonomy()</code>)<a class="anchor" aria-label="anchor" href="#title-taxonomy-get_googlesheets_title_taxonomy"></a>
+<h3 id="title-patterns-get_title_patterns">Title patterns (<code>get_title_patterns()</code>)<a class="anchor" aria-label="anchor" href="#title-patterns-get_title_patterns"></a>
 </h3>
-<p>Maps each canonical <code>title.standard</code> to its taxonomy dimensions: functional <code>domain.category</code> / <code>domain.label</code>, the BLS SOC occupation codes, and the binary role/hierarchy flags (<code>ceo</code>, <code>c.level</code>, <code>dir.vp</code>, <code>mgr</code>, <code>spec</code>, <code>board</code>, <code>pres</code>, <code>vp</code>, <code>sec</code>, <code>treas</code>, <code>mem</code>). Used in step 08, <code><a href="../reference/categorize_titles.html">categorize_titles()</a></code>.</p>
+<p>Head rules for titles the standardization crosswalk does not list: a title whose longest known prefix or suffix has a rule maps to that rule’s <code>title.standard</code> (<code>title.match</code> is <code>pattern</code>). Each rule records its <code>support</code> (titles it was learned from) and <code>precision</code>. Used in step 07, <code><a href="../reference/standardize_titles.html">standardize_titles()</a></code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">tax</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_googlesheets_title_taxonomy.html">get_googlesheets_title_taxonomy</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">tax</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 474  20</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tax</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"title.standard"</span>, <span class="st">"domain.category"</span>, <span class="st">"soc.label"</span>,</span>
-<span>             <span class="st">"ceo"</span>, <span class="st">"c.level"</span>, <span class="st">"board"</span><span class="op">)</span><span class="op">]</span>, <span class="fl">8</span><span class="op">)</span></span>
-<span><span class="co">#&gt;             title.standard   domain.category</span></span>
-<span><span class="co">#&gt; 1               ACCOUNTANT        operations</span></span>
-<span><span class="co">#&gt; 2      ACCOUNTING DIRECTOR        operations</span></span>
-<span><span class="co">#&gt; 3                    ACTOR industry-specific</span></span>
-<span><span class="co">#&gt; 4  ADMINISTRATION DIRECTOR        operations</span></span>
-<span><span class="co">#&gt; 5   ADMINISTRATION OFFICER        operations</span></span>
-<span><span class="co">#&gt; 6 ADMINISTRATIVE ASSISTANT        operations</span></span>
-<span><span class="co">#&gt; 7            ADMINISTRATOR        operations</span></span>
-<span><span class="co">#&gt; 8       ADOPTION COUNSELOR industry-specific</span></span>
-<span><span class="co">#&gt;                                         soc.label ceo c.level board</span></span>
-<span><span class="co">#&gt; 1                        Accountants and Auditors                  </span></span>
-<span><span class="co">#&gt; 2                                                                  </span></span>
-<span><span class="co">#&gt; 3                Actors, producers, and directors                  </span></span>
-<span><span class="co">#&gt; 4                                                                  </span></span>
-<span><span class="co">#&gt; 5                                                                  </span></span>
-<span><span class="co">#&gt; 6       Secretaries and administrative assistants                  </span></span>
-<span><span class="co">#&gt; 7 Administrative services and facilities managers                  </span></span>
-<span><span class="co">#&gt; 8                                      Counselors</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">pat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_title_patterns.html">get_title_patterns</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">pat</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 121   6</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">pat</span>, <span class="fl">6</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   position      head title.standard     rule support precision</span></span>
+<span><span class="co">#&gt; 1   prefix    ACTIVE   BOARD MEMBER majority       6     0.833</span></span>
+<span><span class="co">#&gt; 2   prefix  ADVISORY   BOARD MEMBER majority       8     1.000</span></span>
+<span><span class="co">#&gt; 3   prefix AFFILIATE   BOARD MEMBER majority       5     1.000</span></span>
+<span><span class="co">#&gt; 4   prefix     ALPHA   BOARD MEMBER majority      16     1.000</span></span>
+<span><span class="co">#&gt; 5   prefix       ALT   BOARD MEMBER majority      11     1.000</span></span>
+<span><span class="co">#&gt; 6   prefix ALTERNATE   BOARD MEMBER majority      16     0.875</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="status-codes-get_googlesheets_status_codes">Status codes (<code>get_googlesheets_status_codes()</code>)<a class="anchor" aria-label="anchor" href="#status-codes-get_googlesheets_status_codes"></a>
+<h3 id="title-taxonomy-get_title_taxonomy">Title taxonomy (<code>get_title_taxonomy()</code>)<a class="anchor" aria-label="anchor" href="#title-taxonomy-get_title_taxonomy"></a>
+</h3>
+<p>Maps each canonical <code>title.standard</code> to its taxonomy dimensions: functional <code>domain.category</code> / <code>domain.label</code>, the BLS SOC occupation codes, and its role. A title is either an employee level or a board role:</p>
+<ul>
+<li>
+<code>emp.level</code>:
+<ul>
+<li>
+<code>CEO</code>: the top staff job.</li>
+<li>
+<code>OFFICER</code>: C-suite, vice presidents, deputies.</li>
+<li>
+<code>MANAGER</code>: directors of departments, managers.</li>
+<li>
+<code>PROFESSIONAL</code>: non-managerial jobs often reported for their pay, such as physicians, lawyers, professors and coaches.</li>
+<li>
+<code>STAFF</code>: everything else.</li>
+</ul>
+</li>
+<li>
+<code>board.role</code>: <code>CHAIR</code>, <code>VICE CHAIR</code>, <code>SECRETARY</code>, <code>TREASURER</code> or <code>MEMBER</code>.</li>
+</ul>
+<p>The legacy flags (<code>ceo</code>, <code>c.level</code>, <code>mgr</code>, <code>spec</code>, <code>board</code>, <code>pres</code>, …) are derived from these two columns. <code>dir.vp</code> is retired. Used in step 08, <code><a href="../reference/categorize_titles.html">categorize_titles()</a></code>.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">tax</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_title_taxonomy.html">get_title_taxonomy</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">tax</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 450  22</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tax</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"title.standard"</span>, <span class="st">"domain.label"</span>, <span class="st">"soc.label"</span>,</span>
+<span>             <span class="st">"emp.level"</span>, <span class="st">"board.role"</span><span class="op">)</span><span class="op">]</span>, <span class="fl">8</span><span class="op">)</span></span>
+<span><span class="co">#&gt;             title.standard     domain.label</span></span>
+<span><span class="co">#&gt; 1               ACCOUNTANT          finance</span></span>
+<span><span class="co">#&gt; 2      ACCOUNTING DIRECTOR          finance</span></span>
+<span><span class="co">#&gt; 3                    ACTOR arts and history</span></span>
+<span><span class="co">#&gt; 4                  ACTUARY          finance</span></span>
+<span><span class="co">#&gt; 5  ADMINISTRATION DIRECTOR   administration</span></span>
+<span><span class="co">#&gt; 6   ADMINISTRATION OFFICER   administration</span></span>
+<span><span class="co">#&gt; 7 ADMINISTRATIVE ASSISTANT   administration</span></span>
+<span><span class="co">#&gt; 8            ADMINISTRATOR   administration</span></span>
+<span><span class="co">#&gt;                                   soc.label    emp.level board.role</span></span>
+<span><span class="co">#&gt; 1                  Accountants and Auditors PROFESSIONAL           </span></span>
+<span><span class="co">#&gt; 2                        Financial Managers      MANAGER           </span></span>
+<span><span class="co">#&gt; 3                                    Actors PROFESSIONAL           </span></span>
+<span><span class="co">#&gt; 4                                 Actuaries PROFESSIONAL           </span></span>
+<span><span class="co">#&gt; 5          Administrative Services Managers      MANAGER           </span></span>
+<span><span class="co">#&gt; 6                                                  STAFF           </span></span>
+<span><span class="co">#&gt; 7 Secretaries and Administrative Assistants        STAFF           </span></span>
+<span><span class="co">#&gt; 8          Administrative Services Managers      MANAGER</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">tax</span><span class="op">$</span><span class="va">emp.level</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;                       CEO      MANAGER      OFFICER PROFESSIONAL        STAFF </span></span>
+<span><span class="co">#&gt;           15           11          129          139           40          116</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">tax</span><span class="op">$</span><span class="va">board.role</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;                 CHAIR     MEMBER  SECRETARY  TREASURER VICE CHAIR </span></span>
+<span><span class="co">#&gt;        445          1          1          1          1          1</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="status-codes-get_status_codes">Status codes (<code>get_status_codes()</code>)<a class="anchor" aria-label="anchor" href="#status-codes-get_status_codes"></a>
 </h3>
 <p>Maps status-qualifier <strong>variants</strong> (e.g. <code>ACTING</code>, <code>EMERITUS</code>, <code>INTERIM</code>) to a standardized <code>status.qualifier</code> (e.g. <code>INTERIM</code>, <code>FORMER</code>). Used in step 06, <code><a href="../reference/gen_status_codes.html">gen_status_codes()</a></code>.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">sc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_googlesheets_status_codes.html">get_googlesheets_status_codes</a></span><span class="op">(</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">sc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_status_codes.html">get_status_codes</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">sc</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 294   2</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sc</span>, <span class="fl">8</span><span class="op">)</span></span>
@@ -192,37 +256,36 @@
 </tr>
 <tr class="even">
 <td><code>former.words</code></td>
-<td>
-<code><a href="../reference/gen_status_codes.html">gen_status_codes()</a></code> (06)</td>
-<td>FORMER status variants</td>
+<td>not used</td>
+<td>FORMER variants; superseded by <code>status.codes</code>
+</td>
 </tr>
 <tr class="odd">
 <td><code>future.words</code></td>
-<td>
-<code><a href="../reference/gen_status_codes.html">gen_status_codes()</a></code> (06)</td>
-<td>FUTURE status variants</td>
+<td>not used</td>
+<td>FUTURE variants; superseded by <code>status.codes</code>
+</td>
 </tr>
 <tr class="even">
 <td><code>interim.words</code></td>
-<td>
-<code><a href="../reference/gen_status_codes.html">gen_status_codes()</a></code> (06)</td>
-<td>INTERIM status variants</td>
+<td>not used</td>
+<td>INTERIM variants; superseded by <code>status.codes</code>
+</td>
 </tr>
 <tr class="odd">
 <td><code>regional.words</code></td>
-<td>
-<code><a href="../reference/gen_status_codes.html">gen_status_codes()</a></code> (06)</td>
-<td>REGIONAL status variants</td>
+<td>not used</td>
+<td>REGIONAL variants; superseded by <code>status.codes</code>
+</td>
 </tr>
 <tr class="even">
 <td><code>possible.regional.list</code></td>
-<td>
-<code><a href="../reference/gen_status_codes.html">gen_status_codes()</a></code> (06)</td>
+<td>not used</td>
 <td>candidate regional tokens</td>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">number.words</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">number.words</span>, <span class="fl">12</span><span class="op">)</span></span>
 <span><span class="co">#&gt;  [1] "ONE"    "TWO"    "THREE"  "FOUR"   "FIVE"   "SIX"    "SEVEN"  "EIGHT" </span></span>
@@ -257,7 +320,7 @@
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">tinypartvii</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">tinypartvii</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">8</span><span class="op">]</span>, vec.len <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="co">#&gt; 'data.frame':    81309 obs. of  8 variables:</span></span>
@@ -277,7 +340,7 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Kevin Cui.</p>
+  <p>Developed by <a href="https://github.com/lecy" class="external-link">Jesse Lecy</a>, Kevin Cui.</p>
 </div>
 
 <div class="pkgdown-footer-right">

@@ -251,3 +251,8 @@ parallel) → Phase 3 (bundle with the step-09 cascade port, role-plan P3).
   in the crosswalk instead of relying on the SOC major group.
 - Confirm renaming board "president" → CHAIR in the output vocabulary.
 - Should the simplified columns replace the booleans in the sheet, or be added alongside them for one release?
+
+## Follow-up: odd mappings (2026-10-09)
+
+See `CROSSWALK-ODDITIES.md` for the cases found while writing the pkgdown
+articles, and the plan for a full review.

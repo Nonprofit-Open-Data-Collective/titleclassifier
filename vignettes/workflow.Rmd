@@ -13,25 +13,40 @@ knitr::opts_chunk$set(collapse = TRUE, comment = "#>", message = FALSE, warning 
 
 `titleclassifier` turns the free-text officer and key-employee titles reported on
 IRS Form 990 Part VII into a structured, analysis-ready taxonomy. The work is done
-by an eight-step pipeline; each step is a single verb you can run on its own, and
-each has its own article in this site.
+by a nine-step pipeline. Each step is a single function you can run on its own,
+and each has its own article on this site, with before-and-after examples and the
+crosswalks it uses.
 
-| Step | Function | What it does |
-|----:|----------|--------------|
-| 01 | `standardize_df()` | Standardize the raw Part VII data frame. |
-| 02 | `remove_dates()` | Strip and flag date fragments. |
-| 03 | `standardize_conj()` | Normalize conjunctions, prepositions, separators. |
-| 04 | `split_titles()` | Split multi-title strings into one row per title. |
-| 05 | `standardize_spelling()` | Harmonize spelling, abbreviations, short forms. |
-| 06 | `gen_status_codes()` | Detect, flag, and clean status qualifiers. |
-| 07 | `standardize_titles()` | Map titles to canonical forms via a crosswalk. |
-| 08 | `categorize_titles()` | Assign taxonomy categories and engineer features. |
-| 09 | `conditional_logic()` | Resolve each person's role from checkboxes, pay, and title. |
+| Step | Function | What it does | Assets |
+|----:|----------|--------------|--------|
+| [01](step-01-standardize-df.html) | `standardize_df()` | Clean the raw table: titles, numeric pay and hours, 0/1 checkboxes. | Part VII schema |
+| [02](step-02-remove-dates.html) | `remove_dates()` | Strip and flag dates. | `date.words` |
+| [03](step-03-standardize-conj.html) | `standardize_conj()` | One separator (`&`) between titles. | `likely.titles` |
+| [04](step-04-split-titles.html) | `split_titles()` | One row per title. | |
+| [05](step-05-standardize-spelling.html) | `standardize_spelling()` | Expand abbreviations, fix spelling. | `fix_*` rules, `possible.titles`, `likely.subjects`, hunspell |
+| [06](step-06-gen-status-codes.html) | `gen_status_codes()` | Flag and remove FORMER, INTERIM, EX OFFICIO, ... | `status.codes`, `number.words` |
+| [07](step-07-standardize-titles.html) | `standardize_titles()` | Map to a standard title. | `title.xwalk`, `title.patterns` |
+| [08](step-08-categorize-titles.html) | `categorize_titles()` | Attach the taxonomy; add per-filing features. | `title.taxonomy` |
+| [09](step-09-conditional-logic.html) | `conditional_logic()` | Resolve each person's role from checkboxes, pay, hours and title. | decision rules; the role model for 990-EZ |
+
+[Rules and models](classifiers.html) explains how the rule-based steps and the
+990-EZ role model differ. [Taxonomy](taxonomy.html) defines every output category,
+and [Performance](performance.html) reports coverage and accuracy.
 
 ## Getting the data
 
-Part VII compensation tables are published in the public NCCS efile store. You can
-pull one directly by tax year (each file is large, so it is cached on disk):
+Part VII compensation tables (`F9-P07-T01-COMPENSATION`) are published in the
+public NCCS efile store, one file per tax year. The
+[panel990](https://github.com/Nonprofit-Open-Data-Collective/panel990) package
+downloads and reads them, caching each file on disk:
+
+```{r, eval = FALSE}
+library(panel990)
+dl   <- download_tables(years = 2022, tables = "F9-P07-T01-COMPENSATION")
+pvii <- read_tables(dl)$tables[[1]]   # 5.07 million rows, 37 columns
+```
+
+`titleclassifier` has its own small helpers for the same files:
 
 ```{r, eval = FALSE}
 library(titleclassifier)
@@ -81,14 +96,22 @@ dim(df)
 
 Each row is one standardized title for one person, carrying the raw text, the
 successive cleaned versions (`title.v2` … `title.v7`), the canonical
-`title.standard`, taxonomy fields, status flags, and organization-level features
-(pay/hours ranks, leadership counts).
+`title.standard`, taxonomy fields, status flags, organization-level features
+(pay/hours ranks, leadership counts), and the person's resolved role.
 
 ```{r}
 df |>
-  select(dtk.name, title.raw, title.standard, domain.category, tot.comp, tot.hours) |>
+  select(title.raw, title.standard, domain.label, tot.comp, tot.hours, role.final, role.ceo) |>
   arrange(desc(tot.comp)) |>
   head(10)
+```
+
+`role.primary` marks one row per person, so people (not titles) are counted
+with it:
+
+```{r}
+people <- filter(df, role.primary)
+count(people, formtype, role.final)
 ```
 
 The successive title versions make the cleaning transparent — you can see exactly

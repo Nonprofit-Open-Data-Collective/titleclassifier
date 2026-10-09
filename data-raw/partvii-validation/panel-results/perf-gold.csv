@@ -1,0 +1,18 @@
+breakdown,group,people,accuracy
+all,all,312,89.4
+form,990,272,89
+form,990EZ,40,92.5
+labeled role,CEO,85,97.6
+labeled role,OFFICER,24,70.8
+labeled role,MANAGER,28,64.3
+labeled role,PROFESSIONAL,20,95
+labeled role,STAFF,12,58.3
+labeled role,BOARD,117,93.2
+labeled role,DUAL,26,100
+pay,paid,224,86.2
+pay,unpaid,88,97.7
+size,$1-150k,61,86.9
+size,$150k-1m,84,94
+size,$1m-10m,99,91.9
+size,$10m-100m,58,82.8
+size,$100m+,10,80

@@ -6,17 +6,21 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Step 03 - Standardize conjunctions • titleclassifier</title>
-<script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/Source_Sans_3-0.4.10/font.css" rel="stylesheet">
+<link href="../deps/Source_Code_Pro-0.4.10/font.css" rel="stylesheet">
+<link href="../deps/Zilla_Slab-0.4.10/font.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Step 03 - Standardize conjunctions">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
+<meta property="og:title" content="Step 03 - Standardize conjunctions">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
-    <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
+    <nav class="navbar navbar-expand-lg fixed-top " aria-label="Site navigation"><div class="container">
 
     <a class="navbar-brand me-2" href="../index.html">titleclassifier</a>
 
@@ -41,14 +45,29 @@
     <li><a class="dropdown-item" href="../articles/step-06-gen-status-codes.html">06 - Generate status codes</a></li>
     <li><a class="dropdown-item" href="../articles/step-07-standardize-titles.html">07 - Standardize titles</a></li>
     <li><a class="dropdown-item" href="../articles/step-08-categorize-titles.html">08 - Categorize titles</a></li>
+    <li><a class="dropdown-item" href="../articles/step-09-conditional-logic.html">09 - Resolve roles</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><a class="dropdown-item" href="../articles/classifiers.html">Rules and models</a></li>
+    <li><a class="dropdown-item" href="../articles/dictionaries.html">Dictionaries and crosswalks</a></li>
   </ul>
 </li>
+<li class="nav-item"><a class="nav-link" href="../articles/taxonomy.html">Taxonomy</a></li>
+<li class="nav-item"><a class="nav-link" href="../articles/performance.html">Performance</a></li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
 </form></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-lightswitch" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true" aria-label="Light switch"><span class="fa fa-sun"></span></button>
+  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-lightswitch">
+<li><button class="dropdown-item" data-bs-theme-value="light"><span class="fa fa-sun"></span> Light</button></li>
+    <li><button class="dropdown-item" data-bs-theme-value="dark"><span class="fa fa-moon"></span> Dark</button></li>
+    <li><button class="dropdown-item" data-bs-theme-value="auto"><span class="fa fa-adjust"></span> Auto</button></li>
+  </ul>
+</li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/Nonprofit-Open-Data-Collective/titleclassifier/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
@@ -65,54 +84,149 @@
       <h1>Step 03 - Standardize conjunctions</h1>
             
       
-
+      <small class="dont-index">Source: <a href="https://github.com/Nonprofit-Open-Data-Collective/titleclassifier/blob/HEAD/vignettes/step-03-standardize-conj.Rmd" class="external-link"><code>vignettes/step-03-standardize-conj.Rmd</code></a></small>
       <div class="d-none name"><code>step-03-standardize-conj.Rmd</code></div>
     </div>
 
     
     
-<p>People list multiple roles with no standard punctuation (“CEO AND BOARD PRESIDENT”, “VP OF FINANCE AND ADMINISTRATION”). <strong><code><a href="../reference/standardize_conj.html">standardize_conj()</a></code></strong> normalizes the connectors so that step 04 can split reliably, converting genuine separators into a single <code>&amp;</code> while leaving compound titles intact.</p>
+<p>People list several roles in one title with no standard punctuation: “CEO AND BOARD PRESIDENT”, “SEC/TREAS”, “BOARD MEMBER; TREASURER”. Other titles use the same words inside a single role: “VP OF FINANCE AND ADMINISTRATION”. <strong><code><a href="../reference/standardize_conj.html">standardize_conj()</a></code></strong> turns every connector that separates two titles into a single <code>&amp;</code>, so that <a href="step-04-split-titles.html">step 04</a> can split on it, and leaves compound titles whole.</p>
+<div class="section level2">
+<h2 id="before-and-after">Before and after<a class="anchor" aria-label="anchor" href="#before-and-after"></a>
+</h2>
+<table class="table">
+<thead><tr class="header">
+<th align="left">before (TitleTxt2)</th>
+<th align="left">after (TitleTxt3)</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">SEC/TREAS</td>
+<td align="left">SEC &amp; TREAS</td>
+</tr>
+<tr class="even">
+<td align="left">SECRETARY, TREASURER</td>
+<td align="left">SECRETARY &amp; TREASURER</td>
+</tr>
+<tr class="odd">
+<td align="left">BOARD MEMBER; TREASURER</td>
+<td align="left">BOARD MEMBER &amp; TREASURER</td>
+</tr>
+<tr class="even">
+<td align="left">CHIEF EXEC OFFICER / FOUNDER</td>
+<td align="left">CHIEF EXEC OFFICER &amp; FOUNDER</td>
+</tr>
+<tr class="odd">
+<td align="left">PRESIDENT AND CEO</td>
+<td align="left">PRESIDENT &amp; CEO</td>
+</tr>
+<tr class="even">
+<td align="left">VP FINANCE AND ADMINISTRATION</td>
+<td align="left">VP FINANCE AND ADMINISTRATION</td>
+</tr>
+<tr class="odd">
+<td align="left">SVP, MARKETING</td>
+<td align="left">SVP OF MARKETING</td>
+</tr>
+<tr class="even">
+<td align="left">VP, MARKETING</td>
+<td align="left">VP OF MARKETING</td>
+</tr>
+<tr class="odd">
+<td align="left">CHAIRMAN OF THE BOARD</td>
+<td align="left">CHAIRMAN OF BOARD</td>
+</tr>
+<tr class="even">
+<td align="left">DIRECTOR TO</td>
+<td align="left">DIRECTOR UNTIL</td>
+</tr>
+<tr class="odd">
+<td align="left">TRUSTEE, EX-OFFICIO</td>
+<td align="left">TRUSTEE EX-OFFICIO</td>
+</tr>
+<tr class="even">
+<td align="left">MGR, IT</td>
+<td align="left">MGR IT</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section level2">
+<h2 id="what-it-does">What it does<a class="anchor" aria-label="anchor" href="#what-it-does"></a>
+</h2>
 <pre><code>standardize_conj()
 |
-+- standardize_and()        AND -&gt; &amp; when both sides are valid titles
-+- standardize_to()         parenthetical / trailing TO -&gt; UNTIL (dates)
-+- standardize_of()         AS OF -&gt; SINCE; drop dangling OF; FOR -&gt; OF
-+- standardize_comma()      comma as separator / "of" / redundant
-+- standardize_slash()      slash as separator / "of" / redundant
-+- standardize_and()        re-applied to catch newly created cases
-+- standardize_separator()  ";" and "\\" -&gt; &amp;</code></pre>
-<div class="section level2">
-<h2 id="the-trick-separator-vs--compound">The trick: separator vs. compound<a class="anchor" aria-label="anchor" href="#the-trick-separator-vs--compound"></a>
-</h2>
-<p>The <code>and</code>/<code>&amp;</code> decision checks whether both sides look like real titles:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/standardize_and.html">standardize_and</a></span><span class="op">(</span><span class="st">"CEO AND BOARD PRESIDENT"</span><span class="op">)</span>        <span class="co"># separator -&gt; &amp;</span></span>
-<span><span class="co">#&gt; [1] "CEO &amp; BOARD PRESIDENT"</span></span>
-<span><span class="fu"><a href="../reference/standardize_and.html">standardize_and</a></span><span class="op">(</span><span class="st">"VP OF FINANCE AND ADMINISTRATION"</span><span class="op">)</span> <span class="co"># compound  -&gt; unchanged</span></span>
-<span><span class="co">#&gt; [1] "VP OF FINANCE AND ADMINISTRATION"</span></span></code></pre></div>
-<p>Commas and slashes are disambiguated the same way — separator, “of”, or filler:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/standardize_comma.html">standardize_comma</a></span><span class="op">(</span><span class="st">"SECRETARY, TREASURER"</span><span class="op">)</span>   <span class="co"># separator</span></span>
-<span><span class="co">#&gt; [1] "SECRETARY &amp; TREASURER"</span></span>
-<span><span class="fu"><a href="../reference/standardize_comma.html">standardize_comma</a></span><span class="op">(</span><span class="st">"VP, MARKETING"</span><span class="op">)</span>          <span class="co"># "of"</span></span>
-<span><span class="co">#&gt; [1] "VP OF MARKETING"</span></span>
-<span><span class="fu"><a href="../reference/standardize_slash.html">standardize_slash</a></span><span class="op">(</span><span class="st">"SECRETARY/TREASURER"</span><span class="op">)</span>    <span class="co"># separator</span></span>
-<span><span class="co">#&gt; [1] "SECRETARY &amp; TREASURER"</span></span></code></pre></div>
-<p>“TO” and “OF” at the end of a title usually belonged to a (removed) date phrase:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/standardize_to.html">standardize_to</a></span><span class="op">(</span><span class="st">"DIRECTOR TO"</span><span class="op">)</span>               <span class="co"># -&gt; "DIRECTOR UNTIL"</span></span>
-<span><span class="co">#&gt; [1] "DIRECTOR UNTIL"</span></span>
-<span><span class="fu"><a href="../reference/standardize_of.html">standardize_of</a></span><span class="op">(</span><span class="st">"VICE PRESIDENT AS OF"</span><span class="op">)</span>      <span class="co"># -&gt; "VICE PRESIDENT SINCE"</span></span>
-<span><span class="co">#&gt; [1] "VICE PRESIDENT SINCE"</span></span></code></pre></div>
-<p><strong>Input:</strong> <code>TitleTxt2</code>. <strong>Output:</strong> <code>TitleTxt3</code> with <code>&amp;</code> as the single title separator. Continue with <a href="step-04-split-titles.html">step 04</a>.</p>
++- standardize_and()        AND -&gt; &amp; when both sides are titles
++- standardize_to()         a trailing TO -&gt; UNTIL (left by a removed date)
++- standardize_of()         AS OF -&gt; SINCE; drop a dangling OF; FOR -&gt; OF
++- standardize_comma()      a comma as separator, as "of", or as filler
++- standardize_slash()      a slash as separator, as "of", or as filler
++- standardize_and()        again, for cases the steps above created
++- standardize_separator()  ";" and "\" -&gt; &amp;</code></pre>
+<p>The decision for AND, a comma or a slash is the same: if the words on both sides are recognizable titles, the connector separates two roles and becomes <code>&amp;</code>. If the words after it are a subject (FINANCE, MARKETING), it means “of”. Otherwise it is dropped.</p>
 </div>
-  </main>
+<div class="section level2">
+<h2 id="assets">Assets<a class="anchor" aria-label="anchor" href="#assets"></a>
+</h2>
+<table class="table">
+<colgroup>
+<col width="25%">
+<col width="25%">
+<col width="25%">
+<col width="25%">
+</colgroup>
+<thead><tr class="header">
+<th>Asset</th>
+<th>Type</th>
+<th>Used for</th>
+<th>Load it with</th>
+</tr></thead>
+<tbody><tr class="odd">
+<td><code>likely.titles</code></td>
+<td>word list (package data)</td>
+<td>titles that, found on both sides of a connector, make it a separator</td>
+<td><code>data(likely.titles)</code></td>
+</tr></tbody>
+</table>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">likely.titles</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">likely.titles</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 50</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">likely.titles</span>, <span class="fl">20</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  [1] "PRESIDENT"     "CEO"           "DIRECTOR\\b"   "CHAIR"        </span></span>
+<span><span class="co">#&gt;  [5] "TRUSTEE\\b"    "TREASURER"     "SECRETARY"     "OFFICER"      </span></span>
+<span><span class="co">#&gt;  [9] "COUNSEL"       "FOUNDER"       "PUBLISHER"     "EDITOR\\b"    </span></span>
+<span><span class="co">#&gt; [13] "MEMBER\\b"     "\\bCOO\\b"     "CFO"           "MANAGER"      </span></span>
+<span><span class="co">#&gt; [17] "\\bCTO\\b"     "ADMINISTRATOR" "\\bCRO\\b"     "CURATOR"</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="try-it">Try it<a class="anchor" aria-label="anchor" href="#try-it"></a>
+</h2>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/standardize_and.html">standardize_and</a></span><span class="op">(</span><span class="st">"CEO AND BOARD PRESIDENT"</span><span class="op">)</span>           <span class="co"># separator -&gt; &amp;</span></span>
+<span><span class="co">#&gt; [1] "CEO &amp; BOARD PRESIDENT"</span></span>
+<span><span class="fu"><a href="../reference/standardize_and.html">standardize_and</a></span><span class="op">(</span><span class="st">"VP OF FINANCE AND ADMINISTRATION"</span><span class="op">)</span>  <span class="co"># compound  -&gt; unchanged</span></span>
+<span><span class="co">#&gt; [1] "VP OF FINANCE AND ADMINISTRATION"</span></span>
+<span><span class="fu"><a href="../reference/standardize_comma.html">standardize_comma</a></span><span class="op">(</span><span class="st">"SECRETARY, TREASURER"</span><span class="op">)</span>            <span class="co"># separator</span></span>
+<span><span class="co">#&gt; [1] "SECRETARY &amp; TREASURER"</span></span>
+<span><span class="fu"><a href="../reference/standardize_comma.html">standardize_comma</a></span><span class="op">(</span><span class="st">"VP, MARKETING"</span><span class="op">)</span>                   <span class="co"># "of"</span></span>
+<span><span class="co">#&gt; [1] "VP OF MARKETING"</span></span>
+<span><span class="fu"><a href="../reference/standardize_slash.html">standardize_slash</a></span><span class="op">(</span><span class="st">"SECRETARY/TREASURER"</span><span class="op">)</span>             <span class="co"># separator</span></span>
+<span><span class="co">#&gt; [1] "SECRETARY &amp; TREASURER"</span></span>
+<span><span class="fu"><a href="../reference/standardize_to.html">standardize_to</a></span><span class="op">(</span><span class="st">"DIRECTOR TO"</span><span class="op">)</span>                        <span class="co"># -&gt; DIRECTOR UNTIL</span></span>
+<span><span class="co">#&gt; [1] "DIRECTOR UNTIL"</span></span>
+<span><span class="fu"><a href="../reference/standardize_of.html">standardize_of</a></span><span class="op">(</span><span class="st">"VICE PRESIDENT AS OF"</span><span class="op">)</span>               <span class="co"># -&gt; VICE PRESIDENT SINCE</span></span>
+<span><span class="co">#&gt; [1] "VICE PRESIDENT SINCE"</span></span></code></pre></div>
+<p><strong>Input:</strong> <code>TitleTxt2</code>. <strong>Output:</strong> <code>TitleTxt3</code>, with <code>&amp;</code> as the only separator between titles. Continue with <a href="step-04-split-titles.html">step 04</a>.</p>
+</div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Kevin Cui.</p>
+  <p>Developed by <a href="https://github.com/lecy" class="external-link">Jesse Lecy</a>, Kevin Cui.</p>
 </div>
 
 <div class="pkgdown-footer-right">

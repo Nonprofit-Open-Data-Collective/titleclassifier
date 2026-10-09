@@ -18,7 +18,7 @@ the regex-based cleaning steps).
 
 ## Crosswalks
 
-The three crosswalks are package data (`title.xwalk`, `title.taxonomy`,
+The four crosswalks are package data (`title.xwalk`, `title.patterns`, `title.taxonomy`,
 `status.codes`). Their source is the CSV tables in `data-raw/crosswalks/` of the
 source repository: edit a table, then run `data-raw/crosswalks/build-crosswalks.R`
 to rebuild the package data. (Until October 2026 the crosswalks were kept in a
@@ -35,6 +35,20 @@ Maps every observed title **variant** to a canonical `title.standard`, plus a
 xwalk <- get_title_xwalk()
 dim(xwalk)
 head(xwalk, 8)
+```
+
+### Title patterns (`get_title_patterns()`)
+
+Head rules for titles the standardization crosswalk does not list: a title
+whose longest known prefix or suffix has a rule maps to that rule's
+`title.standard` (`title.match` is `pattern`). Each rule records its
+`support` (titles it was learned from) and `precision`. Used in step 07,
+`standardize_titles()`.
+
+```{r}
+pat <- get_title_patterns()
+dim(pat)
+head(pat, 6)
 ```
 
 ### Title taxonomy (`get_title_taxonomy()`)
@@ -89,11 +103,11 @@ steps. Load any of them with `data()`.
 | `likely.titles` | `standardize_conj()` (03) | recognizable titles for split detection |
 | `likely.subjects` | `fix_of()` (05) | subjects that follow "of" in a title |
 | `possible.titles` | `fix_of()` (05) | candidate title tokens |
-| `former.words` | `gen_status_codes()` (06) | FORMER status variants |
-| `future.words` | `gen_status_codes()` (06) | FUTURE status variants |
-| `interim.words` | `gen_status_codes()` (06) | INTERIM status variants |
-| `regional.words` | `gen_status_codes()` (06) | REGIONAL status variants |
-| `possible.regional.list` | `gen_status_codes()` (06) | candidate regional tokens |
+| `former.words` | not used | FORMER variants; superseded by `status.codes` |
+| `future.words` | not used | FUTURE variants; superseded by `status.codes` |
+| `interim.words` | not used | INTERIM variants; superseded by `status.codes` |
+| `regional.words` | not used | REGIONAL variants; superseded by `status.codes` |
+| `possible.regional.list` | not used | candidate regional tokens |
 
 ```{r}
 data(number.words)

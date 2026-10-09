@@ -6,17 +6,21 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Step 08 - Categorize titles • titleclassifier</title>
-<script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/Source_Sans_3-0.4.10/font.css" rel="stylesheet">
+<link href="../deps/Source_Code_Pro-0.4.10/font.css" rel="stylesheet">
+<link href="../deps/Zilla_Slab-0.4.10/font.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Step 08 - Categorize titles">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
+<meta property="og:title" content="Step 08 - Categorize titles">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
-    <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
+    <nav class="navbar navbar-expand-lg fixed-top " aria-label="Site navigation"><div class="container">
 
     <a class="navbar-brand me-2" href="../index.html">titleclassifier</a>
 
@@ -41,14 +45,29 @@
     <li><a class="dropdown-item" href="../articles/step-06-gen-status-codes.html">06 - Generate status codes</a></li>
     <li><a class="dropdown-item" href="../articles/step-07-standardize-titles.html">07 - Standardize titles</a></li>
     <li><a class="dropdown-item" href="../articles/step-08-categorize-titles.html">08 - Categorize titles</a></li>
+    <li><a class="dropdown-item" href="../articles/step-09-conditional-logic.html">09 - Resolve roles</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><a class="dropdown-item" href="../articles/classifiers.html">Rules and models</a></li>
+    <li><a class="dropdown-item" href="../articles/dictionaries.html">Dictionaries and crosswalks</a></li>
   </ul>
 </li>
+<li class="nav-item"><a class="nav-link" href="../articles/taxonomy.html">Taxonomy</a></li>
+<li class="nav-item"><a class="nav-link" href="../articles/performance.html">Performance</a></li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
 </form></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-lightswitch" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true" aria-label="Light switch"><span class="fa fa-sun"></span></button>
+  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-lightswitch">
+<li><button class="dropdown-item" data-bs-theme-value="light"><span class="fa fa-sun"></span> Light</button></li>
+    <li><button class="dropdown-item" data-bs-theme-value="dark"><span class="fa fa-moon"></span> Dark</button></li>
+    <li><button class="dropdown-item" data-bs-theme-value="auto"><span class="fa fa-adjust"></span> Auto</button></li>
+  </ul>
+</li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/Nonprofit-Open-Data-Collective/titleclassifier/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
@@ -65,31 +84,272 @@
       <h1>Step 08 - Categorize titles</h1>
             
       
-
+      <small class="dont-index">Source: <a href="https://github.com/Nonprofit-Open-Data-Collective/titleclassifier/blob/HEAD/vignettes/step-08-categorize-titles.Rmd" class="external-link"><code>vignettes/step-08-categorize-titles.Rmd</code></a></small>
       <div class="d-none name"><code>step-08-categorize-titles.Rmd</code></div>
     </div>
 
     
     
-<p><strong><code><a href="../reference/categorize_titles.html">categorize_titles()</a></code></strong> joins the standardized titles to the taxonomy, engineers organization-level features, and produces the finished, analysis-ready data frame.</p>
+<p><strong><code><a href="../reference/categorize_titles.html">categorize_titles()</a></code></strong> attaches the taxonomy to each standardized title, adds features that describe each person’s place in their filing, and renames the columns to the tidy output schema.</p>
+<div class="section level2">
+<h2 id="before-and-after">Before and after<a class="anchor" aria-label="anchor" href="#before-and-after"></a>
+</h2>
+<table class="table">
+<colgroup>
+<col width="24%">
+<col width="9%">
+<col width="14%">
+<col width="4%">
+<col width="33%">
+<col width="7%">
+<col width="5%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">before (title.standard)</th>
+<th align="left">domain.category</th>
+<th align="left">domain.label</th>
+<th align="left">SOC</th>
+<th align="left">soc.label</th>
+<th align="left">emp.level</th>
+<th align="left">board.role</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">EXECUTIVE DIRECTOR</td>
+<td align="left">executive</td>
+<td align="left">general management</td>
+<td align="left">11-1011</td>
+<td align="left">Chief Executives</td>
+<td align="left">CEO</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">CHIEF OPERATING OFFICER</td>
+<td align="left">executive</td>
+<td align="left">general management</td>
+<td align="left">11-1011</td>
+<td align="left">Chief Executives</td>
+<td align="left">OFFICER</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">VICE PRESIDENT OF FINANCE AND ADMINISTRATION</td>
+<td align="left">operations</td>
+<td align="left">finance</td>
+<td align="left">11-3031</td>
+<td align="left">Financial Managers</td>
+<td align="left">OFFICER</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">GENERAL COUNSEL</td>
+<td align="left">operations</td>
+<td align="left">legal</td>
+<td align="left">23-1011</td>
+<td align="left">Lawyers</td>
+<td align="left">OFFICER</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">DIRECTOR OF DEVELOPMENT</td>
+<td align="left">operations</td>
+<td align="left">fundraising and membership</td>
+<td align="left">11-2033</td>
+<td align="left">Fundraising Managers</td>
+<td align="left">MANAGER</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">DIRECTOR OF NURSING</td>
+<td align="left">industry-specific</td>
+<td align="left">medical</td>
+<td align="left">11-9111</td>
+<td align="left">Medical and Health Services Managers</td>
+<td align="left">MANAGER</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">MANAGER</td>
+<td align="left">operations</td>
+<td align="left">administration</td>
+<td align="left">11-9199</td>
+<td align="left">Managers, All Other</td>
+<td align="left">MANAGER</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">COACH</td>
+<td align="left">industry-specific</td>
+<td align="left">recreation and sports</td>
+<td align="left">27-2022</td>
+<td align="left">Coaches and Scouts</td>
+<td align="left">PROFESSIONAL</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">DOCTOR</td>
+<td align="left">industry-specific</td>
+<td align="left">medical</td>
+<td align="left"></td>
+<td align="left">Physicians</td>
+<td align="left">PROFESSIONAL</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">PASTOR</td>
+<td align="left">industry-specific</td>
+<td align="left">religion</td>
+<td align="left">21-2011</td>
+<td align="left">Clergy</td>
+<td align="left">CEO</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">BOOKKEEPER</td>
+<td align="left">operations</td>
+<td align="left">finance</td>
+<td align="left">43-3031</td>
+<td align="left">Bookkeeping, Accounting, and Auditing Clerks</td>
+<td align="left">STAFF</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">EXECUTIVE ASSISTANT</td>
+<td align="left">operations</td>
+<td align="left">administration</td>
+<td align="left">43-6011</td>
+<td align="left">Executive Secretaries and Executive Administrative Assistants</td>
+<td align="left">STAFF</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">BOARD PRESIDENT</td>
+<td align="left">governance</td>
+<td align="left">board</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">CHAIR</td>
+</tr>
+<tr class="even">
+<td align="left">BOARD VICE PRESIDENT</td>
+<td align="left">governance</td>
+<td align="left">board</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">VICE CHAIR</td>
+</tr>
+<tr class="odd">
+<td align="left">BOARD SECRETARY</td>
+<td align="left">governance</td>
+<td align="left">board</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">SECRETARY</td>
+</tr>
+<tr class="even">
+<td align="left">BOARD TREASURER</td>
+<td align="left">governance</td>
+<td align="left">board</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">TREASURER</td>
+</tr>
+<tr class="odd">
+<td align="left">BOARD MEMBER</td>
+<td align="left">governance</td>
+<td align="left">board</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">MEMBER</td>
+</tr>
+<tr class="even">
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+</tbody>
+</table>
+<p>Each title is either a job (an <code>emp.level</code> and, usually, a SOC occupation) or a board seat (a <code>board.role</code>), never both. An uncoded title (SENIOR RABBI) gets no taxonomy fields. The <a href="taxonomy.html">Taxonomy</a> article explains every category.</p>
+</div>
+<div class="section level2">
+<h2 id="what-it-does">What it does<a class="anchor" aria-label="anchor" href="#what-it-does"></a>
+</h2>
 <pre><code>categorize_titles()
 |
-+- merge with the taxonomy on title.standard  (domain, SOC codes, role flags)
-+- add_features()        pay/hours ranks, leadership counts, per-EIN summaries
-+- simplify_varnames()   rename to the tidy output schema; zero-fill ratio NAs</code></pre>
-<div class="section level2">
-<h2 id="engineered-features">Engineered features<a class="anchor" aria-label="anchor" href="#engineered-features"></a>
-</h2>
-<p><code><a href="../reference/add_features.html">add_features()</a></code> computes, per organization (<code>OBJECTID</code>): counts of employees, board members, and leaders (<code>num.ceos</code>, <code>num.clevel</code>, <code>num.dirvp</code>, <code>num.mgr</code>, <code>num.spec</code>); officer counts (<code>num.pres</code>, <code>num.vp</code>, <code>num.treas</code>, <code>num.sec</code>); pay and hours ranks and shares; and full/part-time headcounts — weighting people who hold multiple titles so they are not double-counted.</p>
++- merge with the taxonomy on title.standard   domain, SOC codes, emp.level, board.role
++- add_features()        pay and hours ranks and shares, per-filing counts
++- simplify_varnames()   rename to the output schema (title.v1 ... title.v7, tot.comp, ...)</code></pre>
+<div class="section level3">
+<h3 id="taxonomy-fields">Taxonomy fields<a class="anchor" aria-label="anchor" href="#taxonomy-fields"></a>
+</h3>
+<table class="table">
+<colgroup>
+<col width="50%">
+<col width="50%">
+</colgroup>
+<thead><tr class="header">
+<th>Column</th>
+<th>Meaning</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>
+<code>domain.category</code>, <code>domain.label</code>
+</td>
+<td>the functional area (executive / general management, operations / finance, industry-specific / medical, …)</td>
+</tr>
+<tr class="even">
+<td>
+<code>major.group</code> … <code>detailed.occupation</code>, <code>soc.label</code>
+</td>
+<td>the 2018 BLS Standard Occupational Classification code, at four levels</td>
+</tr>
+<tr class="odd">
+<td><code>emp.level</code></td>
+<td>for a job: CEO, OFFICER, MANAGER, PROFESSIONAL or STAFF</td>
+</tr>
+<tr class="even">
+<td><code>board.role</code></td>
+<td>for a board seat: CHAIR, VICE CHAIR, SECRETARY, TREASURER or MEMBER</td>
+</tr>
+<tr class="odd">
+<td>
+<code>emp</code>, <code>ceo</code>, <code>c.level</code>, <code>mgr</code>, <code>spec</code>, <code>board</code>, <code>pres</code>, <code>vp</code>, <code>sec</code>, <code>treas</code>, <code>mem</code>
+</td>
+<td>legacy 0/1 flags, derived from <code>emp.level</code> and <code>board.role</code>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section level3">
+<h3 id="engineered-features">Engineered features<a class="anchor" aria-label="anchor" href="#engineered-features"></a>
+</h3>
+<p><code><a href="../reference/add_features.html">add_features()</a></code> computes, within each filing (<code>object.id</code>):</p>
+<ul>
+<li>each person’s pay and hours: <code>tot.comp</code>, <code>tot.hours</code> (and versions that include related organizations), <code>pay.rank</code>, <code>hours.rank</code>, <code>pay.pct.of.max</code>, <code>pay.pct.of.tot</code>, <code>hours.pct.of.max</code>;</li>
+<li>the filing’s make-up: <code>num.dtk</code> (people), <code>num.titles</code>, <code>num.paid</code>, <code>num.fte</code> (40+ hours), <code>num.fte.30h</code>, <code>num.pte</code>;</li>
+<li>counts by taxonomy: <code>num.emp</code>, <code>num.board</code>, <code>num.ceos</code>, <code>num.clevel</code>, <code>num.mgr</code>, <code>num.spec</code>, <code>num.pres</code>, <code>num.vp</code>, <code>num.treas</code>, <code>num.sec</code>, <code>num.mem</code>;</li>
+<li>a person’s titles: <code>title.count</code> and <code>title.order</code> (from step 04), <code>title.mult.x</code>.</li>
+</ul>
+<p>People with several titles are weighted so that they are not counted twice.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">tinypartvii</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">8</span><span class="op">)</span></span>
-<span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/sample_n.html" class="external-link">sample_n</a></span><span class="op">(</span><span class="va">tinypartvii</span>, <span class="fl">250</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="va">d</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/standardize_df.html">standardize_df</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/remove_dates.html">remove_dates</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/standardize_conj.html">standardize_conj</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/split_titles.html">split_titles</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/standardize_spelling.html">standardize_spelling</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/gen_status_codes.html">gen_status_codes</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/standardize_titles.html">standardize_titles</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/categorize_titles.html">categorize_titles</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">big</span> <span class="op">&lt;-</span> <span class="va">tinypartvii</span> <span class="op">|&gt;</span> <span class="fu">group_by</span><span class="op">(</span><span class="va">OBJECTID</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">RETURN_TYPE</span> <span class="op">==</span> <span class="st">"990"</span>, <span class="fu">n</span><span class="op">(</span><span class="op">)</span> <span class="op">&gt;=</span> <span class="fl">12</span>, <span class="fu"><a href="https://rdrr.io/r/base/any.html" class="external-link">any</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">F9_07_COMP_DTK_COMP_ORG</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">150000</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">ungroup</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">one</span> <span class="op">&lt;-</span> <span class="va">tinypartvii</span><span class="op">[</span><span class="va">tinypartvii</span><span class="op">$</span><span class="va">OBJECTID</span> <span class="op">==</span> <span class="va">big</span><span class="op">$</span><span class="va">OBJECTID</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="op">]</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="va">one</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/standardize_df.html">standardize_df</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/remove_dates.html">remove_dates</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/standardize_conj.html">standardize_conj</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/split_titles.html">split_titles</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/standardize_spelling.html">standardize_spelling</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/gen_status_codes.html">gen_status_codes</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/standardize_titles.html">standardize_titles</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/categorize_titles.html">categorize_titles</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [OK] standardize df step complete</span></span>
 <span><span class="co">#&gt; [OK] remove dates step complete</span></span>
 <span><span class="co">#&gt; [OK] standardize conjunctions step complete</span></span>
@@ -98,51 +358,83 @@
 <span><span class="co">#&gt; [OK] generate status codes step complete</span></span>
 <span><span class="co">#&gt; [OK] standardize titles step complete</span></span>
 <span><span class="co">#&gt; [OK] categorize titles step complete</span></span>
-<span></span>
 <span><span class="va">df</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">org.name</span>, <span class="va">dtk.name</span>, <span class="va">title.standard</span>, <span class="va">domain.category</span>,</span>
-<span>                <span class="va">pay.rank</span>, <span class="va">tot.comp</span>, <span class="va">num.ceos</span>, <span class="va">num.board</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="va">org.name</span>, <span class="va">pay.rank</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">select</span><span class="op">(</span><span class="va">title.standard</span>, <span class="va">emp.level</span>, <span class="va">board.role</span>, <span class="va">tot.comp</span>, <span class="va">tot.hours</span>, <span class="va">pay.rank</span>, <span class="va">num.dtk</span>, <span class="va">num.paid</span>, <span class="va">num.board</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">arrange</span><span class="op">(</span><span class="va">pay.rank</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                                                                       org.name</span></span>
-<span><span class="co">#&gt; 1                                                           A Place-2-Live Inc</span></span>
-<span><span class="co">#&gt; 2                                                                  ADDGENE INC</span></span>
-<span><span class="co">#&gt; 3                                                ADVANCED BIOFUELS ASSOCIATION</span></span>
-<span><span class="co">#&gt; 4                                          AIDS VACCINE ADVOCACY COALITION INC</span></span>
-<span><span class="co">#&gt; 5                                          ALABAMA HOME INSPECTOR ORGANIZATION</span></span>
-<span><span class="co">#&gt; 6                                           ALBANY AREA CHAMBER FOUNDATION INC</span></span>
-<span><span class="co">#&gt; 7                                               ALLIANCE FRANCAISE DE PORTLAND</span></span>
-<span><span class="co">#&gt; 8                          ALLIANCE TO END HOMELESSNESS INSUBURBAN COOK COUNTY</span></span>
-<span><span class="co">#&gt; 9  AMERICAN FEDERATION OF TEACHERS Henry Ford Community College Adjunct Faccul</span></span>
-<span><span class="co">#&gt; 10                                        AMERICAN LEGION 1172 EVANSVILLE POST</span></span>
-<span><span class="co">#&gt;              dtk.name  title.standard domain.category pay.rank tot.comp</span></span>
-<span><span class="co">#&gt; 1        Deneen Jones    BOARD MEMBER           board        1        0</span></span>
-<span><span class="co">#&gt; 2  MATTHEW E GHANTOUS            &lt;NA&gt;            &lt;NA&gt;        1   173699</span></span>
-<span><span class="co">#&gt; 3   NEVILLE FERNANDES    BOARD MEMBER           board        1        0</span></span>
-<span><span class="co">#&gt; 4       WANDA BUCKNER            &lt;NA&gt;            &lt;NA&gt;        1   224598</span></span>
-<span><span class="co">#&gt; 5     ANDREW GRIFFITH       PRINCIPAL             xxx        1        0</span></span>
-<span><span class="co">#&gt; 6        SMITH WILSON    BOARD MEMBER           board        1        0</span></span>
-<span><span class="co">#&gt; 7         HOKE HARDEN    BOARD MEMBER           board        1        0</span></span>
-<span><span class="co">#&gt; 8      YVETTE HOLCOMB    BOARD MEMBER           board        1        0</span></span>
-<span><span class="co">#&gt; 9         Edgar Johns  VICE PRESIDENT      operations        1    14228</span></span>
-<span><span class="co">#&gt; 10        MELVIN JANY FINANCE OFFICER      operations        1        0</span></span>
-<span><span class="co">#&gt;    num.ceos num.board</span></span>
-<span><span class="co">#&gt; 1         0         1</span></span>
-<span><span class="co">#&gt; 2         0         0</span></span>
-<span><span class="co">#&gt; 3         0         1</span></span>
-<span><span class="co">#&gt; 4         0         0</span></span>
-<span><span class="co">#&gt; 5         1         0</span></span>
-<span><span class="co">#&gt; 6         0         1</span></span>
-<span><span class="co">#&gt; 7         0         1</span></span>
-<span><span class="co">#&gt; 8         0         1</span></span>
-<span><span class="co">#&gt; 9         0         0</span></span>
-<span><span class="co">#&gt; 10        0         0</span></span></code></pre></div>
+<span><span class="co">#&gt;              title.standard emp.level board.role tot.comp tot.hours pay.rank</span></span>
+<span><span class="co">#&gt; 1  EXECUTIVE VICE PRESIDENT   OFFICER              194586        40        1</span></span>
+<span><span class="co">#&gt; 2       CORPORATE SECRETARY   OFFICER              169504        40        2</span></span>
+<span><span class="co">#&gt; 3                      &lt;NA&gt;      &lt;NA&gt;       &lt;NA&gt;   156659        40        3</span></span>
+<span><span class="co">#&gt; 4   CHIEF FINANCIAL OFFICER   OFFICER              155577        40        4</span></span>
+<span><span class="co">#&gt; 5                      &lt;NA&gt;      &lt;NA&gt;       &lt;NA&gt;   137163        40        5</span></span>
+<span><span class="co">#&gt; 6          PROGRAMS MANAGER   MANAGER              113144        40        6</span></span>
+<span><span class="co">#&gt; 7                   MANAGER   MANAGER              112991        40        7</span></span>
+<span><span class="co">#&gt; 8                FACILITIES     STAFF              108137        40        8</span></span>
+<span><span class="co">#&gt; 9              BOARD MEMBER               MEMBER        0         1        9</span></span>
+<span><span class="co">#&gt; 10     BOARD VICE PRESIDENT           VICE CHAIR        0         1        9</span></span>
+<span><span class="co">#&gt;    num.dtk num.paid num.board</span></span>
+<span><span class="co">#&gt; 1       18        8        10</span></span>
+<span><span class="co">#&gt; 2       18        8        10</span></span>
+<span><span class="co">#&gt; 3       18        8        10</span></span>
+<span><span class="co">#&gt; 4       18        8        10</span></span>
+<span><span class="co">#&gt; 5       18        8        10</span></span>
+<span><span class="co">#&gt; 6       18        8        10</span></span>
+<span><span class="co">#&gt; 7       18        8        10</span></span>
+<span><span class="co">#&gt; 8       18        8        10</span></span>
+<span><span class="co">#&gt; 9       18        8        10</span></span>
+<span><span class="co">#&gt; 10      18        8        10</span></span></code></pre></div>
+</div>
 </div>
 <div class="section level2">
-<h2 id="where-this-leaves-us">Where this leaves us<a class="anchor" aria-label="anchor" href="#where-this-leaves-us"></a>
+<h2 id="assets">Assets<a class="anchor" aria-label="anchor" href="#assets"></a>
 </h2>
-<p>Every row is now a single standardized, categorized title enriched with organization context. The remaining ambiguity (which “PRESIDENT” is the CEO?) is the target of the forthcoming machine-learning relabeling step, which will consume exactly these engineered features.</p>
-<p><strong>Input:</strong> <code>title.standard</code>. <strong>Output:</strong> the final analysis-ready data frame.</p>
+<table class="table">
+<colgroup>
+<col width="25%">
+<col width="25%">
+<col width="25%">
+<col width="25%">
+</colgroup>
+<thead><tr class="header">
+<th>Asset</th>
+<th>Type</th>
+<th>Used for</th>
+<th>Load it with</th>
+</tr></thead>
+<tbody><tr class="odd">
+<td><code>title.taxonomy</code></td>
+<td>crosswalk (package data)</td>
+<td>for each <code>title.standard</code>: domain, SOC codes, <code>emp.level</code>, <code>board.role</code>, legacy flags</td>
+<td>
+<code><a href="../reference/get_title_taxonomy.html">get_title_taxonomy()</a></code> or <code>data(title.taxonomy)</code>
+</td>
+</tr></tbody>
+</table>
+<p>The source is <code>data-raw/crosswalks/title-taxonomy.csv</code> in the source repository. The domain vocabulary, with a description of each domain, is <code>data-raw/crosswalks/domains.csv</code>.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">tax</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_title_taxonomy.html">get_title_taxonomy</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">tax</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 450  22</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">tax</span><span class="op">$</span><span class="va">emp.level</span>, useNA <span class="op">=</span> <span class="st">"ifany"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;                       CEO      MANAGER      OFFICER PROFESSIONAL        STAFF </span></span>
+<span><span class="co">#&gt;           15           11          129          139           40          116</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">tax</span><span class="op">$</span><span class="va">board.role</span><span class="op">[</span><span class="va">tax</span><span class="op">$</span><span class="va">board.role</span> <span class="op">!=</span> <span class="st">""</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;      CHAIR     MEMBER  SECRETARY  TREASURER VICE CHAIR </span></span>
+<span><span class="co">#&gt;          1          1          1          1          1</span></span>
+<span><span class="va">tax</span><span class="op">[</span><span class="va">tax</span><span class="op">$</span><span class="va">title.standard</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"CEO"</span>, <span class="st">"DIRECTOR OF DEVELOPMENT"</span>, <span class="st">"BOARD TREASURER"</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"title.standard"</span>, <span class="st">"domain.label"</span>, <span class="st">"detailed.occupation"</span>, <span class="st">"soc.label"</span>, <span class="st">"emp.level"</span>, <span class="st">"board.role"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="co">#&gt;              title.standard               domain.label detailed.occupation</span></span>
+<span><span class="co">#&gt; 45          BOARD TREASURER                      board                    </span></span>
+<span><span class="co">#&gt; 56                      CEO         general management             11-1011</span></span>
+<span><span class="co">#&gt; 152 DIRECTOR OF DEVELOPMENT fundraising and membership             11-2033</span></span>
+<span><span class="co">#&gt;                soc.label emp.level board.role</span></span>
+<span><span class="co">#&gt; 45                                  TREASURER</span></span>
+<span><span class="co">#&gt; 56      Chief Executives       CEO           </span></span>
+<span><span class="co">#&gt; 152 Fundraising Managers   MANAGER</span></span></code></pre></div>
+<p><strong>Input:</strong> the output of step 07. <strong>Output:</strong> one row per person and title with the taxonomy fields, the status flags, the engineered features, and the title at each step (<code>title.raw</code>, <code>title.v1</code> … <code>title.v7</code>). Continue with <a href="step-09-conditional-logic.html">step 09</a>.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
@@ -151,7 +443,7 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Kevin Cui.</p>
+  <p>Developed by <a href="https://github.com/lecy" class="external-link">Jesse Lecy</a>, Kevin Cui.</p>
 </div>
 
 <div class="pkgdown-footer-right">

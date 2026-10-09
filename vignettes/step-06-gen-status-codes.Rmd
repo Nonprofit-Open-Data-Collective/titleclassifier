@@ -10,55 +10,99 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(collapse = TRUE, comment = "#>", message = FALSE, warning = FALSE)
 library(titleclassifier)
+# example titles as a Part VII frame, one person per title
+example_frame <- function(titles) {
+  d <- titleclassifier::tinypartvii[rep(1, length(titles)), ]
+  d$F9_07_COMP_DTK_TITLE <- titles
+  d$F9_07_COMP_DTK_NAME_PERS <- sprintf("PERSON %02d", seq_along(titles))
+  rownames(d) <- NULL
+  d
+}
+# the pipeline steps print a progress line; keep it out of the tables
+quiet <- function(x) { utils::capture.output(x <- force(x)); x }
 ```
 
-Titles often carry a temporal/temporary qualifier — FORMER, INTERIM, FUTURE,
-EX OFFICIO, and so on. **`gen_status_codes()`** detects each qualifier, adds a
-boolean flag, and either removes it or standardizes it in place.
+Many titles carry a qualifier about the person's status in the role: FORMER,
+INTERIM, PRESIDENT-ELECT, EX OFFICIO, AT LARGE, CO-CHAIR. The qualifier
+matters for analysis (an interim CEO, a past president) but would split one
+title into many crosswalk entries. **`gen_status_codes()`** detects each
+qualifier, records it as a 0/1 flag, and removes it from the title, or, for a
+few that change the role, keeps a standard form.
+
+## Before and after
+
+```{r, echo = FALSE}
+x <- c("Former CFO", "Acting CFO", "Interim Executive Director", "President-Elect", "Past President",
+       "Outgoing Treasurer", "Emeritus Trustee", "Board Member (thru 6/2023)", "Trustee, Ex-Officio",
+       "Member at Large", "Co-Chair", "1st Vice President", "Regional Director",
+       "Founder & Executive Director", "Treasurer")
+out <- quiet(gen_status_codes(standardize_spelling(split_titles(standardize_conj(remove_dates(
+  standardize_df(example_frame(x))))))))
+out <- out[order(out$F9_07_COMP_DTK_NAME_PERS, out$Num.Titles), ]
+fl <- c("FORMER.X", "INTERIM.X", "FUTURE.X", "OUTGOING.X", "PARTIAL.X", "EXOFFICIO.X", "AT.LARGE.X",
+        "CO.X", "REGIONAL.X", "FOUNDER.X", "SCHED.O.X")
+flags <- apply(out[, fl], 1, function(r) paste(fl[r %in% 1], collapse = ", "))
+knitr::kable(data.frame(`before (TitleTxt5)` = out$TitleTxt5, `after (TitleTxt6)` = out$TitleTxt6,
+                        `flags set` = flags, check.names = FALSE), row.names = FALSE)
+```
+
+A person's flags apply to all of their titles: in "FOUNDER & EXECUTIVE
+DIRECTOR", both rows carry `FOUNDER.X`.
+
+## What it does
 
 ```
 gen_status_codes()
 |
-+- flag_and_remove()   flag SCODE.X and delete the qualifier (FORMER, INTERIM, FUTURE, ...)
-+- flag_and_keep()     flag SCODE.X but keep a standardized form (EXOFFICIO, REGIONAL)
-+- get_variants()      collapse a status code's variants into one regex
++- remove number words and ordinals (FIRST, SECOND, ...)
++- flag_and_keep()     flag, write one standard form:  EXOFFICIO, REGIONAL
++- flag_and_remove()   flag, delete the qualifier:     FORMER, FOUNDER, FUTURE, INTERIM,
+|                                                     OUTGOING, PARTIAL, SCHED O, AT LARGE
++- get_variants()      all the spellings of one status, as one regular expression
++- share flags across a person's rows
++- clean up            drop a trailing EXOFFICIO, a CO- prefix (flag CO.X), NON-VOTING,
+                       stray parentheses and punctuation
 ```
 
-The variant-to-code mapping comes from the status-code crosswalk (see the
-[Dictionaries](dictionaries.html) article). Some qualifiers (EX OFFICIO, REGIONAL)
-are kept because they change the meaning of the role.
+* REGIONAL stays in the title, because a regional director is a different
+  job. EXOFFICIO stays only when it is the whole title (EXOFFICIO BOARD
+  MEMBER).
+* `PARTIAL` marks a partial year: a date in the title, or an outgoing, future
+  or part-year status.
+* A title with both FORMER and FUTURE ("from ... until") keeps FORMER only.
 
-## Examples
+The flags become `former.x`, `interim.x`, `future.x`, `outgoing.x`,
+`partial.x`, `ex.officio.x`, `at.large.x`, `co.x`, `region.x`, `founder.x`,
+`sched.o.x` and `date.x` in the final output. The
+[Taxonomy](taxonomy.html#status-flags) article defines each one.
+
+## Assets
+
+| Asset | Type | Used for | Load it with |
+|---|---|---|---|
+| `status.codes` | crosswalk (package data) | maps each qualifier spelling (`status.variant`) to its status (`status.qualifier`) | `get_status_codes()` or `data(status.codes)` |
+| `number.words` | word list (package data) | number words and ordinals to remove | `data(number.words)` |
+
+The crosswalk's source is `data-raw/crosswalks/status-codes.csv` in the source
+repository.
 
 ```{r}
 sc <- get_status_codes()
+dim(sc)
+table(sc$status.qualifier)
+head(sc[sc$status.qualifier == "INTERIM", ], 10)
+```
 
-# all variants that map to FORMER, as a single regex
-get_variants("FORMER", sc)
+## Try it
+
+```{r}
+get_variants("FORMER", sc)    # all the spellings of FORMER, as one regex
 
 x <- c("IMMEDIATE PAST CHAIR", "OUTGOING CEO", "ACTING DIRECTOR", "TREASURER")
 remove_status(x, get_variants("FORMER",  sc))
 remove_status(x, get_variants("INTERIM", sc))
 ```
 
-## In the pipeline
-
-```{r}
-library(dplyr)
-data(tinypartvii)
-set.seed(6)
-d <- dplyr::sample_n(tinypartvii, 150)
-
-df <- d |>
-  standardize_df() |> remove_dates() |> standardize_conj() |>
-  split_titles() |> standardize_spelling() |> gen_status_codes()
-
-df |>
-  dplyr::filter(FORMER.X == 1 | INTERIM.X == 1) |>
-  dplyr::select(TitleTxt5, TitleTxt6, FORMER.X, INTERIM.X) |>
-  head(8)
-```
-
-**Input:** `TitleTxt5`. **Output:** `TitleTxt6` plus status flags (`FORMER.X`,
-`INTERIM.X`, `FUTURE.X`, `EXOFFICIO.X`, `REGIONAL.X`, …). Continue with
+**Input:** `TitleTxt5`. **Output:** `TitleTxt6`, without status qualifiers,
+and one flag per status. Continue with
 [step 07](step-07-standardize-titles.html).

@@ -11,49 +11,115 @@ vignette: >
 knitr::opts_chunk$set(collapse = TRUE, comment = "#>", message = FALSE, warning = FALSE)
 library(titleclassifier)
 library(dplyr)
+# example titles as a Part VII frame, one person per title
+example_frame <- function(titles) {
+  d <- titleclassifier::tinypartvii[rep(1, length(titles)), ]
+  d$F9_07_COMP_DTK_TITLE <- titles
+  d$F9_07_COMP_DTK_NAME_PERS <- sprintf("PERSON %02d", seq_along(titles))
+  rownames(d) <- NULL
+  d
+}
+# the pipeline steps print a progress line; keep it out of the tables
+quiet <- function(x) { utils::capture.output(x <- force(x)); x }
 ```
 
-**`categorize_titles()`** joins the standardized titles to the taxonomy, engineers
-organization-level features, and produces the finished, analysis-ready data frame.
+**`categorize_titles()`** attaches the taxonomy to each standardized title,
+adds features that describe each person's place in their filing, and renames
+the columns to the tidy output schema.
+
+## Before and after
+
+```{r, echo = FALSE}
+x <- c("Exec. Dir.", "Chief Operating Officer", "VP Finance and Administration", "Gen. Counsel",
+       "Dir of Development", "Director of Nursing", "Mgr, IT", "Head Football Coach", "Staff Physician",
+       "Pastor", "Bookkeeper", "Executive Assistant", "Chairman of the Board", "Vice Chair", "Sec",
+       "Treasurer", "Director", "Senior Rabbi")
+out <- quiet(categorize_titles(standardize_titles(gen_status_codes(standardize_spelling(split_titles(
+  standardize_conj(remove_dates(standardize_df(example_frame(x))))))))))
+out <- out[order(out$F9_07_COMP_DTK_NAME_PERS), ]
+knitr::kable(data.frame(`before (title.standard)` = out$title.standard,
+                        domain.category = out$domain.category, domain.label = out$domain.label,
+                        SOC = out$detailed.occupation, soc.label = out$soc.label,
+                        emp.level = out$emp.level, board.role = out$board.role,
+                        check.names = FALSE), row.names = FALSE)
+```
+
+Each title is either a job (an `emp.level` and, usually, a SOC occupation) or a
+board seat (a `board.role`), never both. An uncoded title (SENIOR RABBI) gets
+no taxonomy fields. The [Taxonomy](taxonomy.html) article explains every
+category.
+
+## What it does
 
 ```
 categorize_titles()
 |
-+- merge with the taxonomy on title.standard  (domain, SOC codes, role flags)
-+- add_features()        pay/hours ranks, leadership counts, per-EIN summaries
-+- simplify_varnames()   rename to the tidy output schema; zero-fill ratio NAs
++- merge with the taxonomy on title.standard   domain, SOC codes, emp.level, board.role
++- add_features()        pay and hours ranks and shares, per-filing counts
++- simplify_varnames()   rename to the output schema (title.v1 ... title.v7, tot.comp, ...)
 ```
 
-## Engineered features
+### Taxonomy fields
 
-`add_features()` computes, per organization (`OBJECTID`): counts of employees,
-board members, and leaders (`num.ceos`, `num.clevel`, `num.dirvp`, `num.mgr`,
-`num.spec`); officer counts (`num.pres`, `num.vp`, `num.treas`, `num.sec`); pay and
-hours ranks and shares; and full/part-time headcounts — weighting people who hold
-multiple titles so they are not double-counted.
+| Column | Meaning |
+|---|---|
+| `domain.category`, `domain.label` | the functional area (executive / general management, operations / finance, industry-specific / medical, ...) |
+| `major.group` ... `detailed.occupation`, `soc.label` | the 2018 BLS Standard Occupational Classification code, at four levels |
+| `emp.level` | for a job: CEO, OFFICER, MANAGER, PROFESSIONAL or STAFF |
+| `board.role` | for a board seat: CHAIR, VICE CHAIR, SECRETARY, TREASURER or MEMBER |
+| `emp`, `ceo`, `c.level`, `mgr`, `spec`, `board`, `pres`, `vp`, `sec`, `treas`, `mem` | legacy 0/1 flags, derived from `emp.level` and `board.role` |
+
+### Engineered features
+
+`add_features()` computes, within each filing (`object.id`):
+
+* each person's pay and hours: `tot.comp`, `tot.hours` (and versions that
+  include related organizations), `pay.rank`, `hours.rank`, `pay.pct.of.max`,
+  `pay.pct.of.tot`, `hours.pct.of.max`;
+* the filing's make-up: `num.dtk` (people), `num.titles`, `num.paid`,
+  `num.fte` (40+ hours), `num.fte.30h`, `num.pte`;
+* counts by taxonomy: `num.emp`, `num.board`, `num.ceos`, `num.clevel`,
+  `num.mgr`, `num.spec`, `num.pres`, `num.vp`, `num.treas`, `num.sec`,
+  `num.mem`;
+* a person's titles: `title.count` and `title.order` (from step 04),
+  `title.mult.x`.
+
+People with several titles are weighted so that they are not counted twice.
 
 ```{r}
 data(tinypartvii)
-set.seed(8)
-d <- dplyr::sample_n(tinypartvii, 250)
-
-df <- d |>
-  standardize_df() |> remove_dates() |> standardize_conj() |>
-  split_titles() |> standardize_spelling() |> gen_status_codes() |>
-  standardize_titles() |> categorize_titles()
-
+big <- tinypartvii |> group_by(OBJECTID) |>
+  filter(RETURN_TYPE == "990", n() >= 12, any(as.numeric(F9_07_COMP_DTK_COMP_ORG) > 150000)) |> ungroup()
+one <- tinypartvii[tinypartvii$OBJECTID == big$OBJECTID[1], ]
+df <- one |>
+  standardize_df() |> remove_dates() |> standardize_conj() |> split_titles() |>
+  standardize_spelling() |> gen_status_codes() |> standardize_titles() |> categorize_titles()
 df |>
-  dplyr::select(org.name, dtk.name, title.standard, domain.category,
-                pay.rank, tot.comp, num.ceos, num.board) |>
-  dplyr::arrange(org.name, pay.rank) |>
+  select(title.standard, emp.level, board.role, tot.comp, tot.hours, pay.rank, num.dtk, num.paid, num.board) |>
+  arrange(pay.rank) |>
   head(10)
 ```
 
-## Where this leaves us
+## Assets
 
-Every row is now a single standardized, categorized title enriched with
-organization context. The remaining ambiguity (which "PRESIDENT" is the CEO?) is
-settled by step 09, `conditional_logic()`, from the filer's checkboxes, pay and
-hours (see the step 09 article).
+| Asset | Type | Used for | Load it with |
+|---|---|---|---|
+| `title.taxonomy` | crosswalk (package data) | for each `title.standard`: domain, SOC codes, `emp.level`, `board.role`, legacy flags | `get_title_taxonomy()` or `data(title.taxonomy)` |
 
-**Input:** `title.standard`. **Output:** the final analysis-ready data frame.
+The source is `data-raw/crosswalks/title-taxonomy.csv` in the source
+repository. The domain vocabulary, with a description of each domain, is
+`data-raw/crosswalks/domains.csv`.
+
+```{r}
+tax <- get_title_taxonomy()
+dim(tax)
+table(tax$emp.level, useNA = "ifany")
+table(tax$board.role[tax$board.role != ""])
+tax[tax$title.standard %in% c("CEO", "DIRECTOR OF DEVELOPMENT", "BOARD TREASURER"),
+    c("title.standard", "domain.label", "detailed.occupation", "soc.label", "emp.level", "board.role")]
+```
+
+**Input:** the output of step 07. **Output:** one row per person and title
+with the taxonomy fields, the status flags, the engineered features, and the
+title at each step (`title.raw`, `title.v1` ... `title.v7`). Continue with
+[step 09](step-09-conditional-logic.html).

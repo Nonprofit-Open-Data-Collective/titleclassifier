@@ -4,6 +4,19 @@ destination: docs
 
 template:
   bootstrap: 5
+  light-switch: true
+  bslib:
+    primary: "#bd5416"
+    navbar-bg: "#153243"
+    link-color: "#8f3f10"
+    body-color: "#1f2429"
+    border-color: "#dcdfe4"
+    code-color: "#8f3f10"
+    base_font: {google: "Source Sans 3"}
+    heading_font: {google: "Zilla Slab"}
+    code_font: {google: "Source Code Pro"}
+    font-size-base: "1.0625rem"
+    line-height-base: 1.62
 
 home:
   title: titleclassifier
@@ -11,10 +24,16 @@ home:
     Clean, standardize, and classify nonprofit executive titles from IRS Form
     990 Part VII into a structured taxonomy.
 
+authors:
+  Jesse Lecy:
+    href: https://github.com/lecy
+
 navbar:
+  type: dark
+  bg: primary
   structure:
-    left:  [workflow, steps, reference]
-    right: [search, github]
+    left:  [workflow, steps, taxonomy, performance, reference]
+    right: [search, lightswitch, github]
   components:
     workflow:
       text: Workflow
@@ -40,6 +59,17 @@ navbar:
         href: articles/step-08-categorize-titles.html
       - text: "09 - Resolve roles"
         href: articles/step-09-conditional-logic.html
+      - text: -------
+      - text: "Rules and models"
+        href: articles/classifiers.html
+      - text: "Dictionaries and crosswalks"
+        href: articles/dictionaries.html
+    taxonomy:
+      text: Taxonomy
+      href: articles/taxonomy.html
+    performance:
+      text: Performance
+      href: articles/performance.html
 
 articles:
 - title: Get started
@@ -50,6 +80,11 @@ articles:
 - title: Pipeline steps
   contents:
   - starts_with("step-")
+  - articles/classifiers
+- title: Reference
+  contents:
+  - articles/taxonomy
+  - articles/performance
 
 reference:
 - title: Pipeline steps
@@ -66,6 +101,20 @@ reference:
   - conditional_logic
   - resolve_roles
   - gen_taxonomy
+- title: Role model
+  desc: The no-checkbox role model used in step 09 for 990-EZ returns (see the Rules and models article).
+  contents:
+  - predict_roles
+  - role_model_features
+- title: Title patterns
+  desc: The step 07 fallback for titles the crosswalk does not list.
+  contents:
+  - match_title_patterns
+  - title_heads
+- title: Parallel runs
+  desc: Run the whole pipeline over a large table in parallel.
+  contents:
+  - classify_titles
 - title: Data acquisition
   desc: Fetch Part VII compensation tables from the NCCS efile store.
   contents:
@@ -78,6 +127,7 @@ reference:
   - get_status_codes
   - get_title_xwalk
   - get_title_taxonomy
+  - get_title_patterns
   - get_googlesheets
 - title: Spelling & cleaning helpers
   desc: The fix_* routines used inside standardize_spelling().
@@ -91,6 +141,7 @@ reference:
   contents:
   - add_features
   - add_status_flag
+  - drop_fragment_titles
   - amp_helper
   - and_helper
   - apply_misc_split_rules
@@ -149,3 +200,4 @@ reference:
   - title.xwalk
   - title.taxonomy
   - status.codes
+  - title.patterns

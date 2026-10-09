@@ -1,0 +1,205 @@
+---
+title: "Taxonomy"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>", message = FALSE, warning = FALSE)
+library(titleclassifier)
+tax   <- get_title_taxonomy()
+xwalk <- get_title_xwalk()
+sc    <- get_status_codes()
+ex <- function(x, n = 4) { x <- unique(x); paste(head(x[order(nchar(x), x)], n), collapse = ", ") }
+```
+
+Every title that `titleclassifier` codes ends up described along four
+dimensions:
+
+| Dimension | Columns | Set by | Answers |
+|---|---|---|---|
+| **Standard title** | `title.standard` | crosswalk, step 07 | which title is this, spelled one way? |
+| **Domain and occupation** | `domain.category`, `domain.label`, SOC codes | taxonomy, step 08 | what area of work is it in? |
+| **Level or board role** | `emp.level` or `board.role` (title only); `role.final`, `role.board`, `role.ceo` (resolved) | taxonomy, step 08; rules and model, step 09 | how senior is the person, and are they staff or board? |
+| **Qualifiers** | `strata`, `strata.label`, status flags, multiple-title fields | crosswalk, steps 04, 06 and 07 | rank within the title, status in the role, other roles held |
+
+The standard titles and their taxonomy are package data:
+`get_title_taxonomy()` returns one row per standard title
+(`r nrow(tax)` titles), and `get_title_xwalk()` maps the
+`r format(nrow(xwalk), big.mark = ",")` known variants onto them.
+
+## Domains
+
+The domain says what area of an organization the title works in. It has two
+levels: four broad categories, plus a fifth for entries that are not job
+titles, and a label within each category.
+
+| `domain.category` | Meaning |
+|---|---|
+| executive | top staff leadership and general management |
+| governance | board members and board officers |
+| operations | support functions found in any organization: finance, fundraising, HR, technology, ... |
+| industry-specific | work specific to the organization's field: medical, education, religion, ... |
+| non-job title | no title, boilerplate in place of one, or text that is not a job |
+
+```{r, echo = FALSE}
+d <- tax[tax$domain.category != "", ]
+dl <- do.call(rbind, lapply(split(d, list(d$domain.category, d$domain.label), drop = TRUE), function(g)
+  data.frame(domain.category = g$domain.category[1], domain.label = g$domain.label[1],
+             titles = nrow(g), examples = ex(g$title.standard))))
+dl <- dl[order(match(dl$domain.category, c("executive", "governance", "operations", "industry-specific", "non-job title")),
+               -dl$titles), ]
+knitr::kable(dl, row.names = FALSE)
+```
+
+The source of the domain vocabulary is `data-raw/crosswalks/domains.csv`.
+
+## Occupation codes (SOC)
+
+Job titles carry a 2018 BLS [Standard Occupational
+Classification](https://www.bls.gov/soc/) code at four levels: `major.group`
+(two digits), `minor.group`, `broad.group` and `detailed.occupation`, with
+the occupation's name in `soc.label`. Board seats have no SOC code: serving on
+a board is not an occupation.
+
+```{r, echo = FALSE}
+j <- tax[tax$major.group != "", ]
+sl <- do.call(rbind, lapply(split(j, j$major.group), function(g)
+  data.frame(major.group = g$major.group[1], titles = nrow(g),
+             occupations = ex(unique(g$soc.label), 3))))
+knitr::kable(sl, row.names = FALSE)
+```
+
+Most leadership titles fall in major group 11, Management Occupations.
+
+## Roles
+
+A person's role is the central output. It has two forms:
+
+* **Title only** (step 08): the taxonomy gives each standard title either an
+  employee level (`emp.level`) or a board role (`board.role`), never both.
+  This is what the title says on its own.
+* **Resolved** (step 09): `role.final` is the role after reading the
+  filer's checkboxes, pay and hours. A PRESIDENT is a board seat by title, but
+  a paid, full-time president with no other CEO is the CEO. See
+  [step 09](step-09-conditional-logic.html).
+
+### Employee levels
+
+| Level | Who | Example titles |
+|---|---|---|
+| **CEO** | the top staff job; one person per filing, or co-CEOs | `r ex(tax$title.standard[tax$emp.level == "CEO"])` |
+| **OFFICER** | C-suite below the CEO, vice presidents, deputies, general counsel | `r ex(tax$title.standard[tax$emp.level == "OFFICER"])` |
+| **MANAGER** | directors of departments and managers | `r ex(tax$title.standard[tax$emp.level == "MANAGER"])` |
+| **PROFESSIONAL** | highly paid non-managerial experts: physicians, lawyers, professors, coaches | `r ex(tax$title.standard[tax$emp.level == "PROFESSIONAL"])` |
+| **STAFF** | everyone else on staff: counselors, chefs, teachers, assistants | `r ex(tax$title.standard[tax$emp.level == "STAFF"])` |
+
+```{r}
+table(tax$emp.level[tax$emp.level != ""])
+```
+
+### Board roles
+
+| Board role | Standard title | Variants include |
+|---|---|---|
+| **CHAIR** | BOARD PRESIDENT | CHAIR, CHAIRMAN, CHAIRPERSON, PRESIDENT (unpaid) |
+| **VICE CHAIR** | BOARD VICE PRESIDENT | VICE CHAIR, VICE PRESIDENT (on the board) |
+| **SECRETARY** | BOARD SECRETARY | SECRETARY, CLERK, ADJUTANT |
+| **TREASURER** | BOARD TREASURER | TREASURER |
+| **MEMBER** | BOARD MEMBER | DIRECTOR, TRUSTEE, GOVERNOR, COMMITTEE MEMBER, ... |
+
+When step 09 turns an employee title into a board seat (an unpaid VICE
+PRESIDENT who ticks only the trustee box, say), `role.board` is read from the
+title: VICE PRESIDENT becomes VICE CHAIR.
+
+### Resolved role columns
+
+| Column | Values | Meaning |
+|---|---|---|
+| `role.final` | CEO, OFFICER, MANAGER, PROFESSIONAL, STAFF, BOARD | the person's role |
+| `role.board` | CHAIR, VICE CHAIR, SECRETARY, TREASURER, MEMBER | for BOARD: the seat; for a person with several board titles, the most senior |
+| `role.ceo` | designated, co-ceo, interim, imputed, model | for CEO: how the CEO was found. `designated`: a CEO-level title in an officer position. `co-ceo`: two or more designated. `interim`: designated and flagged interim. `imputed`: no CEO title, the highest-paid plausible leader. `model`: named by the 990-EZ model |
+| `role.position` | board, officer, board_officer, staff, unknown | the position from the checkboxes (or title and pay) |
+| `role.source` | checkbox, title+pay, title | what settled the position |
+| `role.method` | rules, model | which classifier decided ([Rules and models](classifiers.html)) |
+| `org.leadership` | designated, imputed, model, board_governed, no_paid | per filing: how its chief executive was found. `board_governed`: people are paid but none is a plausible leader. `no_paid`: nobody is paid |
+
+## Strata
+
+The crosswalk drops rank and type words from the standard title and records
+them in `strata` and `strata.label`, so that SENIOR VICE PRESIDENT OF
+MARKETING and VICE PRESIDENT OF MARKETING share one standard but stay
+distinguishable.
+
+| `strata` | Meaning | `strata.label` values |
+|---|---|---|
+| superior | a higher rank of the title | `r ex(unique(xwalk$strata.label[xwalk$strata == "superior" & xwalk$strata.label != ""]), 12)` |
+| subordinate | a lower rank of the title | `r ex(unique(xwalk$strata.label[xwalk$strata == "subordinate" & xwalk$strata.label != ""]), 12)` |
+| duplex | a second kind of seat alongside the usual one | `r ex(unique(xwalk$strata.label[xwalk$strata == "duplex" & xwalk$strata.label != ""]), 12)` |
+| committee | a committee seat, and which committee | `r ex(unique(xwalk$strata.label[xwalk$strata == "committee" & xwalk$strata.label != ""]), 12)` |
+| regional | a regional version of the title | regional |
+| exofficio | a seat held by virtue of another office | exofficio |
+
+```{r}
+table(xwalk$strata[xwalk$strata != ""])
+head(xwalk[xwalk$strata == "superior", ], 6)
+```
+
+## Status flags
+
+Step 06 removes status qualifiers from the title and records each as a 0/1
+flag. A person's flags apply to all of their titles.
+
+| Flag | Set when the title says | Examples |
+|---|---|---|
+| `former.x` | the person has left the role | FORMER, PAST, EMERITUS, RETIRED |
+| `interim.x` | the role is temporary | INTERIM, ACTING, TEMPORARY |
+| `future.x` | the person started during the year or will start | ELECT, INCOMING, SINCE, EFFECTIVE |
+| `outgoing.x` | the person left during the year | OUTGOING, THRU, UNTIL, RESIGNED, TERM ENDED |
+| `partial.x` | part of the year only: a date, or outgoing, future or partial-year status | PARTIAL YEAR, PART YEAR |
+| `founder.x` | the person founded the organization | FOUNDER, CO-FOUNDER |
+| `ex.officio.x` | the seat comes with another office | EX OFFICIO |
+| `at.large.x` | a seat not tied to a constituency | AT LARGE, AS NEEDED, PROXY |
+| `co.x` | the role is shared | CO-CHAIR, CO-DIRECTOR |
+| `region.x` | the role covers a region or chapter | REGIONAL, CHAPTER, DISTRICT, state and city names |
+| `sched.o.x` | the filer pointed to Schedule O instead of a title | SEE SCHEDULE O |
+| `date.x` | the title contained a date (step 02) | (THRU 6/2023), 2021-2023 |
+
+The status crosswalk lists every spelling of each status:
+
+```{r}
+table(sc$status.qualifier)
+head(sc[sc$status.qualifier == "FUTURE", ], 8)
+```
+
+## People with several roles
+
+A Part VII entry can name several roles, and a person can sit on the board
+and work on staff. These are recorded at three levels:
+
+* **Several titles in one entry.** "PRESIDENT & TREASURER" becomes two rows
+  (step 04). `title.count` is the person's number of titles, `title.order`
+  this title's position, and `title.mult.x` marks people with more than one.
+  Both rows carry the person's pay and hours once; the per-filing counts
+  (`num.dtk`, `num.board`, ...) weight them so that the person is counted
+  once.
+* **One role per person.** Step 09 resolves each person to a single
+  `role.final`, using their most senior position, and marks one of their rows
+  with `role.primary = TRUE`. Count people with `role.primary`; count titles
+  without it.
+* **Dual roles.** A person who ticks both the trustee and officer boxes holds
+  a board seat and an office (`role.position = "board_officer"`). They are
+  BOARD unless paid in an executive title, in which case they are CEO or
+  OFFICER: a working board member who runs the organization.
+* **Shared roles.** `co.x` marks a shared title (CO-CHAIR). Two or more
+  designated CEOs in a filing are each `role.ceo = "co-ceo"`.
+
+```{r}
+data(tinypartvii)
+set.seed(3)
+df <- dplyr::sample_n(tinypartvii, 400) |>
+  standardize_df() |> remove_dates() |> standardize_conj() |> split_titles() |>
+  standardize_spelling() |> gen_status_codes() |> standardize_titles() |>
+  categorize_titles() |> conditional_logic()
+multi <- df[df$title.count > 1, c("dtk.name", "title.raw", "title.standard", "title.order",
+                                  "role.position", "role.final", "role.primary")]
+head(multi[order(multi$dtk.name, multi$title.order), ], 8)
+```

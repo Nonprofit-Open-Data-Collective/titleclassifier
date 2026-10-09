@@ -1,0 +1,152 @@
+---
+title: "Rules and models"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>", message = FALSE, warning = FALSE)
+library(titleclassifier)
+```
+
+`titleclassifier` makes its decisions in two ways. Most of the pipeline is
+**rule-based**: dictionaries, lookup tables and if-then rules that a person
+wrote or checked. Roles on 990-EZ returns are decided by a **model**: a
+statistical classifier trained on examples. This article explains each, why
+both are used, and how to tell and control which one decided.
+
+## Rule-based classifiers
+
+A rule-based classifier applies explicit instructions. Each decision can be
+traced to a line of a table or of code, and changing the outcome means editing
+that line. The pipeline uses four kinds:
+
+| Kind | Where | Example |
+|---|---|---|
+| **Text rules** | steps 02-06 | regular expressions: `\bVP\b` becomes VICE PRESIDENT; a date like 6/2023 is removed and flagged |
+| **Lookup tables** | steps 06-08 | the crosswalks: the variant "EXEC DIR" maps to EXECUTIVE DIRECTOR, whose taxonomy row says CEO, general management, SOC 11-1011 |
+| **Learned rules** | step 07 | the pattern rules: a title the crosswalk does not list but that starts with MANAGER maps to MANAGER. They were found by counting how titles with each head are coded, and kept only where they were right at least 80% of the time, but once learned they are applied as fixed rules |
+| **Decision rules** | step 09 | an if-then cascade on checkboxes, pay and hours: officer box + CEO-level title = designated CEO; a board title held under 10 hours a week for under $25,000 = board seat |
+
+Rules are transparent and stable. They give the same answer every time,
+anyone can read why, and an error is fixed by editing a CSV or a line of
+code. Their limit is coverage: a rule only knows the cases its author thought
+of. They also depend on their inputs. The step 09 rules lean on the Part VII
+checkboxes, which are the filer's own statement of who is a trustee, an
+officer or a key employee.
+
+The rules live in:
+
+* `data-raw/crosswalks/*.csv` (the lookup tables and pattern rules), loaded
+  with `get_title_xwalk()`, `get_title_taxonomy()`, `get_status_codes()` and
+  `get_title_patterns()`;
+* the word lists (`date.words`, `likely.titles`, ...), loaded with `data()`;
+* the code of each step, in particular `fix_spelling()` and `resolve_roles()`.
+
+## Model-based classifiers
+
+A model-based classifier learns how to decide from labeled examples instead of
+being told. `titleclassifier` has one: the **no-checkbox role model** used in
+step 09 for 990-EZ returns.
+
+The problem it solves: a 990-EZ has no position checkboxes. Without them, the
+step 09 rules must guess position from title and pay alone, and they miss most
+officers and over-call staff. But full 990 returns do have the boxes, and the
+rules resolve them well. So the rules on full 990s can teach a model to decide
+without the boxes.
+
+**How it was trained** (`data-raw/partvii-validation/20-role-model-ship.R`):
+
+1. **Labels.** About 557,000 people on full-990 filings from a stratified
+   sample of 2019-2023 returns, each labeled with the role the step 09 rules
+   give them *with* the checkboxes.
+2. **Real 990-EZ examples.** 20,800 people at organizations that switched
+   between the 990-EZ and the full 990, labeled with their role in the
+   full-990 year and described by their 990-EZ-year filing (weight 3).
+3. **Features without the boxes.** Each person is described only by what a
+   990-EZ also reports. `role_model_features()` builds 100 features:
+   - title keywords (PRESIDENT, CHAIR, DIRECTOR, ...);
+   - the taxonomy's level, board role, domain and SOC group;
+   - pay and hours;
+   - the person's rank and share of pay and hours within the filing;
+   - the filing's make-up (people, paid people, other CEO and board titles);
+   - status flags.
+4. **Model.** Gradient-boosted decision trees (xgboost, multi-class, 151
+   rounds of depth-8 trees) predicting one of BOARD, CEO, OFFICER, MANAGER,
+   PROFESSIONAL or STAFF.
+
+The fitted model ships with the package in `inst/extdata/role-model/`.
+
+```{r}
+system.file("extdata", "role-model", package = "titleclassifier") |> list.files()
+```
+
+```{r, eval = requireNamespace("xgboost", quietly = TRUE)}
+f   <- system.file("extdata", "role-model", package = "titleclassifier")
+fit <- xgboost::xgb.load(file.path(f, "role-model.ubj"))
+imp <- xgboost::xgb.importance(feature_names = readLines(file.path(f, "feature-names.txt")), model = fit)
+head(imp[, c("Feature", "Gain")], 12)
+```
+
+A model is less transparent than a rule. It cannot say "because of line 41",
+and fixing a specific error means retraining rather than editing. In
+exchange it weighs many signals together, such as pay rank, hours and the
+other titles in the filing, in ways no hand-written rule does. It also makes
+the same decision for the same inputs: the predictions are deterministic.
+
+## Rules versus model
+
+| | Rules | Model |
+|---|---|---|
+| Built from | expert judgment and curated tables | labeled examples |
+| Inputs | title, plus checkboxes, pay and hours in step 09 | title, pay, hours and the filing's make-up; never the checkboxes |
+| Reads the checkboxes | yes, first | no |
+| Explains a decision | yes: the rule that fired | only in aggregate (feature importance) |
+| To fix an error | edit a CSV or a rule | add examples and retrain |
+| Used for | all of steps 01-08; step 09 on full 990 returns | step 09 on 990-EZ returns |
+
+### Why the rules decide full 990 returns
+
+On a full 990 the checkboxes are the filer's own answer to the question the
+model would be estimating. The rules read them directly. The model was
+trained to imitate the rules on these filings, so it cannot beat them there.
+
+### Why the model decides 990-EZ returns
+
+Without the checkboxes, the model does better than the rules:
+
+| Test set | People | Rules | Model |
+|---|---:|---:|---:|
+| Hand-labeled 990-EZ people (2010-12) | 40 | 82.5% | **92.5%** |
+| Form switchers, held out from training, same title in both years | 10,558 | 95.1% | **96.7%** |
+| ... of whom not on the board | 797 | 63.6% | **74.0%** |
+
+Most of the gain is in recognizing officers and staff: without the boxes, the
+rules find few officers and call too many people staff. See
+[Performance](performance.html) for more.
+
+## Which one decided, and how to choose
+
+`role.method` records the classifier for each person: `rules` or `model`.
+
+```{r}
+data(tinypartvii)
+set.seed(2)
+df <- dplyr::sample_n(tinypartvii, 600) |>
+  standardize_df() |> remove_dates() |> standardize_conj() |> split_titles() |>
+  standardize_spelling() |> gen_status_codes() |> standardize_titles() |>
+  categorize_titles()
+
+roles <- resolve_roles(df)
+table(roles$formtype[roles$role.primary], roles$role.method[roles$role.primary])
+```
+
+The model is used when the xgboost package is installed (it is suggested, not
+required). To use the rules everywhere, pass `use_model = FALSE`:
+
+```{r}
+rules <- resolve_roles(df, use_model = FALSE)
+ez <- roles$formtype == "990EZ" & roles$role.primary
+table(model = roles$role.final[ez], rules = rules$role.final[ez])
+```
+
+`predict_roles()` returns the model's prediction for any rows, including full
+990 rows, which is useful for checking how often it agrees with the rules.
