@@ -2,9 +2,9 @@ titleclassifier regression reference
 source_file: F9-P07-T01-COMPENSATION-2023.CSV
 seed: 1234   target_rows: 4000
 demo_rows: 4000   demo_orgs: 493
-reference_rows: 4137   reference_cols: 103
-reference_hash_md5: a0e82dd1f1f5a8dc7169759de1ddfe90
-title.standard_NA_rate: 0.0761
+reference_rows: 4135   reference_cols: 103
+reference_hash_md5: 8e96f895445f363f848905e64de877cd
+title.standard_NA_rate: 0.0629
 
 per-column NA rate:
   object.id: 0
@@ -16,9 +16,9 @@ per-column NA rate:
   formtype: 0
   F9_07_COMP_DTK_NAME_PERS: 0
   title.raw: 0
-  strata: 0.0761
-  strata.label: 0.0761
-  title.standard: 0.0761
+  strata: 0.0629
+  strata.label: 0.0629
+  title.standard: 0.0629
   title.mult.x: 0
   title.order: 0
   title.count: 0
@@ -76,37 +76,37 @@ per-column NA rate:
   co.x: 0
   date.x: 0
   sched.o.x: 0
-  domain.category: 0.0764
-  domain.label: 0.0764
-  soc.label: 0.0764
-  major.group: 0.0764
-  minor.group: 0.0764
-  broad.group: 0.0764
-  detailed.occupation: 0.0764
-  emp.level: 0.0764
-  board.role: 0.0764
-  emp: 0.0764
+  domain.category: 0.0629
+  domain.label: 0.0629
+  soc.label: 0.0629
+  major.group: 0.0629
+  minor.group: 0.0629
+  broad.group: 0.0629
+  detailed.occupation: 0.0629
+  emp.level: 0.0629
+  board.role: 0.0629
+  emp: 0.0629
   num.emp: 0
-  board: 0.0764
+  board: 0.0629
   num.board: 0
-  ceo: 0.0764
+  ceo: 0.0629
   num.ceos: 0
-  c.level: 0.0764
+  c.level: 0.0629
   num.clevel: 0
-  dir.vp: 0.0764
+  dir.vp: 0.0629
   num.dirvp: 0
-  mgr: 0.0764
+  mgr: 0.0629
   num.mgr: 0
-  spec: 0.0764
+  spec: 0.0629
   num.spec: 0
-  pres: 0.0764
+  pres: 0.0629
   num.pres: 0
-  vp: 0.0764
+  vp: 0.0629
   num.vp: 0
-  treas: 0.0764
+  treas: 0.0629
   num.treas: 0
-  sec: 0.0764
+  sec: 0.0629
   num.sec: 0
-  mem: 0.0764
+  mem: 0.0629
   num.mem: 0
   url: 0
