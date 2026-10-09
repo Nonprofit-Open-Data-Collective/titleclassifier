@@ -63,3 +63,68 @@ New standards proposed by the drafts, each with a taxonomy row in
 - DISPATCHER
 - FOREMAN
 - BARTENDER
+
+## Round 1: consensus vote and apply (2026-10-08)
+
+So that crosswalk revisions are not held up until a person can review each
+title, the tier 1 drafts were settled by a three-vote consensus
+(`08-consensus-vote.R`) and applied. The owner asked for this approach.
+
+- **Voters:**
+  - Claude's draft
+  - two independent Claude reviewers (A and B). Each saw the same evidence for
+    every title, the list of valid standards, and the policies above, and voted
+    agree or disagree. When they disagreed, they gave their own decision.
+- **Rule:**
+  - The draft stands if at least one reviewer agrees.
+  - If both disagree with the same decision, the reviewers' decision wins.
+  - Anything else is left `ambiguous` and not applied. This case did not occur.
+- **Result:**
+
+  | Outcome | Titles |
+  |---|---|
+  | Draft stands, both reviewers agree | 833 |
+  | Draft stands, one reviewer agrees | 31 |
+  | Reviewers' shared alternative replaces the draft | 59 |
+
+- **Overrides:** most of the 59 send functional titles whose holders look like
+  a board (officer or trustee box high, unpaid, a few hours a week) from staff
+  standards to BOARD MEMBER (37) or BOARD VICE PRESIDENT (14). Examples are
+  VP of membership, fundraising, publicity, events, liaison, and unpaid legal
+  counsel on the board.
+- **Records:**
+  - Every vote and reason is in `consensus-votes-round1.csv`.
+  - The vote files are kept in `~/Documents/PARTVII/review/votes/round1/`.
+  - Each review file's `review:` block now has
+    `reviewer: "Consensus vote (3 Claude reviewers)"` and a note starting
+    `[... not yet reviewed by a person]`.
+- **Applied with `06-apply-decisions.R`:**
+  - 108 crosswalk variants added
+  - 400 changed, including 129 variants moved from the `CHIEF _X_ OFFICER`
+    placeholders to CHIEF OFFICER under P1
+  - 16 new taxonomy rows, in the emp.level form of F-020
+
+  The three union steward titles map to BOARD MEMBER, because UNION
+  REPRESENTATIVE was collapsed under F-016.
+
+**For later review by a person:** filter `review-decisions.csv` for reviewer
+"Consensus vote (3 Claude reviewers)". Start with the 59 overrides and the 31
+2-of-3 drafts (the `outcome` column in `consensus-votes-round1.csv`). To accept
+a decision, put your name in `reviewer`. To change one, edit the review file
+and rerun 05 and 06.
+
+**Effect.** The classification was re-run with the consensus decisions, the
+CO- fix (P3) and the same panel (61.3 million person-title rows). That run used
+the snapshot from before F-020; F-020 renames roles but does not change which
+titles are matched.
+
+| | Round 0 | Round 1 |
+|---|---|---|
+| Standardized titles (`TitleTxt7`) | 618,164 | 611,042 |
+| Rows with no `title.standard`, all | 6.35% | 5.81% |
+| ... tier 1 | 0.61% | 0.07% |
+| ... tier 2 | 56.9% | 57.1% |
+| Tier 1 titles to ADD / INSPECT | 129 / 102 | 19 / 61 |
+
+Tiers 2-4 are unchanged because round 1 covered tier 1 only. They are next,
+through clusters and cleaning fixes, as the review process describes.

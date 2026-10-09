@@ -49,8 +49,8 @@ tx <- as.data.table(get_googlesheets_title_taxonomy())
 bad <- rbind(
   dec[!status %in% statuses, .(title_v7, problem = paste("unknown status", status))],
   dec[status %in% c("remap", "add", "add_new_standard") & standard == "", .(title_v7, problem = "no standard given")],
-  dec[status %in% c("remap", "add") & standard != "" & !standard %in% tx$title.standard,
-      .(title_v7, problem = paste0("'", standard, "' is not in the taxonomy (use add_new_standard)"))],
+  dec[status %in% c("remap", "add") & standard != "" & !standard %in% c(tx$title.standard, dec[status == "add_new_standard", standard]),
+      .(title_v7, problem = paste0("'", standard, "' is not in the taxonomy or added by another decision (use add_new_standard)"))],
   dec[status == "add_new_standard" & new_taxonomy == "", .(title_v7, problem = "add_new_standard without new_taxonomy")],
   dec[status == "fix_cleaning" & cleaning_issue == "", .(title_v7, problem = "fix_cleaning without cleaning_issue")])
 if (nrow(bad)) { message("decisions that need attention:"); print(bad) }
