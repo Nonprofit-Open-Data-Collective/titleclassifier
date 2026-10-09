@@ -117,7 +117,10 @@ codes <- c(
   "BARTENDER" = "35-3011", "CHEF" = "35-1011", "EXECUTIVE CHEF" = "35-1011",
   "GIFT SHOP MANAGER" = "41-1011", "GOLF PROFESSIONAL" = "27-2022",
   # ---- union staff ----
-  "BUSINESS GAENT" = "13-1199", "ASSISTANT BUSINESS AGENT" = "13-1199", "STAFF REPRESENTATIVE" = "13-1199"
+  "BUSINESS GAENT" = "13-1199", "ASSISTANT BUSINESS AGENT" = "13-1199", "STAFF REPRESENTATIVE" = "13-1199",
+  # ---- standards added by round 2 of the Part VII review (2026-10-09) ----
+  "LOAN OFFICER" = "13-2072", "ACTUARY" = "15-2011", "MISSIONARY" = "21-2099",
+  "PARAMEDIC" = "29-2043", "PERFUSIONIST" = "29-9099", "PILOT" = "53-2012"
 )
 
 missing <- setdiff(names(codes), tx$title.standard)
@@ -152,6 +155,7 @@ log <- rbindlist(log)
 if (!nrow(log)) { message("nothing to change; the codes are already in"); quit(save = "no") }
 write_xwalk(tx, "title-taxonomy")
 log[, applied := as.character(Sys.Date())]
-fwrite(log, file.path(xwalk_dir, "soc-codes-log.csv"), quote = TRUE)
+lp <- file.path(xwalk_dir, "soc-codes-log.csv")
+fwrite(if (file.exists(lp)) rbind(fread(lp, colClasses = "character", na.strings = NULL), log[, lapply(.SD, as.character)]) else log, lp, quote = TRUE)
 rebuild_xwalks()
 message(sprintf("%d cells changed in %d titles", nrow(log), uniqueN(log$title.standard)))
