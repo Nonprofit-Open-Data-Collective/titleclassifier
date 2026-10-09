@@ -31,13 +31,8 @@ test_that("each title.standard has one taxonomy row (F-001)", {
   expect_equal(sum(duplicated(tx$title.standard)), 0)
 })
 
-test_that("every standard in the standardization crosswalk has a taxonomy row", {
-  # F-002 is open: these standards are known to lack a taxonomy row
-  known <- c("MEMBERSHIP AND PUBLIC RELATIONS", "MUSEUM GUIDE", "SCHED O")
-  missing <- setdiff(unique(xw$title.standard), tx$title.standard)
-  expect_equal(setdiff(missing, known), character(0))
-  # drop a standard from `known` once it is fixed
-  expect_equal(setdiff(known, missing), character(0))
+test_that("every standard in the standardization crosswalk has a taxonomy row (F-002)", {
+  expect_equal(setdiff(unique(xw$title.standard), tx$title.standard), character(0))
 })
 
 test_that("role flags are X or blank and levels imply their parent flag (F-014)", {

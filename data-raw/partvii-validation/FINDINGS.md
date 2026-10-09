@@ -61,7 +61,7 @@ check pass.
 `03-title-profiles.R` also keeps only the first row of any duplicated
 standard, as a guard.
 
-### F-002 Standards with no taxonomy row (open)
+### F-002 Standards with no taxonomy row (fixed)
 
 Five `title.standard` values have no taxonomy row, so their holders get no
 category:
@@ -80,6 +80,17 @@ Together they affect 139 standardized titles, including:
 
 **Decision needed:** give each chief-officer title its own standard (and
 taxonomy row), or add one taxonomy row for a generic chief officer.
+
+**Fixed:**
+- The CHIEF _X_ OFFICER variants map to the generic CHIEF OFFICER (P1, round 1).
+- On 2026-10-08:
+  - SCHED O and ATTACHED (see the attached schedule) map to NO TITLE (P4);
+  - MEMBERSHIP AND PR maps to MEMBERSHIP;
+  - MUSEUM GUIDE gets a taxonomy row (STAFF, SOC 39-7011).
+
+  `applied-log.csv` records these, with id F-002.
+- Every standard now has a taxonomy row, and `test-crosswalks.R` allows no
+  exceptions.
 
 ### F-003 BOARD MEMBER used as a default for unrelated titles (open)
 

@@ -68,7 +68,7 @@ if (!apply) { message("dry run; rerun with --apply to write the tables"); quit(s
 
 xw2 <- copy(xw)
 if (nrow(chg)) xw2[chg, on = "title.variant", title.standard := i.title.standard]
-xw2 <- rbind(xw2, add[, .(title.variant, title.standard, strata = "", strata.label = "")], fill = TRUE)
+xw2 <- rbind(xw2, add[, .(title.variant, title.standard, strata = "", strata.label = "", notes = "")], fill = TRUE)
 setorder(xw2, title.variant)
 write_xwalk(xw2, "title-standardization")
 if (nrow(new_tx)) write_xwalk(rbind(tx, new_tx)[order(title.standard)], "title-taxonomy")
