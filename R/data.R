@@ -41,6 +41,26 @@ NULL
 #'   title-taxonomy-map Google Sheet (retired 2026-10-08).
 NULL
 
+#' @name title.patterns
+#' @docType data
+#' @title Head rules for titles the crosswalk does not list.
+#'
+#' @description Learned from the crosswalk by
+#'   `data-raw/partvii-validation/10-pattern-rules.R`. A head is a crosswalk
+#'   variant at the end (`position` "suffix") or start ("prefix") of a title.
+#'   Each rule maps titles with that longest head to `title.standard`: either
+#'   the standard most known titles with that head map to (`rule` "majority")
+#'   or the head's own standard when those titles share its role level
+#'   ("level"). `support` is the number of known titles behind the rule and
+#'   `precision` the share of them it gets right. Used by
+#'   `standardize_titles()` through [match_title_patterns()]; load it with
+#'   [get_title_patterns()].
+#'
+#' @format A data frame: `position`, `head`, `title.standard`, `rule`
+#'   (character), `support` (integer), `precision` (numeric).
+#' @source `data-raw/crosswalks/title-patterns.csv`.
+NULL
+
 #' @name title.taxonomy
 #' @docType data
 #' @title Title taxonomy (standard title to domain, SOC code, and role).

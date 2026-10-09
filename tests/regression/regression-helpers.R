@@ -57,7 +57,8 @@ tc_xwalk_paths <- function( dir )
   list(
     status   = file.path( dir, "xwalk-status-codes.csv" ),
     xwalk    = file.path( dir, "xwalk-title-standardization.csv" ),
-    taxonomy = file.path( dir, "xwalk-title-taxonomy.csv" )
+    taxonomy = file.path( dir, "xwalk-title-taxonomy.csv" ),
+    patterns = file.path( dir, "xwalk-title-patterns.csv" )
   )
 }
 
@@ -71,10 +72,12 @@ tc_pin_crosswalks <- function( dir )
   status   <- get_status_codes()
   xwalk    <- get_title_xwalk()
   taxonomy <- get_title_taxonomy()
+  patterns <- get_title_patterns()
 
   utils::write.csv( status,   p$status,   row.names = FALSE, na = "" )
   utils::write.csv( xwalk,    p$xwalk,    row.names = FALSE, na = "" )
   utils::write.csv( taxonomy, p$taxonomy, row.names = FALSE, na = "" )
+  utils::write.csv( patterns, p$patterns, row.names = FALSE, na = "" )
 
   cat( "[OK] pinned crosswalks to", dir, "\n" )
   invisible( p )
@@ -84,7 +87,7 @@ tc_pin_crosswalks <- function( dir )
 tc_load_crosswalks <- function( dir )
 {
   p <- tc_xwalk_paths( dir )
-  for( f in unlist( p ) )
+  for( f in unlist( p[ c( "status", "xwalk", "taxonomy" ) ] ) )
     if( ! file.exists( f ) )
       stop( "tc_load_crosswalks(): missing pinned crosswalk: ", f,
             "\nRun tc_pin_crosswalks() first.", call. = FALSE )
@@ -92,7 +95,12 @@ tc_load_crosswalks <- function( dir )
   rd <- function( f ) utils::read.csv( f, colClasses = "character",
                                        na.strings = character(0),
                                        check.names = FALSE )
-  list( status = rd( p$status ), xwalk = rd( p$xwalk ), taxonomy = rd( p$taxonomy ) )
+  # head rules: pinned since 2026-10-09; an older pinned set without them runs with none
+  patterns <- if( file.exists( p$patterns ) ) {
+    x <- rd( p$patterns ); x$support <- as.integer( x$support ); x$precision <- as.numeric( x$precision ); x
+  } else data.frame( position = character(0), head = character(0), title.standard = character(0),
+                     rule = character(0), support = integer(0), precision = numeric(0) )
+  list( status = rd( p$status ), xwalk = rd( p$xwalk ), taxonomy = rd( p$taxonomy ), patterns = patterns )
 }
 
 # ---------------------------------------------------------------------------
@@ -107,7 +115,7 @@ tc_run_pipeline <- function( raw_df, xwalks )
     split_titles() |>
     standardize_spelling() |>
     gen_status_codes(   gs_status_codes   = xwalks$status   ) |>
-    standardize_titles( gs_title_xwalk    = xwalks$xwalk    ) |>
+    standardize_titles( gs_title_xwalk    = xwalks$xwalk, title_patterns = xwalks$patterns ) |>
     categorize_titles(  gs_title_taxonomy = xwalks$taxonomy ) |>
     conditional_logic()
 }

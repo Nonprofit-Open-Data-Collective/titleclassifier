@@ -194,7 +194,7 @@ add_features <- function( df )
       "ORGNAME","NAME", "EIN2", "TAX_YEAR", "RETURN_TYPE", 
       "F9_07_COMP_DTK_NAME_PERS", 
       
-      "TITLE_RAW", "strata", "strata.label", "title.standard", 
+      "TITLE_RAW", "strata", "strata.label", "title.standard", "title.match",
       "Multiple.Titles", "Num.Titles", "tot.titles",
       "TitleTxt7", "TitleTxt6", "TitleTxt5", "TitleTxt4", 
       "TitleTxt3", "TitleTxt2", "F9_07_COMP_DTK_TITLE",

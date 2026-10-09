@@ -287,3 +287,61 @@ standard. Re-applying decisions from earlier rounds no longer fills
 **Effect.** Rows with no `title.standard` went from 4.33% to 4.31%. The
 fixes mostly make titles correct rather than matchable: DEPUTY CHAIR was
 already matched, wrongly, and DEPARTMENT CHAIR is now right.
+
+## Round 4: head rules for tiers 3-4 (2026-10-09)
+
+**Problem.** After round 3, 4.31% of person-title rows had no `title.standard`.
+Nearly all of them are in tiers 3-4: about 600,000 titles, most held by a
+handful of people. Title-by-title review does not scale to that.
+
+**Method: a learned fallback in step 07.**
+- `10-pattern-rules.R` learns head rules from the titles the crosswalk
+  matches exactly.
+- A head is a crosswalk variant that ends a title (suffix: FINANCE COMMITTEE
+  MEMBER has the head COMMITTEE MEMBER) or starts it (prefix: CEO OF X has
+  the head CEO). A title is never its own head.
+- For each head, the known titles that share it vote. The head becomes a rule
+  when it has at least 5 known titles and either:
+  - at least 80% of them map to one standard (`rule` "majority"); or
+  - at least 85% share the head's own role level (`rule` "level"). The rule
+    then maps to the head's own standard.
+- Context-dependent heads get no rule, following F-017: VICE PRESIDENT,
+  DIRECTOR, PRESIDENT, SECRETARY, TREASURER, MANAGER and their OF-forms. These
+  titles stay unmatched, and step 09 resolves the role from the checkboxes and
+  pay.
+- `standardize_titles()` tries the crosswalk first. A title with no exact
+  match gets the rule for its longest head (`match_title_patterns()`). A new
+  column, `title.match`, records "exact", "pattern", or NA when neither
+  applies.
+- The 121 rules are in `data-raw/crosswalks/title-patterns.csv`, built into
+  `data/title-patterns.rda` (`title.patterns`, `get_title_patterns()`), and
+  pinned for the regression test.
+
+**Quality.** Three blind checks were run. In each, an agent decided 200
+random pattern-matched titles (100 from tier 3, 100 from tier 4) without
+seeing the rule. The files are in `round4/`.
+
+| Check | Rules | Same standard | Same role level | Same board-vs-staff side |
+|---|---|---|---|---|
+| 1 | 172 (first draft) | 63% | 84% | 86% |
+| 2 | 147 (VP, MANAGER, TREASURER heads dropped after check 1) | 65% | 77% | 84% |
+| 3 | **121** (DIRECTOR heads dropped after check 2) | **80%** | **82%** | **88%** |
+
+- Check 3 is the honest estimate for the final rules: no rule was chosen
+  using its sample.
+- Most remaining misses are combined titles ("X AND Y") where the reviewer
+  picked the other title.
+- On the known titles, leave-one-out gives 87% the same standard and 91% the
+  same role level.
+- A pattern match is less reliable than the crosswalk (about 91% in tier 2).
+  Use `title.match == "exact"` to keep exact matches only.
+
+**Effect.**
+- Rows with no `title.standard` go from 4.31% to 3.53%: about 90,000 titles
+  and 470,000 person-title rows are now matched by pattern.
+- The regression reference is rebuilt (658b8f0e; 44 demo rows are now pattern
+  matches).
+- `09-gold-check.R`: 93.5% on the original labels (94.2% before; one person)
+  and 86.5% on the v2 labels (unchanged).
+- The review files show pattern-matched titles in a new PATTERN queue
+  (`review/queue-pattern.csv`).

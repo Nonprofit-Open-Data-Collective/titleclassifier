@@ -102,8 +102,9 @@ write_one <- function(p) {
     "---", "")
   b <- c(
     sprintf("# %s `%s`", p$id, if (p$TitleTxt7 == "") "(empty)" else p$TitleTxt7), "",
-    if (p$crosswalk == "mapped")
-      sprintf("**Crosswalk:** maps to **%s** -> %s / %s%s. Taxonomy flags: %s.", p$title_standard,
+    if (p$crosswalk %in% c("mapped", "pattern"))
+      sprintf("**Crosswalk:** %s **%s** -> %s / %s%s. Taxonomy flags: %s.",
+              if (p$crosswalk == "pattern") "not listed; a head rule (title.patterns) maps it to" else "maps to", p$title_standard,
               ifelse(is.na(p$domain.category), "(no taxonomy row)", p$domain.category), ifelse(is.na(p$domain.label), "", p$domain.label),
               ifelse(is.na(p$soc.label) | p$soc.label == "", "", paste0(" (SOC: ", p$soc.label, ")")), ifelse(p$tax_flags == "", "none", p$tax_flags))
     else "**Crosswalk:** not in the crosswalk; `title.standard` is NA and the person gets no category.",
@@ -165,4 +166,4 @@ idx <- prof[, .(id, title_v7 = TitleTxt7, queue, tier, crosswalk, current_standa
                 n_rows, n_filings, n_orgs, cum_pct_rows = round(cum_pct_rows, 5), pct_officer, pct_trustee, pct_paid, med_hours,
                 file = ifelse(tier <= max_tier, file, ""))]
 fwrite(idx, file.path(pv_review, "index.csv"))
-for (qq in c("ADD", "INSPECT", "CONFIRM")) fwrite(idx[queue == qq], file.path(pv_review, sprintf("queue-%s.csv", tolower(qq))))
+for (qq in c("ADD", "INSPECT", "CONFIRM", "PATTERN")) fwrite(idx[queue == qq], file.path(pv_review, sprintf("queue-%s.csv", tolower(qq))))

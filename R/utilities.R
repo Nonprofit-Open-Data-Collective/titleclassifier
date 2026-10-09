@@ -89,6 +89,18 @@ get_status_codes <- function(){ .crosswalk_data( "status.codes" ) }
 get_title_xwalk <- function(){ .crosswalk_data( "title.xwalk" ) }
 
 
+#' @title Load the title head rules
+#'
+#' @description Returns the head rules that `standardize_titles()` uses for
+#'   titles the crosswalk does not list: the `title.patterns` package data.
+#'
+#' @return A data frame with columns `position`, `head`, `title.standard`,
+#'   `rule`, `support` and `precision`.
+#'
+#' @export
+get_title_patterns <- function(){ .crosswalk_data( "title.patterns" ) }
+
+
 #' @title Load the title-taxonomy crosswalk
 #'
 #' @description Returns the `title.standard` to taxonomy crosswalk used by

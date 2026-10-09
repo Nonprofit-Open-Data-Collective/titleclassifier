@@ -71,7 +71,7 @@ message(sprintf("title keys: %d (raw title x step-7 inputs) -> %d person-title r
 
 # ---- join back to the panel ------------------------------------------------------
 duckdb::duckdb_register(con, "k", k[, .(TITLE_RAW, OFFICER_X, PAY_GT0, HRS_GT40, Num.Titles, TitleTxt6, TitleTxt7,
-                                        title.standard, strata, DATE.X, FORMER.X, INTERIM.X, FOUNDER.X, FUTURE.X,
+                                        title.standard, title.match, strata, DATE.X, FORMER.X, INTERIM.X, FOUNDER.X, FUTURE.X,
                                         OUTGOING.X, PARTIAL.X, AT.LARGE.X, EXOFFICIO.X, REGIONAL.X, CO.X, SCHED.O.X)])
 out <- file.path(pv_data, "panel-classified")
 unlink(out, recursive = TRUE)

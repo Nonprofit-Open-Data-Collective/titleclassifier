@@ -66,8 +66,18 @@ title.taxonomy <- title.taxonomy[, c(
 dup <- title.taxonomy$title.standard[duplicated(title.taxonomy$title.standard)]
 if (length(dup)) stop("duplicate title.standard in title-taxonomy.csv: ", paste(unique(dup), collapse = ", "))
 
+# head rules for titles the crosswalk does not list (10-pattern-rules.R)
+title.patterns <- read_table("title-patterns.csv",
+                             c("position", "head", "title.standard", "rule", "support", "precision"))
+title.patterns$support   <- as.integer(title.patterns$support)
+title.patterns$precision <- as.numeric(title.patterns$precision)
+bad <- setdiff(title.patterns$title.standard, title.taxonomy$title.standard)
+if (length(bad)) stop("title-patterns.csv targets standards not in the taxonomy: ", paste(bad, collapse = ", "))
+if (!all(title.patterns$position %in% c("suffix", "prefix"))) stop("title-patterns.csv: position must be suffix or prefix")
+
 save(status.codes,   file = "data/status-codes.rda",   compress = "xz")
+save(title.patterns, file = "data/title-patterns.rda", compress = "xz")
 save(title.xwalk,    file = "data/title-xwalk.rda",    compress = "xz")
 save(title.taxonomy, file = "data/title-taxonomy.rda", compress = "xz")
-message(sprintf("built status.codes (%d rows), title.xwalk (%d), title.taxonomy (%d)",
-                nrow(status.codes), nrow(title.xwalk), nrow(title.taxonomy)))
+message(sprintf("built status.codes (%d rows), title.xwalk (%d), title.taxonomy (%d), title.patterns (%d)",
+                nrow(status.codes), nrow(title.xwalk), nrow(title.taxonomy), nrow(title.patterns)))

@@ -1,0 +1,201 @@
+id,status,standard,reason
+P001,map,BOARD MEMBER,committee chair; trustee 100% unpaid 1 hr
+P002,map,BOARD MEMBER,alternate on national executive committee; unpaid board profile
+P003,map,BOARD MEMBER,alternate delegate; unpaid officer
+P004,map,BOARD MEMBER,alternate board member; trustee box 100% unpaid
+P005,ambiguous,,hospital department chair; mostly paid 60 hrs but no clear standard (physician leader vs manager) and some trustee holders
+P006,map,BOARD MEMBER,committee chair; unpaid board profile
+P007,map,FIRE OFFICER,assistant chief of a (fire) hall; unpaid volunteer line officer
+P008,map,ASSISTANT DIRECTOR,paid 88% 40 hrs staff
+P009,map,ASSISTANT DIRECTOR,assistant director of representation (union); paid 100% 40 hrs
+P010,map,BOARD MEMBER,committee chair; trustee 100% unpaid
+P011,map,FOUNDER,board member and co-founder; paid 100% 40 hrs
+P012,map,BOARD MEMBER,board member at large
+P013,map,BOARD MEMBER,board member and committee chair
+P014,map,BOARD MEMBER,board member; outside job as county commissioner
+P015,map,BOARD MEMBER,board member with volunteer field maintenance duty
+P016,map,BOARD MEMBER,board member listed first; guest services duty has no standard
+P017,map,BOARD MEMBER,board member; CEO refers to outside organization
+P018,map,BOARD MEMBER,board member; outside job real estate broker
+P019,map,BOARD MEMBER,board member and registrar of subunit; trustee 100%
+P020,map,BOARD VICE PRESIDENT,board member and vice chair
+P021,map,BOARD MEMBER,board member chairing affinity group (Women United)
+P022,map,BOARD MEMBER,board member with end-date fragment
+P023,map,BOARD MEMBER,board member for programs; trustee 100% unpaid
+P024,map,BOARD VICE PRESIDENT,board VP of operations; officer 100% 5 hrs
+P025,map,BOARD MEMBER,committee member; trustee 100% unpaid
+P026,map,OPERATIONS MANAGER,building operations manager; paid 40 hrs
+P027,map,BOARD MEMBER,representative of New Castle on board; trustee 100% unpaid
+P028,map,CEO,CEO with date fragments; paid 40 hrs
+P029,map,CEO,CEO of named unit; paid 40 hrs
+P030,map,CEO,CEO of JRMC; paid officer
+P031,map,CEO,CEO; paid officer
+P032,map,CEO,CEO of named unit; paid
+P033,map,CEO,college president and CEO of affiliate village
+P034,map,CEO,chief executive officer of named org
+P035,map,CEO,president and CEO; paid 54 hrs
+P036,map,CEO,CEO of BHR; paid 40 hrs
+P037,map,CEO,CEO of CFMC (also medical director/physician); paid
+P038,map,CEO,CEO of executive education unit; paid 50 hrs
+P039,map,CEO,president/CEO of affiliate; paid
+P040,map,CEO,director and CEO; paid 100% 40 hrs
+P041,map,CEO,CEO; paid 50 hrs
+P042,map,CEO,CEO of affiliated hospitals; paid 41 hrs
+P043,map,CEO,president and CEO TMH; paid 50 hrs
+P044,map,BOARD TREASURER,CFO on executive committee of small EZ filer; unpaid 8 hrs - functions as treasurer
+P045,map,CHIEF FINANCIAL OFFICER,CFO; paid 50 hrs
+P046,map,CHIEF FINANCIAL OFFICER,CFO of SMH; paid 55 hrs
+P047,map,BOARD TREASURER,treasurer/CFO; unpaid officer 1 hr
+P048,map,CHIEF FINANCIAL OFFICER,CFO of corporate services; paid 60 hrs
+P049,map,CHIEF FINANCIAL OFFICER,CFO of foundation; paid 40 hrs
+P050,map,BOARD MEMBER,audit committee chair
+P051,map,BOARD MEMBER,committee chair; unpaid
+P052,map,BOARD MEMBER,committee chair; unpaid
+P053,map,CHIEF OFFICER,compound chief-X-officer; paid 40 hrs
+P054,map,CHIEF OFFICER,chief marketing and engagement (compound chief officer); paid 40 hrs
+P055,map,BOARD MEMBER,trustee; 1 hr
+P056,map,BOARD MEMBER,class III board seat chair; trustee 100% unpaid
+P057,map,BOARD MEMBER,club service committee chair; unpaid
+P058,map,BOARD MEMBER,cluster chair; unpaid volunteer
+P059,map,BOARD MEMBER,committee chair; unpaid
+P060,map,BOARD PRESIDENT,commander/chairman of post; presiding officer
+P061,map,BOARD MEMBER,committee chairman; unpaid
+P062,map,DIRECTOR,community services director (COM misexpanded); paid 39 hrs
+P063,map,BOARD MEMBER,board member handling communications; unpaid
+P064,map,BOARD MEMBER,community advocate on board; trustee 100% unpaid
+P065,map,BOARD MEMBER,council chair; trustee 100% unpaid
+P066,map,BOARD MEMBER,unpaid officer/trustee handling facilities
+P067,map,BOARD MEMBER,representative seat on board; trustee 100%
+P068,map,BOARD MEMBER,liaison; unpaid volunteer
+P069,map,BOARD MEMBER,liaison; unpaid volunteer
+P070,map,BOARD MEMBER,liaison; trustee 86% unpaid 1 hr
+P071,map,BOARD MEMBER,outside affiliation in title field; holders are trustees
+P072,map,BOARD MEMBER,liaison; unpaid officer
+P073,map,BOARD MEMBER,board representative; trustee 100%
+P074,map,BOARD MEMBER,committee chair; unpaid
+P075,map,DEAN,acting dean; paid 40 hrs
+P076,map,DEAN,dean; paid
+P077,map,DEAN,dean and professor; paid
+P078,map,BOARD MEMBER,unpaid officer 0 hrs; fraternal/fund office not a staff dean
+P079,map,DEAN,dean of online program; paid
+P080,map,DEAN,dean of school; paid
+P081,map,BOARD MEMBER,representative; unpaid
+P082,map,BOARD MEMBER,delegate seat; trustee 100% unpaid
+P083,map,BOARD MEMBER,council liaison (DD misexpanded); trustee 100% unpaid
+P084,map,BOARD MEMBER,district governor trustee
+P085,map,BOARD PRESIDENT,director then vice chair then chair
+P086,map,DIRECTOR OF MARKETING,director of marketing and digital; paid
+P087,map,BOARD MEMBER,committee chair; unpaid
+P088,map,BOARD MEMBER,member/representative; unpaid
+P089,map,BOARD MEMBER,board member
+P090,map,BOARD MEMBER,unclear abbreviation ending in chair; unpaid volunteer
+P091,map,BOARD MEMBER,events committee function; unpaid volunteer
+P092,map,BOARD MEMBER,exam board member; 1 hr; precedent
+P093,map,PASTOR,executive pastor and member; professional role precedent over board
+P094,map,BOARD MEMBER,committee; unpaid
+P095,map,BOARD MEMBER,committee; unpaid officer
+P096,map,FINANCE MANAGER,financial systems operations manager; paid
+P097,map,BOARD MEMBER,committee chair; unpaid
+P098,map,BOARD MEMBER,committee chair; unpaid
+P099,map,BOARD MEMBER,committee chair; unpaid
+P100,map,BOARD MEMBER,liaison; unpaid
+P101,map,BOARD MEMBER,class representative; unpaid
+P102,map,BOARD MEMBER,representative; unpaid
+P103,map,BOARD MEMBER,school district representative; unpaid
+P104,map,BOARD MEMBER,trustee
+P105,map,BOARD MEMBER,event co-chair; unpaid
+P106,map,BOARD MEMBER,governance and nominating committee chair
+P107,map,BOARD MEMBER,governor seat; precedent
+P108,map,SENIOR VICE PRESIDENT,SVP; paid 40 hrs
+P109,map,BOARD MEMBER,governor; precedent
+P110,map,DEVELOPMENT OFFICER,former head of school now donor/alumni relations liaison; paid 40 hrs
+P111,map,BOARD MEMBER,committee co-chair
+P112,map,BOARD SECRETARY,adjutant (historian earlier); P2
+P113,map,BOARD MEMBER,immediate past chair
+P114,map,BOARD PRESIDENT,chair of AA intergroup (the filer); presiding officer
+P115,map,BOARD MEMBER,committee chair; unpaid
+P116,map,BOARD MEMBER,commissioner; trustee 100%; precedent
+P117,map,BOARD MEMBER,representative; trustee 100%
+P118,map,BOARD VICE PRESIDENT,leading knight (typo); P2
+P119,map,BOARD MEMBER,ex officio committee chair
+P120,map,BOARD MEMBER,representative; trustee 100%
+P121,map,BOARD MEMBER,unpaid legal counsel on board; trustee 100% 1 hr
+P122,map,BOARD MEMBER,liaison; unpaid
+P123,map,BOARD MEMBER,chair emeritus
+P124,map,MANAGER,manager accounting and conference; paid
+P125,map,MANAGER,manager cardiovascular; paid
+P126,map,MANAGER,manager education and training; paid
+P127,map,MANAGER,lab manager; paid
+P128,map,INFORMATION TECHNOLOGY MANAGER,network services manager; paid
+P129,map,OFFICE MANAGER,manager of office services; paid
+P130,map,MANAGER,engineering manager; paid
+P131,map,BOARD MEMBER,representative; trustee 100% 4 hrs
+P132,map,DOCTOR,member/physician; precedent MEMBER AND ATTENDING PHYSICIAN
+P133,ambiguous,,member/PT ST unclear (part-time staff?); paid 71% 5 hrs officer
+P134,map,BOARD MEMBER,member engagement committee; mostly board
+P135,map,BOARD MEMBER,member at large
+P136,map,BOARD MEMBER,membership recorder (records keeper not secretary); unpaid
+P137,map,BOARD MEMBER,membership committee
+P138,map,BOARD MEMBER,committee chair; unpaid
+P139,map,NURSE,nurse; paid 40 hrs
+P140,map,BOARD MEMBER,committee/division chair; trustee 100% unpaid
+P141,map,BOARD MEMBER,board member
+P142,map,BOARD MEMBER,subunit chairman; trustee 100% unpaid
+P143,map,BOARD MEMBER,representative; unpaid
+P144,map,BOARD MEMBER,representative; unpaid
+P145,map,BOARD MEMBER,representative; unpaid officer
+P146,map,BOARD MEMBER,representative; trustee 100%
+P147,map,DOCTOR,ex officio director and neonatology chair; paid 65 hrs physician
+P148,map,BOARD MEMBER,policy board member
+P149,map,BOARD MEMBER,liaison; unpaid
+P150,map,DOCTOR,physician; paid
+P151,map,BOARD MEMBER,liaison; trustee 100%
+P152,map,BOARD MEMBER,commissioner; trustee 100% unpaid
+P153,map,BOARD MEMBER,parent helper; trustee 100%
+P154,map,BOARD MEMBER,committee co-chair
+P155,ambiguous,,mix of patient co-chair (board) and senior director/VP patient care (staff)
+P156,map,BOARD MEMBER,event co-chair; unpaid
+P157,map,BOARD MEMBER,committee chair; unpaid
+P158,map,BOARD MEMBER,representative; trustee 100%
+P159,map,BOARD MEMBER,board member
+P160,map,BOARD MEMBER,council member; trustee 100%
+P161,map,BOARD MEMBER,committee; unpaid officer
+P162,map,DIRECTOR OF OPERATIONS,regional director of operations; precedent; paid
+P163,map,BOARD MEMBER,chapter co-representative
+P164,map,BOARD MEMBER,representative to NAR
+P165,map,BOARD MEMBER,committee chair; unpaid
+P166,ambiguous,,union senior building rep; paid 0 hrs EZ; building reps left ambiguous in tier 1
+P167,map,BOARD MEMBER,trustee with name in title
+P168,map,BOARD MEMBER,sergeant at arms; P2
+P169,map,BOARD MEMBER,show steward; unpaid volunteer
+P170,map,DOCTOR,director and physician; paid 50 hrs; precedent
+P171,map,BOARD MEMBER,committee chair; unpaid
+P172,map,BOARD MEMBER,committee
+P173,map,BOARD MEMBER,student chapter representative; unpaid
+P174,map,BOARD MEMBER,subcommittee; unpaid
+P175,map,BOARD MEMBER,teacher seat on board
+P176,map,BOARD MEMBER,council representative
+P177,map,BOARD MEMBER,committee chair
+P178,map,BOARD MEMBER,trustee (also asst truck foreman); trustee 100%
+P179,map,BOARD MEMBER,trustee with departure date
+P180,map,EXECUTIVE VICE PRESIDENT,EVP of health system and ex officio trustee; paid 65 hrs
+P181,map,BUSINESS AGENT,union business agent also trustee/auditor; paid 56 hrs
+P182,map,BOARD MEMBER,trustee pro tem
+P183,map,BOARD VICE PRESIDENT,vice chair
+P184,map,VICE PRESIDENT OF BUSINESS DEVELOPMENT,VP business recruitment; paid
+P185,map,VICE PRESIDENT OF TECHNOLOGY,VP business technology; paid
+P186,map,BOARD VICE PRESIDENT,VP of volunteer committee; unpaid EZ
+P187,map,VICE PRESIDENT OF FINANCE,VP finance and accounting; paid
+P188,map,VICE PRESIDENT OF FINANCE,VP finance and marketing; paid
+P189,map,VICE PRESIDENT OF FINANCE,VP finance of related org; paid
+P190,map,VICE PRESIDENT OF COMMUNICATIONS,VP integrated media and communications (COMM misexpanded); paid
+P191,map,VICE PRESIDENT OF COMMUNICATIONS,VP media and communications; paid
+P192,map,BOARD VICE PRESIDENT,2nd VP; unpaid EZ
+P193,map,BOARD VICE PRESIDENT,VP; unpaid EZ
+P194,map,BOARD MEMBER,member; unpaid
+P195,map,BOARD MEMBER,committee; unpaid
+P196,map,BOARD MEMBER,welfare fund trustee
+P197,map,BOARD MEMBER,committee chair
+P198,map,BOARD MEMBER,initiative chair
+P199,map,BOARD MEMBER,representative
+P200,map,BOARD MEMBER,representative

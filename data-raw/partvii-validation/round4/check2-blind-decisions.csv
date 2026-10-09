@@ -1,0 +1,201 @@
+id,status,standard,reason
+P001,map,BOARD MEMBER,Raw is advisory/charity committee chairman; officer box unpaid 1 hr
+P002,map,BOARD MEMBER,Elected council member; trustee box 100% unpaid
+P003,map,BOARD MEMBER,Committee chair; trustee box unpaid
+P004,map,BOARD MEMBER,Representative on board (garbled raw); trustee box unpaid
+P005,map,BOARD MEMBER,Ambassador representative; trustee box unpaid
+P006,map,BOARD MEMBER,Committee chair on 990-EZ; unpaid 2 hrs
+P007,map,ASSISTANT DIRECTOR,Assistant director of adult services; paid 40 hrs
+P008,map,ASSISTANT DIRECTOR,Assistant director of information systems; paid 40 hrs
+P009,map,BOARD MEMBER,Society representative; trustee box unpaid
+P010,map,BOARD MEMBER,Section member on board; trustee box unpaid
+P011,map,BOARD MEMBER,Committee chair/director; trustee box 100%
+P012,map,BOARD MEMBER,BOD plus agency rep; officer and trustee boxes unpaid
+P013,map,BOARD MEMBER,Typo for board director; trustee box unpaid
+P014,map,BOARD MEMBER,Garbled board title on 990-EZ; unpaid
+P015,map,BOARD PRESIDENT,Board member serving as chair; officer box
+P016,ambiguous,,Board member part year plus paid 50-hr sponsorship role; one holder mixes board and staff
+P017,map,BOARD MEMBER,Board member and committee chair
+P018,map,BOARD MEMBER,Board member and committee chair; unpaid
+P019,map,BOARD MEMBER,Board member and council; unpaid
+P020,map,BOARD MEMBER,Board member with fiscal-year note; unpaid
+P021,map,BOARD MEMBER,Board member; trustee box unpaid
+P022,map,BOARD MEMBER,Typo for board member; unpaid
+P023,map,BOARD MEMBER,County/regional chair; unpaid 1 hr
+P024,map,BOARD MEMBER,By-right (ex officio) member; unpaid
+P025,map,BOARD MEMBER,Liaison on board; unpaid
+P026,map,BOARD MEMBER,Campaign committee chair; trustee box unpaid
+P027,map,CEO,CEO title; officer box
+P028,map,CEO,Interim president and CEO; paid 40 hrs
+P029,map,CEO,CEO of named entity; paid 40 hrs
+P030,map,CEO,President and CEO of hospital; paid
+P031,map,CEO,CEO of health system; paid 46 hrs
+P032,map,BOARD MEMBER,Credentials plus member; trustee box unpaid
+P033,map,CFO,CFO; paid 40 hrs
+P034,map,CFO,CFO of related entity; paid
+P035,ambiguous,,Council member title but holders paid 94% at 40 hrs; likely filer staff serving on an outside council
+P036,map,BOARD MEMBER,Committee chair on 990-EZ; unpaid
+P037,map,BOARD MEMBER,Committee chair; officer/trustee unpaid
+P038,map,BOARD MEMBER,Liaison on board; unpaid 1 hr
+P039,map,CHIEF MEDICAL OFFICER,Chief physician is the medical executive; paid 50 hrs
+P040,map,BOARD MEMBER,Representative on board; unpaid
+P041,map,BOARD SECRETARY,Clerk of the board and trustee
+P042,map,CHIEF MEDICAL OFFICER,CMO here is chief medical officer (physician); paid 40 hrs
+P043,map,BOARD MEMBER,Coalition committee; officer box 1 hr mostly unpaid
+P044,map,BOARD MEMBER,Committee liaison on 990-EZ; unpaid
+P045,map,BOARD MEMBER,Committee tri-chair; unpaid
+P046,map,BOARD MEMBER,Condo liaison; trustee box unpaid
+P047,map,BOARD MEMBER,Committee chair; trustee box
+P048,map,DEAN,College dean; paid
+P049,map,DEAN,Dean of arts and science; paid 40 hrs
+P050,map,DEAN,Dean title (advancement) paid; follows DEAN OF X precedent
+P051,map,DEAN,College dean; paid 50 hrs
+P052,map,DEAN,School dean; paid 50 hrs
+P053,map,BOARD MEMBER,Director and taskforce chair; unpaid
+P054,map,BOARD MEMBER,Agency rep and director; trustee box unpaid
+P055,map,DIRECTOR,Camp director; paid 40 hrs
+P056,map,BOARD MEMBER,Volunteer competition director on 990-EZ; unpaid 4 hrs
+P057,map,DIRECTOR OF OPERATIONS,Director of corporate operations; paid 41 hrs
+P058,map,DIRECTOR,Staff director with no specific standard; paid 35 hrs
+P059,map,DIRECTOR,Staff director of development and teaching (unclear function); paid
+P060,map,DIRECTOR OF EDUCATION,Director of digital learning and professional development; paid
+P061,map,DIRECTOR OF EDUCATION,Director of education and outreach; paid
+P062,map,DIRECTOR,Director of named program; paid
+P063,map,BOARD MEMBER,Volunteer director role; trustee box unpaid 2 hrs
+P064,map,DIRECTOR,Director of habilitation; paid 37.5 hrs
+P065,map,BOARD MEMBER,Volunteer director on 990-EZ; unpaid
+P066,map,DIRECTOR OF FINANCE,Treasurer and paid director of HR and finance; 40 hrs
+P067,map,DIRECTOR OF LEGAL AFFAIRS,Director legal/compliance; paid 45 hrs
+P068,map,BOARD MEMBER,Volunteer fundraising director on 990-EZ; unpaid
+P069,map,BOARD MEMBER,Director seat for named person; trustee box unpaid
+P070,map,BOARD MEMBER,State director on board; trustee box unpaid
+P071,map,DIRECTOR OF MEMBERSHIP,Director of membership and committees; paid 40 hrs
+P072,map,BOARD MEMBER,Functional director held by unpaid officer (some VP); board role
+P073,map,BOARD MEMBER,At-large board member and outreach director
+P074,map,DIRECTOR,Staff director; paid 40 hrs
+P075,map,DIRECTOR,Director of a clinical department; paid 40 hrs
+P076,map,DIRECTOR OF FINANCE AND OPERATIONS,Paid director of operations and finance who also sits on board
+P077,map,DIRECTOR,Academic program director (OT); paid 40 hrs
+P078,map,DIRECTOR OF OPERATIONS,Director of park operations; paid 40 hrs
+P079,map,DIRECTOR,Director of partnerships (precedent); paid
+P080,map,DIRECTOR,Director of professional services; paid
+P081,map,DIRECTOR OF PROGRAMS,Director of programs and operations; paid 40 hrs
+P082,map,BOARD MEMBER,Functional director; trustee box unpaid 1 hr
+P083,map,BOARD MEMBER,Volunteer speakers director/board director on 990-EZ
+P084,map,DIRECTOR OF OPERATIONS,Director of store operations; median 40 hrs though only half paid
+P085,ambiguous,,Holders split 50/50 between unpaid trustees and paid staff
+P086,map,DIRECTOR,Director of surveys; paid 40 hrs
+P087,map,SPORTS DIRECTOR,Swim school director; paid 50 hrs
+P088,map,DIRECTOR OF EDUCATION,Director of teaching and learning (precedent)
+P089,map,DIRECTOR,Staff product development director; paid
+P090,map,BOARD MEMBER,Youth league volunteer role; trustee box 2 hrs
+P091,map,BOARD MEMBER,Director who is CEO of another org; trustee box unpaid
+P092,map,BOARD MEMBER,Umpire director; officer box unpaid
+P093,map,DIRECTOR,Director of victim advocacy; paid 40 hrs
+P094,ambiguous,,Holders mixed: 50% trustee and 46% paid at 7.5 hrs
+P095,map,YOUTH DIRECTOR,Director of young people; paid 40 hrs
+P096,map,DOCTOR,Paid physician (40 hrs) who also sits on board
+P097,map,BOARD MEMBER,Development committee; trustee box unpaid
+P098,map,BOARD MEMBER,Executive board/trustee; trustee box 100%
+P099,map,CHIEF NURSING OFFICER,Executive nurse is the nursing executive; paid key employee
+P100,map,BOARD MEMBER,Committee chair; officer/trustee unpaid
+P101,map,BOARD MEMBER,Committee chair on 990-EZ; unpaid
+P102,map,PROGRAMS DIRECTOR,Field and programs director; paid 38 hrs
+P103,map,DIRECTOR OF FINANCE,Finance and development director; paid 95%
+P104,map,BOARD MEMBER,Yacht club fleet chaplain; ritual officer unpaid
+P105,map,BOARD MEMBER,Former board member
+P106,map,DIRECTOR OF FINANCE,Former director of finance; paid
+P107,map,BOARD MEMBER,Committee chair; trustee box
+P108,map,BOARD MEMBER,Gaming committee chair; unpaid 2 hrs
+P109,map,BOARD MEMBER,Government affairs chair; trustee box unpaid
+P110,map,BOARD MEMBER,Higher Ed joint executive board member (ED misexpanded); mostly trustee
+P111,map,BOARD MEMBER,Honorary past chair representative; trustee box
+P112,map,BOARD MEMBER,Committee chair; trustee box
+P113,map,BOARD MEMBER,Volunteer infrastructure director on 990-EZ; unpaid
+P114,map,BOARD MEMBER,Committee chair; officer box unpaid
+P115,map,MEDICAL DIRECTOR,Internist and medical director; paid
+P116,map,BOARD MEMBER,Liaison on 990-EZ; unpaid
+P117,map,PROGRAMS DIRECTOR,Joint programs director; paid 40 hrs
+P118,map,BOARD SECRETARY,Post junior/assistant adjutant; adjutant is board secretary (P2)
+P119,map,BOARD MEMBER,Liaison; unpaid
+P120,map,BOARD MEMBER,Regional representative; trustee box
+P121,map,BOARD MEMBER,Representative; trustee box unpaid
+P122,map,BOARD MEMBER,Council representative; unpaid
+P123,map,BOARD MEMBER,Member seat; trustee box unpaid
+P124,map,BOARD MEMBER,Leadership circle; officer box unpaid
+P125,map,BOARD MEMBER,Member at large; trustee box unpaid
+P126,map,MANAGER,Site manager; paid 47 hrs
+P127,map,MANAGER,Manager of communications and advocacy; paid
+P128,map,MANAGER,Manager of wholesale marketing; paid
+P129,map,MANAGER,Physical therapy manager; paid 40 hrs
+P130,map,BOARD MEMBER,Lodge marshal and guard (ritual officers)
+P131,map,BOARD MEMBER,Masonic Master of the Veil (ritual officer); trustee box
+P132,map,DOCTOR,Physician; paid 40 hrs
+P133,map,EXECUTIVE DIRECTOR,Member and co-executive director; paid 40 hrs
+P134,map,BOARD MEMBER,Honorary member; trustee box
+P135,map,BOARD MEMBER,Member at large and committee; trustee box 3.5 hrs
+P136,map,BOARD MEMBER,Liaison; trustee box unpaid
+P137,map,BOARD MEMBER,National committee chair; unpaid
+P138,map,BOARD MEMBER,Newsletter coordinator; officer/trustee unpaid (newsletter precedent)
+P139,map,BOARD MEMBER,Nominating committee chair
+P140,map,PRINCIPAL,Truncated head of school and ex officio; officer paid 40 hrs
+P141,map,BOARD MEMBER,Panhellenic delegate/director (precedent)
+P142,map,BOARD MEMBER,Parents representative (precedent)
+P143,map,MEDICAL DIRECTOR,Physician directing GME program; paid 50 hrs
+P144,map,FOREMAN,Plant foreman; paid 42 hrs
+P145,map,PRESIDENT,President/clerk/director; mostly paid
+P146,map,BOARD PRESIDENT,President/trustee on 990-EZ; unpaid
+P147,map,PROFESSOR,Professor and department chair; paid 55 hrs
+P148,map,BOARD MEMBER,Committee chair; officer/trustee unpaid
+P149,map,BOARD MEMBER,Industry seat board member
+P150,map,BOARD MEMBER,Area army representative; trustee box
+P151,map,BOARD MEMBER,Registration chair (precedent); mostly unpaid
+P152,map,BOARD MEMBER,Representative from member org on 990-EZ
+P153,map,BOARD MEMBER,Port representative; trustee box
+P154,map,BOARD MEMBER,School representative; trustee box
+P155,map,BOARD MEMBER,Program chair on 990-EZ; unpaid
+P156,map,DEAN,Dean of architecture holding endowed chair; paid
+P157,map,BOARD MEMBER,Event committee chair on 990-EZ; unpaid
+P158,map,BOARD MEMBER,Bar association representative and director
+P159,map,BOARD MEMBER,Committee chair; trustee box unpaid
+P160,map,BOARD MEMBER,Screening committee; trustee box
+P161,map,BOARD SECRETARY,Secretary and bylaw committee; officer box unpaid
+P162,map,DIRECTOR OF CORPORATE X,Senior director of corporate relations; paid
+P163,map,DIRECTOR,Senior director of credentials and practice support; paid
+P164,map,DIRECTOR,Senior director of retail services; paid
+P165,map,BOARD MEMBER,Volunteer board director; trustee box unpaid
+P166,map,SENIOR DIRECTOR OF PROGRAMS,Senior director of nutrition programs; paid
+P167,map,DIRECTOR,Senior director of home and community; paid
+P168,map,DIRECTOR OF EDUCATION,Senior director of professional learning; paid
+P169,map,DIRECTOR OF RISK MANAGEMENT,Senior director of risk management; paid 50 hrs
+P170,map,BOARD MEMBER,Volunteer merchandise rep on 990-EZ; unpaid
+P171,map,BOARD VICE PRESIDENT,Post senior vice commander (P2)
+P172,map,BOARD MEMBER,Trustees liaison; trustee box
+P173,map,DEAN,Dean (also chief academic officer); paid
+P174,map,BOARD MEMBER,Liaison; trustee box unpaid
+P175,map,BOARD MEMBER,Special ed liaison (SPEC ED misexpanded); trustee box
+P176,map,BOARD MEMBER,Outside program director serving on 990-EZ board; unpaid 1 hr
+P177,map,BOARD TREASURER,Fund treasurer; officer/trustee unpaid
+P178,map,BOARD MEMBER,Student seat; trustee box
+P179,map,VICE PRESIDENT,Health system VP of mission serving as director; paid 42 hrs
+P180,map,BOARD MEMBER,Trustee with term year (tear=year)
+P181,map,BOARD MEMBER,State representative on board; trustee box
+P182,map,BOARD MEMBER,Committee chair on 990-EZ
+P183,map,DOCTOR,Trustee who is paid physician 41 hrs
+P184,map,BOARD PRESIDENT,Labor co-chair of trust board (CO- stripped)
+P185,map,BOARD MEMBER,Trustee committee member; trustee box
+P186,map,EXECUTIVE VICE PRESIDENT,Trustee who is system EVP/general counsel; paid 55 hrs
+P187,map,BOARD MEMBER,Board member
+P188,ambiguous,,Holders mixed: officer 65% and 45% paid at 0 median hrs
+P189,map,CHIEF NURSING OFFICER,VP cancer services and CNO; paid
+P190,map,BOARD VICE PRESIDENT,VP of council; officer/trustee unpaid
+P191,map,BOARD VICE PRESIDENT,VP on council; trustee box unpaid
+P192,map,VICE PRESIDENT OF EDUCATION,VP education and support services; paid
+P193,map,VICE PRESIDENT OF SALES AND MARKETING,VP sales marketing and communications (COMM misexpanded); paid
+P194,map,BOARD VICE PRESIDENT,Vice president; officer/trustee unpaid
+P195,map,DOCTOR,Volunteer physician; occupation doctor
+P196,map,BOARD MEMBER,Board member with waterfront portfolio
+P197,map,BOARD MEMBER,Trustee; unpaid
+P198,map,BOARD MEMBER,Youth coordinator elect on 990-EZ; unpaid
+P199,map,BOARD MEMBER,Youth president seat on board; unpaid
+P200,map,BOARD MEMBER,Youth program liaison; officer box unpaid
