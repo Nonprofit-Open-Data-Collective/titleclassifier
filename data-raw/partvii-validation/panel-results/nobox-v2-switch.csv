@@ -1,0 +1,4 @@
+subset,people,step09,model_v1,model_v2
+"held-out switchers, strict",10468,94.9,96.5,96.6
+  non-board label,825,63.5,74.2,74.8
+  paid in 990-EZ year,731,71,81.1,82.2

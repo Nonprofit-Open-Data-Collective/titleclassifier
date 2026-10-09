@@ -4,10 +4,13 @@
 \alias{resolve_roles}
 \title{resolve roles from checkboxes, pay, and title}
 \usage{
-resolve_roles(comp.data)
+resolve_roles(comp.data, use_model = TRUE)
 }
 \arguments{
 \item{comp.data}{The output of \code{categorize_titles()}.}
+
+\item{use_model}{Use the no-checkbox role model for 990-EZ filings when
+xgboost is installed (default \code{TRUE}).}
 }
 \value{
 \code{comp.data} with these columns added (person-level values repeat on
@@ -16,10 +19,11 @@ each of the person's rows):
 \item{role.position}{board, officer, board_officer, staff, or unknown}
 \item{role.final}{CEO, OFFICER, MANAGER, PROFESSIONAL, STAFF, or BOARD}
 \item{role.board}{for BOARD: CHAIR, VICE CHAIR, SECRETARY, TREASURER, or MEMBER}
-\item{role.ceo}{for CEO: designated, co-ceo, interim, or imputed}
+\item{role.ceo}{for CEO: designated, co-ceo, interim, imputed, or model}
 \item{role.source}{what settled the position: checkbox, title+pay, or title}
+\item{role.method}{rules, or model (990-EZ, xgboost installed)}
 \item{role.primary}{TRUE on one row per person}
-\item{org.leadership}{per filing: designated, imputed, board_governed, or no_paid}
+\item{org.leadership}{per filing: designated, imputed, model, board_governed, or no_paid}
 }
 }
 \description{
@@ -59,8 +63,16 @@ with the officer box. Such a person is a titular officer receiving a
 stipend, not a paid executive. On a 990-EZ, which has no boxes, the same
 holds for a board title paid a small fee.
 
+\strong{990-EZ returns} have no checkboxes. For them, when the xgboost package is
+installed, the role comes from a model trained on full-990 people with the
+boxes hidden (\code{\link[=predict_roles]{predict_roles()}}): title, pay, hours and the filing's
+make-up. Without xgboost, or with \code{use_model = FALSE}, the rules above
+decide. \code{role.method} records which one.
+
 Scored against the 316-person labeled set of 2010-12 filings
 (\code{data-raw/partvii-validation/09-gold-check.R}, \code{gold-check/gold-v2.csv}),
-the role agrees with the label for 87.8\% of people: 88.6\% on full 990
-returns and 82.5\% on 990-EZ returns.
+the rules agree with the label for 88.8\% of full-990 people. On 990-EZ
+people the model agrees for 92.5\%, and the rules for 82.5\%. On 23,931 people
+from organizations that switch between the forms, labeled by their
+full-990-year role, the model agrees for 95.0\% and the rules for 92.0\%.
 }

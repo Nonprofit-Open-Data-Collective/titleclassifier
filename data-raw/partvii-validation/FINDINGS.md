@@ -929,3 +929,57 @@ Expense size comes from the 2010-2012 Part I tables.
   labels for real 990-EZ filers.
 - **How to ship the model** in the package: a dependency, a saved model, and a
   step 09 option. That needs a decision.
+
+### F-029 990-EZ labels from form switchers; the role model ships in step 09 (done)
+
+**A large 990-EZ test set** (`18-switch-labels.R`).
+- 4,500 consecutive-year pairs where an organization switches between the
+  990-EZ and the full 990, none of them in the training sample.
+- After steps 01-09, synthid links each organization's people across the
+  switch. Each 990-EZ-year person is labeled with step 09's role in the
+  full-990 year, where the boxes are available.
+- That gives 23,931 labeled 990-EZ people in 4,398 organizations. The strict
+  subset, with the same title in both years, has 20,817.
+
+| Subset | People | Step 09 rules | Model |
+|---|---|---|---|
+| All linked | 23,931 | 92.0% | 95.0% |
+| Strict | 20,817 | 95.1% | 96.6% |
+| Strict, non-board label | 1,602 | 63.7% | 73.9% |
+| Strict, paid in the 990-EZ year | 1,427 | 74.6% | 83.4% |
+
+The model wins in both switch directions and every size bin. The largest gain
+is officers: without boxes the rules recover 7% of officers, the model 51%.
+
+**Training on switchers** (`19-nobox-model-v2.R`). Half the switching
+organizations' 990-EZ people were added to training (weight 3), and the model
+was scored on the other half. It barely helps: 96.5% -> 96.6%, and non-board
+74.2% -> 74.8%. The full-990 teacher data carries most of the signal.
+
+**The shipped model** (`20-role-model-ship.R`).
+- The package sees only Part VII, so the shipped model drops the expense-size
+  feature. That costs nothing: 96.7% on the held-out switchers, and on the
+  labeled set 92.5% for 990-EZ and 87.0% for full 990.
+- It is trained on all 557,360 full-990 people and 20,817 990-EZ switchers,
+  with 100 features, and saved as `inst/extdata/role-model/role-model.ubj`
+  (4.9 MB).
+- The features come from the package's own `role_model_features()`, so
+  training and prediction share one definition.
+
+**In step 09:**
+- `resolve_roles()` uses `predict_roles()` for 990-EZ filings when xgboost is
+  installed (Suggests). Otherwise the rules decide, as they do with
+  `use_model = FALSE`.
+- New column `role.method`: "rules" or "model".
+- `role.ceo` gains "model" and `org.leadership` gains "model", for 990-EZ CEOs
+  named by the model.
+- Full-990 filings are unchanged.
+
+**Effect:**
+- Labeled set v2: 88.1% -> **89.4%**. 990-EZ: 82.5% -> **92.5%**. Full 990:
+  89.0%, unchanged.
+- On the demo, 113 990-EZ people change role. Most move from STAFF or MANAGER
+  to BOARD (78), or to OFFICER (34). The regression reference is rebuilt:
+  md5 `92d22d7b...`, 4,126 x 112.
+- R CMD check: 0 errors. The warning and the code-problems note are
+  pre-existing.
