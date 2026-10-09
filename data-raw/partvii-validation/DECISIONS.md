@@ -230,3 +230,60 @@ person-title rows):
 What is left is mostly tiers 3 and 4: about 600,000 rare titles, 4.2% of
 person-title rows. These need cleaning rules, such as the list above, and
 pattern rules more than title-by-title review.
+
+## Round 3: cleaning fixes from the tier 2 review (2026-10-09)
+
+The tier 2 drafting agents found cleaning problems in steps 4-6. These are now
+fixed with narrow exceptions placed before the general rules, which stay as
+they were:
+
+- **Step 5, abbreviations that were expanded wrongly:**
+  - DEPT and DEPARTMENT now become DEPARTMENT, not DEPUTY (`fix_deputy`).
+    Examples: DEPT HEAD, PAST DEPT COMMANDER.
+  - ED is the emergency department before a clinical title and education in
+    DIR OF ED and ED CHAIR. Otherwise it is still the executive director.
+  - DIRECT SUPPORT, DIRECT CARE and DIRECT SERVICE are no longer read as
+    DIRECTOR.
+  - SUPPLY CHAIN is no longer read as SUPPLY CHAIR.
+  - CHAIR MAN now becomes CHAIR, not CHAIR OF MANAGEMENT.
+  - COMM before a staff role (OFFICER, DIRECTOR, MANAGER...) now means
+    communications.
+  - GOV AFFAIRS and GOV RELATIONS now mean government, not governor.
+  - ER TRUSTEE now becomes EMPLOYER TRUSTEE.
+- **Step 6:**
+  - FMR is read as former.
+  - The fragment list grows to cover LEFT, TERM, TERMED, EXITED, EXIT, ENDING,
+    PRIOR, PAS (former); BEG, BEGAN, EFF, EFFECTIVE, START, STARTED,
+    STARTING, JOINED, FROM (future); DURING, PART, YEAR, FULL, IN, AS NEEDED,
+    PART TIME, LESS THAN (partial).
+  - Leftover roman numerals and stray words (AND, AS, ST, NO, RE, NONVOTING,
+    STATUS, SENIOR) are dropped when the person has another title.
+- **Step 4:** the glued titles PRESTREAS, SECRETARYVICE and TREASURERVICE are
+  split into their two titles.
+
+**Not fixed:**
+- RES as resigned: still RESOURCES.
+- MEMBERSHIP split into MEMBER OF SHIP.
+- Organization acronyms and place names split off as titles.
+
+These are ambiguous or need more context than a cleaning rule has.
+
+**Checks:**
+- The equivalence check holds and the tests pass.
+- The regression reference is unchanged (16dc096b), because no demo title is
+  affected.
+- `09-gold-check.R` scores step 09 at 92.9%, unchanged.
+
+**New titles from the fixes.** Twenty properly cleaned titles in tiers 1-2
+were new to the crosswalk, mostly DEPARTMENT ... titles that used to be read
+as DEPUTY .... They were decided by a single reviewer (Claude), with the
+evidence in each note: 19 added and DEPARTMENT CHAIR left ambiguous.
+`reviewer` is "Claude (round 3, single reviewer)".
+
+**`06-apply-decisions.R`** now counts and logs only rows that change a
+standard. Re-applying decisions from earlier rounds no longer fills
+`applied-log.csv` with no-op rows.
+
+**Effect.** Rows with no `title.standard` went from 4.33% to 4.31%. The
+fixes mostly make titles correct rather than matchable: DEPUTY CHAIR was
+already matched, wrongly, and DEPARTMENT CHAIR is now right.

@@ -219,10 +219,19 @@ fix_director <- function(TitleTxt){
   TitleTxt <- gsub( "\\bEXECUTIVE D\\b", "EXECUTIVE DIRECTOR", TitleTxt )
   TitleTxt <- gsub( "\\bE\\b DIRECTOR",  "EXECUTIVE DIRECTOR", TitleTxt )
   TitleTxt <- gsub("EXEC DIR[A-Z]*\\b",  "EXECUTIVE DIRECTOR", TitleTxt)
+  # ED is not always the executive director (Part VII review round 2): the
+  # emergency department before a clinical title, education after DIRECTOR OF
+  # and before CHAIR
+  # (written as ER here; the ER rule further down expands it after the EMER- =
+  # emeritus rule has run, so EMERGENCY is not read as EMERITUS)
+  TitleTxt <- gsub( "\\bED (PHYSICIAN|DOCTOR|NURSE|MD|MEDICAL DIRECTOR)\\b", "ER \\1", TitleTxt )
+  TitleTxt <- gsub( "\\bDIR(ECTOR)?\\.? OF ED\\b", "DIRECTOR OF EDUCATION", TitleTxt )
+  TitleTxt <- gsub( "\\bED CHAIR\\b", "EDUCATION CHAIR", TitleTxt )
   TitleTxt <- gsub( "\\bE\\s*D\\b",      "EXECUTIVE DIRECTOR", TitleTxt )
 
+  # DIRECT SUPPORT / CARE / SERVICE staff are not directors
   TitleTxt <- ifelse(!grepl("CEO", TitleTxt),
-                     gsub("\\bDIR[A-Z]*\\b", "DIRECTOR", TitleTxt), TitleTxt)
+                     gsub("\\bDIR(?!ECT\\s+(SUPPORT|CARE|SERVICE))[A-Z]*\\b", "DIRECTOR", TitleTxt, perl = TRUE), TitleTxt)
   TitleTxt <- ifelse(!grepl("CEO", TitleTxt),
                      gsub("\\bDI\\b","DIRECTOR", TitleTxt), TitleTxt)
   TitleTxt <- ifelse(!grepl("CEO", TitleTxt),
@@ -414,7 +423,8 @@ fix_chair <- function(TitleTxt)
   TitleTxt <- gsub( "\\bV\\s\\bCHAIR\\b", "VICE CHAIR", TitleTxt )
   TitleTxt <- gsub( "\\bVICE\\b\\sC\\b", "VICE CHAIR", TitleTxt )
   
-  TitleTxt <- gsub("\\bCHAI[A-Z]*\\b", "CHAIR", TitleTxt)
+  TitleTxt <- gsub("\\bCHAIR\\s+MAN\\b", "CHAIR", TitleTxt)   # CHAIR MAN, not CHAIR OF MANAGEMENT
+  TitleTxt <- gsub("\\bCHAI(?!N\\b)[A-Z]*\\b", "CHAIR", TitleTxt, perl = TRUE)   # not SUPPLY CHAIN
   TitleTxt <- gsub("\\bCHAIR PERSON\\b", "CHAIR", TitleTxt)
   
   TitleTxt <- gsub("\\bCHA\\b", "CHAIR", TitleTxt)
@@ -717,6 +727,8 @@ fix_comm <- function(TitleTxt)
   #committee
   TitleTxt <- gsub( "\\bCOMMIT[A-Z]*\\b", "COMMITTEE", TitleTxt )
   TitleTxt <- gsub( "\\bCOMMI\\b",        "COMMITTEE", TitleTxt )
+  # COMM before a staff role is communications (COMM OFFICER, COMM DIRECTOR)
+  TitleTxt <- gsub( "\\bCOMM\\s+(OFFICER|DIRECTOR|MANAGER|SPECIALIST|COORDINATOR|ASSOCIATE)\\b", "COMMUNICATIONS \\1", TitleTxt )
   TitleTxt <- gsub( "\\bCOMM\\b",         "COMMITTEE", TitleTxt )
   TitleTxt <- gsub( "\\bCOM\\b",          "COMMITTEE", TitleTxt )
   
@@ -969,7 +981,10 @@ fix_admissions <- function(TitleTxt){
 #' @param TitleTxt A character vector of titles.
 fix_deputy <- function(TitleTxt){
   
-  TitleTxt <- gsub("\\bDEP[A-Z]*\\b", "DEPUTY", TitleTxt)
+  # DEPT and DEPARTMENT are department, not deputy (DEPT HEAD, PAST DEPT
+  # COMMANDER); Part VII review round 2
+  TitleTxt <- gsub("\\bDEPT\\b|\\bDEPART[A-Z]*\\b", "DEPARTMENT", TitleTxt)
+  TitleTxt <- gsub("\\bDEP(?!ARTMENT\\b)[A-Z]*\\b", "DEPUTY", TitleTxt, perl = TRUE)
   
   return(TitleTxt)
 }
@@ -1147,6 +1162,7 @@ fix_atlarge <- function(TitleTxt){
 #' @param TitleTxt A character vector of titles.
 fix_governor <- function(TitleTxt){
   
+  TitleTxt <- gsub("\\bGOV\\s+(AFFAIRS|RELATIONS)\\b", "GOVERNMENT \\1", TitleTxt)   # not GOVERNOR AFFAIRS
   TitleTxt <- gsub("\\bGOVT\\b", "GOVERNMENT", TitleTxt)
   TitleTxt <- gsub("\\bGOV'T\\b", "GOVERNMENT", TitleTxt)
   
@@ -1217,6 +1233,7 @@ fix_miscellaneous <- function(TitleTxt){
   
   # ER before a clinical title is the emergency room, not an editor (Part VII review)
   TitleTxt <- gsub("\\bER (PHYSICIAN|DOCTOR|NURSE|MD|DIRECTOR|MEDICAL DIRECTOR)\\b", "EMERGENCY \\1", TitleTxt)
+  TitleTxt <- gsub("\\bER TRUSTEE\\b", "EMPLOYER TRUSTEE", TitleTxt)   # benefit-fund trustees
   TitleTxt <- gsub("\\bER\\b",   "EDITOR", TitleTxt)
   TitleTxt <- gsub("\\bEDR\\b",  "EDITOR", TitleTxt)
   TitleTxt <- gsub("\\bEDI\\b",  "EDITOR", TitleTxt)

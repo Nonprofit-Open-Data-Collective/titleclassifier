@@ -1538,7 +1538,7 @@ title-standardization,DEVELOPMENT VICE PRESIDENT,"",BOARD VICE PRESIDENT,T000389
 title-standardization,DG,"",BOARD MEMBER,T0003500,Consensus vote (3 Claude reviewers),2026-10-09
 title-standardization,DIERCTOR,"",BOARD MEMBER,T0003314,Consensus vote (3 Claude reviewers),2026-10-09
 title-standardization,DIIRECTOR,"",BOARD MEMBER,T0003831,Consensus vote (3 Claude reviewers),2026-10-09
-title-standardization,"DIRECTOR """"""""","",BOARD MEMBER,T0001626,Consensus vote (3 Claude reviewers),2026-10-09
+title-standardization,"DIRECTOR """"""""""""""""","",BOARD MEMBER,T0001626,Consensus vote (3 Claude reviewers),2026-10-09
 title-standardization,DIRECTOR #,"",BOARD MEMBER,T0001382,Consensus vote (3 Claude reviewers),2026-10-09
 title-standardization,DIRECTOR @ LARGE,"",BOARD MEMBER,T0005095,Consensus vote (3 Claude reviewers),2026-10-09
 title-standardization,DIRECTOR A,"",BOARD MEMBER,T0004002,Consensus vote (3 Claude reviewers),2026-10-09
@@ -4812,3 +4812,22 @@ title-taxonomy,MISSIONARY,"",new standard,"","",2026-10-09
 title-taxonomy,PARAMEDIC,"",new standard,"","",2026-10-09
 title-taxonomy,PERFUSIONIST,"",new standard,"","",2026-10-09
 title-taxonomy,PILOT,"",new standard,"","",2026-10-09
+title-standardization,DEPARTMENT DELEGATE,"",BOARD MEMBER,T0001279,"Claude (round 3, single reviewer)",2026-10-09
+title-standardization,DEPARTMENT PRESIDENT,"",BOARD MEMBER,T0001455,"Claude (round 3, single reviewer)",2026-10-09
+title-standardization,DEPARTMENT DIRECTOR,"",DIRECTOR,T0001680,"Claude (round 3, single reviewer)",2026-10-09
+title-standardization,DEPARTMENT COMMANDER,"",BOARD MEMBER,T0001882,"Claude (round 3, single reviewer)",2026-10-09
+title-standardization,DIRECT SUPPORT PROFESSIONAL,"",STAFF,T0002460,"Claude (round 3, single reviewer)",2026-10-09
+title-standardization,SENIOR VICE PRESIDENT SUPPLY CHAIN,"",SENIOR VICE PRESIDENT,T0003150,"Claude (round 3, single reviewer)",2026-10-09
+title-standardization,REGIONAL AND DEPARTMENT COMMANDER,"",BOARD MEMBER,T0003161,"Claude (round 3, single reviewer)",2026-10-09
+title-standardization,CHIEF OF DEPARTMENT,"",FIRE CHIEF,T0003421,"Claude (round 3, single reviewer)",2026-10-09
+title-standardization,DEPARTMENT HEAD,"",DIRECTOR,T0003423,"Claude (round 3, single reviewer)",2026-10-09
+title-standardization,DIRECT CARE AIDE,"",STAFF,T0003719,"Claude (round 3, single reviewer)",2026-10-09
+title-standardization,DEPARTMENT VICE PRESIDENT,"",VICE PRESIDENT,T0003753,"Claude (round 3, single reviewer)",2026-10-09
+title-standardization,DEPARTMENT REPRESENTATIVE,"",BOARD MEMBER,T0003945,"Claude (round 3, single reviewer)",2026-10-09
+title-standardization,DEPARTMENT ADJUTANT,"",BOARD SECRETARY,T0004824,"Claude (round 3, single reviewer)",2026-10-09
+title-standardization,DEPARTMENT TREASURER,"",BOARD TREASURER,T0005691,"Claude (round 3, single reviewer)",2026-10-09
+title-standardization,VICE PRESIDENT SUPPLY CHAIN,"",VICE PRESIDENT,T0005722,"Claude (round 3, single reviewer)",2026-10-09
+title-standardization,DEPARTMENT PR,"",BOARD MEMBER,T0006234,"Claude (round 3, single reviewer)",2026-10-09
+title-standardization,DEPARTMENT CHIEF,"",FIRE CHIEF,T0006539,"Claude (round 3, single reviewer)",2026-10-09
+title-standardization,DEPARTMENT CHAPLAIN,"",BOARD MEMBER,T0006698,"Claude (round 3, single reviewer)",2026-10-09
+title-standardization,DEPARTMENT COMMITTEE,"",BOARD MEMBER,T0006699,"Claude (round 3, single reviewer)",2026-10-09
