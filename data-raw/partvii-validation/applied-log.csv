@@ -1538,7 +1538,7 @@ title-standardization,DEVELOPMENT VICE PRESIDENT,"",BOARD VICE PRESIDENT,T000389
 title-standardization,DG,"",BOARD MEMBER,T0003500,Consensus vote (3 Claude reviewers),2026-10-09
 title-standardization,DIERCTOR,"",BOARD MEMBER,T0003314,Consensus vote (3 Claude reviewers),2026-10-09
 title-standardization,DIIRECTOR,"",BOARD MEMBER,T0003831,Consensus vote (3 Claude reviewers),2026-10-09
-title-standardization,"DIRECTOR """"""""""""""""","",BOARD MEMBER,T0001626,Consensus vote (3 Claude reviewers),2026-10-09
+title-standardization,"DIRECTOR """"""""""""""""""""""""""""""""","",BOARD MEMBER,T0001626,Consensus vote (3 Claude reviewers),2026-10-09
 title-standardization,DIRECTOR #,"",BOARD MEMBER,T0001382,Consensus vote (3 Claude reviewers),2026-10-09
 title-standardization,DIRECTOR @ LARGE,"",BOARD MEMBER,T0005095,Consensus vote (3 Claude reviewers),2026-10-09
 title-standardization,DIRECTOR A,"",BOARD MEMBER,T0004002,Consensus vote (3 Claude reviewers),2026-10-09
@@ -4831,3 +4831,7 @@ title-standardization,DEPARTMENT PR,"",BOARD MEMBER,T0006234,"Claude (round 3, s
 title-standardization,DEPARTMENT CHIEF,"",FIRE CHIEF,T0006539,"Claude (round 3, single reviewer)",2026-10-09
 title-standardization,DEPARTMENT CHAPLAIN,"",BOARD MEMBER,T0006698,"Claude (round 3, single reviewer)",2026-10-09
 title-standardization,DEPARTMENT COMMITTEE,"",BOARD MEMBER,T0006699,"Claude (round 3, single reviewer)",2026-10-09
+title-standardization,O AND TRUSTEE TITLES,"",NO TITLE,T0000264,"Claude (round 5, single reviewer)",2026-10-09
+title-standardization,PRESIDENT AND CEO,"",CEO,T0000650,"Claude (round 5, single reviewer)",2026-10-09
+title-standardization,SCHOOL PRINC,"",PRINCIPAL,T0003522,"Claude (round 5, single reviewer)",2026-10-09
+title-standardization,SEARGEANT AT ARMS,"",BOARD MEMBER,T0006845,"Claude (round 5, single reviewer)",2026-10-09
