@@ -93,7 +93,15 @@ apply_misc_split_rules <- function(x)
   x <- gsub( "TREASURER AND S$", "TREASURER & SECRETARY", x )
   # glued pairs (Part VII review round 2): PRESTREAS, SECRETARYVICE PRESIDENT
   x <- gsub( "\\bPRES\\s*TREAS[A-Z]*\\b", "PRESIDENT & TREASURER", x )
-  x <- gsub( "\\b(SECRETARY|TREASURER)VICE\\b", "\\1 & VICE", x ) 
+  x <- gsub( "\\b(SECRETARY|TREASURER)VICE\\b", "\\1 & VICE", x )
+
+  # PRESIDENT & CEO is one role, the chief executive: 80% of the 206,590
+  # holders are paid and 76% of their filings list a separate board chair, so
+  # splitting it made a phantom BOARD PRESIDENT for each (Part VII review
+  # round 5). VICE PRESIDENT & CEO and CHAIR & CEO are still split.
+  ceo <- "(CEO|C E O|CHIEF EXECUTIVE OFFICER)"
+  x <- gsub( paste0( "(?<!VICE )(?<!VICE)\\bPRES(IDENT|\\.)?\\s*(&|AND)\\s*", ceo, "\\b" ), "CEO", x, perl = TRUE )
+  x <- gsub( paste0( "\\b", ceo, "\\s*(&|AND)\\s*PRES(IDENT|\\.)?\\b" ), "CEO", x, perl = TRUE )
 
   # split all FOUNDER titles, keeping a CO- prefix with its FOUNDER (step 6
   # strips CO- and sets CO.X) so CO-FOUNDER does not leave a stray "CO-" title

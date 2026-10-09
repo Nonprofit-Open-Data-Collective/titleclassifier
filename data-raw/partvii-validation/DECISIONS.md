@@ -345,3 +345,38 @@ seeing the rule. The files are in `round4/`.
   and 86.5% on the v2 labels (unchanged).
 - The review files show pattern-matched titles in a new PATTERN queue
   (`review/queue-pattern.csv`).
+
+## Round 5: PRESIDENT & CEO is one title, plus quick fixes (2026-10-09)
+
+**PRESIDENT & CEO.**
+- 206,590 people in the panel hold the raw title "President & CEO",
+  "President/CEO" or "President and CEO". Of these, 80% are paid, 78% work
+  full time and 95% tick the officer box, so this is the chief executive.
+  "President" here is the corporate officer title, not the board chair's.
+- 76% of their filings also list a separate board chair.
+- Step 04 used to split the title into PRESIDENT (mapped to BOARD PRESIDENT)
+  and CEO, giving each of these people a phantom board-chair row.
+- `split_titles()` now keeps PRESIDENT & CEO, CEO & PRESIDENT and PRES/CEO
+  whole, as CEO. VICE PRESIDENT & CEO and CHAIR & CEO are still split; an
+  executive chairman holds both roles.
+
+**Quick fixes:**
+- Step 06 strips CO written without a hyphen (COEXECUTIVE DIRECTOR,
+  COCHAIR) and sets the CO flag, like CO- (P3).
+- Four crosswalk rows from the remaining unmatched titles (single reviewer):
+  - PRESIDENT AND CEO to CEO;
+  - O AND TRUSTEE TITLES to NO TITLE (Schedule O boilerplate);
+  - SEARGEANT AT ARMS to BOARD MEMBER;
+  - SCHOOL PRINC to PRINCIPAL.
+
+**Effect on the full panel:**
+- BOARD PRESIDENT rows fall by 266,854, from 6.87 to 6.60 million.
+- Person-title rows fall by 272,399, from 61.23 to 60.96 million.
+- CEO rows are almost unchanged (716,164).
+- Unmatched rows stay at 3.53%.
+
+**Checks** (on top of PR #27):
+- The equivalence check holds and the tests pass.
+- Regression reference rebuilt (7da110b1; 4,126 rows, 9 phantom rows fewer).
+- `09-gold-check.R`: 94.2% on v1 (93.5% with #27 alone) and 88.1% on v2
+  (87.8%). 990-EZ is unchanged at 82.5%.

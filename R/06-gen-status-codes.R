@@ -40,6 +40,8 @@ gen_status_codes <- function( comp.data, title="TitleTxt5", gs_status_codes=NULL
 
   # flag co- titles and strip the prefix, so CO-PRESIDENT is a PRESIDENT with
   # CO.X = TRUE and CO-FOUNDER is a FOUNDER (Part VII review, policy P3)
+  # CO written without a hyphen (COEXECUTIVE DIRECTOR, COCHAIR)
+  TitleTxt <- gsub( "\\bCO(?=(EXECUTIVE|DIRECTOR|CHAIR|PRESIDENT|FOUNDER|TREASURER|SECRETARY|VICE)\\b)", "CO-", TitleTxt, perl = TRUE )
   comp.data$CO.X <- grepl( "\\bCO-", TitleTxt )
   TitleTxt <- gsub( "\\bCO-\\s*", "", TitleTxt )
 
