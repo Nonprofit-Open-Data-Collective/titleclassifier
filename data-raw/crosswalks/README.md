@@ -19,9 +19,24 @@ TREASURER, MEMBER). Board titles use only the five core standards (BOARD
 PRESIDENT, BOARD VICE PRESIDENT, BOARD SECRETARY, BOARD TREASURER, BOARD
 MEMBER): add other board titles as standardization variants of these.
 `build-crosswalks.R` derives the legacy flags (`emp`, `ceo`, ... `mem`) for
-the package. `01-role-levels.R` made this conversion from the old flag
-columns, and logged every decision in `role-levels-log.csv` and
-`board-collapse-log.csv`.
+the package.
+
+The taxonomy's other columns follow two rules:
+- **Domain:** `domain.category` / `domain.label` must be a pair listed in
+  `domains.csv`, the controlled vocabulary.
+  - `executive / general management` holds the CEO and general-management
+    officers.
+  - `governance / board` holds every board title.
+- **SOC:** a SOC code describes a title's function, not its rank. Leave
+  ambiguous titles uncoded.
+
+One-time passes over the taxonomy, each logging its changes:
+
+| Script | What it did | Log |
+|---|---|---|
+| `01-role-levels.R` | flags to `emp.level` / `board.role` | `role-levels-log.csv`, `board-collapse-log.csv` |
+| `02-soc-codes.R` | SOC codes by function | `soc-codes-log.csv` |
+| `03-domains.R` | the domain vocabulary | `domains-log.csv` |
 
 Load them with `get_title_xwalk()`, `get_title_taxonomy()` and
 `get_status_codes()`. The build keeps only the columns the pipeline uses; the

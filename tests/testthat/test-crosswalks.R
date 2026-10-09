@@ -90,3 +90,14 @@ test_that("SOC codes are valid 2018 codes with a consistent hierarchy (F-015)", 
   expect_equal(nested("broad.group", "minor.group", 4), character(0))
   expect_equal(nested("detailed.occupation", "broad.group", 6), character(0))
 })
+
+test_that("every title's domain is in the vocabulary, domains.csv (F-018)", {
+  f <- test_path("..", "..", "data-raw", "crosswalks", "domains.csv")
+  skip_if_not(file.exists(f))
+  vocab <- utils::read.csv(f, colClasses = "character", na.strings = character(0))
+  key <- function(d) paste(d$domain.category, d$domain.label, sep = " / ")
+  expect_equal(unique(setdiff(key(tx), key(vocab))), character(0))
+  # board titles are governance; general leadership is executive
+  expect_true(all(tx$domain.category[nzchar(tx$board.role)] == "governance"))
+  expect_true(all(tx$domain.category[tx$title.standard %in% c("CEO", "EXECUTIVE DIRECTOR", "COO")] == "executive"))
+})
