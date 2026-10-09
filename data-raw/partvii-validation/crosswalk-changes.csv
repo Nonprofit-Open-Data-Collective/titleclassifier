@@ -61,8 +61,8 @@ CHIEF EXECUTIVE DIRECTOR,CEO,add,"",T0000923,1001,Claude (draft),2026-10-08,"84%
 CHIEF LENDING OFFICER,CHIEF OFFICER,add,CHIEF _X_ OFFICER,T0000725,1352,Claude (draft),2026-10-08,P1 (generic chief officer). chief officer (generic) - see P1
 CHIEF PEOPLE OFFICER,CHIEF OFFICER,add,CHIEF _X_ OFFICER,T0000507,2179,Claude (draft),2026-10-08,P1 (generic chief officer). CHIEF _X_ OFFICER has no taxonomy row
 CHIEF QUALITY OFFICER,CHIEF OFFICER,add,CHIEF _X_ OFFICER,T0000780,1219,Claude (draft),2026-10-08,P1 (generic chief officer). P1
-CHIEF STEWAR,UNION REPRESENTATIVE,change,CHIEF,T0000736,1321,Claude (draft),2026-10-08,"P2: union steward. truncated CHIEF STEWAR(D): union chief steward, see T0000286"
-CHIEF STEWARD,UNION REPRESENTATIVE,change,CHIEF,T0000286,4361,Claude (draft),2026-10-08,"P2: union steward. union chief steward (71% paid, 4 hrs); CHIEF has no category; UNION REPRESENTATIVE would fit"
+CHIEF STEWAR,BOARD MEMBER,change,CHIEF,T0000736,1321,Claude (draft),2026-10-08,"P2: union steward. truncated CHIEF STEWAR(D): union chief steward, see T0000286"
+CHIEF STEWARD,BOARD MEMBER,change,CHIEF,T0000286,4361,Claude (draft),2026-10-08,"P2: union steward. union chief steward (71% paid, 4 hrs); CHIEF has no category; UNION REPRESENTATIVE would fit"
 CHRO,CHIEF HUMAN RESOURCES OFFICER,change,BOARD MEMBER,T0000778,1231,Claude (draft),2026-10-08,"CHRO: 94% paid, 40 hrs; BOARD MEMBER is wrong"
 CLASS OF COUNCIL MEMBER,BOARD MEMBER,add,"",T0000735,1329,Claude (draft),2026-10-08,100% trustee: alumni class council members
 CLERK,BOARD SECRETARY,change,CLERK,T0000028,81915,Claude (draft),2026-10-08,"87% officer, 12% paid, 2 hrs: the clerk of the board/congregation, i.e. its secretary; CLERK is a staff category"
@@ -287,7 +287,7 @@ SERGEANT AT ARMS,BOARD MEMBER,change,SERGEANT AT ARMS,T0000043,44445,Claude (dra
 SERVICE OFFICER,BOARD MEMBER,change,STAFF,T0000137,11540,Claude (draft),2026-10-08,"P2: officer of a lodge, post or club -> board officer by role. veterans service officer of a post (79% officer, 3% paid); STAFF is wrong"
 SOCIAL DIRECTOR,BOARD MEMBER,change,DIRECTOR,T0000794,1197,Claude (draft),2026-10-08,F-016: board.role = MEMBER (committee chair). 81% trustee: social director of a club
 SPIRITUAL DIRECTOR,BOARD MEMBER,change,DIRECTOR,T0000887,1060,Claude (draft),2026-10-08,"P2: officer of a lodge, post or club -> board officer by role. 80% trustee: spiritual director of a lodge/religious order"
-STEWARD,UNION REPRESENTATIVE,change,BOARD MEMBER,T0000116,14412,Claude (draft),2026-10-08,"P2: union steward. union/lodge stewards: 57% trustee, 67% paid but 1 hr median (stipends)"
+STEWARD,BOARD MEMBER,change,BOARD MEMBER,T0000116,14412,Claude (draft),2026-10-08,"P2: union steward. union/lodge stewards: 57% trustee, 67% paid but 1 hr median (stipends)"
 SUPERVISORY,BOARD MEMBER,add,"",T0000707,1403,Claude (draft),2026-10-08,"credit union supervisory committee (truncated): 0% 990-EZ, board-like"
 SUPERVISORY COMMITTEE,BOARD MEMBER,change,SUPERVISORY COMMITTEE,T0000480,2335,Claude (draft),2026-10-08,F-016: board.role = MEMBER (committee). credit union supervisory committee
 SUPPLEMENTA,NO TITLE,add,BOARD MEMBER,T0000743,1301,Claude (draft),2026-10-08,P4 (no title). 'See Supplementa(l)': title is elsewhere

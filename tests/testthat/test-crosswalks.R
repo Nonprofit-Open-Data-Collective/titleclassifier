@@ -10,14 +10,18 @@ test_that("data/ matches the tables in data-raw/crosswalks/ (run build-crosswalk
   skip_if_not(dir.exists(dir))
   rd <- function(f) utils::read.csv(file.path(dir, f), colClasses = "character",
                                     na.strings = character(0), check.names = FALSE)
+  # the columns the table and the package data share (the data adds derived
+  # role flags; the table keeps notes)
   same <- function(obj, f) {
-    csv <- rd(f)[, names(obj), drop = FALSE]
-    expect_identical(unname(as.list(obj)), unname(as.list(csv)), info = f)
+    csv  <- rd(f)
+    cols <- intersect(names(obj), names(csv))
+    expect_identical(unname(as.list(obj[cols])), unname(as.list(csv[cols])), info = f)
   }
   same(get_status_codes(), "status-codes.csv")
   same(xw, "title-standardization.csv")
   same(tx, "title-taxonomy.csv")
 })
+
 emp_levels   <- c("ceo", "c.level", "dir.vp", "mgr", "spec")
 board_levels <- c("pres", "vp", "sec", "treas", "mem")
 soc_cols     <- c("major.group", "minor.group", "broad.group", "detailed.occupation")
@@ -45,10 +49,26 @@ test_that("role flags are X or blank and levels imply their parent flag (F-014)"
   expect_equal(tx$title.standard[is_x("emp") & is_x("board")], character(0))
 })
 
+test_that("each title has one employee level or one board role (F-020)", {
+  expect_true(all(tx$emp.level %in% c("", "CEO", "OFFICER", "MANAGER", "PROFESSIONAL", "STAFF")))
+  expect_true(all(tx$board.role %in% c("", "CHAIR", "VICE CHAIR", "SECRETARY", "TREASURER", "MEMBER")))
+  expect_equal(tx$title.standard[nzchar(tx$emp.level) & nzchar(tx$board.role)], character(0))
+  # the legacy flags follow the two columns; dir.vp is retired
+  expect_identical(is_x("emp"), nzchar(tx$emp.level))
+  expect_identical(is_x("board"), nzchar(tx$board.role))
+  expect_false(any(is_x("dir.vp")))
+})
+
+test_that("board titles use the five core board standards (F-016)", {
+  core <- c("BOARD PRESIDENT", "BOARD VICE PRESIDENT", "BOARD SECRETARY", "BOARD TREASURER", "BOARD MEMBER")
+  expect_setequal(tx$title.standard[nzchar(tx$board.role)], core)
+})
+
 test_that("only top-executive titles carry the ceo flag (F-012)", {
   ceo <- tx$title.standard[is_x("ceo")]
   expect_true(all(c("CEO", "EXECUTIVE DIRECTOR") %in% ceo))
   expect_false(any(grepl("^(ASSISTANT|ASSOCIATE|DEPUTY|VICE) CEO$", ceo)))
+  expect_identical(ceo, tx$title.standard[tx$emp.level == "CEO"])
 })
 
 test_that("SOC codes are valid 2018 codes with a consistent hierarchy (F-015)", {

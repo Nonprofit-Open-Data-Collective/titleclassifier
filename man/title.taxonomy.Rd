@@ -11,8 +11,15 @@ A data frame of character columns, one row per \code{title.standard}:
 \item{domain.category, domain.label}{functional domain}
 \item{soc.label, major.group, minor.group, broad.group, detailed.occupation}{2018 SOC
 codes; \code{soc.label} is the official title of the most detailed code}
-\item{emp, ceo, c.level, dir.vp, mgr, spec}{employee flag and level (\code{"X"} or blank)}
-\item{board, pres, vp, sec, treas, mem}{board flag and role (\code{"X"} or blank)}
+\item{emp.level}{\code{CEO}, \code{OFFICER}, \code{MANAGER}, \code{PROFESSIONAL}, \code{STAFF}, or blank}
+\item{board.role}{\code{CHAIR}, \verb{VICE CHAIR}, \code{SECRETARY}, \code{TREASURER}, \code{MEMBER}, or
+blank. Board titles use five standards, BOARD PRESIDENT (\code{CHAIR})
+through BOARD MEMBER.}
+\item{emp, ceo, c.level, dir.vp, mgr, spec, board, pres, vp, sec, treas, mem}{legacy
+role flags (\code{"X"} or blank), derived from \code{emp.level} and \code{board.role}:
+\code{c.level} is CEO or OFFICER, \code{spec} is PROFESSIONAL or STAFF, \code{pres}
+is CHAIR, \code{vp} is VICE CHAIR, \code{mem} is MEMBER. \code{dir.vp} is retired
+and always blank.}
 }
 }
 \source{
@@ -21,6 +28,19 @@ title-taxonomy-map Google Sheet (retired 2026-10-08).
 }
 \description{
 Maps each \code{title.standard} to its functional domain, its 2018
-SOC occupation codes, and the employee and board role flags. Used by
-\code{categorize_titles()}; load it with \code{\link[=get_title_taxonomy]{get_title_taxonomy()}}.
+SOC occupation codes, and its role: an employee level or a board role.
+Used by \code{categorize_titles()}; load it with \code{\link[=get_title_taxonomy]{get_title_taxonomy()}}.
+
+The employee levels are:
+\itemize{
+\item \code{CEO}: the top staff job (CEO, executive director).
+\item \code{OFFICER}: C-suite, vice presidents, deputies.
+\item \code{MANAGER}: directors of departments, managers.
+\item \code{PROFESSIONAL}: non-managerial jobs often reported for their pay, such
+as physicians, lawyers, professors and coaches.
+\item \code{STAFF}: everything else.
+}
+
+The level comes from the title alone. Whether a person was a key or
+highly compensated employee in a filing comes from the checkboxes and pay.
 }

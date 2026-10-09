@@ -9,6 +9,12 @@
 #
 # The 1 GB source file is NOT committed; point CACHE_FILE at a local copy
 # (produced by fetch_partvii(2023, dest=...)).
+#
+# --reference-only keeps the committed demo sample (partvii-demo-2023.csv) and
+# rebuilds only the pinned crosswalks, the reference and the manifest. Use it
+# to re-baseline after an intentional change to the code or the crosswalks:
+#
+#   Rscript data-raw/demo/build-demo.R --reference-only
 
 suppressWarnings( suppressMessages({ library(data.table); library(dplyr) }) )
 
@@ -28,7 +34,8 @@ CACHE_FILE <- Sys.getenv(
   "TC_PARTVII_2023",
   unset = "C:/Users/jdlec/AppData/Local/Temp/claude/C--Users-jdlec-Dropbox--Personal--00---URBAN-00-GITHUB-titleclassifier/57f55c2d-d2e1-4a64-8b05-84b169023373/scratchpad/efdata-cache/F9-P07-T01-COMPENSATION-2023.CSV"
 )
-stopifnot( file.exists( CACHE_FILE ) )
+REFERENCE_ONLY <- "--reference-only" %in% commandArgs( trailingOnly = TRUE )
+if( ! REFERENCE_ONLY ) stopifnot( file.exists( CACHE_FILE ) )
 
 TARGET_ROWS <- 4000L   # "a few thousand cases" (whole orgs kept intact)
 SEED        <- 1234L
@@ -38,6 +45,15 @@ tc_pin_crosswalks( DEMO_DIR )
 xwalks <- tc_load_crosswalks( DEMO_DIR )
 
 # --- 2. deterministic whole-org sample ---------------------------------------
+demo_path <- file.path( DEMO_DIR, "partvii-demo-2023.csv" )
+if( REFERENCE_ONLY )
+{
+  cat( "• keeping the committed demo sample\n" )
+  # read exactly as tests/regression/check-regression.R does
+  demo <- data.table::fread( demo_path, colClasses = "character",
+                             showProgress = FALSE, data.table = FALSE )
+  keep <- unique( demo$OBJECTID )
+} else {
 cat( "• reading full 2023 table ...\n" )
 d <- data.table::fread( CACHE_FILE, colClasses = "character",
                         showProgress = FALSE, data.table = FALSE )
@@ -53,9 +69,9 @@ demo <- d[ d$OBJECTID %in% keep, , drop = FALSE ]
 demo <- demo[ order( demo$OBJECTID ), , drop = FALSE ]
 
 cat( "  demo sample:", nrow(demo), "rows from", length(keep), "orgs\n" )
-demo_path <- file.path( DEMO_DIR, "partvii-demo-2023.csv" )
 utils::write.csv( demo, demo_path, row.names = FALSE, na = "" )
 cat( "✔ wrote", demo_path, "\n" )
+}
 
 # --- 3. run current pipeline -> frozen reference ------------------------------
 cat( "• running pipeline ...\n" )

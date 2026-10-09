@@ -303,7 +303,7 @@ Fixed:
 The codes are text. **Opening a crosswalk table in Excel turns them into
 dates** (11-2033 becomes 48884), as did the sheet's .xlsx export.
 
-### F-016 Board taxonomy: rows with no board level, and an ambiguous `mem` (open, Phase 2)
+### F-016 Board taxonomy: rows with no board level, and an ambiguous `mem` (fixed, see F-020)
 
 99.8% of board rows land on five standards: BOARD MEMBER, BOARD PRESIDENT,
 BOARD TREASURER, BOARD SECRETARY and BOARD VICE PRESIDENT. Of the 32 board
@@ -315,6 +315,12 @@ instructions tab, but the sheet uses it for a regular board member.
 TREASURER / MEMBER). Turn the long-tail board standards into
 standardization-tab variants of the five, and move committee, advisory and
 ex officio to the status flags.
+
+**Done 2026-10-08 (F-020):**
+- `board.role` replaces the board flags.
+- 47 board standards are now variants of the five core standards.
+- Committee, advisory and ex officio are not yet status flags: those titles
+  map to BOARD MEMBER.
 
 ### F-017 Context-dependent titles fixed to one role (open, Phase 3, with the step-09 cascade)
 
@@ -375,3 +381,64 @@ The regression check is unchanged.
 `fread` misreads two variants that contain literal quote characters
 (`DIRECTOR """"`), so 06 would have rewritten them wrongly. The tables are now
 read with `read.csv` (`_crosswalk-io.R`).
+
+### F-020 Employee levels and board roles replace the role flags (done)
+
+Decided by the user on 2026-10-08:
+- Five employee levels, with PROFESSIONAL kept: the 990's "highest
+  compensated employee" group are people reported because of their pay, not
+  a managerial role (doctors, lawyers, coaches). Counselors, chefs and
+  teachers are STAFF.
+- The board president is called CHAIR.
+
+`data-raw/crosswalks/01-role-levels.R` converted `title-taxonomy.csv` from
+the 12 flag columns to two columns:
+- `emp.level`: CEO / OFFICER / MANAGER / PROFESSIONAL / STAFF;
+- `board.role`: CHAIR / VICE CHAIR / SECRETARY / TREASURER / MEMBER.
+
+`role-levels-log.csv` records the rule behind each row:
+- `dir.vp` is retired. Vice presidents and deputies go to OFFICER, and
+  directors to MANAGER, except four directors the August evidence routed up.
+- `spec` splits into PROFESSIONAL and STAFF: the taxonomy now has 31
+  PROFESSIONAL and 109 STAFF standards.
+- Club, lodge and post officers become board roles (DECISIONS.md P2).
+- A new COACH standard (PROFESSIONAL, SOC 27-2022) is added.
+- Board standards other than the core five are collapsed into them
+  (`board-collapse-log.csv`).
+
+The script also brought PR #9's drafts along:
+- Three drafts that targeted UNION REPRESENTATIVE now target BOARD MEMBER.
+- `taxonomy-additions.csv` now gives a level name instead of flags, and
+  `06-apply-decisions.R` reads that form.
+
+`build-crosswalks.R` derives the legacy flags from the two columns, so the
+pipeline's flag and count columns remain. `c.level` now includes every CEO,
+`spec` is PROFESSIONAL or STAFF, and `dir.vp` is always blank.
+`categorize_titles()` also outputs `emp.level` and `board.role`.
+
+The regression reference was rebuilt on purpose:
+`build-demo.R --reference-only` re-pins the crosswalks and keeps the demo
+sample. The new reference has md5 `a0e82dd1f1f5a8dc7169759de1ddfe90` and
+4,137 rows x 103 columns. Same rows and order; the changes are:
+
+| Change | Rows | Source |
+|---|---|---|
+| `emp.level` and `board.role` added | all | F-020 |
+| ceo on EXECUTIVE DIRECTOR | 97 | F-012, new to the frozen copy |
+| board rows lose the `board` placeholder in their SOC columns | about 3,100 | F-015, new to the frozen copy |
+| `dir.vp` retired; VICE PRESIDENT and DEPUTY DIRECTOR become c.level, DIRECTOR titles become mgr | 331 | F-020 |
+| FINANCE OFFICER becomes mgr; FOUNDER becomes c.level | 8 | F-020 |
+| SERGEANT AT ARMS, VICE COMMANDER and PRESIDENT TREASURER fold into the core board standards | 10 | F-016 |
+
+Still open:
+- Coach variants. `COACH` maps to BOARD MEMBER, which is right for youth
+  leagues but not for paid coaches. The per-title review should decide which
+  variants go to COACH.
+- VICE PRESIDENT is OFFICER by default and is often a board vice president
+  (F-017).
+- The level of a few titles is a judgment call worth a look in review:
+  - FIRE CHIEF (OFFICER)
+  - FOUNDER (OFFICER)
+  - LINEMAN (STAFF)
+  - MANAGING DIRECTOR (OFFICER)
+  - GENERAL MANAGER (MANAGER)

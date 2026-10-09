@@ -90,9 +90,14 @@ add_features <- function( df )
                "mgr", "spec", "pres", "vp", 
                "sec", "treas", "mem" )
 
-    df[ these ] <- 
-      df[these] %>% 
-      lapply( to_boolean )     
+    df[ these ] <-
+      df[these] %>%
+      lapply( to_boolean )
+
+    # role level and board role (title.taxonomy); absent from a taxonomy
+    # passed in that predates them
+    for( v in c( "emp.level", "board.role" ) )
+    { if( ! v %in% names(df) ) df[[v]] <- NA_character_ }
 
 
 
@@ -228,7 +233,9 @@ add_features <- function( df )
       "minor.group", "broad.group", 
       "detailed.occupation",
 
-      "emp", "num.emp", "board", "num.board", 
+      "emp.level", "board.role",
+
+      "emp", "num.emp", "board", "num.board",
 
       "ceo",     "num.ceos",
       "c.level", "num.clevel",

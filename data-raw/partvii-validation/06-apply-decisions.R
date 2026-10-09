@@ -4,8 +4,10 @@
 # rebuild the package data from them, and log what was applied in
 # applied-log.csv.
 #
-# new_taxonomy is written "domain.category / domain.label / flags", e.g.
-# "operations / finance / emp mgr", where flags are taxonomy flag columns.
+# new_taxonomy is written "domain.category / domain.label / level", e.g.
+# "operations / finance / MANAGER", where level is an emp.level (CEO, OFFICER,
+# MANAGER, PROFESSIONAL, STAFF) or a board.role (CHAIR, VICE CHAIR, SECRETARY,
+# TREASURER, MEMBER), or is left out for a standard that is not a role.
 #
 #   Rscript data-raw/partvii-validation/06-apply-decisions.R          (dry run)
 #   Rscript data-raw/partvii-validation/06-apply-decisions.R --apply
@@ -29,14 +31,16 @@ if (nrow(ta)) ta <- ta[!is_draft(reviewer)]
 
 # new taxonomy rows
 if (nrow(ta)) {
-  flagcols <- c("emp", "ceo", "c.level", "dir.vp", "mgr", "spec", "board", "pres", "vp", "sec", "treas", "mem")
+  emp_levels  <- c("CEO", "OFFICER", "MANAGER", "PROFESSIONAL", "STAFF")
+  board_roles <- c("CHAIR", "VICE CHAIR", "SECRETARY", "TREASURER", "MEMBER")
   new_tx <- rbindlist(lapply(seq_len(nrow(ta)), function(i) {
     p <- trimws(strsplit(ta$new_taxonomy[i], "/", fixed = TRUE)[[1]])
     r <- as.list(setNames(rep("", ncol(tx)), names(tx)))
     r$title.standard <- ta$title.standard[i]; r$domain.category <- p[1]; r$domain.label <- if (length(p) > 1) p[2] else ""
-    fl <- if (length(p) > 2) strsplit(p[3], "\\s+")[[1]] else character()
-    bad <- setdiff(fl, flagcols); if (length(bad)) stop("unknown taxonomy flag(s) for ", ta$title.standard[i], ": ", paste(bad, collapse = ", "))
-    for (x in fl) r[[x]] <- "X"
+    lv <- if (length(p) > 2) p[3] else ""
+    if (lv %in% emp_levels) r$emp.level <- lv
+    else if (lv %in% board_roles) r$board.role <- lv
+    else if (nzchar(lv)) stop("unknown level for ", ta$title.standard[i], ": ", lv)
     as.data.table(r)
   }))
   new_tx <- new_tx[!title.standard %in% tx$title.standard]

@@ -18,6 +18,10 @@ and weighted by frequency in the 35,930-row classified slice
 >     been removed (F-001).
 >   - The Phase 0 checks, in `tests/testthat/test-crosswalks.R`, and the
 >     archive of the old tabs.
+>   - Phase 2 (F-020): `emp.level` with five levels (PROFESSIONAL kept) and
+>     `board.role` (president → CHAIR) replace the flags in the table. The
+>     legacy flags are derived in the package data. Board standards are
+>     collapsed into the core five. The decisions below are settled.
 > - **Not done:** Phase 1 item 3. The Part VII review process routes pending
 >   suggestion lists through the per-title review instead of a bulk apply
 >   (F-010), so the August list goes there.

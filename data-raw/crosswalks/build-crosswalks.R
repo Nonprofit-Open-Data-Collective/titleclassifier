@@ -28,8 +28,38 @@ title.xwalk <- read_table("title-standardization.csv",
 title.taxonomy <- read_table("title-taxonomy.csv",
   c("title.standard", "domain.category", "domain.label", "soc.label",
     "major.group", "minor.group", "broad.group", "detailed.occupation",
-    "emp", "ceo", "c.level", "dir.vp", "mgr", "spec",
-    "board", "pres", "vp", "sec", "treas", "mem"))
+    "emp.level", "board.role"))
+
+# each title is an employee level or a board role (or neither: not a role)
+emp_levels  <- c("CEO", "OFFICER", "MANAGER", "PROFESSIONAL", "STAFF")
+board_roles <- c("CHAIR", "VICE CHAIR", "SECRETARY", "TREASURER", "MEMBER")
+lv <- title.taxonomy$emp.level; rl <- title.taxonomy$board.role
+bad <- title.taxonomy$title.standard[!lv %in% c(emp_levels, "") | !rl %in% c(board_roles, "") | (nzchar(lv) & nzchar(rl))]
+if (length(bad)) stop("invalid emp.level / board.role in title-taxonomy.csv: ", paste(bad, collapse = ", "))
+
+# the legacy role flags ("X" or blank), derived so that the pipeline's output
+# columns keep their meaning. dir.vp is retired and always blank.
+flag <- function(cond) ifelse(cond, "X", "")
+title.taxonomy <- within(title.taxonomy, {
+  emp     <- flag(nzchar(lv))
+  ceo     <- flag(lv == "CEO")
+  c.level <- flag(lv %in% c("CEO", "OFFICER"))
+  dir.vp  <- flag(FALSE)
+  mgr     <- flag(lv == "MANAGER")
+  spec    <- flag(lv %in% c("PROFESSIONAL", "STAFF"))
+  board   <- flag(nzchar(rl))
+  pres    <- flag(rl == "CHAIR")
+  vp      <- flag(rl == "VICE CHAIR")
+  sec     <- flag(rl == "SECRETARY")
+  treas   <- flag(rl == "TREASURER")
+  mem     <- flag(rl == "MEMBER")
+})
+title.taxonomy <- title.taxonomy[, c(
+  "title.standard", "domain.category", "domain.label", "soc.label",
+  "major.group", "minor.group", "broad.group", "detailed.occupation",
+  "emp.level", "board.role",
+  "emp", "ceo", "c.level", "dir.vp", "mgr", "spec",
+  "board", "pres", "vp", "sec", "treas", "mem")]
 
 # categorize_titles() merges on title.standard: a duplicate would return every
 # holder of that title twice (FINDINGS.md F-001)
