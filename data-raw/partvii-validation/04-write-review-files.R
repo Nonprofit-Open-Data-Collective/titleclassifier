@@ -32,7 +32,7 @@ sugg <- rbindlist(sugg)
 
 # decisions recorded so far (05-collect-reviews.R), by title
 dec_path <- file.path(pv_repo, "review-decisions.csv")
-dec <- if (file.exists(dec_path)) fread(dec_path, colClasses = "character", na.strings = NULL) else data.table()
+dec <- if (file.exists(dec_path)) as.data.table(utils::read.csv(dec_path, colClasses = "character", na.strings = character(0), check.names = FALSE)) else data.table()
 if (nrow(dec)) dec[is.na(title_v7), title_v7 := ""]
 
 # nearest crosswalk variants for titles that are missing (tiers 1-3 only: cost)

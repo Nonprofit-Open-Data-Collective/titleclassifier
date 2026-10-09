@@ -1,17 +1,7 @@
 title.standard,new_taxonomy,first_variant,reviewer,date
-NO TITLE,non-job title / missing,"",Consensus vote (3 Claude reviewers),2026-10-08
-FIRE OFFICER,industry-specific / public safety / MANAGER,ASSISTANT CHIEF,Consensus vote (3 Claude reviewers),2026-10-08
-ASSISTANT PRINCIPAL,industry-specific / education / MANAGER,ASSISTANT PRINCIPAL,Consensus vote (3 Claude reviewers),2026-10-08
-BARTENDER,operations / hospitality / STAFF,BARTENDER,Consensus vote (3 Claude reviewers),2026-10-08
-CHIEF OFFICER,operations / administration / OFFICER,CCO,Consensus vote (3 Claude reviewers),2026-10-08
-DISPATCHER,operations / administration / STAFF,DISPATCHER,Consensus vote (3 Claude reviewers),2026-10-08
-FOREMAN,operations / facilities / MANAGER,FOREMAN,Consensus vote (3 Claude reviewers),2026-10-08
-GOLF COURSE SUPERINTENDENT,operations / facilities / MANAGER,GOLF COURSE SUPERINTENDENT,Consensus vote (3 Claude reviewers),2026-10-08
-GOLF PROFESSIONAL,industry-specific / recreation and sports / PROFESSIONAL,GOLF PROFESSIONAL,Consensus vote (3 Claude reviewers),2026-10-08
-HEAD OF DIVISION,industry-specific / education / MANAGER,HEAD OF LOWER SCHOOL,Consensus vote (3 Claude reviewers),2026-10-08
-LINEMAN,industry-specific / utilities / STAFF,JOURNEYMAN LINEMAN,Consensus vote (3 Claude reviewers),2026-10-08
-PHARMACIST,industry-specific / medical / PROFESSIONAL,PHARMACIST,Consensus vote (3 Claude reviewers),2026-10-08
-SENIOR FELLOW,operations / research and development / PROFESSIONAL,SENIOR FELLOW,Consensus vote (3 Claude reviewers),2026-10-08
-SCIENTIST,operations / research and development / PROFESSIONAL,SENIOR SCIENTIST,Consensus vote (3 Claude reviewers),2026-10-08
-TRAINING COORDINATOR,operations / human resources / STAFF,TRAINING COORDINATOR,Consensus vote (3 Claude reviewers),2026-10-08
-VETERINARIAN,industry-specific / medical / PROFESSIONAL,VETERINARIAN,Consensus vote (3 Claude reviewers),2026-10-08
+ACTUARY,operations / finance / PROFESSIONAL,ACTUARY,Consensus vote (3 Claude reviewers),2026-10-09
+LOAN OFFICER,operations / finance / PROFESSIONAL,LOAN OFFICER,Consensus vote (3 Claude reviewers),2026-10-09
+MISSIONARY,industry-specific / religion / STAFF,MISSIONARY,Consensus vote (3 Claude reviewers),2026-10-09
+PARAMEDIC,industry-specific / public safety / STAFF,PARAMEDIC,Consensus vote (3 Claude reviewers),2026-10-09
+PERFUSIONIST,industry-specific / medical / PROFESSIONAL,PERFUSIONIST,Consensus vote (3 Claude reviewers),2026-10-09
+PILOT,industry-specific / public safety / PROFESSIONAL,PILOT,Consensus vote (3 Claude reviewers),2026-10-09
