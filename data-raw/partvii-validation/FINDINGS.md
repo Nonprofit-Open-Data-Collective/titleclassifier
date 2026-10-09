@@ -872,3 +872,60 @@ filers (P4).
 - **The PRESIDENT & CEO fix raised designated CEOs at $100m+ from 60% to 65%,**
   and imputed CEOs fell from 35% to 30%.
 - **Pattern matching raised title coverage** by about 1 point in most strata.
+
+### F-028 A no-checkbox role model for 990-EZ filers (P4, first model)
+
+**Training.** An xgboost classifier with six classes (BOARD, CEO, OFFICER,
+MANAGER, PROFESSIONAL, STAFF), trained on the full-990 people in the
+2019-2023 sample. The teacher is step 09's role, which uses the Part VII
+boxes. The model sees only what a 990-EZ also has:
+- title keyword flags, crosswalk level, board role, domain, SOC group and
+  match type;
+- pay and hours;
+- the person's pay and hours rank and share within the filing;
+- the filing's make-up: people, paid people, other CEO-level and board titles,
+  people sharing the title;
+- status flags and expense size.
+
+Training and test are split by organization (80/20). The features live in
+`_nobox-features.R`, and `16-nobox-model.R` trains the model; it takes under
+a minute. The strongest features are pay, crosswalk level, pay share within
+the filing, and hours.
+
+**Test (held-out organizations, 109,643 people).** Agreement is with step 09
+using the boxes.
+
+| | Model, no boxes | Step 09, boxes hidden |
+|---|---|---|
+| All people | **97.2%** | 92.6% |
+| Non-board people | **87.1%** | 80.3% |
+| $100m+ organizations | **95.7%** | 80.0% |
+
+Without the boxes, step 09 loses most OFFICER and STAFF calls (OFFICER recall
+0.55, STAFF precision 0.31). The model keeps most of them (0.76 and 0.83).
+
+**Labeled set** (`17-nobox-gold.R`, 309 scored people from 2010-12).
+Expense size comes from the 2010-2012 Part I tables.
+
+| Group | People | Model, no boxes | Step 09 | Step 09, boxes hidden |
+|---|---|---|---|---|
+| 990-EZ | 40 | **92.5%** | 82.5% | 82.5% |
+| Full 990 | 269 | 86.2% | **88.8%** | 78.8% |
+| All | 309 | 87.1% | 88.0% | 79.3% |
+
+**Reading:**
+- On 990-EZ filings the model beats the rules by 10 points (37 of 40 against
+  33 of 40). That is a small sample.
+- On full 990 filings it comes within 3 points of step 09 with boxes, without
+  seeing them. The boxes still help where they exist.
+- **Direction:** use step 09's rules for full 990 filers and the model for
+  990-EZ filers.
+
+**Next:**
+- **More 990-EZ test data.** The 990-EZ estimate needs more labeled people.
+  The form switchers are an independent source: 47,110 organizations switch
+  from 990-EZ to 990 at least once in 2019-2023, and 25,610 org-year pairs go
+  the other way. Linking their people with synthid would give checkbox-based
+  labels for real 990-EZ filers.
+- **How to ship the model** in the package: a dependency, a saved model, and a
+  step 09 option. That needs a decision.

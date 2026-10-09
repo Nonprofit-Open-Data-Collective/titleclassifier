@@ -1,0 +1,7 @@
+role,model.precision,model.recall,rules.precision,rules.recall
+BOARD,0.98,0.99,0.99,0.93
+CEO,0.95,0.96,0.93,0.93
+OFFICER,0.85,0.76,1,0.55
+MANAGER,0.85,0.96,0.63,0.99
+PROFESSIONAL,0.96,0.95,0.86,1
+STAFF,0.83,0.86,0.31,0.95
