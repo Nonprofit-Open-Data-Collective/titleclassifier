@@ -128,3 +128,29 @@ titles are matched.
 
 Tiers 2-4 are unchanged because round 1 covered tier 1 only. They are next,
 through clusters and cleaning fixes, as the review process describes.
+
+## Round 2: cleaning fixes (2026-10-08)
+
+Before the tier 2 review, the cleaning steps were fixed for the leftovers that
+round 1 marked `fix_cleaning` (F-007):
+
+- **Fragments after a split.** `drop_fragment_titles()` handles them at the end
+  of step 6:
+  - A split piece that is only a status qualifier (THRU, THROUGH, UNTIL, PAST,
+    FORMER, RESIGNED, TERM ENDED, PART YEAR, PARTIAL YEAR, NEW, ELECT...) or a
+    single letter (S, P, M, V) sets the person's FORMER, PARTIAL or FUTURE flag.
+  - The piece is dropped when the person has another title. When it is the
+    only title, the title becomes empty, which maps to NO TITLE.
+- **Dangling words and punctuation.** A leading AND, a trailing OF and trailing
+  punctuation are removed. For example, PAST - PRESIDENT now gives PRESIDENT,
+  VP-AT-LARGE gives VICE PRESIDENT, and DIRECTOR: THROUGH ... gives DIRECTOR.
+- **Truncations:**
+  - IMMEDIATE PA becomes IMMEDIATE PAST PRESIDENT. It was read as Pennsylvania.
+  - PAST P becomes PAST PRESIDENT.
+  - NON-VOTING M becomes NON-VOTING MEMBER.
+- **ER PHYSICIAN** (and nurse, doctor, MD, director) becomes EMERGENCY ...,
+  not EDITOR PHYSICIAN.
+
+The equivalence check still holds. The regression reference was rebuilt with
+`build-demo.R --reference-only`, which also pins the round 1 crosswalk. Two
+demo rows are gone (fragments dropped): 4,137 → 4,135.
