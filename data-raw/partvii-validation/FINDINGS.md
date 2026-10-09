@@ -42,7 +42,7 @@ cleaning fixes and pattern rules more than crosswalk rows.
 
 ## Findings
 
-### F-001 Duplicate taxonomy row for COMPTROLLER (fixed in the snapshot; sheet pending)
+### F-001 Duplicate taxonomy row for COMPTROLLER (fixed)
 
 `xwalk-title-taxonomy.csv` had two rows for `COMPTROLLER` (lines 130-131):
 one with SOC codes, one without. `categorize_titles()` merges on
@@ -54,9 +54,9 @@ twice. That's about 42,000 people counted twice in this panel.
 check pass.
 - The regression baseline uses its own frozen copy (`data-raw/demo/`), which
   keeps the duplicate on purpose, so the baseline did not change.
-- **Still to do:** delete the same row in the Google Sheet (title-taxonomy
-  tab). Otherwise `get_googlesheets_title_taxonomy(refresh = TRUE)` brings
-  the duplicate back.
+- The sheet is retired (F-019), so the duplicate cannot come back from it.
+  `build-crosswalks.R` refuses to build with a duplicate standard, and the
+  tests check for one.
 
 `03-title-profiles.R` also keeps only the first row of any duplicated
 standard, as a guard.
@@ -233,3 +233,145 @@ than applied in bulk.
 `R/identify-missing-titles.R` refers to an undefined `variant` (lines 114,
 125 and others), so the helper for unmatched titles errors out. The review
 files and `queue-add.csv` now cover its purpose. Fix it or remove it.
+
+## Taxonomy review (2026-10-08)
+
+A review of the `title-taxonomy` tab against the 2018 SOC table and the role
+plans in `synthid/dev/` (`PLAN-title-role-refinement.md`). Counts are from the
+2010-12 classified slice (35,930 rows). The full review and the phased plan
+are in `data-dev/CROSSWALK-REVIEW.md`.
+
+F-012 to F-015 are fixed by `07-taxonomy-fixes.R`, which logs every changed
+cell in `taxonomy-edits-log.csv` (266 cells, 198 rows).
+`tests/testthat/test-crosswalks.R` now checks for them. The edits were never
+entered in the Google Sheet, which was retired the same day (F-019). The
+regression baseline keeps its own frozen crosswalks, so it did not change. On
+the 2023 demo data with the fixed taxonomy:
+- rows with the ceo flag go from 42 to 137;
+- filings with at least one CEO go from 10.6% to 31.9%;
+- rows with a `soc.label` go from 3,709 to 560, because board rows no longer
+  carry the label "board".
+
+### F-012 CEO flag on the wrong titles (fixed)
+
+`EXECUTIVE DIRECTOR` had `c.level` but not `ceo`, although the instructions
+tab maps ED to ceo. ED is the most common title for the top staff job (673
+rows in the slice, against 378 for CEO). Meanwhile `ASSISTANT CEO`,
+`ASSOCIATE CEO`, `DEPUTY CEO`, `VICE CEO`, `PRESIDENT OF MEDICAL STAFF` and
+`POLITICAL DIRECTOR` had `ceo`.
+
+**Fixed:**
+- ceo added to EXECUTIVE DIRECTOR and GENERAL DIRECTOR.
+- The deputies moved to c.level.
+- PRESIDENT OF MEDICAL STAFF moved to spec (a physician).
+- POLITICAL DIRECTOR moved to emp + dir.vp.
+
+**Left as is:**
+- MANAGING DIRECTOR: holders are mixed (31% trustee box, median pay $21k,
+  24 hours a week), so the step-09 cascade should decide.
+- ORGANIZATION DIRECTOR: no holders in the slice.
+
+### F-013 Support and editorial titles filed as managers (fixed)
+
+EXECUTIVE ASSISTANT, EXECUTIVE SECRETARY, EDITOR and ORGANIZER had `mgr`.
+Moved to `spec`.
+
+### F-014 Employee level without the emp flag (fixed)
+
+BUSINESS AGENT and BUSINESS REPRESENTATIVE had `spec` with `emp` blank, so
+they counted in no group. Added `emp`. The test now requires every employee
+level to have `emp` and every board level to have `board`.
+
+### F-015 SOC codes and labels (fixed)
+
+Fixed:
+- **Codes that contradict the title:**
+  - CHIEF CIVIC PROGRAMS OFFICER and CIVIC DIRECTOR had 11-9051 (Food
+    Service Managers); changed to 11-9151.
+  - ATHLETE, SPORTS, SPORTS DIRECTOR and VICE PRESIDENT OF SOFTBALL had
+    27-2023 (Umpires). Now 27-2021, broad group only, 27-2022 and broad group
+    only.
+  - ARTIST had a detailed code from another broad group.
+- **Placeholders and whitespace:**
+  - the word "board" in every SOC column of 10 board rows;
+  - "xxx" and "missing" labels;
+  - trailing spaces in COMPTROLLER and WEBMASTER codes.
+- **Labels:** `soc.label` was hand-typed, and 88 of 219 labels did not match
+  an official title. It is now the official 2018 title of the most detailed
+  code given. Labels on rows without a code are unchanged.
+
+The codes are text. **Opening a crosswalk table in Excel turns them into
+dates** (11-2033 becomes 48884), as did the sheet's .xlsx export.
+
+### F-016 Board taxonomy: rows with no board level, and an ambiguous `mem` (open, Phase 2)
+
+99.8% of board rows land on five standards: BOARD MEMBER, BOARD PRESIDENT,
+BOARD TREASURER, BOARD SECRETARY and BOARD VICE PRESIDENT. Of the 32 board
+taxonomy rows, 21 have no board level, including BOARD CHAIR, VICE CHAIR,
+COUNCIL CHAIR and PRESIDENT TREASURER. `mem` is "committee member" in the
+instructions tab, but the sheet uses it for a regular board member.
+
+**Proposal:** one `board.role` column (CHAIR / VICE CHAIR / SECRETARY /
+TREASURER / MEMBER). Turn the long-tail board standards into
+standardization-tab variants of the five, and move committee, advisory and
+ex officio to the status flags.
+
+### F-017 Context-dependent titles fixed to one role (open, Phase 3, with the step-09 cascade)
+
+| Title | Rows | Hard-coded mapping |
+|---|---|---|
+| VICE PRESIDENT | 1,998 | emp / dir.vp, although many holders tick the trustee box |
+| SECRETARY | 101 | emp / spec, with SOC "Secretaries and Administrative Assistants" |
+| CORPORATE SECRETARY | | same as SECRETARY |
+| DIRECTOR | 283 | emp / dir.vp |
+
+The standardization tab also sends PRESIDENT, CHAIR, DIRECTOR and SECRETARY to
+board standards. Together with F-005, these titles need an `ambiguous` marker
+and a decision in step 09 from the checkboxes, pay and hours, not in the
+crosswalk.
+
+### F-018 Domain vocabulary (open, Phase 4)
+
+74% of employee rows have the domain `operations / administration`, because
+executives are filed there. The overview tab defines a "General Management"
+domain that is not used. The labels are not a controlled list:
+- 28 rows have no category;
+- placeholders `xxx` and `industry-specific (operations?)`;
+- both `religion` and `religious`;
+- `marketing-pr`, `marketing-sales` and `comms-pr` side by side.
+
+### F-019 The crosswalks move from the Google Sheet to the repository (done)
+
+The pipeline read its three crosswalks from the title-taxonomy-map Google
+Sheet. The package bundled snapshots of them in `inst/extdata/crosswalks/`, and
+`refresh = TRUE` overwrote the snapshots from the sheet. The sheet and the
+snapshots had to be kept in step by hand. F-001 and F-012 to F-015 were fixed
+in the snapshots but not in the sheet, so a refresh would have undone them.
+
+**Done 2026-10-08:**
+- **Archive:** every tab of the sheet is exported unchanged to
+  `data-raw/crosswalks/archive/google-sheet-2026-10-08/` by
+  `00-export-google-sheet.R`.
+- **Source tables:** `data-raw/crosswalks/` holds `status-codes.csv`,
+  `title-standardization.csv` and `title-taxonomy.csv`.
+  - Their pipeline columns are identical to the snapshots.
+  - The sheet's notes columns are kept.
+- **Package data:** `build-crosswalks.R` builds the tables into package data
+  (`status.codes`, `title.xwalk`, `title.taxonomy` in `data/`).
+- **Loaders:**
+  - `get_status_codes()`, `get_title_xwalk()` and `get_title_taxonomy()`
+    return the package data.
+  - The `get_googlesheets_*()` names still work, and `refresh = TRUE` now
+    only warns.
+- **Removed:**
+  - the googlesheets4 dependency;
+  - `inst/extdata/crosswalks/`;
+  - the stale 2022 data objects `d.taxonomy`, `df.standard` and
+    `status.mapping`.
+- **Scripts:** 06 and 07 edit the tables and rebuild `data/`.
+
+The regression check is unchanged.
+
+`fread` misreads two variants that contain literal quote characters
+(`DIRECTOR """"`), so 06 would have rewritten them wrongly. The tables are now
+read with `read.csv` (`_crosswalk-io.R`).

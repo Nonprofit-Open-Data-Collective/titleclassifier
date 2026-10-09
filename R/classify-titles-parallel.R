@@ -89,10 +89,10 @@ classify_titles <- function( df, batch_size = 2000, workers = NULL,
     future::plan(future::multicore, workers = workers)
   }
   
-  # Load title assets from google sheets 
-  gs_status_codes   <- get_googlesheets_status_codes()
-  gs_title_xwalk    <- get_googlesheets_title_xwalk()
-  gs_title_taxonomy <- get_googlesheets_title_taxonomy()
+  # Load the crosswalks (package data)
+  gs_status_codes   <- get_status_codes()
+  gs_title_xwalk    <- get_title_xwalk()
+  gs_title_taxonomy <- get_title_taxonomy()
   
   # Pass them to each worker
   # results <- furrr::future_map(

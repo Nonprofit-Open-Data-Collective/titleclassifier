@@ -9,9 +9,9 @@ get_variants(s.code, gs_status_codes = NULL)
 \arguments{
 \item{s.code}{Any of the unique status.qualifier strings from df.status ("FUTURE","FORMER","INTERIM",etc)}
 
-\item{gs_status_codes}{Optional status-code crosswalk data frame; if \code{NULL}, loaded from the bundled snapshot.}
+\item{gs_status_codes}{Optional status-code crosswalk data frame; if \code{NULL}, loaded from the package data.}
 }
 \description{
-Search for variants of a status code (stored in google sheets),
+Search for variants of a status code (in the status.codes crosswalk),
 and combine them all into a single regex search string separated by OR.
 }

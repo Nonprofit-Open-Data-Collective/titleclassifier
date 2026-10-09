@@ -22,7 +22,6 @@ Imports:
     magrittr,
     hunspell,
     stringr,
-    googlesheets4,
     data.table,
     digest,
     furrr,

@@ -13,10 +13,10 @@ flag_and_keep(df, title = "TitleTxt6", s.code, gs_status_codes = NULL)
 
 \item{s.code}{Any of the unique status.qualifier strings from df.status (e.g. "REGIONAL")}
 
-\item{gs_status_codes}{Optional status-code crosswalk data frame; if \code{NULL}, loaded from the bundled snapshot.}
+\item{gs_status_codes}{Optional status-code crosswalk data frame; if \code{NULL}, loaded from the package data.}
 }
 \description{
-Search for variants of a status code (stored in google sheets),
+Search for variants of a status code (in the status.codes crosswalk),
 create a boolean flag in the dataset, and replace the status variant
 in the title with the standardized version.
 The flag variable is named SCODE.X (e.g. REGIONAL.X).

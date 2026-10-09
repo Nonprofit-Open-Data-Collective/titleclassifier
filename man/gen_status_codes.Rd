@@ -11,7 +11,7 @@ gen_status_codes(comp.data, title = "TitleTxt5", gs_status_codes = NULL)
 
 \item{title}{Name of the title column to operate on.}
 
-\item{gs_status_codes}{Optional status-code crosswalk data frame; if \code{NULL}, loaded from the bundled snapshot.}
+\item{gs_status_codes}{Optional status-code crosswalk data frame; if \code{NULL}, loaded from the package data.}
 }
 \description{
 remove all quantifiers and qualifiers

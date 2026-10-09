@@ -33,5 +33,5 @@ utils::globalVariables(c(
   "tot.comp2", "tot.comp2.tot", "tot.hours2", "tot.titles", "treas", "variant", "vp",
   # lazy-loaded package data objects used by name
   "date.words", "number.words", "likely.subjects", "likely.titles",
-  "possible.titles", "tinypartvii"
+  "possible.titles", "tinypartvii", "status.codes", "title.xwalk", "title.taxonomy"
 ))

@@ -70,11 +70,12 @@ reference:
   - read_partvii
   - get_partvii
 - title: Crosswalk loaders
-  desc: Load the bundled title/status/taxonomy crosswalk snapshots (or refresh from Google Sheets).
+  desc: Load the title, status and taxonomy crosswalks (package data built from data-raw/crosswalks/).
   contents:
-  - get_googlesheets_status_codes
-  - get_googlesheets_title_xwalk
-  - get_googlesheets_title_taxonomy
+  - get_status_codes
+  - get_title_xwalk
+  - get_title_taxonomy
+  - get_googlesheets
 - title: Spelling & cleaning helpers
   desc: The fix_* routines used inside standardize_spelling().
   contents:
@@ -142,6 +143,6 @@ reference:
   - possible.regional.list
   - raw.titles
   - tinypartvii
-  - df.standard
-  - d.taxonomy
-  - status.mapping
+  - title.xwalk
+  - title.taxonomy
+  - status.codes

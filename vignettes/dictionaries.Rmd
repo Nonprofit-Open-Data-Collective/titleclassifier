@@ -13,29 +13,31 @@ library(titleclassifier)
 ```
 
 The pipeline is driven by two kinds of reference data: **crosswalks** (curated
-lookup tables, maintained in a Google Sheet and bundled with the package as pinned
-CSV snapshots) and **word lists** (character vectors shipped as package data used by
+lookup tables shipped as package data) and **word lists** (character vectors shipped as package data used by
 the regex-based cleaning steps).
 
 ## Crosswalks
 
-The three crosswalks live in one Google Sheet and are cached in the package under
-`inst/extdata/crosswalks/`. The loader functions read the bundled snapshot by
-default and take `refresh = TRUE` to re-pull the live sheet.
+The three crosswalks are package data (`title.xwalk`, `title.taxonomy`,
+`status.codes`). Their source is the CSV tables in `data-raw/crosswalks/` of the
+source repository: edit a table, then run `data-raw/crosswalks/build-crosswalks.R`
+to rebuild the package data. (Until October 2026 the crosswalks were kept in a
+Google Sheet; it is retired, and an export of every tab is archived in
+`data-raw/crosswalks/archive/`.)
 
-### Title standardization (`get_googlesheets_title_xwalk()`)
+### Title standardization (`get_title_xwalk()`)
 
 Maps every observed title **variant** to a canonical `title.standard`, plus a
 `strata` / `strata.label` for board sub-roles. Used in step 07,
 `standardize_titles()`.
 
 ```{r}
-xwalk <- get_googlesheets_title_xwalk()
+xwalk <- get_title_xwalk()
 dim(xwalk)
 head(xwalk, 8)
 ```
 
-### Title taxonomy (`get_googlesheets_title_taxonomy()`)
+### Title taxonomy (`get_title_taxonomy()`)
 
 Maps each canonical `title.standard` to its taxonomy dimensions: functional
 `domain.category` / `domain.label`, the BLS SOC occupation codes, and the
@@ -43,20 +45,20 @@ binary role/hierarchy flags (`ceo`, `c.level`, `dir.vp`, `mgr`, `spec`, `board`,
 `pres`, `vp`, `sec`, `treas`, `mem`). Used in step 08, `categorize_titles()`.
 
 ```{r}
-tax <- get_googlesheets_title_taxonomy()
+tax <- get_title_taxonomy()
 dim(tax)
 head(tax[, c("title.standard", "domain.category", "soc.label",
              "ceo", "c.level", "board")], 8)
 ```
 
-### Status codes (`get_googlesheets_status_codes()`)
+### Status codes (`get_status_codes()`)
 
 Maps status-qualifier **variants** (e.g. `ACTING`, `EMERITUS`, `INTERIM`) to a
 standardized `status.qualifier` (e.g. `INTERIM`, `FORMER`). Used in step 06,
 `gen_status_codes()`.
 
 ```{r}
-sc <- get_googlesheets_status_codes()
+sc <- get_status_codes()
 dim(sc)
 head(sc, 8)
 ```

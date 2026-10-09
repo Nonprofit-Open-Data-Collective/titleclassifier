@@ -15,10 +15,9 @@ standardize_titles(
 
 \item{officer}{Name of the officer-flag column.}
 
-\item{gs_title_xwalk}{Optional title-standardization crosswalk; if \code{NULL}, loaded from the bundled snapshot.}
+\item{gs_title_xwalk}{Optional title-standardization crosswalk; if \code{NULL}, loaded from the package data.}
 }
 \description{
 Maps multiple variants of a title onto the standard form
-that is defined in the Google sheet:
-\href{https://docs.google.com/spreadsheets/d/1iYEY2HYDZTV0uvu35UuwdgAUQNKXSyab260pPPutP1M/edit?usp=sharing}{Title standardization crosswalk}
+defined in the title-standardization crosswalk (\link{title.xwalk}).
 }

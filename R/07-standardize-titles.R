@@ -7,22 +7,21 @@
 #'
 #' @description
 #' Maps multiple variants of a title onto the standard form
-#' that is defined in the Google sheet:
-#' \href{https://docs.google.com/spreadsheets/d/1iYEY2HYDZTV0uvu35UuwdgAUQNKXSyab260pPPutP1M/edit?usp=sharing}{Title standardization crosswalk}
+#' defined in the title-standardization crosswalk ([title.xwalk]).
 #' 
 #' @export
 #' @param comp.data A Part VII compensation data frame.
 #' @param officer Name of the officer-flag column.
-#' @param gs_title_xwalk Optional title-standardization crosswalk; if `NULL`, loaded from the bundled snapshot.
+#' @param gs_title_xwalk Optional title-standardization crosswalk; if `NULL`, loaded from the package data.
 standardize_titles <- function(comp.data,
                                officer = "F9_07_COMP_DTK_POS_OFF_X",
                                gs_title_xwalk=NULL)
 {
   
   # load title standardization 
-  # crosswalk from google sheets
+  # crosswalk from the package data
   if( is.null(gs_title_xwalk) )
-  { gs_title_xwalk <- get_googlesheets_title_xwalk() }
+  { gs_title_xwalk <- get_title_xwalk() }
   
   comp.data <- basic_csuite_fixes( comp.data, officer = officer ) 
   

@@ -1,0 +1,43 @@
+# build-crosswalks.R
+# Build the package's crosswalk data objects from the CSV tables in this
+# folder. Run it after every edit to a table, from the package root:
+#
+#   Rscript data-raw/crosswalks/build-crosswalks.R
+#
+# Writes data/status-codes.rda (status.codes), data/title-xwalk.rda
+# (title.xwalk) and data/title-taxonomy.rda (title.taxonomy). Only the columns
+# the pipeline uses go into the package; notes columns stay in the CSVs.
+# tests/testthat/test-crosswalks.R checks that data/ matches these tables.
+
+dir <- "data-raw/crosswalks"
+read_table <- function(f, cols) {
+  d <- utils::read.csv(file.path(dir, f), colClasses = "character",
+                       na.strings = character(0), check.names = FALSE)
+  missing <- setdiff(cols, names(d))
+  if (length(missing)) stop(f, " is missing columns: ", paste(missing, collapse = ", "))
+  d <- d[, cols, drop = FALSE]
+  rownames(d) <- NULL
+  d
+}
+
+status.codes <- read_table("status-codes.csv", c("status.variant", "status.qualifier"))
+
+title.xwalk <- read_table("title-standardization.csv",
+                          c("title.variant", "title.standard", "strata", "strata.label"))
+
+title.taxonomy <- read_table("title-taxonomy.csv",
+  c("title.standard", "domain.category", "domain.label", "soc.label",
+    "major.group", "minor.group", "broad.group", "detailed.occupation",
+    "emp", "ceo", "c.level", "dir.vp", "mgr", "spec",
+    "board", "pres", "vp", "sec", "treas", "mem"))
+
+# categorize_titles() merges on title.standard: a duplicate would return every
+# holder of that title twice (FINDINGS.md F-001)
+dup <- title.taxonomy$title.standard[duplicated(title.taxonomy$title.standard)]
+if (length(dup)) stop("duplicate title.standard in title-taxonomy.csv: ", paste(unique(dup), collapse = ", "))
+
+save(status.codes,   file = "data/status-codes.rda",   compress = "xz")
+save(title.xwalk,    file = "data/title-xwalk.rda",    compress = "xz")
+save(title.taxonomy, file = "data/title-taxonomy.rda", compress = "xz")
+message(sprintf("built status.codes (%d rows), title.xwalk (%d), title.taxonomy (%d)",
+                nrow(status.codes), nrow(title.xwalk), nrow(title.taxonomy)))
