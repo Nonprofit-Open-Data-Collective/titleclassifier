@@ -538,7 +538,7 @@ STEP-06: gen_status_codes()
 |      it replaces it with the standardized form and keeps it in the title.  
 |
 +- get_variants(s.code)
-|    - Pulls all known variants for a given status code from a Google Sheet (“status-codes”).  
+|    - Pulls all known variants for a given status code from the status-code crosswalk (`status.codes`).  
 |    - Collapses variants into a single regex OR search string.  
 |
 +- add_status_flag(df, title, s.code, variants)
@@ -554,7 +554,7 @@ STEP-06: gen_status_codes()
 |    - Used when status is to be preserved (flag_and_keep).  
 ```
 
-The specific variants that are removed are documented in [this spreadsheet](https://docs.google.com/spreadsheets/d/1iYEY2HYDZTV0uvu35UuwdgAUQNKXSyab260pPPutP1M/edit#gid=145854139), which the code pulls from and makes it dynamic. When additional variants are identified, they can be added to that document and the code will be updated accordingly. 
+The specific variants that are removed are listed in the status-code crosswalk, `data-raw/crosswalks/status-codes.csv`. When additional variants are identified, add them to that table and run `data-raw/crosswalks/build-crosswalks.R`. 
 
 There are currently ~300 rows in the status variant crosswalk table. Some examples: 
 
@@ -594,16 +594,16 @@ There are currently ~300 rows in the status variant crosswalk table. Some exampl
 
 #### 7. Standardize Titles
 
-Step 07 consolidates role titles into their canonical forms using a Google Sheets crosswalk. It also applies “executive fixes” for ambiguous roles (like PRESIDENT, CHANCELLOR, FINANCE DIRECTOR) to assign them consistently to CEO or CFO when conditions warrant.
+Step 07 consolidates role titles into their canonical forms using the title-standardization crosswalk. It also applies “executive fixes” for ambiguous roles (like PRESIDENT, CHANCELLOR, FINANCE DIRECTOR) to assign them consistently to CEO or CFO when conditions warrant.
 
-For example "ADMINISTRATIVE ASSISTANT" and "ADMINISTRATION ASSISTANT" are both mapped to "ADMINISTRATIVE ASSISTANT". A full list of the mappings can be found [here](https://docs.google.com/spreadsheets/d/1iYEY2HYDZTV0uvu35UuwdgAUQNKXSyab260pPPutP1M/edit#gid=1464446536). 
+For example "ADMINISTRATIVE ASSISTANT" and "ADMINISTRATION ASSISTANT" are both mapped to "ADMINISTRATIVE ASSISTANT". A full list of the mappings is in `data-raw/crosswalks/title-standardization.csv`. 
 
 ```
 STEP-07: standardize_titles()
 |
 +- standardize_titles(comp.data, title="TitleTxt6", hours="TOT.HOURS", pay="TOT.COMP", officer="F9_07_COMP_DTK_POS_OFF_X")
 |    - Main wrapper.  
-|    - Reads the "title-standardization" crosswalk from Google Sheets.  
+|    - Reads the title-standardization crosswalk (`title.xwalk`).  
 |    - Deduplicates entries and removes duplicate variants.  
 |    - Applies basic_csuite_fixes() to handle CEO/CFO adjustments.  
 |    - Merges comp.data with standardized titles crosswalk (TitleTxt7).  
@@ -639,7 +639,7 @@ STEP-08: categorize_titles()
 |
 +- categorize_titles(comp.data)
 |    - Main wrapper.  
-|    - Reads the "title-taxonomy" sheet from Google Sheets.  
+|    - Reads the title-taxonomy crosswalk (`title.taxonomy`).  
 |    - Merges taxonomy with comp.data on standardized titles.  
 |    - Calls add_features() to engineer new variables.  
 |    - Calls simplify_varnames() (defined elsewhere, likely utilities.R).  

@@ -32,7 +32,7 @@ tc_load_package <- function( root = tc_pkg_root() )
 {
   suppressWarnings( suppressMessages({
     library( dplyr ); library( magrittr ); library( hunspell )
-    library( googlesheets4 ); library( digest ); library( data.table )
+    library( digest ); library( data.table )
   }) )
 
   # step files first (numbered), then the rest
@@ -61,16 +61,16 @@ tc_xwalk_paths <- function( dir )
   )
 }
 
-# pull the three tabs live from Google Sheets (via the package's own loaders)
-# and write them to CSV so the reference is pinned, not live
+# copy the three crosswalks (package data, via the package's own loaders)
+# to CSV so the reference stays pinned when the crosswalks change
 tc_pin_crosswalks <- function( dir )
 {
   if( ! dir.exists( dir ) ) dir.create( dir, recursive = TRUE, showWarnings = FALSE )
   p <- tc_xwalk_paths( dir )
 
-  status   <- get_googlesheets_status_codes()
-  xwalk    <- get_googlesheets_title_xwalk()
-  taxonomy <- get_googlesheets_title_taxonomy()
+  status   <- get_status_codes()
+  xwalk    <- get_title_xwalk()
+  taxonomy <- get_title_taxonomy()
 
   utils::write.csv( status,   p$status,   row.names = FALSE, na = "" )
   utils::write.csv( xwalk,    p$xwalk,    row.names = FALSE, na = "" )

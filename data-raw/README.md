@@ -1,6 +1,6 @@
 Taxonomies used for mapping title variants to canonical forms, titles to domains and hierarchies, and status variants to status codes. 
 
-https://docs.google.com/spreadsheets/d/1iYEY2HYDZTV0uvu35UuwdgAUQNKXSyab260pPPutP1M/edit?usp=sharing
+The tables are in `crosswalks/` (see `crosswalks/README.md`). They were kept in a Google Sheet until 2026-10-08; an export of every tab is in `crosswalks/archive/`.
 
 
 

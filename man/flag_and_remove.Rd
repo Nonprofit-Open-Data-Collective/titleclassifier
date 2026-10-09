@@ -18,10 +18,10 @@ flag_and_remove(
 
 \item{s.code}{Any of the unique status.qualifier strings from df.status (defaults to "FORMER")}
 
-\item{gs_status_codes}{Optional status-code crosswalk data frame; if \code{NULL}, loaded from the bundled snapshot.}
+\item{gs_status_codes}{Optional status-code crosswalk data frame; if \code{NULL}, loaded from the package data.}
 }
 \description{
-Search for variants of a status code (stored in google sheets),
+Search for variants of a status code (in the status.codes crosswalk),
 create a boolean flag in the dataset, and remove the status qualifier from the title.
 The flag variable is named SCODE.X (FORMER.X, INTERIM.X, etc.).
 

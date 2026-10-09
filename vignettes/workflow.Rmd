@@ -59,8 +59,7 @@ dim(d)
 ## Running the pipeline
 
 The steps compose with the base pipe. The title-standardization, status-code, and
-taxonomy crosswalks are bundled with the package (a pinned snapshot of the source
-Google Sheet), so a run needs no network access.
+taxonomy crosswalks are package data, so a run needs no network access.
 
 ```{r}
 df <- d |>
@@ -100,14 +99,16 @@ df |>
   head(12)
 ```
 
-## Refreshing the crosswalks
+## Editing the crosswalks
 
-By default the crosswalk loaders read the bundled snapshot. To pull the current
-Google-Sheet version instead (and refresh the snapshot in a source checkout), pass
-`refresh = TRUE`:
+The crosswalks are package data built from the CSV tables in
+`data-raw/crosswalks/`. To change one, edit its table in a source checkout and
+rebuild:
 
 ```{r, eval = FALSE}
-xwalk <- get_googlesheets_title_xwalk(refresh = TRUE)
+# from the package root
+source("data-raw/crosswalks/build-crosswalks.R")
+xwalk <- get_title_xwalk()
 ```
 
 See the [Dictionaries and crosswalks](dictionaries.html) article for what each

@@ -20,31 +20,60 @@ NULL
 #'   `data-raw/make-tinypartvii.R`.
 NULL
 
-#' @name df.standard
+###
+### CROSSWALKS
+###
+### Built from the CSV tables in data-raw/crosswalks/ by
+### data-raw/crosswalks/build-crosswalks.R. Edit the CSVs, not these objects.
+
+#' @name title.xwalk
 #' @docType data
-#' @title Title standardization crosswalk (variant to standard).
+#' @title Title-standardization crosswalk (variant to standard).
 #'
-#' @description A data frame mapping raw title variants to their canonical
-#'   `title.standard` form. Snapshot of the `title-standardization` Google-Sheet
-#'   tab; the live pipeline uses the pinned copy in `inst/extdata/crosswalks/`.
+#' @description Maps each cleaned title variant (`title.variant`, matched to
+#'   `TitleTxt7`) to its standard form (`title.standard`), with an optional
+#'   board sub-role in `strata` / `strata.label`. Used by
+#'   `standardize_titles()`; load it with [get_title_xwalk()].
+#'
+#' @format A data frame of character columns: `title.variant`,
+#'   `title.standard`, `strata`, `strata.label`.
+#' @source `data-raw/crosswalks/title-standardization.csv`, started from the
+#'   title-taxonomy-map Google Sheet (retired 2026-10-08).
 NULL
 
-#' @name d.taxonomy
+#' @name title.taxonomy
 #' @docType data
-#' @title Title taxonomy table.
+#' @title Title taxonomy (standard title to domain, SOC code, and role).
 #'
-#' @description A data frame mapping each canonical `title.standard` to its
-#'   taxonomy dimensions (domain, SOC codes, and role/hierarchy flags such as
-#'   `ceo`, `c.level`, `board`). Snapshot of the `title-taxonomy` Google-Sheet tab.
+#' @description Maps each `title.standard` to its functional domain, its 2018
+#'   SOC occupation codes, and the employee and board role flags. Used by
+#'   `categorize_titles()`; load it with [get_title_taxonomy()].
+#'
+#' @format A data frame of character columns, one row per `title.standard`:
+#'   \describe{
+#'     \item{title.standard}{standard title, the key matched by `standardize_titles()`}
+#'     \item{domain.category, domain.label}{functional domain}
+#'     \item{soc.label, major.group, minor.group, broad.group, detailed.occupation}{2018 SOC
+#'       codes; `soc.label` is the official title of the most detailed code}
+#'     \item{emp, ceo, c.level, dir.vp, mgr, spec}{employee flag and level (`"X"` or blank)}
+#'     \item{board, pres, vp, sec, treas, mem}{board flag and role (`"X"` or blank)}
+#'   }
+#' @source `data-raw/crosswalks/title-taxonomy.csv`, started from the
+#'   title-taxonomy-map Google Sheet (retired 2026-10-08).
 NULL
 
-#' @name status.mapping
+#' @name status.codes
 #' @docType data
-#' @title Status-code mapping table.
+#' @title Status-code crosswalk.
 #'
-#' @description A data frame mapping status-qualifier variants (e.g. "ACTING",
-#'   "EMERITUS") to standardized status codes (e.g. "INTERIM", "FORMER") used in
-#'   the `gen_status_codes()` step.
+#' @description Maps status-qualifier variants (e.g. "ACTING", "EMERITUS") to
+#'   standardized status codes (e.g. "INTERIM", "FORMER"). Used by
+#'   `gen_status_codes()`; load it with [get_status_codes()].
+#'
+#' @format A data frame of character columns: `status.variant`,
+#'   `status.qualifier`.
+#' @source `data-raw/crosswalks/status-codes.csv`, started from the
+#'   title-taxonomy-map Google Sheet (retired 2026-10-08).
 NULL
 
 ###

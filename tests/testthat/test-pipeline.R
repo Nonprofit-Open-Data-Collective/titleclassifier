@@ -100,8 +100,12 @@ test_that("append_classification preserves originals verbatim and appends derive
   expect_gte(nrow(out), nrow(d))
 })
 
-test_that("bundled crosswalks load offline", {
-  expect_s3_class(get_googlesheets_status_codes(), "data.frame")
+test_that("crosswalks load from package data", {
+  expect_s3_class(get_status_codes(), "data.frame")
   expect_true(all(c("title.variant", "title.standard") %in%
-                    names(get_googlesheets_title_xwalk())))
+                    names(get_title_xwalk())))
+  # the former loader names still work; refresh = TRUE only warns
+  expect_identical(get_googlesheets_title_taxonomy(), get_title_taxonomy())
+  expect_warning(x <- get_googlesheets_status_codes(refresh = TRUE), "retired")
+  expect_identical(x, get_status_codes())
 })

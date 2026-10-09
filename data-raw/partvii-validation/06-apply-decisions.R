@@ -1,11 +1,8 @@
 # 06-apply-decisions.R
 # Apply the reviewed crosswalk changes (crosswalk-changes.csv) and new taxonomy
-# rows (taxonomy-additions.csv) to the bundled crosswalk snapshots in
-# inst/extdata/crosswalks/, and log what was applied in applied-log.csv.
-#
-# The snapshots are copies of the Google Sheet; get_googlesheets_*(refresh =
-# TRUE) overwrites them from the sheet, so the same rows must be entered in the
-# sheet too (applied-log.csv lists them) before anyone refreshes.
+# rows (taxonomy-additions.csv) to the crosswalk tables in data-raw/crosswalks/,
+# rebuild the package data from them, and log what was applied in
+# applied-log.csv.
 #
 # new_taxonomy is written "domain.category / domain.label / flags", e.g.
 # "operations / finance / emp mgr", where flags are taxonomy flag columns.
@@ -17,10 +14,9 @@ source("data-raw/partvii-validation/_config.R")
 suppressMessages(library(data.table))
 apply <- "--apply" %in% commandArgs(trailingOnly = TRUE)
 
-xw_path <- "inst/extdata/crosswalks/xwalk-title-standardization.csv"
-tx_path <- "inst/extdata/crosswalks/xwalk-title-taxonomy.csv"
-xw <- fread(xw_path, colClasses = "character", na.strings = NULL)
-tx <- fread(tx_path, colClasses = "character", na.strings = NULL)
+source("data-raw/crosswalks/_crosswalk-io.R")
+xw <- read_xwalk("title-standardization")
+tx <- read_xwalk("title-taxonomy")
 ch <- fread(file.path(pv_repo, "crosswalk-changes.csv"), colClasses = "character", na.strings = NULL)
 ta <- if (file.exists(f <- file.path(pv_repo, "taxonomy-additions.csv"))) fread(f, colClasses = "character", na.strings = NULL) else data.table()
 
@@ -46,14 +42,15 @@ missing_std <- setdiff(ch$title.standard, c(tx$title.standard, new_tx$title.stan
 if (length(missing_std)) stop("standards not in the taxonomy: ", paste(missing_std, collapse = ", "))
 message(sprintf("crosswalk: %d variants to add, %d to change; taxonomy: %d new standards", nrow(add), nrow(chg), nrow(new_tx)))
 
-if (!apply) { message("dry run; rerun with --apply to write the snapshots"); quit(save = "no") }
+if (!apply) { message("dry run; rerun with --apply to write the tables"); quit(save = "no") }
 
 xw2 <- copy(xw)
 if (nrow(chg)) xw2[chg, on = "title.variant", title.standard := i.title.standard]
 xw2 <- rbind(xw2, add[, .(title.variant, title.standard, strata = "", strata.label = "")], fill = TRUE)
 setorder(xw2, title.variant)
-fwrite(xw2, xw_path, quote = TRUE)
-if (nrow(new_tx)) fwrite(rbind(tx, new_tx)[order(title.standard)], tx_path, quote = TRUE)
+write_xwalk(xw2, "title-standardization")
+if (nrow(new_tx)) write_xwalk(rbind(tx, new_tx)[order(title.standard)], "title-taxonomy")
+rebuild_xwalks()
 
 log <- rbind(add[, .(table = "title-standardization", key = title.variant, old = "", new = title.standard, id, reviewer)],
              chg[, .(table = "title-standardization", key = title.variant, old = previous_standard, new = title.standard, id, reviewer)],
@@ -61,4 +58,4 @@ log <- rbind(add[, .(table = "title-standardization", key = title.variant, old =
 log[, applied := as.character(Sys.Date())]
 lp <- file.path(pv_repo, "applied-log.csv")
 fwrite(if (file.exists(lp)) rbind(fread(lp, colClasses = "character"), log) else log, lp)
-message("applied; rerun 02 and 03 to measure the effect, and enter the logged rows in the Google Sheet")
+message("applied and rebuilt data/; rerun 02 and 03 to measure the effect")

@@ -1,8 +1,23 @@
-# Consistency checks on the bundled crosswalk snapshots (inst/extdata/crosswalks/).
-# Findings referenced below are in data-raw/partvii-validation/FINDINGS.md.
+# Consistency checks on the crosswalks (package data built from
+# data-raw/crosswalks/). Findings referenced below are in
+# data-raw/partvii-validation/FINDINGS.md.
 
-tx <- get_googlesheets_title_taxonomy()
-xw <- get_googlesheets_title_xwalk()
+tx <- get_title_taxonomy()
+xw <- get_title_xwalk()
+
+test_that("data/ matches the tables in data-raw/crosswalks/ (run build-crosswalks.R)", {
+  dir <- test_path("..", "..", "data-raw", "crosswalks")
+  skip_if_not(dir.exists(dir))
+  rd <- function(f) utils::read.csv(file.path(dir, f), colClasses = "character",
+                                    na.strings = character(0), check.names = FALSE)
+  same <- function(obj, f) {
+    csv <- rd(f)[, names(obj), drop = FALSE]
+    expect_identical(unname(as.list(obj)), unname(as.list(csv)), info = f)
+  }
+  same(get_status_codes(), "status-codes.csv")
+  same(xw, "title-standardization.csv")
+  same(tx, "title-taxonomy.csv")
+})
 emp_levels   <- c("ceo", "c.level", "dir.vp", "mgr", "spec")
 board_levels <- c("pres", "vp", "sec", "treas", "mem")
 soc_cols     <- c("major.group", "minor.group", "broad.group", "detailed.occupation")

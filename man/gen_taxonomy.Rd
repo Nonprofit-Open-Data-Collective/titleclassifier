@@ -10,6 +10,6 @@ gen_taxonomy(comp.data)
 \item{comp.data}{A Part VII compensation data frame.}
 }
 \description{
-TODO not written yet, but we will generate the taxonomy using the dynamic google sheets
+TODO not written yet, but we will generate the taxonomy using the title-taxonomy crosswalk
 no longer manipulating the titles
 }

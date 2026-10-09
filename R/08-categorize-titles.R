@@ -17,14 +17,14 @@ require(dplyr)
 #' 
 #' @export
 #' @param comp.data A Part VII compensation data frame.
-#' @param gs_title_taxonomy Optional title-taxonomy crosswalk; if `NULL`, loaded from the bundled snapshot.
+#' @param gs_title_taxonomy Optional title-taxonomy crosswalk; if `NULL`, loaded from the package data.
 categorize_titles <- function( comp.data, gs_title_taxonomy=NULL )
 {
 
   # load title taxonomy 
-  # from google sheets
+  # from the package data
   if( is.null(gs_title_taxonomy) )
-  { gs_title_taxonomy <- get_googlesheets_title_taxonomy() }
+  { gs_title_taxonomy <- get_title_taxonomy() }
   
   comp.data <- 
     merge( comp.data, 

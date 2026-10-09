@@ -24,14 +24,14 @@ gen_status_codes()
 +- get_variants()      collapse a status code's variants into one regex
 ```
 
-The variant-to-code mapping comes from the bundled status-code crosswalk (see the
+The variant-to-code mapping comes from the status-code crosswalk (see the
 [Dictionaries](dictionaries.html) article). Some qualifiers (EX OFFICIO, REGIONAL)
 are kept because they change the meaning of the role.
 
 ## Examples
 
 ```{r}
-sc <- get_googlesheets_status_codes()
+sc <- get_status_codes()
 
 # all variants that map to FORMER, as a single regex
 get_variants("FORMER", sc)

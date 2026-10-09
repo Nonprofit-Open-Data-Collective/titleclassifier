@@ -16,7 +16,7 @@
 #' @export
 #' @param comp.data A Part VII compensation data frame.
 #' @param title Name of the title column to operate on.
-#' @param gs_status_codes Optional status-code crosswalk data frame; if `NULL`, loaded from the bundled snapshot.
+#' @param gs_status_codes Optional status-code crosswalk data frame; if `NULL`, loaded from the package data.
 gen_status_codes <- function( comp.data, title="TitleTxt5", gs_status_codes=NULL )
 {
   
@@ -45,9 +45,9 @@ gen_status_codes <- function( comp.data, title="TitleTxt5", gs_status_codes=NULL
   comp.data[[title]] <- TitleTxt
   
   # load dtk status codes
-  # from google sheets
+  # from the package data
   if( is.null(gs_status_codes) )
-  { gs_status_codes <- get_googlesheets_status_codes() }
+  { gs_status_codes <- get_status_codes() }
   
   # don't remove 'regional' because 
   # it changes the title meaning
@@ -146,7 +146,7 @@ gen_status_codes <- function( comp.data, title="TitleTxt5", gs_status_codes=NULL
 #' @title create a status code flag and remove string from title
 #' 
 #' @description  
-#' Search for variants of a status code (stored in google sheets),
+#' Search for variants of a status code (in the status.codes crosswalk),
 #' create a boolean flag in the dataset, and remove the status qualifier from the title.
 #' The flag variable is named SCODE.X (FORMER.X, INTERIM.X, etc.). 
 #' 
@@ -176,7 +176,7 @@ gen_status_codes <- function( comp.data, title="TitleTxt5", gs_status_codes=NULL
 #' }
 #'
 #' @export
-#' @param gs_status_codes Optional status-code crosswalk data frame; if `NULL`, loaded from the bundled snapshot.
+#' @param gs_status_codes Optional status-code crosswalk data frame; if `NULL`, loaded from the package data.
 flag_and_remove <- function( df, title="TitleTxt6", s.code="FORMER", gs_status_codes=NULL )
 {
   variants <- get_variants( s.code, gs_status_codes )
@@ -191,7 +191,7 @@ flag_and_remove <- function( df, title="TitleTxt6", s.code="FORMER", gs_status_c
 #' @title create a status code flag and KEEP the standardized version of the string
 #' 
 #' @description  
-#' Search for variants of a status code (stored in google sheets),
+#' Search for variants of a status code (in the status.codes crosswalk),
 #' create a boolean flag in the dataset, and replace the status variant
 #' in the title with the standardized version.
 #' The flag variable is named SCODE.X (e.g. REGIONAL.X). 
@@ -201,7 +201,7 @@ flag_and_remove <- function( df, title="TitleTxt6", s.code="FORMER", gs_status_c
 #' @param s.code Any of the unique status.qualifier strings from df.status (e.g. "REGIONAL")
 #' 
 #' @export
-#' @param gs_status_codes Optional status-code crosswalk data frame; if `NULL`, loaded from the bundled snapshot.
+#' @param gs_status_codes Optional status-code crosswalk data frame; if `NULL`, loaded from the package data.
 flag_and_keep <- function( df, title="TitleTxt6", s.code, gs_status_codes=NULL )
 {
   variants <- get_variants( s.code, gs_status_codes )
@@ -216,13 +216,13 @@ flag_and_keep <- function( df, title="TitleTxt6", s.code, gs_status_codes=NULL )
 #' @title retrieve all status variants for a unique status code
 #' 
 #' @description  
-#' Search for variants of a status code (stored in google sheets),
+#' Search for variants of a status code (in the status.codes crosswalk),
 #' and combine them all into a single regex search string separated by OR.
 #' 
 #' @param s.code Any of the unique status.qualifier strings from df.status ("FUTURE","FORMER","INTERIM",etc)
 #' 
 #' @export
-#' @param gs_status_codes Optional status-code crosswalk data frame; if `NULL`, loaded from the bundled snapshot.
+#' @param gs_status_codes Optional status-code crosswalk data frame; if `NULL`, loaded from the package data.
 get_variants <- function( s.code, gs_status_codes=NULL )
 { 
   # collapse all variants into regex OR statement 

@@ -7,19 +7,20 @@ and weighted by frequency in the 35,930-row classified slice
 (`synthid/dev/data/classified_slice.rds`, 2010–2012, 1,000 orgs).
 
 > **Status (2026-10-08, branch `crosswalk-phase0-1`).** Findings are logged as
-> F-012 to F-018 in `data-raw/partvii-validation/FINDINGS.md`.
-> - **Done in the snapshot:** Phase 1 items 1, 2 and 4, through
->   `07-taxonomy-fixes.R` (`taxonomy-edits-log.csv`). The duplicate
->   COMPTROLLER row was already removed in the snapshot (F-001).
-> - **Done in the package:** the Phase 0 checks, in
->   `tests/testthat/test-crosswalks.R`, plus a duplicate-key guard in
->   `get_googlesheets_title_taxonomy(refresh = TRUE)`.
-> - **Not done:**
->   - entering the logged edits in the Google Sheet;
->   - archiving the old tabs;
->   - Phase 1 item 3. The Part VII review process routes pending suggestion
->     lists through the per-title review instead of a bulk apply (F-010), so
->     the August list goes there.
+> F-012 to F-019 in `data-raw/partvii-validation/FINDINGS.md`.
+> - **The Google Sheet is retired (F-019).** The crosswalks are now CSV tables
+>   in `data-raw/crosswalks/`, built into package data, and every tab is
+>   archived there. Mentions of "the sheet" below describe where the
+>   crosswalk lived when this review was written.
+> - **Done:**
+>   - Phase 1 items 1, 2 and 4, through `07-taxonomy-fixes.R`
+>     (`taxonomy-edits-log.csv`). The duplicate COMPTROLLER row had already
+>     been removed (F-001).
+>   - The Phase 0 checks, in `tests/testthat/test-crosswalks.R`, and the
+>     archive of the old tabs.
+> - **Not done:** Phase 1 item 3. The Part VII review process routes pending
+>   suggestion lists through the per-title review instead of a bulk apply
+>   (F-010), so the August list goes there.
 
 Builds on the August role-refinement work in `synthid/dev/`
 (`PLAN-title-role-refinement.md`, `CROSSWALK-UPDATES.md`,

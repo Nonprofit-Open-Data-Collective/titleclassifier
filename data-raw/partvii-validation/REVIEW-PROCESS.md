@@ -160,12 +160,12 @@ Recorded in this folder (committed):
 | `taxonomy-edits-log.csv` | cells of existing taxonomy rows that `07-taxonomy-fixes.R` changed (role flags, SOC) |
 | `FINDINGS.md` | the findings log: patterns, rule proposals, code fixes, metrics after each round |
 
-The crosswalk CSVs in `inst/extdata/crosswalks/` are snapshots of the Google
-Sheet, and `get_googlesheets_*(refresh = TRUE)` overwrites them. Enter the rows
-in `applied-log.csv` and `taxonomy-edits-log.csv` in the sheet as well before
-anyone refreshes. `tests/testthat/test-crosswalks.R` checks the snapshots
-(unique standards, flags, valid SOC codes) and fails if a refresh brings back
-a fixed error.
+The crosswalks are the CSV tables in `data-raw/crosswalks/`, built into the
+package data (`data/*.rda`) by `data-raw/crosswalks/build-crosswalks.R`. 06 and
+07 edit the tables and rebuild the data; the Google Sheet is retired (see
+`data-raw/crosswalks/README.md`). `tests/testthat/test-crosswalks.R` checks the
+tables (unique standards, flags, valid SOC codes) and that `data/` matches
+them.
 
 Code fixes for `fix_cleaning` findings change the step functions in `R/`. Each
 one cites its finding in `FINDINGS.md`, and the regression baseline

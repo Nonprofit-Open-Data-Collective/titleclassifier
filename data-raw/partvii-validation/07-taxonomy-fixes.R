@@ -1,24 +1,21 @@
 # 07-taxonomy-fixes.R
-# Correct rows of the title-taxonomy snapshot (inst/extdata/crosswalks/
-# xwalk-title-taxonomy.csv): role flags that are wrong regardless of context
+# Correct rows of the title-taxonomy table (data-raw/crosswalks/
+# title-taxonomy.csv): role flags that are wrong regardless of context
 # (F-012 to F-014) and SOC codes and labels (F-015). See FINDINGS.md.
 #
 # 06-apply-decisions.R adds crosswalk rows and new taxonomy rows; this script
-# edits existing taxonomy cells. Every changed cell is written to
-# taxonomy-edits-log.csv so the same edits can be entered in the Google Sheet
-# (title-taxonomy tab) before anyone runs get_googlesheets_title_taxonomy(refresh = TRUE).
-# Edits check the old value first, so a second run changes nothing.
+# edits existing taxonomy cells, then rebuilds the package data. Every changed
+# cell is logged in taxonomy-edits-log.csv. Edits check the old value first, so a second run changes nothing.
 #
 #   Rscript data-raw/partvii-validation/07-taxonomy-fixes.R          (dry run)
 #   Rscript data-raw/partvii-validation/07-taxonomy-fixes.R --apply
 
-suppressMessages(library(data.table))
+source("data-raw/crosswalks/_crosswalk-io.R")
 apply   <- "--apply" %in% commandArgs(trailingOnly = TRUE)
 pv_repo <- "data-raw/partvii-validation"
-tx_path <- "inst/extdata/crosswalks/xwalk-title-taxonomy.csv"
 soc_path <- "data-raw/standard-occupational-classifications/tidy-soc-codes.csv"
 
-tx <- fread(tx_path, colClasses = "character", na.strings = NULL)
+tx <- read_xwalk("title-taxonomy")
 codes <- c("major.group", "minor.group", "broad.group", "detailed.occupation")
 log <- list()
 
@@ -93,13 +90,14 @@ for (i in seq_len(nrow(tx))) {
 
 # ---- write -----------------------------------------------------------------
 log <- rbindlist(log)
-if (!nrow(log)) { message("nothing to change; the snapshot already has these fixes"); quit(save = "no") }
+if (!nrow(log)) { message("nothing to change; the table already has these fixes"); quit(save = "no") }
 message(sprintf("%d cells to change in %d rows: %s", nrow(log), uniqueN(log$title.standard),
                 paste(names(table(log$finding)), table(log$finding), sep = " ", collapse = ", ")))
-if (!apply) { print(log[finding != "F-015" | column != "soc.label"]); message("dry run; rerun with --apply to write the snapshot"); quit(save = "no") }
+if (!apply) { print(log[finding != "F-015" | column != "soc.label"]); message("dry run; rerun with --apply to write the table"); quit(save = "no") }
 
-fwrite(tx, tx_path, quote = TRUE)
+write_xwalk(tx, "title-taxonomy")
+rebuild_xwalks()
 log[, applied := as.character(Sys.Date())]
 lp <- file.path(pv_repo, "taxonomy-edits-log.csv")
 fwrite(if (file.exists(lp)) rbind(fread(lp, colClasses = "character"), log) else log, lp)
-message("applied; enter the logged edits in the Google Sheet (title-taxonomy tab)")
+message("applied and rebuilt data/")
