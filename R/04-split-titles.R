@@ -90,7 +90,10 @@ apply_misc_split_rules <- function(x)
   # joint board positions   
   x <- gsub( "^\\s*SEC[A-Z]*\\s*TREAS[A-Z]*\\b$", 
              "SECRETARY & TREASURER", x )
-  x <- gsub( "TREASURER AND S$", "TREASURER & SECRETARY", x ) 
+  x <- gsub( "TREASURER AND S$", "TREASURER & SECRETARY", x )
+  # glued pairs (Part VII review round 2): PRESTREAS, SECRETARYVICE PRESIDENT
+  x <- gsub( "\\bPRES\\s*TREAS[A-Z]*\\b", "PRESIDENT & TREASURER", x )
+  x <- gsub( "\\b(SECRETARY|TREASURER)VICE\\b", "\\1 & VICE", x ) 
 
   # split all FOUNDER titles, keeping a CO- prefix with its FOUNDER (step 6
   # strips CO- and sets CO.X) so CO-FOUNDER does not leave a stray "CO-" title
