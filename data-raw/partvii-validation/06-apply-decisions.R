@@ -46,6 +46,17 @@ if (nrow(ta)) {
   new_tx <- new_tx[!title.standard %in% tx$title.standard]
 } else new_tx <- tx[0]
 
+# policy P1 (DECISIONS.md): every variant on the placeholder standards moves to
+# CHIEF OFFICER, not only the reviewed ones (once CHIEF OFFICER has a taxonomy row)
+p1_from <- c("CHIEF _X_ OFFICER", "CHEIF _X_ OFFICER")
+if ("CHIEF OFFICER" %in% c(tx$title.standard, new_tx$title.standard)) {
+  p1 <- xw[title.standard %in% p1_from & !title.variant %in% ch$title.variant,
+           .(title.variant, title.standard = "CHIEF OFFICER", action = "change", previous_standard = title.standard,
+             id = "", n_rows = "", reviewer = "policy P1", date = as.character(Sys.Date()), notes = "")]
+  if (nrow(p1)) message(sprintf("policy P1: %d more variants move from %s to CHIEF OFFICER", nrow(p1), paste(p1_from, collapse = " / ")))
+  ch <- rbind(ch, p1, fill = TRUE)
+}
+
 # crosswalk rows: add new variants, change existing ones
 add <- ch[action == "add" & !title.variant %in% xw$title.variant]
 chg <- ch[title.variant %in% xw$title.variant]

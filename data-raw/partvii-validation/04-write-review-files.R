@@ -30,6 +30,11 @@ if (!is.null(bp)) sugg$board <- bp[, .(TitleTxt7 = title.variant, suggested = pr
                                        source = sprintf("board_crosswalk_patch.csv (%s, confidence %s)", decision, confidence))]
 sugg <- rbindlist(sugg)
 
+# decisions recorded so far (05-collect-reviews.R), by title
+dec_path <- file.path(pv_repo, "review-decisions.csv")
+dec <- if (file.exists(dec_path)) fread(dec_path, colClasses = "character", na.strings = NULL) else data.table()
+if (nrow(dec)) dec[is.na(title_v7), title_v7 := ""]
+
 # nearest crosswalk variants for titles that are missing (tiers 1-3 only: cost)
 std_variants <- unique(xw$title.variant)
 near <- function(x) {
@@ -67,6 +72,11 @@ write_one <- function(p) {
   v <- vall[seq_len(min(nrow(vall), 20))]
   e <- ex[.(p$TitleTxt7), nomatch = NULL]
   s <- if (nrow(sugg)) sugg[TitleTxt7 == p$TitleTxt7] else data.table()
+  # a decision already recorded for this title (review-decisions.csv) is carried
+  # into the new file, so files can be regenerated when ranks or ids change
+  r <- if (nrow(dec)) dec[title_v7 == p$TitleTxt7] else data.table()
+  r <- if (nrow(r)) as.list(r[1]) else list(status = "pending", standard = "", new_taxonomy = "", cleaning_issue = "",
+                                            reviewer = "", date = "", notes = "")
   nr <- if (p$crosswalk == "missing" && p$tier <= 3) near(p$TitleTxt7) else ""
   ct <- if (p$crosswalk == "missing" && p$tier <= 3) contained(p$TitleTxt7) else ""
   y <- c("---",
@@ -82,13 +92,13 @@ write_one <- function(p) {
     paste0("suggested_standard: ", q(if (nrow(s)) s$suggested[1] else "")),
     paste0("suggested_by: ", q(if (nrow(s)) s$source[1] else "")),
     "review:",
-    "  status: pending           # pending | confirmed | remap | add | add_new_standard | fix_cleaning | not_a_title | ambiguous",
-    "  standard: \"\"              # the title.standard this title should map to (remap / add / add_new_standard)",
-    "  new_taxonomy: \"\"          # for add_new_standard: \"domain.category / domain.label / flags\", e.g. \"operations / finance / emp mgr\"",
-    "  cleaning_issue: \"\"        # for fix_cleaning: which step mangles it (02 dates .. 07 c-suite) and how",
-    "  reviewer: \"\"",
-    "  date: \"\"",
-    "  notes: \"\"",
+    paste0("  status: ", r$status, "           # pending | confirmed | remap | add | add_new_standard | fix_cleaning | not_a_title | ambiguous"),
+    paste0("  standard: ", q(r$standard), "              # the title.standard this title should map to (remap / add / add_new_standard)"),
+    paste0("  new_taxonomy: ", q(r$new_taxonomy), "          # for add_new_standard: \"domain.category / domain.label / flags\", e.g. \"operations / finance / emp mgr\""),
+    paste0("  cleaning_issue: ", q(r$cleaning_issue), "        # for fix_cleaning: which step mangles it (02 dates .. 07 c-suite) and how"),
+    paste0("  reviewer: ", q(r$reviewer)),
+    paste0("  date: ", q(r$date)),
+    paste0("  notes: ", q(r$notes)),
     "---", "")
   b <- c(
     sprintf("# %s `%s`", p$id, if (p$TitleTxt7 == "") "(empty)" else p$TitleTxt7), "",
@@ -143,7 +153,7 @@ run_block <- function(t) {
 workers <- as.integer(Sys.getenv("PV_WORKERS", "12"))
 cl <- parallel::makeCluster(workers)
 parallel::clusterExport(cl, c("write_one", "run_block", "has_decision", "near", "contained", "q", "pct", "num", "md_esc",
-                              "sugg", "std_variants", "xw", "pv_review"))
+                              "sugg", "dec", "std_variants", "xw", "pv_review"))
 invisible(parallel::clusterEvalQ(cl, suppressMessages(library(data.table))))
 t0 <- Sys.time()
 res <- unlist(parallel::clusterApplyLB(cl, tasks, run_block))
