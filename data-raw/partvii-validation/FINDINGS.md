@@ -766,3 +766,24 @@ file in all five years.
 - calibrate by stratum: how often the checkboxes, title and pay agree;
 - check roles across time in the panel;
 - build the silver label set.
+
+### F-027 990-EZ: paid board titles were read as staff (fixed)
+
+On a 990-EZ there are no checkboxes. A board-titled person paid a small fee,
+for example a treasurer with a $6,000 stipend, landed in the `staff` position
+and resolved to STAFF. In the 2019-2023 sample (F-026), step 09 overrode the
+title for 73% of people in 990-EZ filings with 5+ paid people.
+
+`resolve_roles()` now applies the stipend rule from F-023 to 990-EZ returns:
+a board title paid under $25,000 for under 10 hours a week is a board seat.
+
+| Effect | Before | After |
+|---|---|---|
+| Labeled set v2, all | 86.5% | 87.8% |
+| Labeled set v2, 990-EZ | 72.5% | 82.5% |
+| Labeled set v2, full 990 | 88.6% | 88.6% (unchanged) |
+
+Four 990-EZ board officers gained; none lost.
+
+On the 2023 demo, 15 board-titled people move from STAFF to BOARD. The
+regression reference is rebuilt: md5 `e74d1834...`, 4,135 x 111.

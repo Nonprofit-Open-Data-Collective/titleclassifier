@@ -56,9 +56,11 @@ is named.
 A board title (president, secretary, treasurer...) held by someone who
 works under 10 hours a week and is paid under $25,000 is a board seat, even
 with the officer box. Such a person is a titular officer receiving a
-stipend, not a paid executive.
+stipend, not a paid executive. On a 990-EZ, which has no boxes, the same
+holds for a board title paid a small fee.
 
-Scored against a 158-person hand-labeled sample of 2010-12 filings
-(\code{data-raw/partvii-validation/09-gold-check.R}), the role agrees with the
-label for 92.9\% of people.
+Scored against the 316-person labeled set of 2010-12 filings
+(\code{data-raw/partvii-validation/09-gold-check.R}, \code{gold-check/gold-v2.csv}),
+the role agrees with the label for 87.8\% of people: 88.6\% on full 990
+returns and 82.5\% on 990-EZ returns.
 }

@@ -43,7 +43,7 @@ utils::globalVariables(c(
 # columns and helpers named inside resolve_roles()'s data.table calls
 utils::globalVariables(c(
   ":=", ".", ".I", ".N", ".row", ".pos", ".src", ".comp", ".hrs", ".paid", ".cb_tru", ".cb_off",
-  ".ceo_t", ".exec", ".board_t", ".pres", ".lead", ".level", ".brole", ".interim",
+  ".ceo_t", ".exec", ".board_t", ".pres", ".lead", ".level", ".brole", ".interim", ".boxes",
   ".rank", ".pmin", ".primary", ".p_paid", ".p_comp", ".p_hrs", ".p_ceo_t", ".p_exec",
   ".p_board_t", ".p_lead", ".p_off", ".p_tru", ".p_pres", ".p_interim", ".desig",
   ".chair_pattern", ".elig", ".n_desig", ".any_paid", ".best", ".k", ".brole_t",
