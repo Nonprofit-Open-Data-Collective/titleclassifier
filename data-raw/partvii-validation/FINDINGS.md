@@ -566,7 +566,7 @@ repository, so the gold check has to run where the slice's raw rows are.
 
 ### F-023 Step 09 scored against the hand-labeled sample (done)
 
-`08-gold-check.R` runs steps 01-09 on the raw 2010-12 rows of the role
+`09-gold-check.R` runs steps 01-09 on the raw 2010-12 rows of the role
 sample: `synthid/dev/data/slice_2010_2012_1000eins.rds`, 34,321 rows in
 3,027 filings. It matches the 158 labeled people on filing + raw title + pay,
 because person ids are hashes that differ between runs, and scores

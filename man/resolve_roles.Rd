@@ -59,6 +59,6 @@ with the officer box. Such a person is a titular officer receiving a
 stipend, not a paid executive.
 
 Scored against a 158-person hand-labeled sample of 2010-12 filings
-(\code{data-raw/partvii-validation/08-gold-check.R}), the role agrees with the
+(\code{data-raw/partvii-validation/09-gold-check.R}), the role agrees with the
 label for 92.9\% of people.
 }

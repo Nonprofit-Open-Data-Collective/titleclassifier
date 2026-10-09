@@ -59,7 +59,7 @@ conditional_logic <- function(comp.data)
 #' stipend, not a paid executive.
 #'
 #' Scored against a 158-person hand-labeled sample of 2010-12 filings
-#' (`data-raw/partvii-validation/08-gold-check.R`), the role agrees with the
+#' (`data-raw/partvii-validation/09-gold-check.R`), the role agrees with the
 #' label for 92.9% of people.
 #'
 #' @return `comp.data` with these columns added (person-level values repeat on

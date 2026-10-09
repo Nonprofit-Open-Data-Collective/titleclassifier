@@ -1,4 +1,4 @@
-# 08-gold-check.R
+# 09-gold-check.R
 # Score step 09 (resolve_roles) against the hand-labeled role sample (FINDINGS.md
 # F-023). Runs the working-tree pipeline, steps 01-09, on the raw 2010-12 rows
 # the sample was drawn from, matches each labeled person, and reports agreement.
@@ -11,7 +11,7 @@
 #
 # Writes gold-check/gold-check-results.csv (one row per labeled person).
 #
-#   Rscript data-raw/partvii-validation/08-gold-check.R
+#   Rscript data-raw/partvii-validation/09-gold-check.R
 
 source("tests/regression/regression-helpers.R"); tc_load_package()
 S   <- Sys.getenv("SYNTHID_DEV", "../synthid/dev")
