@@ -453,3 +453,39 @@ Still open:
   - LINEMAN (STAFF)
   - MANAGING DIRECTOR (OFFICER)
   - GENERAL MANAGER (MANAGER)
+
+### F-021 SOC coverage (done, Phase 5)
+
+Half the employee titles had no SOC code:
+- 232 of 429 had no broad or detailed code;
+- 82% of employee rows in the 2010-12 slice were coded;
+- every functional chief officer had the generic 11-1021 (General and
+  Operations Managers).
+
+`data-raw/crosswalks/02-soc-codes.R` assigns codes by one rule: a SOC code
+describes the title's function, not its rank, because `emp.level` carries the
+rank.
+- **Functional chief officers** take their function's code:
+  - CHRO 11-3121
+  - CIO, CTO and CDO-digital 11-3021
+  - development, advancement and philanthropy 11-2033
+  - CMO-marketing 11-2021
+  - CLO 23-1011
+  - COO 11-1011
+- **Health, education, programs, finance, fundraising, HR, legal, museum,
+  public safety, facilities and hospitality titles** take their occupation's
+  code, at the most specific level that fits. For example, PROFESSOR gets the
+  minor group 25-1000 and DOCTOR the broad group 29-1210.
+- **Titles left uncoded:** those whose function the words don't settle,
+  including DIRECTOR, STAFF, MILITARY, CAPTAIN, CMO (medical or marketing),
+  CREATIVE DIRECTOR, PROGRAMMING and fraternal offices.
+
+The script fills the parent groups and the official 2018 label from
+`tidy-soc-codes.csv`, and stops on an unknown code. It changed 170 titles,
+logged in `soc-codes-log.csv`.
+
+| Coverage of employee titles and rows | Before | After |
+|---|---|---|
+| Titles with a minor-or-finer code | 46% | 81% |
+| Rows with a minor-or-finer code | 82% | 92.5% |
+| Rows with a broad-or-finer code | 82% | 92% |
