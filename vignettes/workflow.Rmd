@@ -26,6 +26,7 @@ each has its own article in this site.
 | 06 | `gen_status_codes()` | Detect, flag, and clean status qualifiers. |
 | 07 | `standardize_titles()` | Map titles to canonical forms via a crosswalk. |
 | 08 | `categorize_titles()` | Assign taxonomy categories and engineer features. |
+| 09 | `conditional_logic()` | Resolve each person's role from checkboxes, pay, and title. |
 
 ## Getting the data
 
@@ -70,7 +71,8 @@ df <- d |>
   standardize_spelling() |> # 05
   gen_status_codes()  |>   # 06
   standardize_titles() |>  # 07
-  categorize_titles()      # 08
+  categorize_titles() |>   # 08
+  conditional_logic()      # 09
 
 dim(df)
 ```

@@ -1,0 +1,94 @@
+---
+title: "Step 09 - Resolve roles"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Step 09 - Resolve roles}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>", message = FALSE, warning = FALSE)
+library(titleclassifier)
+library(dplyr)
+```
+
+The crosswalk maps each title to one role, but some titles mean different things
+in different organizations:
+- A **PRESIDENT** is the paid chief executive in one organization and a volunteer
+  board chair in the next.
+- A **VICE PRESIDENT** may sit on the board or on staff.
+- A **DIRECTOR** may be a board member or a department head.
+
+**`conditional_logic()`** settles these with what the filer reported about each
+person: the Part VII checkboxes (trustee, officer, key employee, highly
+compensated), pay, and hours. It also names the chief executive when no title
+does.
+
+```
+conditional_logic()  ->  resolve_roles()
+|
++- position, per row       checkboxes first: trustee box = board, officer box = officer,
+|                          both = working board; a paid executive title counts as an
+|                          officer even without the box; 990-EZ returns use title and pay
++- one role per person     split titles (PRESIDENT/CEO) resolve to one person, one role
++- leadership, per filing  a CEO-level title in an officer position = designated CEO;
+                           else the highest-paid plausible leader = imputed CEO;
+                           else the filing is board-governed (no CEO is named)
+```
+
+## Columns added
+
+| Column | Values |
+|---|---|
+| `role.final` | CEO, OFFICER, MANAGER, PROFESSIONAL, STAFF, BOARD |
+| `role.board` | for BOARD: CHAIR, VICE CHAIR, SECRETARY, TREASURER, MEMBER |
+| `role.ceo` | for CEO: designated, co-ceo, interim, imputed |
+| `role.position` | board, officer, board_officer, staff, unknown |
+| `role.source` | checkbox, title+pay, title |
+| `role.primary` | TRUE on one row per person (count people with it) |
+| `org.leadership` | per filing: designated, imputed, board_governed, no_paid |
+
+The crosswalk's own `emp.level` and `board.role`, and the legacy flags, are left
+as they were: `role.final` is the resolved answer, the crosswalk columns the
+title-only default.
+
+```{r}
+data(tinypartvii)
+set.seed(8)
+d <- dplyr::sample_n(tinypartvii, 250)
+
+df <- d |>
+  standardize_df() |> remove_dates() |> standardize_conj() |>
+  split_titles() |> standardize_spelling() |> gen_status_codes() |>
+  standardize_titles() |> categorize_titles() |> conditional_logic()
+
+people <- dplyr::filter(df, role.primary)
+table(people$role.final)
+table(people$role.board)
+```
+
+Titles the crosswalk files as board seats but that resolve otherwise, here a
+paid board president who runs the organization:
+
+```{r}
+people |>
+  dplyr::filter(title.standard == "BOARD PRESIDENT", role.final != "BOARD") |>
+  dplyr::select(org.name, title.raw, tot.comp, tot.hours, role.final, role.ceo) |>
+  head(8)
+```
+
+How each filing is led:
+
+```{r}
+df |>
+  dplyr::distinct(object.id, formtype, org.leadership) |>
+  dplyr::count(formtype, org.leadership)
+```
+
+`board_governed` is a valid answer, not a gap: a filing that pays people but
+has no plausible paid leader is run by its board. An imputed leader must work
+at least 15 hours a week or earn at least $25,000.
+
+**Input:** the output of `categorize_titles()`. **Output:** the same rows with
+the role columns added.

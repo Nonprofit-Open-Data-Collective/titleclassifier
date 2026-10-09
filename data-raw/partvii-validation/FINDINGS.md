@@ -333,7 +333,7 @@ ex officio to the status flags.
 - Committee, advisory and ex officio are not yet status flags: those titles
   map to BOARD MEMBER.
 
-### F-017 Context-dependent titles fixed to one role (open, Phase 3, with the step-09 cascade)
+### F-017 Context-dependent titles fixed to one role (fixed in step 09, see F-022)
 
 | Title | Rows | Hard-coded mapping |
 |---|---|---|
@@ -513,3 +513,53 @@ logged in `soc-codes-log.csv`.
 | Titles with a minor-or-finer code | 46% | 81% |
 | Rows with a minor-or-finer code | 82% | 92.5% |
 | Rows with a broad-or-finer code | 82% | 92% |
+
+### F-022 Step 09 resolves roles from checkboxes, pay and title (done, Phase 3)
+
+The crosswalk gives a title one role. On Part VII the same title can be a
+paid executive or a volunteer board seat (F-017). Step 09
+(`conditional_logic()`, now `resolve_roles()`) used to be an unwired stub. It
+now carries the August rules from `synthid/dev/06_role_cascade_prototype.R` and
+`10_role_passes.R`:
+- **Position:** the checkboxes come first, and a paid executive title outranks
+  a missing officer box. 990-EZ returns, which have no checkboxes, use the
+  title and pay.
+- **Person:** split titles resolve to one role per person, and `role.primary`
+  marks one row per person.
+- **Leadership, per filing:**
+  - a designated CEO comes from the title;
+  - otherwise an imputed CEO is the highest-paid plausible leader;
+  - otherwise the filing is `board_governed`.
+
+Three changes from the prototype came out of testing on the 2023 demo:
+- An imputed leader must work 15 or more hours a week or earn $25,000 or more.
+  Without this, token pay such as $104 or $599 made a CEO.
+- 990-EZ returns are recognized by `formtype`, because their checkbox columns
+  hold 0, not NA.
+- An unpaid EXECUTIVE DIRECTOR is still the designated CEO. Only unpaid
+  OFFICER-level titles on a 990-EZ (VICE PRESIDENT, deputy) are read as board.
+
+Step 09 adds seven columns: `role.final`, `role.board`, `role.ceo`,
+`role.position`, `role.source`, `role.primary` and `org.leadership`. It changes
+no existing column. `classify_titles()` and the regression pipeline now run it,
+and `tests/testthat/test-roles.R` pins the rules on hand-built filings.
+
+On the 2023 demo (4,000 people in 493 filings):
+
+| Result | |
+|---|---|
+| Full-990 filings with paid staff that have a CEO | 90% |
+| Paid 990-EZ filings that have a CEO | 76% |
+| BOARD PRESIDENT holders who are the paid chief executive (CEO) | 34 |
+| VICE PRESIDENT holders | split between board (vice chair) and officer |
+
+The rest are `board_governed`.
+
+The regression reference was rebuilt with `build-demo.R --reference-only`:
+md5 `601c0de314e173b6f72b976a2d9f7caa`, 4,135 rows x 110 columns, same rows.
+It adds the seven role columns, and re-pinning the crosswalks brings in F-002,
+F-018 and F-021 (domain on 3,643 rows, SOC on 58).
+
+**Not done:** a validation of step 09 against the hand-labeled gold sample.
+That sample is keyed to the 2010-12 slice, whose raw input is not in the
+repository, so the gold check has to run where the slice's raw rows are.

@@ -53,7 +53,7 @@ df |>
 
 Every row is now a single standardized, categorized title enriched with
 organization context. The remaining ambiguity (which "PRESIDENT" is the CEO?) is
-the target of the forthcoming machine-learning relabeling step, which will consume
-exactly these engineered features.
+settled by step 09, `conditional_logic()`, from the filer's checkboxes, pay and
+hours (see the step 09 article).
 
 **Input:** `title.standard`. **Output:** the final analysis-ready data frame.

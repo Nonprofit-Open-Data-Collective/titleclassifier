@@ -108,7 +108,8 @@ tc_run_pipeline <- function( raw_df, xwalks )
     standardize_spelling() |>
     gen_status_codes(   gs_status_codes   = xwalks$status   ) |>
     standardize_titles( gs_title_xwalk    = xwalks$xwalk    ) |>
-    categorize_titles(  gs_title_taxonomy = xwalks$taxonomy )
+    categorize_titles(  gs_title_taxonomy = xwalks$taxonomy ) |>
+    conditional_logic()
 }
 
 # ---------------------------------------------------------------------------

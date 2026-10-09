@@ -7,10 +7,14 @@
 conditional_logic(comp.data)
 }
 \arguments{
-\item{comp.data}{A Part VII compensation data frame.}
+\item{comp.data}{The output of \code{categorize_titles()}.}
 }
 \description{
-TODO formalize the conditional logic rules
-(have a couple of them already thought out in categorize titles, but need
-to migrate them)
+Step 09. Resolves each person's role from the filer's own Part VII
+checkboxes, their pay and hours, and the title, instead of the title alone.
+This settles the titles whose meaning depends on context: a paid PRESIDENT
+who runs the organization versus a volunteer board president, a VICE
+PRESIDENT on the board versus on staff, a DIRECTOR who is a board member
+versus a department head. It also finds the chief executive when no title
+names one. See \code{\link[=resolve_roles]{resolve_roles()}} for the rules and the columns added.
 }

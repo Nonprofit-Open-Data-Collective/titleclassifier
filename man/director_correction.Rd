@@ -10,6 +10,7 @@ director_correction(df)
 \item{df}{A Part VII compensation data frame.}
 }
 \description{
-confirm all directors are properly mapped
-correcting board members "directors" that are not actually directors
+Restores DIRECTOR for directors with no trustee box. Not used by the
+pipeline: \code{resolve_roles()} settles board versus staff directors from the
+checkboxes and pay.
 }

@@ -38,6 +38,8 @@ navbar:
         href: articles/step-07-standardize-titles.html
       - text: "08 - Categorize titles"
         href: articles/step-08-categorize-titles.html
+      - text: "09 - Resolve roles"
+        href: articles/step-09-conditional-logic.html
 
 articles:
 - title: Get started
@@ -51,7 +53,7 @@ articles:
 
 reference:
 - title: Pipeline steps
-  desc: The eight-step title classification pipeline, in order.
+  desc: The nine-step title classification pipeline, in order.
   contents:
   - standardize_df
   - remove_dates
@@ -62,6 +64,7 @@ reference:
   - standardize_titles
   - categorize_titles
   - conditional_logic
+  - resolve_roles
   - gen_taxonomy
 - title: Data acquisition
   desc: Fetch Part VII compensation tables from the NCCS efile store.

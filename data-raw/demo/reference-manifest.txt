@@ -2,8 +2,8 @@ titleclassifier regression reference
 source_file: F9-P07-T01-COMPENSATION-2023.CSV
 seed: 1234   target_rows: 4000
 demo_rows: 4000   demo_orgs: 493
-reference_rows: 4135   reference_cols: 103
-reference_hash_md5: 8e96f895445f363f848905e64de877cd
+reference_rows: 4135   reference_cols: 110
+reference_hash_md5: 601c0de314e173b6f72b976a2d9f7caa
 title.standard_NA_rate: 0.0629
 
 per-column NA rate:
@@ -110,3 +110,10 @@ per-column NA rate:
   mem: 0.0629
   num.mem: 0
   url: 0
+  role.position: 0
+  role.final: 0
+  role.board: 0.1555
+  role.ceo: 0.9453
+  role.source: 0
+  role.primary: 0
+  org.leadership: 0

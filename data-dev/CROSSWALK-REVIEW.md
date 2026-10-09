@@ -22,6 +22,15 @@ and weighted by frequency in the 35,930-row classified slice
 >     `board.role` (president → CHAIR) replace the flags in the table. The
 >     legacy flags are derived in the package data. Board standards are
 >     collapsed into the core five. The decisions below are settled.
+>   - Every standard has a taxonomy row (F-002).
+>   - Phase 5, SOC coded by function (F-021): employee rows with a code go
+>     from 82% to 92.5%.
+>   - Phase 4, a controlled domain vocabulary in `domains.csv`, with executive
+>     and governance (F-018).
+>   - Phase 3, step 09 `resolve_roles()` (F-022): roles come from the
+>     checkboxes, pay and title, settling PRESIDENT, VICE PRESIDENT and
+>     DIRECTOR by context, with designated, imputed or board-governed
+>     leadership.
 > - **Not done:** Phase 1 item 3. The Part VII review process routes pending
 >   suggestion lists through the per-title review instead of a bulk apply
 >   (F-010), so the August list goes there.
