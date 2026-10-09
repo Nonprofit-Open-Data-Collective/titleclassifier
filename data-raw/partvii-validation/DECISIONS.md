@@ -154,3 +154,79 @@ round 1 marked `fix_cleaning` (F-007):
 The equivalence check still holds. The regression reference was rebuilt with
 `build-demo.R --reference-only`, which also pins the round 1 crosswalk. Two
 demo rows are gone (fragments dropped): 4,137 → 4,135.
+
+## Round 2: tier 2 drafts, vote and blind check (2026-10-09)
+
+**Scope.** After the cleaning fixes, tier 2 (100-999 rows per title) had
+3,850 titles missing from the crosswalk and 250 that a check flagged. The
+review covered all of them, plus a seeded 5% random sample (93) of the 1,852
+mapped titles with no check raised: 4,193 titles in all.
+
+**Drafts.**
+- Four drafting agents split the titles about 1,050 each. Each saw the holder
+  evidence, the leads, the crosswalk as precedent, these policies, and the
+  domain list in `data-raw/crosswalks/domains.csv`.
+- Results:
+
+  | Status | Titles |
+  |---|---|
+  | add | 3,663 |
+  | remap | 227 |
+  | fix_cleaning | 123 |
+  | confirmed | 108 |
+  | ambiguous | 62 |
+  | add_new_standard | 10 |
+
+**Vote.** Two independent reviewers voted on every draft, using the same rule
+as round 1 (`08-consensus-vote.R round2`). They agreed with 4,184 drafts and
+dissented once each on 9, so every draft stands. Agreement this high means the
+vote carries little information: the reviewers saw the drafts and anchored on
+them (round 1 reviewers disagreed with 61-88 of 923).
+
+**Blind check.**
+- To measure quality, a fourth agent decided a random sample of 200 of these
+  titles without seeing the drafts (`round2/blind-*.csv`).
+- Its decision matched the draft for 182 of 200 titles (91%; 93% weighted by
+  person-title rows). Of the 18 differences:
+  - About 12 are calls on odd or truncated titles: the draft maps them
+    (usually to BOARD MEMBER, where holders are 99% trustees), while the blind
+    reviewer marked them `fix_cleaning` or `ambiguous`.
+  - About 6 map to a different standard, for example DIRECTOR OF STUDIES,
+    CHAIR SURGERY, and SOFTWARE ENGINEER (TECHNOLOGY rather than a new
+    standard).
+- The estimated error rate of the tier 2 decisions is therefore about 3-9%,
+  concentrated in low-frequency titles. **Treat the blind check, not the vote,
+  as the quality measure for this round.**
+
+**Applied.**
+- 3,670 crosswalk variants added and 609 changed. The crosswalk grows from
+  5,488 to 9,158 variants.
+- 6 new standards: LOAN OFFICER, ACTUARY, MISSIONARY, PARAMEDIC, PERFUSIONIST
+  and PILOT.
+- The decisions are marked `Consensus vote (3 Claude reviewers)`, not yet
+  reviewed by a person. All votes are in `consensus-votes-round2.csv`.
+
+**Cleaning problems found by the drafting agents** (in `cleaning-issues.csv`,
+not yet fixed in code):
+- abbreviations expanded wrongly (DEPT to DEPUTY, GOV to GOVERNOR, ED to
+  EXECUTIVE DIRECTOR, RES to RESOURCES, COMM to COMMITTEE, SUPPLY CHAIN to
+  SUPPLY CHAIR, DIRECT to DIRECTOR);
+- FMR not recognised as former;
+- date words left as titles (FROM, BEGAN, EFFECTIVE, TERMED, EXIT, STARTING);
+- org acronyms or place names split off as titles (YORK, LA, AHF);
+- glued titles (PRESTREAS, TREASURERVICE, SECRETARY/ADMIN).
+
+**Effect.** The classification was re-run on the same panel (61.2 million
+person-title rows):
+
+| Rows with no `title.standard` | Round 0 | Round 1 | Round 2 cleaning | Round 2 tier 2 |
+|---|---|---|---|---|
+| All | 6.35% | 5.81% | 5.76% | **4.33%** |
+| Tier 1 | 0.61% | 0.07% | 0.04% | 0.04% |
+| Tier 2 | 56.9% | 57.1% | 56.9% | **2.6%** |
+| Tier 3 | 94.1% | 94.2% | 94.2% | 94.2% |
+| Tier 4 | 99.8% | 99.8% | 99.8% | 99.8% |
+
+What is left is mostly tiers 3 and 4: about 600,000 rare titles, 4.2% of
+person-title rows. These need cleaning rules, such as the list above, and
+pattern rules more than title-by-title review.

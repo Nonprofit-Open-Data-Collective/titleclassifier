@@ -37,7 +37,8 @@ new <- rbindlist(lapply(files, function(f) tryCatch(read_front(f), error = funct
 new <- if (nrow(new)) new[status != "pending"] else new
 
 out <- file.path(pv_repo, "review-decisions.csv")
-old <- if (file.exists(out)) fread(out, colClasses = "character") else NULL
+# read.csv, not fread: a few titles contain literal quotes (DIRECTOR """") that fread does not unescape
+old <- if (file.exists(out)) as.data.table(utils::read.csv(out, colClasses = "character", na.strings = character(0), check.names = FALSE)) else NULL
 dec <- rbindlist(list(old, new[, lapply(.SD, as.character)]), fill = TRUE)
 dec <- dec[order(title_v7, date)][, .SD[.N], by = title_v7]
 fwrite(dec[order(-as.numeric(n_rows))], out)

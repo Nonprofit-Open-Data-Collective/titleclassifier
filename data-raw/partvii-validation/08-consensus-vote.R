@@ -33,7 +33,7 @@ read_votes <- function(who) {
   v[, lapply(.SD, function(x) fifelse(is.na(x), "", trimws(x)))]
 }
 A <- read_votes("A"); B <- read_votes("B")
-dec <- fread(file.path(pv_repo, "review-decisions.csv"), colClasses = "character", na.strings = NULL)
+dec <- as.data.table(utils::read.csv(file.path(pv_repo, "review-decisions.csv"), colClasses = "character", na.strings = character(0), check.names = FALSE))
 d <- dec[reviewer == "Claude (draft)"]
 message(sprintf("drafts %d; votes A %d, B %d", nrow(d), nrow(A), nrow(B)))
 for (x in list(A, B)) {
