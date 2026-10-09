@@ -347,7 +347,7 @@ board standards. Together with F-005, these titles need an `ambiguous` marker
 and a decision in step 09 from the checkboxes, pay and hours, not in the
 crosswalk.
 
-### F-018 Domain vocabulary (open, Phase 4)
+### F-018 Domain vocabulary (fixed, Phase 4)
 
 74% of employee rows have the domain `operations / administration`, because
 executives are filed there. The overview tab defines a "General Management"
@@ -356,6 +356,30 @@ domain that is not used. The labels are not a controlled list:
 - placeholders `xxx` and `industry-specific (operations?)`;
 - both `religion` and `religious`;
 - `marketing-pr`, `marketing-sales` and `comms-pr` side by side.
+
+**Fixed 2026-10-08:** `data-raw/crosswalks/03-domains.R` writes
+`domains.csv`, a vocabulary of 29 category/label pairs, and moves every row
+onto it (115 titles, logged in `domains-log.csv`):
+- **New categories:**
+  - `executive / general management`: CEOs, plus officers in administration
+    with a general-management SOC code or none.
+  - `governance / board`: all board titles.
+- **Merged labels:** `religious` into `religion`; `comms-pr`, `marketing-pr`
+  and `marketing-sales` into `marketing and communications`.
+- **New label:** `housing`, for the housing operations titles.
+- **Assigned one by one:** the rows with blank or placeholder domains.
+- **Checks:** `test-crosswalks.R` and `06-apply-decisions.R` reject a domain
+  that is not in `domains.csv`.
+
+Employee rows in the 2010-12 slice:
+
+| Domain | Before | After |
+|---|---|---|
+| operations / administration | 74% | 12% |
+| executive / general management | 0% | 62% |
+
+Most of the executive share is VICE PRESIDENT (about 2,000 rows), the
+ambiguous title F-017 will split.
 
 ### F-019 The crosswalks move from the Google Sheet to the repository (done)
 

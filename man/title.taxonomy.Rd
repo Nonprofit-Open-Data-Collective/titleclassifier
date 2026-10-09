@@ -8,7 +8,11 @@
 A data frame of character columns, one row per \code{title.standard}:
 \describe{
 \item{title.standard}{standard title, the key matched by \code{standardize_titles()}}
-\item{domain.category, domain.label}{functional domain}
+\item{domain.category, domain.label}{functional domain, a pair from the
+controlled vocabulary in \code{data-raw/crosswalks/domains.csv}: executive
+(general management), governance (board), operations (a support
+function), industry-specific (the organization's field), or non-job
+title}
 \item{soc.label, major.group, minor.group, broad.group, detailed.occupation}{2018 SOC
 codes; \code{soc.label} is the official title of the most detailed code}
 \item{emp.level}{\code{CEO}, \code{OFFICER}, \code{MANAGER}, \code{PROFESSIONAL}, \code{STAFF}, or blank}

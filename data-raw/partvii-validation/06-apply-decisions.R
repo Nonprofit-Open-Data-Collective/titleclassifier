@@ -44,6 +44,10 @@ if (nrow(ta)) {
     as.data.table(r)
   }))
   new_tx <- new_tx[!title.standard %in% tx$title.standard]
+  # the domain must be in the vocabulary (data-raw/crosswalks/domains.csv)
+  off <- new_tx[!read_xwalk("domains"), on = .(domain.category, domain.label)]
+  if (nrow(off)) stop("domain not in domains.csv for: ",
+                      paste(off$title.standard, " (", off$domain.category, " / ", off$domain.label, ")", sep = "", collapse = ", "))
 } else new_tx <- tx[0]
 
 # policy P1 (DECISIONS.md): every variant on the placeholder standards moves to

@@ -63,7 +63,11 @@ NULL
 #' @format A data frame of character columns, one row per `title.standard`:
 #'   \describe{
 #'     \item{title.standard}{standard title, the key matched by `standardize_titles()`}
-#'     \item{domain.category, domain.label}{functional domain}
+#'     \item{domain.category, domain.label}{functional domain, a pair from the
+#'       controlled vocabulary in `data-raw/crosswalks/domains.csv`: executive
+#'       (general management), governance (board), operations (a support
+#'       function), industry-specific (the organization's field), or non-job
+#'       title}
 #'     \item{soc.label, major.group, minor.group, broad.group, detailed.occupation}{2018 SOC
 #'       codes; `soc.label` is the official title of the most detailed code}
 #'     \item{emp.level}{`CEO`, `OFFICER`, `MANAGER`, `PROFESSIONAL`, `STAFF`, or blank}
