@@ -1,0 +1,8 @@
+case_id,OBJECTID,title.raw,comp,role,board_role,note
+N038,,,,BOARD,VICE CHAIR,"Board VP paid a $20k stipend for 1 h/wk: the stipend rule makes it a board seat"
+N039,,,,BOARD,VICE CHAIR,"Stipended VP/secretary/treasurer in a 4-person filing; first post named is VP"
+N069,,,,OFFICER,,"Two principals hold CEO-level titles, so the area director overseeing them is an officer"
+N078,,,,BOARD,CHAIR,"System executive serving as corporate president at 4 h/wk; a separate CEO runs the hospital"
+N141,,,,BOARD,CHAIR,"Co-chairs are chairs"
+R15,,,,PROFESSIONAL,,"A lawyer; the supervisory part is secondary"
+,OID-201132849349300903,MANAGER,42261,CEO,,"Elks lodge manager: full-time paid role running the lodge under a volunteer board, no other staff (rule 6)"
