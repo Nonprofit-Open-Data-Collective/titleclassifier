@@ -63,7 +63,8 @@ if ("CHIEF OFFICER" %in% c(tx$title.standard, new_tx$title.standard)) {
 
 # crosswalk rows: add new variants, change existing ones
 add <- ch[action == "add" & !title.variant %in% xw$title.variant]
-chg <- ch[title.variant %in% xw$title.variant]
+# only rows that change the standard (decisions applied in an earlier round are no-ops)
+chg <- ch[title.variant %in% xw$title.variant & title.standard != xw$title.standard[match(title.variant, xw$title.variant)]]
 missing_std <- setdiff(ch$title.standard, c(tx$title.standard, new_tx$title.standard))
 if (length(missing_std)) stop("standards not in the taxonomy: ", paste(missing_std, collapse = ", "))
 message(sprintf("crosswalk: %d variants to add, %d to change; taxonomy: %d new standards", nrow(add), nrow(chg), nrow(new_tx)))

@@ -30,6 +30,7 @@ gen_status_codes <- function( comp.data, title="TitleTxt5", gs_status_codes=NULL
   TitleTxt <- gsub( "\\bEX$",   "FORMER", TitleTxt )
   TitleTxt <- gsub( "\\bEND$",  "FORMER", TitleTxt )
   TitleTxt <- gsub( "\\bNEW$",  "FORMER", TitleTxt )
+  TitleTxt <- gsub( "\\bFMR\\b", "FORMER", TitleTxt )   # FMR TRUSTEE, FMR VICE PRESIDENT
 
   # 'IMMEDIATE PA' is a truncated IMMEDIATE PAST (PRESIDENT), not Pennsylvania
   TitleTxt <- gsub( "\\bIMM(EDIATE|ED)?\\.?\\s+PA$", "IMMEDIATE PAST PRESIDENT", TitleTxt )
@@ -175,10 +176,16 @@ drop_fragment_titles <- function( df, title = "TitleTxt6" )
 {
   df <- as.data.frame( dplyr::ungroup( df ) )
   x <- df[[title]]
-  former  <- c( "PAST", "FORMER", "RESIGNED", "TERM ENDED", "ENDED", "RETIRED", "DECEASED" )
-  partial <- c( "THRU", "THROUGH", "UNTIL", "PART YEAR", "PARTIAL YEAR", "PARTIAL", "PART TIME YEAR" )
-  future  <- c( "NEW", "INCOMING", "ELECT", "BEGINNING", "SINCE", "AS OF" )
-  is_frag <- x %in% c( former, partial, future ) | ( nchar( x ) == 1 & grepl( "^[A-Z]$", x ) )
+  former  <- c( "PAST", "FORMER", "RESIGNED", "TERM ENDED", "ENDED", "RETIRED", "DECEASED",
+                "LEFT", "TERM", "TERMED", "TERM EXPIRED", "EXPIRES", "EXITED", "EXIT", "ENDING", "PRIOR", "PAS" )
+  partial <- c( "THRU", "THROUGH", "UNTIL", "PART YEAR", "PARTIAL YEAR", "PARTIAL", "PART TIME YEAR",
+                "DURING", "PART", "YEAR", "FULL", "IN", "AS NEEDED", "PART TIME", "LESS THAN" )
+  future  <- c( "NEW", "INCOMING", "ELECT", "BEGINNING", "SINCE", "AS OF",
+                "BEG", "BEGAN", "EFF", "EFFECTIVE", "START", "STARTED", "STARTING", "JOINED", "FROM" )
+  # leftovers with no status meaning: roman-numeral suffixes, stray words
+  residue <- c( "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "AND", "AS", "ST", "NO", "RE",
+                "NONVOTING", "STATUS", "SENIOR" )
+  is_frag <- x %in% c( former, partial, future, residue ) | ( nchar( x ) == 1 & grepl( "^[A-Z]$", x ) )
   if( ! any( is_frag ) ) return( df )
 
   pid <- df$PERSONID
