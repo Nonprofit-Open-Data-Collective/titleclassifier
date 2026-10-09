@@ -616,3 +616,26 @@ functional manager, such as a maintenance manager or a lodge manager, whom the
 labelers call MANAGER. That case is 4 of the remaining 11 misses. A possible
 next rule would leave a functional manager title (a specific department) out
 of imputation.
+
+**Update 2026-10-09.** The user decided the two split cases. Both are CEOs:
+- **C07, the irrigation company president** (paid $7,140, 20 hours a week).
+  Rule: a paid president is the CEO when no one else in the filing has a CEO
+  title.
+- **C12, the youth orchestra's music director** (the only paid staffer, 40
+  hours a week). Here "director" means the organization's head, not a
+  department head.
+
+`relabel-consensus.csv` now records who decided each case: both agents, or
+the user. `09-gold-check.R` applies all 22 relabels. Both decisions match
+step 09, which raises agreement from 92.9% to **94.2%**:
+
+| Role | Precision | Recall |
+|---|---|---|
+| CEO | 0.78 | 0.95 |
+| BOARD | 0.98 | 0.97 |
+| OFFICER | 0.88 | 0.93 |
+| MANAGER | 1.00 | 0.69 |
+
+Three CEO false positives remain. Each is a maintenance or lodge manager who is
+the top-paid person in a board-run filing, and the agents agreed on MANAGER for
+them. The user's rule for C07 (no other CEO title, so CEO) may apply to them too.
