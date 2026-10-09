@@ -563,3 +563,56 @@ F-018 and F-021 (domain on 3,643 rows, SOC on 58).
 **Not done:** a validation of step 09 against the hand-labeled gold sample.
 That sample is keyed to the 2010-12 slice, whose raw input is not in the
 repository, so the gold check has to run where the slice's raw rows are.
+
+### F-023 Step 09 scored against the hand-labeled sample (done)
+
+`09-gold-check.R` runs steps 01-09 on the raw 2010-12 rows of the role
+sample: `synthid/dev/data/slice_2010_2012_1000eins.rds`, 34,321 rows in
+3,027 filings. It matches the 158 labeled people on filing + raw title + pay,
+because person ids are hashes that differ between runs, and scores
+`role.final` against `gold_role`.
+
+The August labels were drafted by a rule pass, and their planned human check
+was never done. Two independent labeling agents relabeled the 22 people where
+step 09 and the label disagreed. Each agent saw the guide and the whole filing,
+but not the old label or step 09's answer.
+- **Inputs and outputs** are in `gold-check/`:
+  - `relabel-cases.md` (the cases) and `relabel-key.csv` (the answer key);
+  - `relabel-A.csv` and `relabel-B.csv` (each agent's labels);
+  - `relabel-consensus.csv` (where they agree).
+- **The agents agreed on 20 of 22.** Ten of the agreed labels change the old
+  role, and 9 of those now match step 09. Examples:
+  - a yacht club's general manager and a trust fund's staff administrator,
+    each the only full-time head, are CEOs;
+  - a parent system's CEO sitting on this board is a board member;
+  - two working-board leaders are DUAL.
+- **They split on two cases, left for a person to decide:**
+  - C07, an irrigation company president paid $7,140 for 20 hours a week:
+    board chair or CEO?
+  - C12, a youth orchestra's only paid staffer, the music director: manager or
+    key employee?
+
+The relabels showed one rule worth adding: a board title held under 10 hours
+a week for under $25,000 is a board seat even with the officer box (a titular
+president with a stipend). On the 2023 demo it moves 37 people from OFFICER to
+BOARD. The regression reference was rebuilt, md5 `16dc096b...`.
+
+| Agreement with the labels | Original labels | With the 20 relabels |
+|---|---|---|
+| Step 09 as merged in #18 | 85.8% | |
+| Plus the board-seat rule | 87.1% | **92.9%** |
+
+With the relabels and the rule, by role:
+
+| Role | Precision | Recall |
+|---|---|---|
+| CEO | 0.73 | 0.95 |
+| BOARD | 0.98 | 0.95 |
+| OFFICER | 0.88 | 0.93 |
+| MANAGER | 1.00 | 0.64 |
+
+**Still open:** in a board-run filing, the imputed CEO is sometimes a
+functional manager, such as a maintenance manager or a lodge manager, whom the
+labelers call MANAGER. That case is 4 of the remaining 11 misses. A possible
+next rule would leave a functional manager title (a specific department) out
+of imputation.

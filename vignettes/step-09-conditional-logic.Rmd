@@ -87,7 +87,9 @@ df |>
 ```
 
 `board_governed` is a valid answer, not a gap: a filing that pays people but
-has no plausible paid leader is run by its board. An imputed leader must work
+has no plausible paid leader is run by its board. A board title held under 10
+hours a week for under $25,000 stays a board seat even with the officer box (a
+titular president with a stipend). An imputed leader must work
 at least 15 hours a week or earn at least $25,000.
 
 **Input:** the output of `categorize_titles()`. **Output:** the same rows with

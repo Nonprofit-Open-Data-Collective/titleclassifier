@@ -81,3 +81,14 @@ test_that("on a 990-EZ, an unpaid executive director is the CEO and an unpaid VP
   expect_equal(role("e2"), "BOARD")
   expect_equal(f("E"), "designated")
 })
+
+test_that("a president paid a stipend for a few hours a week is a board chair (F-023)", {
+  f <- rbind(
+    person("F", "f1", "BOARD PRESIDENT", board.role = "CHAIR", comp = 13550, hours = 3, officer = 1,
+           title.raw = "PRESIDENT"),
+    person("F", "f2", "EXECUTIVE DIRECTOR", "CEO", comp = 80000, hours = 40, officer = 1))
+  rf <- resolve_roles(f)
+  expect_equal(rf$role.final[rf$person.id == "f1"], "BOARD")
+  expect_equal(rf$role.board[rf$person.id == "f1"], "CHAIR")
+  expect_equal(rf$role.final[rf$person.id == "f2"], "CEO")
+})
