@@ -1215,6 +1215,8 @@ fix_miscellaneous <- function(TitleTxt){
   
   TitleTxt <- gsub("\\bOPERATIONS M\\b", "OPERATIONS MANAGER", TitleTxt)
   
+  # ER before a clinical title is the emergency room, not an editor (Part VII review)
+  TitleTxt <- gsub("\\bER (PHYSICIAN|DOCTOR|NURSE|MD|DIRECTOR|MEDICAL DIRECTOR)\\b", "EMERGENCY \\1", TitleTxt)
   TitleTxt <- gsub("\\bER\\b",   "EDITOR", TitleTxt)
   TitleTxt <- gsub("\\bEDR\\b",  "EDITOR", TitleTxt)
   TitleTxt <- gsub("\\bEDI\\b",  "EDITOR", TitleTxt)
