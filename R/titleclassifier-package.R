@@ -48,5 +48,8 @@ utils::globalVariables(c(
   ".p_board_t", ".p_lead", ".p_off", ".p_tru", ".p_pres", ".p_interim", ".desig",
   ".chair_pattern", ".elig", ".n_desig", ".any_paid", ".best", ".k", ".brole_t",
   "role.position", "role.final", "role.board", "role.ceo", "role.source",
-  "role.primary", "org.leadership", "object.id", "person.id"
+  "role.primary", "org.leadership", "object.id", "person.id", "role.method", ".model", "i..model",
+  ".comp", ".hours", ".paid", ".lvl", ".brd", ".n_people", ".n_paid", ".pay_rank", ".hrs_rank", ".pay_share",
+  ".hrs_share", ".n_ceo_titles", ".n_board_titles", ".n_exec_paid", ".other_ceo_title", ".same_title",
+  "tot.comp", "tot.hours", "title.standard"
 ))

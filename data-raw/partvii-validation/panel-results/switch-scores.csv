@@ -1,0 +1,5 @@
+subset,people,step09,model
+all linked,23931,92,95
+same title (strict),20817,95.1,96.6
+"strict, non-board label",1602,63.7,73.9
+"strict, paid in EZ year",1427,74.6,83.4

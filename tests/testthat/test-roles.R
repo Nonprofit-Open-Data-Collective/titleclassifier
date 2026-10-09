@@ -32,7 +32,8 @@ d <- rbind(
   person("E", "e1", "EXECUTIVE DIRECTOR", "CEO", hours = 20, formtype = "990EZ"),
   person("E", "e2", "VICE PRESIDENT", "OFFICER", hours = 2, formtype = "990EZ")
 )
-r  <- resolve_roles(d)
+# these tests pin the rules; the 990-EZ model is tested below
+r  <- resolve_roles(d, use_model = FALSE)
 pr <- r[r$role.primary, ]
 role <- function(id) pr$role.final[pr$person.id == id]
 f <- function(obj) unique(r$org.leadership[r$object.id == obj])
@@ -87,7 +88,7 @@ test_that("a president paid a stipend for a few hours a week is a board chair (F
     person("F", "f1", "BOARD PRESIDENT", board.role = "CHAIR", comp = 13550, hours = 3, officer = 1,
            title.raw = "PRESIDENT"),
     person("F", "f2", "EXECUTIVE DIRECTOR", "CEO", comp = 80000, hours = 40, officer = 1))
-  rf <- resolve_roles(f)
+  rf <- resolve_roles(f, use_model = FALSE)
   expect_equal(rf$role.final[rf$person.id == "f1"], "BOARD")
   expect_equal(rf$role.board[rf$person.id == "f1"], "CHAIR")
   expect_equal(rf$role.final[rf$person.id == "f2"], "CEO")
@@ -99,9 +100,34 @@ test_that("on a 990-EZ, a board title paid a small fee for a few hours is a boar
            title.raw = "DIRECTOR"),
     person("G", "g2", "BOARD TREASURER", board.role = "TREASURER", comp = 40000, hours = 30, formtype = "990EZ",
            title.raw = "TREASURER"))
-  rf <- resolve_roles(f)
+  rf <- resolve_roles(f, use_model = FALSE)
   expect_equal(rf$role.final[rf$person.id == "g1"], "BOARD")
   expect_equal(rf$role.board[rf$person.id == "g1"], "MEMBER")
   # a real paid job stays staff-side
   expect_false(rf$role.final[rf$person.id == "g2"] == "BOARD")
+})
+
+test_that("the role model features never read the checkboxes", {
+  base <- person("H", "h1", "BOARD PRESIDENT", board.role = "CHAIR", comp = 50000, hours = 40, officer = 1)
+  boxed <- base; boxed$dtk.indiv.trustee.x <- 1; boxed$dtk.key.empl.x <- 1
+  expect_identical(role_model_features(base), role_model_features(boxed))
+})
+
+test_that("990-EZ filings use the role model when xgboost is installed", {
+  skip_if_not_installed("xgboost")
+  ez <- rbind(
+    person("M", "m1", "EXECUTIVE DIRECTOR", "CEO", comp = 85000, hours = 40, formtype = "990EZ"),
+    person("M", "m2", "BOARD PRESIDENT", board.role = "CHAIR", hours = 2, formtype = "990EZ", title.raw = "PRESIDENT"),
+    person("M", "m3", "BOARD MEMBER", board.role = "MEMBER", hours = 1, formtype = "990EZ", title.raw = "DIRECTOR"))
+  full <- person("F990", "f1", "EXECUTIVE DIRECTOR", "CEO", comp = 85000, hours = 40, officer = 1)
+  r2 <- resolve_roles(rbind(ez, full))
+  expect_true(all(r2$role.method[r2$formtype == "990EZ"] == "model"))
+  expect_true(all(r2$role.method[r2$formtype == "990"] == "rules"))
+  expect_true(all(r2$role.final %in% c("BOARD", "CEO", "OFFICER", "MANAGER", "PROFESSIONAL", "STAFF")))
+  expect_equal(r2$role.final[r2$person.id == "m1"], "CEO")
+  expect_equal(r2$role.final[r2$person.id == "m3"], "BOARD")
+  expect_equal(unique(r2$org.leadership[r2$object.id == "M"]), "designated")
+  # with the model off, the rules decide everywhere
+  r3 <- resolve_roles(rbind(ez, full), use_model = FALSE)
+  expect_true(all(r3$role.method == "rules"))
 })

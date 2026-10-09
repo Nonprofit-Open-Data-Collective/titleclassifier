@@ -39,6 +39,7 @@ out[is.na(return_type), return_type := formtype]
 # the three roles
 f <- features(out)
 f$model <- classes[max.col({ pr <- predict(fit, xgb.DMatrix(mm(f))); if (is.null(dim(pr))) matrix(pr, ncol = length(classes), byrow = TRUE) else pr }, ties.method = "first")]
+saveRDS(f, file.path(PV, "sample", "gold-features.rds"))   # used by 19-nobox-model-v2.R
 hid <- copy(out)
 for (b in c("dtk.indiv.trustee.x", "dtk.inst.trustee.x", "dtk.officer.x", "dtk.key.empl.x", "dtk.high.comp.x")) set(hid, j = b, value = 0)
 hid[, formtype := "990EZ"]
@@ -64,6 +65,7 @@ res <- rbind(cbind(group = "all", s(e)), cbind(group = "full 990", s(e[formtype 
 cat("agreement with the labels (%): model without boxes | step 09 (boxes where present) | step 09 boxes hidden\n")
 print(res)
 fwrite(res, "data-raw/partvii-validation/panel-results/nobox-gold.csv")
+fwrite(v[, !".k"], "data-raw/partvii-validation/panel-results/nobox-gold-people.csv")
 pr2 <- function(col) t(sapply(classes, function(cl) { p <- e[[col]] == cl; t <- e$role == cl
   c(precision = round(sum(p & t) / sum(p), 2), recall = round(sum(p & t) / sum(t), 2)) }))
 cat("\nmodel by role:\n"); print(pr2("model")); cat("\nstep 09 by role:\n"); print(pr2("step09"))

@@ -31,7 +31,8 @@ Suggests:
     knitr,
     rmarkdown,
     pander,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    xgboost
 VignetteBuilder: knitr
 Config/testthat/edition: 3
 Roxygen: list(markdown = TRUE)

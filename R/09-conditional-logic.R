@@ -59,10 +59,18 @@ conditional_logic <- function(comp.data)
 #' stipend, not a paid executive. On a 990-EZ, which has no boxes, the same
 #' holds for a board title paid a small fee.
 #'
+#' **990-EZ returns** have no checkboxes. For them, when the xgboost package is
+#' installed, the role comes from a model trained on full-990 people with the
+#' boxes hidden ([predict_roles()]): title, pay, hours and the filing's
+#' make-up. Without xgboost, or with `use_model = FALSE`, the rules above
+#' decide. `role.method` records which one.
+#'
 #' Scored against the 316-person labeled set of 2010-12 filings
 #' (`data-raw/partvii-validation/09-gold-check.R`, `gold-check/gold-v2.csv`),
-#' the role agrees with the label for 87.8% of people: 88.6% on full 990
-#' returns and 82.5% on 990-EZ returns.
+#' the rules agree with the label for 88.8% of full-990 people. On 990-EZ
+#' people the model agrees for 92.5%, and the rules for 82.5%. On 23,931 people
+#' from organizations that switch between the forms, labeled by their
+#' full-990-year role, the model agrees for 95.0% and the rules for 92.0%.
 #'
 #' @return `comp.data` with these columns added (person-level values repeat on
 #'   each of the person's rows):
@@ -70,15 +78,18 @@ conditional_logic <- function(comp.data)
 #'     \item{role.position}{board, officer, board_officer, staff, or unknown}
 #'     \item{role.final}{CEO, OFFICER, MANAGER, PROFESSIONAL, STAFF, or BOARD}
 #'     \item{role.board}{for BOARD: CHAIR, VICE CHAIR, SECRETARY, TREASURER, or MEMBER}
-#'     \item{role.ceo}{for CEO: designated, co-ceo, interim, or imputed}
+#'     \item{role.ceo}{for CEO: designated, co-ceo, interim, imputed, or model}
 #'     \item{role.source}{what settled the position: checkbox, title+pay, or title}
+#'     \item{role.method}{rules, or model (990-EZ, xgboost installed)}
 #'     \item{role.primary}{TRUE on one row per person}
-#'     \item{org.leadership}{per filing: designated, imputed, board_governed, or no_paid}
+#'     \item{org.leadership}{per filing: designated, imputed, model, board_governed, or no_paid}
 #'   }
 #'
 #' @export
 #' @param comp.data The output of `categorize_titles()`.
-resolve_roles <- function( comp.data )
+#' @param use_model Use the no-checkbox role model for 990-EZ filings when
+#'   xgboost is installed (default `TRUE`).
+resolve_roles <- function( comp.data, use_model = TRUE )
 {
   d <- data.table::as.data.table( comp.data )
   d[ , .row := .I ]
@@ -190,6 +201,36 @@ resolve_roles <- function( comp.data )
           role.position == "unknown" & .p_exec,                           "OFFICER",
           .level %in% c( "MANAGER", "PROFESSIONAL", "STAFF" ),            .level,
           default = "STAFF" ) ]
+  p[ , role.method := "rules" ]
+
+  # ---- 5. 990-EZ: the no-checkbox role model (F-028, F-029) ----------------------
+  # Without the boxes the rules miss most officers and over-call staff; the
+  # model, trained on full-990 people with the boxes hidden, does better
+  # (labeled 990-EZ people: 92.5% against 82.5%). It replaces role.final for
+  # 990-EZ people when xgboost is installed.
+  if( use_model && any( ! p$.boxes ) )
+  {
+    pred <- predict_roles( comp.data )
+    if( ! is.null(pred) )
+    {
+      d[ , .model := pred[ .row ] ]
+      p[ d[ .primary == TRUE ], on = c( "object.id", "person.id" ), .model := i..model ]
+      ez <- ! p$.boxes
+      p[ ez, `:=`( role.final = .model, role.method = "model" ) ]
+      # a CEO named by the model keeps a designated or co-CEO label from its
+      # title, and is "model" otherwise; anyone else is not a CEO
+      p[ ez, role.ceo := data.table::fifelse( role.final == "CEO",
+                                              data.table::fcoalesce( role.ceo, "model" ), NA_character_ ) ]
+      p[ ez & role.ceo %in% "imputed", role.ceo := "model" ]
+      p[ , org.leadership := data.table::fcase(
+              any( role.ceo %in% c( "designated", "co-ceo", "interim" ) ), "designated",
+              any( role.ceo %in% "imputed" ),                               "imputed",
+              any( role.ceo %in% "model" ),                                 "model",
+              .any_paid[1],                                                 "board_governed",
+              default = "no_paid" ),
+         by = object.id ]
+    }
+  }
 
   # the board role: the crosswalk's, or read from the title for an employee
   # title that turned out to be a board seat (VICE PRESIDENT, SECRETARY, ...)
@@ -208,13 +249,13 @@ resolve_roles <- function( comp.data )
   # ---- map back onto every row ---------------------------------------------------
   out <- merge( d[ , .( .row, object.id, person.id, role.position, role.source = .src,
                         role.primary = .primary ) ],
-                p[ , .( object.id, person.id, role.final, role.board, role.ceo, org.leadership ) ],
+                p[ , .( object.id, person.id, role.final, role.board, role.ceo, role.method, org.leadership ) ],
                 by = c( "object.id", "person.id" ), all.x = TRUE )
   data.table::setorder( out, .row )
 
   res <- as.data.frame( comp.data )
   for( v in c( "role.position", "role.final", "role.board", "role.ceo",
-               "role.source", "role.primary", "org.leadership" ) )
+               "role.source", "role.method", "role.primary", "org.leadership" ) )
   { res[[v]] <- out[[v]] }
   res
 }
