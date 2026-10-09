@@ -2,9 +2,8 @@ titleclassifier regression reference
 source_file: F9-P07-T01-COMPENSATION-2023.CSV
 seed: 1234   target_rows: 4000
 demo_rows: 4000   demo_orgs: 493
-reference_rows: 4137   reference_cols: 101
-reference_hash_md5: 42d7cf5066d7c894e8d476079ea5c8dc
-re-baselined after code-quality fixes H1-H3, M1/M3/M4/M5, L1/L2/L4/L5/L6/L7 (M2, L3, L8 accepted as-is); re-baselined 2026-10-08 after Part VII review policy P3 (CO- stripped in step 6 with CO.X kept; CO-FOUNDER kept whole in step 4)
+reference_rows: 4137   reference_cols: 103
+reference_hash_md5: a0e82dd1f1f5a8dc7169759de1ddfe90
 title.standard_NA_rate: 0.0761
 
 per-column NA rate:
@@ -84,6 +83,8 @@ per-column NA rate:
   minor.group: 0.0764
   broad.group: 0.0764
   detailed.occupation: 0.0764
+  emp.level: 0.0764
+  board.role: 0.0764
   emp: 0.0764
   num.emp: 0
   board: 0.0764

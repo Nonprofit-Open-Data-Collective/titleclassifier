@@ -40,15 +40,29 @@ head(xwalk, 8)
 ### Title taxonomy (`get_title_taxonomy()`)
 
 Maps each canonical `title.standard` to its taxonomy dimensions: functional
-`domain.category` / `domain.label`, the BLS SOC occupation codes, and the
-binary role/hierarchy flags (`ceo`, `c.level`, `dir.vp`, `mgr`, `spec`, `board`,
-`pres`, `vp`, `sec`, `treas`, `mem`). Used in step 08, `categorize_titles()`.
+`domain.category` / `domain.label`, the BLS SOC occupation codes, and its role.
+A title is either an employee level or a board role:
+
+- `emp.level`:
+  - `CEO`: the top staff job.
+  - `OFFICER`: C-suite, vice presidents, deputies.
+  - `MANAGER`: directors of departments, managers.
+  - `PROFESSIONAL`: non-managerial jobs often reported for their pay, such as
+    physicians, lawyers, professors and coaches.
+  - `STAFF`: everything else.
+- `board.role`: `CHAIR`, `VICE CHAIR`, `SECRETARY`, `TREASURER` or `MEMBER`.
+
+The legacy flags (`ceo`, `c.level`, `mgr`, `spec`, `board`, `pres`, ...) are
+derived from these two columns. `dir.vp` is retired. Used in step 08,
+`categorize_titles()`.
 
 ```{r}
 tax <- get_title_taxonomy()
 dim(tax)
-head(tax[, c("title.standard", "domain.category", "soc.label",
-             "ceo", "c.level", "board")], 8)
+head(tax[, c("title.standard", "domain.label", "soc.label",
+             "emp.level", "board.role")], 8)
+table(tax$emp.level)
+table(tax$board.role)
 ```
 
 ### Status codes (`get_status_codes()`)

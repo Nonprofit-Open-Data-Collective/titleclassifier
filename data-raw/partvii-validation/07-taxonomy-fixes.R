@@ -16,7 +16,10 @@ pv_repo <- "data-raw/partvii-validation"
 soc_path <- "data-raw/standard-occupational-classifications/tidy-soc-codes.csv"
 
 tx <- read_xwalk("title-taxonomy")
-codes <- c("major.group", "minor.group", "broad.group", "detailed.occupation")
+# the table no longer has the role flags this script edits (F-020); its fixes
+# are in the table and in taxonomy-edits-log.csv
+if ("emp.level" %in% names(tx)) { message("already applied; title-taxonomy.csv now uses emp.level and board.role"); quit(save = "no") }
+codes <-c("major.group", "minor.group", "broad.group", "detailed.occupation")
 log <- list()
 
 # set one cell, recording the change; `from` guards against editing a row

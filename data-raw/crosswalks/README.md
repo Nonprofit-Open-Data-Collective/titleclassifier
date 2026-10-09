@@ -13,6 +13,16 @@ Rscript data-raw/crosswalks/build-crosswalks.R
 | `title-taxonomy.csv` | `title.taxonomy` (`data/title-taxonomy.rda`) | step 08, `categorize_titles()` | standard title (`title.standard`) |
 | `status-codes.csv` | `status.codes` (`data/status-codes.rda`) | step 06, `gen_status_codes()` | status-word variant (`status.variant`) |
 
+`title-taxonomy.csv` gives each standard title an `emp.level` (CEO, OFFICER,
+MANAGER, PROFESSIONAL, STAFF) or a `board.role` (CHAIR, VICE CHAIR, SECRETARY,
+TREASURER, MEMBER). Board titles use only the five core standards (BOARD
+PRESIDENT, BOARD VICE PRESIDENT, BOARD SECRETARY, BOARD TREASURER, BOARD
+MEMBER): add other board titles as standardization variants of these.
+`build-crosswalks.R` derives the legacy flags (`emp`, `ceo`, ... `mem`) for
+the package. `01-role-levels.R` made this conversion from the old flag
+columns, and logged every decision in `role-levels-log.csv` and
+`board-collapse-log.csv`.
+
 Load them with `get_title_xwalk()`, `get_title_taxonomy()` and
 `get_status_codes()`. The build keeps only the columns the pipeline uses; the
 `notes` columns stay here. `tests/testthat/test-crosswalks.R` fails if `data/`

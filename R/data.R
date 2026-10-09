@@ -46,8 +46,19 @@ NULL
 #' @title Title taxonomy (standard title to domain, SOC code, and role).
 #'
 #' @description Maps each `title.standard` to its functional domain, its 2018
-#'   SOC occupation codes, and the employee and board role flags. Used by
-#'   `categorize_titles()`; load it with [get_title_taxonomy()].
+#'   SOC occupation codes, and its role: an employee level or a board role.
+#'   Used by `categorize_titles()`; load it with [get_title_taxonomy()].
+#'
+#'   The employee levels are:
+#'   - `CEO`: the top staff job (CEO, executive director).
+#'   - `OFFICER`: C-suite, vice presidents, deputies.
+#'   - `MANAGER`: directors of departments, managers.
+#'   - `PROFESSIONAL`: non-managerial jobs often reported for their pay, such
+#'     as physicians, lawyers, professors and coaches.
+#'   - `STAFF`: everything else.
+#'
+#'   The level comes from the title alone. Whether a person was a key or
+#'   highly compensated employee in a filing comes from the checkboxes and pay.
 #'
 #' @format A data frame of character columns, one row per `title.standard`:
 #'   \describe{
@@ -55,8 +66,15 @@ NULL
 #'     \item{domain.category, domain.label}{functional domain}
 #'     \item{soc.label, major.group, minor.group, broad.group, detailed.occupation}{2018 SOC
 #'       codes; `soc.label` is the official title of the most detailed code}
-#'     \item{emp, ceo, c.level, dir.vp, mgr, spec}{employee flag and level (`"X"` or blank)}
-#'     \item{board, pres, vp, sec, treas, mem}{board flag and role (`"X"` or blank)}
+#'     \item{emp.level}{`CEO`, `OFFICER`, `MANAGER`, `PROFESSIONAL`, `STAFF`, or blank}
+#'     \item{board.role}{`CHAIR`, `VICE CHAIR`, `SECRETARY`, `TREASURER`, `MEMBER`, or
+#'       blank. Board titles use five standards, BOARD PRESIDENT (`CHAIR`)
+#'       through BOARD MEMBER.}
+#'     \item{emp, ceo, c.level, dir.vp, mgr, spec, board, pres, vp, sec, treas, mem}{legacy
+#'       role flags (`"X"` or blank), derived from `emp.level` and `board.role`:
+#'       `c.level` is CEO or OFFICER, `spec` is PROFESSIONAL or STAFF, `pres`
+#'       is CHAIR, `vp` is VICE CHAIR, `mem` is MEMBER. `dir.vp` is retired
+#'       and always blank.}
 #'   }
 #' @source `data-raw/crosswalks/title-taxonomy.csv`, started from the
 #'   title-taxonomy-map Google Sheet (retired 2026-10-08).

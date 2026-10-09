@@ -1,17 +1,17 @@
 title.standard,new_taxonomy,first_variant,reviewer,date
 NO TITLE,non-job title / missing,"",Claude (draft),2026-10-08
-FIRE OFFICER,industry-specific / public safety / emp,ASSISTANT CHIEF,Claude (draft),2026-10-08
-ASSISTANT PRINCIPAL,industry-specific / education / emp mgr,ASSISTANT PRINCIPAL,Claude (draft),2026-10-08
-BARTENDER,operations / hospitality / emp spec,BARTENDER,Claude (draft),2026-10-08
-CHIEF OFFICER,operations / administration / emp c.level,CCO,Claude (draft),2026-10-08
-DISPATCHER,operations / administration / emp spec,DISPATCHER,Claude (draft),2026-10-08
-FOREMAN,operations / facilities / emp mgr,FOREMAN,Claude (draft),2026-10-08
-GOLF COURSE SUPERINTENDENT,operations / facilities / emp mgr,GOLF COURSE SUPERINTENDENT,Claude (draft),2026-10-08
-GOLF PROFESSIONAL,industry-specific / recreation and sports / emp spec,GOLF PROFESSIONAL,Claude (draft),2026-10-08
-HEAD OF DIVISION,industry-specific / education / emp mgr,HEAD OF LOWER SCHOOL,Claude (draft),2026-10-08
-LINEMAN,industry-specific / utilities / emp spec,JOURNEYMAN LINEMAN,Claude (draft),2026-10-08
-PHARMACIST,industry-specific / medical / emp spec,PHARMACIST,Claude (draft),2026-10-08
-SENIOR FELLOW,operations / research and development / emp spec,SENIOR FELLOW,Claude (draft),2026-10-08
-SCIENTIST,operations / research and development / emp spec,SENIOR SCIENTIST,Claude (draft),2026-10-08
-TRAINING COORDINATOR,operations / human resources / emp spec,TRAINING COORDINATOR,Claude (draft),2026-10-08
-VETERINARIAN,industry-specific / medical / emp spec,VETERINARIAN,Claude (draft),2026-10-08
+FIRE OFFICER,industry-specific / public safety / MANAGER,ASSISTANT CHIEF,Claude (draft),2026-10-08
+ASSISTANT PRINCIPAL,industry-specific / education / MANAGER,ASSISTANT PRINCIPAL,Claude (draft),2026-10-08
+BARTENDER,operations / hospitality / STAFF,BARTENDER,Claude (draft),2026-10-08
+CHIEF OFFICER,operations / administration / OFFICER,CCO,Claude (draft),2026-10-08
+DISPATCHER,operations / administration / STAFF,DISPATCHER,Claude (draft),2026-10-08
+FOREMAN,operations / facilities / MANAGER,FOREMAN,Claude (draft),2026-10-08
+GOLF COURSE SUPERINTENDENT,operations / facilities / MANAGER,GOLF COURSE SUPERINTENDENT,Claude (draft),2026-10-08
+GOLF PROFESSIONAL,industry-specific / recreation and sports / PROFESSIONAL,GOLF PROFESSIONAL,Claude (draft),2026-10-08
+HEAD OF DIVISION,industry-specific / education / MANAGER,HEAD OF LOWER SCHOOL,Claude (draft),2026-10-08
+LINEMAN,industry-specific / utilities / STAFF,JOURNEYMAN LINEMAN,Claude (draft),2026-10-08
+PHARMACIST,industry-specific / medical / PROFESSIONAL,PHARMACIST,Claude (draft),2026-10-08
+SENIOR FELLOW,operations / research and development / PROFESSIONAL,SENIOR FELLOW,Claude (draft),2026-10-08
+SCIENTIST,operations / research and development / PROFESSIONAL,SENIOR SCIENTIST,Claude (draft),2026-10-08
+TRAINING COORDINATOR,operations / human resources / STAFF,TRAINING COORDINATOR,Claude (draft),2026-10-08
+VETERINARIAN,industry-specific / medical / PROFESSIONAL,VETERINARIAN,Claude (draft),2026-10-08
