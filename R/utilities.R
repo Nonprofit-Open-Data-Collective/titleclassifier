@@ -40,8 +40,18 @@ hash_row <- function(row) {
   digest::digest(row_string, algo = "md5", serialize = FALSE)
 }
 
+# The id is a hash of the row's source values, so a person keeps the same id
+# however the filings are batched. It leaves out classify_titles()'s
+# .tc_row_id (a position in the input) and pastes each column with
+# as.character(): apply() went through as.matrix(), which pads numbers to the
+# widest value in the batch. Character columns hash as they did before.
 get_row_id <- function(df){
-  row_hash <- apply( df, 1, hash_row )
+  df <- as.data.frame(df)
+  df <- df[ setdiff( names(df), ".tc_row_id" ) ]
+  cols <- lapply( df, function(v) { v <- as.character(v); v[ is.na(v) ] <- "NA"; v } )
+  row_string <- if( length(cols) ) do.call( paste0, cols ) else rep( "", nrow(df) )
+  row_hash <- vapply( row_string, digest::digest, "", algo = "md5", serialize = FALSE,
+                      USE.NAMES = FALSE )
   row_id <- paste0( "PID-", row_hash )
   return(row_id)
 }
