@@ -37,6 +37,7 @@ One-time passes over the taxonomy, each logging its changes:
 | `01-role-levels.R` | flags to `emp.level` / `board.role` | `role-levels-log.csv`, `board-collapse-log.csv` |
 | `02-soc-codes.R` | SOC codes by function | `soc-codes-log.csv` |
 | `03-domains.R` | the domain vocabulary | `domains-log.csv` |
+| `04-taxonomy-orphans.R` | removed taxonomy rows no variant or pattern maps to | `taxonomy-orphans-log.csv` |
 
 Load them with `get_title_xwalk()`, `get_title_taxonomy()` and
 `get_status_codes()`. The build keeps only the columns the pipeline uses; the

@@ -229,7 +229,7 @@ co- form of every title.
 **Decision needed:** remove `CO-` in step 6 and keep `CO.X` (as the notes tab
 already asks), or add each co- form to the crosswalk.
 
-### F-010 The pending suggestion lists are not applied (open)
+### F-010 The pending suggestion lists are not applied (open; board patch applied)
 
 Two lists of proposed additions exist but are not in the snapshot:
 - the `to-do` tab of `data-dev/title-taxonomy-map.xlsx` (757 variants)
@@ -238,6 +238,18 @@ Two lists of proposed additions exist but are not in the snapshot:
 The review files show them as `suggested_standard` where they match a
 `TitleTxt7`, so they get confirmed or corrected in the normal review rather
 than applied in bulk.
+
+The board patch was applied on 2026-10-09 through `crosswalk-changes.csv`:
+26 new BOARD MEMBER variants, and BOARD AND DIRECTOR moved from DIRECTOR to
+BOARD MEMBER. 9 variants were already in the crosswalk. The patch's proposals
+for WARDEN, JUNIOR GRAND WARDEN and SENIOR GRAND WARDEN (BOARD MEMBER) were
+not taken: wardens are board vice officers under P2, so SENIOR GRAND WARDEN
+moved from WARDEN to BOARD VICE PRESIDENT, like the other two.
+
+The same day, `data-raw/crosswalks/04-taxonomy-orphans.R` removed the 75
+taxonomy rows that no variant or pattern maps to (450 to 375 rows). 73 of them
+are now variants of a broader standard (e.g. CFO of CHIEF FINANCIAL OFFICER);
+BUSINESS GAENT and VICE CEO were not used anywhere.
 
 ### F-011 `missing_title_variants()` cannot run (open, code)
 

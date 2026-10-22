@@ -1538,7 +1538,7 @@ title-standardization,DEVELOPMENT VICE PRESIDENT,"",BOARD VICE PRESIDENT,T000389
 title-standardization,DG,"",BOARD MEMBER,T0003500,Consensus vote (3 Claude reviewers),2026-10-09
 title-standardization,DIERCTOR,"",BOARD MEMBER,T0003314,Consensus vote (3 Claude reviewers),2026-10-09
 title-standardization,DIIRECTOR,"",BOARD MEMBER,T0003831,Consensus vote (3 Claude reviewers),2026-10-09
-title-standardization,"DIRECTOR """"""""""""""""""""""""""""""""","",BOARD MEMBER,T0001626,Consensus vote (3 Claude reviewers),2026-10-09
+title-standardization,"DIRECTOR """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""","",BOARD MEMBER,T0001626,Consensus vote (3 Claude reviewers),2026-10-09
 title-standardization,DIRECTOR #,"",BOARD MEMBER,T0001382,Consensus vote (3 Claude reviewers),2026-10-09
 title-standardization,DIRECTOR @ LARGE,"",BOARD MEMBER,T0005095,Consensus vote (3 Claude reviewers),2026-10-09
 title-standardization,DIRECTOR A,"",BOARD MEMBER,T0004002,Consensus vote (3 Claude reviewers),2026-10-09
@@ -4835,3 +4835,31 @@ title-standardization,O AND TRUSTEE TITLES,"",NO TITLE,T0000264,"Claude (round 5
 title-standardization,PRESIDENT AND CEO,"",CEO,T0000650,"Claude (round 5, single reviewer)",2026-10-09
 title-standardization,SCHOOL PRINC,"",PRINCIPAL,T0003522,"Claude (round 5, single reviewer)",2026-10-09
 title-standardization,SEARGEANT AT ARMS,"",BOARD MEMBER,T0006845,"Claude (round 5, single reviewer)",2026-10-09
+title-standardization,DELEGATE TRUSTEE,"",BOARD MEMBER,"",Jesse Lecy (board_crosswalk_patch.csv),2026-10-09
+title-standardization,COUNCILOR MEMBER,"",BOARD MEMBER,"",Jesse Lecy (board_crosswalk_patch.csv),2026-10-09
+title-standardization,PLAN TRUSTEE,"",BOARD MEMBER,"",Jesse Lecy (board_crosswalk_patch.csv),2026-10-09
+title-standardization,BOARD TRUSTEE MID,"",BOARD MEMBER,"",Jesse Lecy (board_crosswalk_patch.csv),2026-10-09
+title-standardization,IGC COUNCILOR,"",BOARD MEMBER,"",Jesse Lecy (board_crosswalk_patch.csv),2026-10-09
+title-standardization,REGIONAL LIAISON BOARD,"",BOARD MEMBER,"",Jesse Lecy (board_crosswalk_patch.csv),2026-10-09
+title-standardization,AD HOC BOARD MEMBER,"",BOARD MEMBER,"",Jesse Lecy (board_crosswalk_patch.csv),2026-10-09
+title-standardization,CMA TRUSTEE,"",BOARD MEMBER,"",Jesse Lecy (board_crosswalk_patch.csv),2026-10-09
+title-standardization,TRUSTEE FM,"",BOARD MEMBER,"",Jesse Lecy (board_crosswalk_patch.csv),2026-10-09
+title-standardization,TRUSTEE AND CONTRACTED PHYSICI,"",BOARD MEMBER,"",Jesse Lecy (board_crosswalk_patch.csv),2026-10-09
+title-standardization,DELEGATE TRUSTEE REGIONAL,"",BOARD MEMBER,"",Jesse Lecy (board_crosswalk_patch.csv),2026-10-09
+title-standardization,TRUSTEE AND NOT SERVING AT YEA,"",BOARD MEMBER,"",Jesse Lecy (board_crosswalk_patch.csv),2026-10-09
+title-standardization,ALTERNATE TRUSTEE AND UNION,"",BOARD MEMBER,"",Jesse Lecy (board_crosswalk_patch.csv),2026-10-09
+title-standardization,BOARD MEMBER AND GARDEN,"",BOARD MEMBER,"",Jesse Lecy (board_crosswalk_patch.csv),2026-10-09
+title-standardization,DELEGATE TRUSTEE BAYOU PR,"",BOARD MEMBER,"",Jesse Lecy (board_crosswalk_patch.csv),2026-10-09
+title-standardization,DELEGATE TRUSTEE LAKEWOOD,"",BOARD MEMBER,"",Jesse Lecy (board_crosswalk_patch.csv),2026-10-09
+title-standardization,PP STAR COUNCIL REPRESENTATIVE,"",BOARD MEMBER,"",Jesse Lecy (board_crosswalk_patch.csv),2026-10-09
+title-standardization,ADVANCEMENT BOARD REPRESENTATIVE,"",BOARD MEMBER,"",Jesse Lecy (board_crosswalk_patch.csv),2026-10-09
+title-standardization,AKC DELEGATE AND DIRECTOR,"",BOARD MEMBER,"",Jesse Lecy (board_crosswalk_patch.csv),2026-10-09
+title-standardization,ALUMNI BOARD REPRESENTATIVE,"",BOARD MEMBER,"",Jesse Lecy (board_crosswalk_patch.csv),2026-10-09
+title-standardization,BOARD MEMBER AND CYPT,"",BOARD MEMBER,"",Jesse Lecy (board_crosswalk_patch.csv),2026-10-09
+title-standardization,BOARD MEMBER AND DEMON DIVISION,"",BOARD MEMBER,"",Jesse Lecy (board_crosswalk_patch.csv),2026-10-09
+title-standardization,BOARD MEMBER AND PIGTAIL DIVISION,"",BOARD MEMBER,"",Jesse Lecy (board_crosswalk_patch.csv),2026-10-09
+title-standardization,BOARD MEMBER AND SENIOR DIVISION,"",BOARD MEMBER,"",Jesse Lecy (board_crosswalk_patch.csv),2026-10-09
+title-standardization,DELEGATE TRUSTEE REGIONAL CANOE CLUB,"",BOARD MEMBER,"",Jesse Lecy (board_crosswalk_patch.csv),2026-10-09
+title-standardization,TRUSTEE AND BOARD OF VISITORS APPOINTEE,"",BOARD MEMBER,"",Jesse Lecy (board_crosswalk_patch.csv),2026-10-09
+title-standardization,BOARD AND DIRECTOR,DIRECTOR,BOARD MEMBER,"",Jesse Lecy (board_crosswalk_patch.csv),2026-10-09
+title-standardization,SENIOR GRAND WARDEN,WARDEN,BOARD VICE PRESIDENT,"",Jesse Lecy (board_crosswalk_patch.csv),2026-10-09
