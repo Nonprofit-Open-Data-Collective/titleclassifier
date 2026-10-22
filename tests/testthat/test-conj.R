@@ -12,6 +12,18 @@ test_that("standardize_comma treats a comma as a separator", {
   expect_match(standardize_comma("SECRETARY, TREASURER"), "SECRETARY & TREASURER")
 })
 
+test_that("comma_helper always returns a type", {
+  x <- c("PRESIDENT, HOSPITAL AUXILIARY", "EX-OFFICIO,", "SR. V.P., EMMC", "SECRETARY, TREASURER")
+  expect_type(vapply(x, comma_helper, numeric(1)), "double")
+})
+
+test_that("standardize_comma gives each title the same result alone or in a batch", {
+  x <- c("PRESIDENT, HOSPITAL AUXILIARY", "SECRETARY, TREASURER", "DIRECTOR",
+         "TREASURER, MAY/JUNE", "VP, FINANCE", "DIRECTOR, LEADING EDGE FABS")
+  expect_equal(standardize_comma(x), vapply(x, standardize_comma, "", USE.NAMES = FALSE))
+  expect_equal(standardize_comma(rev(x)), rev(standardize_comma(x)))
+})
+
 test_that("standardize_slash treats a slash as a separator", {
   expect_match(standardize_slash("SECRETARY/TREASURER"), "SECRETARY & TREASURER")
 })
