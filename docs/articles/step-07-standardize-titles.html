@@ -204,7 +204,7 @@
 </tr>
 <tr class="odd">
 <td align="left">ASSISTANT TREASURER</td>
-<td align="left">BOARD TREASURER</td>
+<td align="left">ASSISTANT TREASURER</td>
 <td align="left">exact</td>
 <td align="left">subordinate</td>
 <td align="left">assistant</td>
@@ -281,17 +281,17 @@
 </tr>
 <tr class="even">
 <td align="left">SENIOR RABBI</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
+<td align="left">PASTOR</td>
+<td align="left">exact</td>
+<td align="left">superior</td>
+<td align="left">senior</td>
 </tr>
 <tr class="odd">
 <td align="left">CAMPUS ADVOCATE</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
+<td align="left">COUNSELOR</td>
+<td align="left">exact</td>
+<td align="left"></td>
+<td align="left"></td>
 </tr>
 </tbody>
 </table>
@@ -343,7 +343,7 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">xwalk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_title_xwalk.html">get_title_xwalk</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">xwalk</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 9181    4</span></span>
+<span><span class="co">#&gt; [1] 9301    4</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">xwalk</span><span class="op">$</span><span class="va">title.standard</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 376</span></span>
 <span></span>
@@ -362,26 +362,26 @@
 <span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">xwalk</span><span class="op">$</span><span class="va">strata</span><span class="op">[</span><span class="va">xwalk</span><span class="op">$</span><span class="va">strata</span> <span class="op">!=</span> <span class="st">""</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;   committee      duplex   exofficio    regional   regional? subordinate </span></span>
-<span><span class="co">#&gt;         278         138           1         192           1         209 </span></span>
+<span><span class="co">#&gt;         277         139           1         202           1         227 </span></span>
 <span><span class="co">#&gt;    superior </span></span>
-<span><span class="co">#&gt;         358</span></span></code></pre></div>
+<span><span class="co">#&gt;         362</span></span></code></pre></div>
 <p>Each pattern rule names a head word or phrase, where it sits (<code>prefix</code> or <code>suffix</code>), the standard it maps to, and how well it did on titles the crosswalk does list (<code>support</code> titles, <code>precision</code> the share it got right). <code>majority</code> rules map to the most common standard among titles with that head; <code>level</code> rules keep the head’s own standard.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_title_patterns.html">get_title_patterns</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">pat</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 121   6</span></span>
+<span><span class="co">#&gt; [1] 110   6</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">pat</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="op">-</span><span class="va">pat</span><span class="op">$</span><span class="va">support</span><span class="op">)</span>, <span class="op">]</span>, <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="co">#&gt;     position            head title.standard     rule support precision</span></span>
-<span><span class="co">#&gt; 110   suffix  REPRESENTATIVE   BOARD MEMBER majority     300     0.963</span></span>
-<span><span class="co">#&gt; 65    suffix           CHAIR   BOARD MEMBER majority     261     0.881</span></span>
-<span><span class="co">#&gt; 116   suffix         TRUSTEE   BOARD MEMBER majority     125     0.864</span></span>
-<span><span class="co">#&gt; 97    suffix          MEMBER   BOARD MEMBER majority     113     0.912</span></span>
-<span><span class="co">#&gt; 11    prefix           BOARD   BOARD MEMBER majority     107     0.822</span></span>
-<span><span class="co">#&gt; 73    suffix       COMMITTEE   BOARD MEMBER majority     107     0.869</span></span>
-<span><span class="co">#&gt; 63    suffix    BOARD MEMBER   BOARD MEMBER majority      99     0.889</span></span>
-<span><span class="co">#&gt; 74    suffix COMMITTEE CHAIR   BOARD MEMBER majority      70     0.971</span></span>
-<span><span class="co">#&gt; 50    prefix         TRUSTEE   BOARD MEMBER majority      68     0.868</span></span>
-<span><span class="co">#&gt; 34    prefix          MEMBER   BOARD MEMBER majority      65     0.862</span></span></code></pre></div>
+<span><span class="co">#&gt; 99    suffix  REPRESENTATIVE   BOARD MEMBER majority     300     0.963</span></span>
+<span><span class="co">#&gt; 54    suffix           CHAIR   BOARD MEMBER majority     261     0.881</span></span>
+<span><span class="co">#&gt; 105   suffix         TRUSTEE   BOARD MEMBER majority     125     0.864</span></span>
+<span><span class="co">#&gt; 86    suffix          MEMBER   BOARD MEMBER majority     113     0.912</span></span>
+<span><span class="co">#&gt; 9     prefix           BOARD   BOARD MEMBER majority     107     0.822</span></span>
+<span><span class="co">#&gt; 62    suffix       COMMITTEE   BOARD MEMBER majority     107     0.869</span></span>
+<span><span class="co">#&gt; 52    suffix    BOARD MEMBER   BOARD MEMBER majority      99     0.889</span></span>
+<span><span class="co">#&gt; 63    suffix COMMITTEE CHAIR   BOARD MEMBER majority      70     0.971</span></span>
+<span><span class="co">#&gt; 40    prefix         TRUSTEE   BOARD MEMBER majority      68     0.868</span></span>
+<span><span class="co">#&gt; 28    prefix          MEMBER   BOARD MEMBER majority      65     0.862</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="try-it">Try it<a class="anchor" aria-label="anchor" href="#try-it"></a>

@@ -21,11 +21,24 @@ flagged so).
 Otherwise, the highest-paid plausible leader is imputed: a paid
 person with the officer box or a leadership title. A paid board chair
 who ticks the trustee box and works under 25 hours a week doesn't count.
-If no paid person qualifies, the filing is board_governed and no CEO
-is named.
+If no paid person qualifies, an unpaid president, chair or other
+leader working 35+ hours a week with the officer box is the
+imputed CEO, when exactly one person fits.
+Otherwise the filing is board_governed and no CEO is named.
+The CEO thesaurus (ceo.thesaurus) then applies to the
+organization types of org_type_levels() (org_types()). A title
+that runs that kind of organization (a post adjutant, a club's
+general manager, a union's business manager) is the thesaurus CEO.
+It is named when the filing has no CEO, when its CEO was only
+imputed, or when its CEO's title is one the entry outranks. A
+stipend title (a lodge secretary) is never imputed.
 
 
 
+A past president or president-elect (a FORMER or FUTURE status from step
+06, with no date) holds a board seat (MEMBER), not the office. An imputed
+leader who reports hours must work at least 5 a week, unless they are a
+president.
 A board title (president, secretary, treasurer...) held by someone who
 works under 10 hours a week and is paid under $25,000 is a board seat, even
 with the officer box. Such a person is a titular officer receiving a
@@ -36,9 +49,13 @@ installed, the role comes from a model trained on full-990 people with the
 boxes hidden (predict_roles()): title, pay, hours and the filing's
 make-up. Without xgboost, or with use_model = FALSE, the rules above
 decide. role.method records which one.
-Scored against the 316-person labeled set of 2010-12 filings
+Scored against the 312-person labeled set of 2010-12 filings
 (data-raw/partvii-validation/09-gold-check.R, gold-check/gold-v2.csv),
-the rules agree with the label for 88.8% of full-990 people. On 990-EZ
+the rules agree with the label for 90.1% of full-990 people. On 750
+filings of 2019-2023 labeled for their chief executive
+(data-raw/partvii-validation/ceo-sample/), step 09 names the right one
+for 87.6%; on 126 held-out filings of the thesaurus's organization types,
+81.7% (FINDINGS.md F-031 to F-033). On 990-EZ
 people the model agrees for 92.5%, and the rules for 82.5%. On 23,931 people
 from organizations that switch between the forms, labeled by their
 full-990-year role, the model agrees for 95.0% and the rules for 92.0%."><meta property="og:description" content="Adds role columns to the output of categorize_titles(). The rules were
@@ -63,11 +80,24 @@ flagged so).
 Otherwise, the highest-paid plausible leader is imputed: a paid
 person with the officer box or a leadership title. A paid board chair
 who ticks the trustee box and works under 25 hours a week doesn't count.
-If no paid person qualifies, the filing is board_governed and no CEO
-is named.
+If no paid person qualifies, an unpaid president, chair or other
+leader working 35+ hours a week with the officer box is the
+imputed CEO, when exactly one person fits.
+Otherwise the filing is board_governed and no CEO is named.
+The CEO thesaurus (ceo.thesaurus) then applies to the
+organization types of org_type_levels() (org_types()). A title
+that runs that kind of organization (a post adjutant, a club's
+general manager, a union's business manager) is the thesaurus CEO.
+It is named when the filing has no CEO, when its CEO was only
+imputed, or when its CEO's title is one the entry outranks. A
+stipend title (a lodge secretary) is never imputed.
 
 
 
+A past president or president-elect (a FORMER or FUTURE status from step
+06, with no date) holds a board seat (MEMBER), not the office. An imputed
+leader who reports hours must work at least 5 a week, unless they are a
+president.
 A board title (president, secretary, treasurer...) held by someone who
 works under 10 hours a week and is paid under $25,000 is a board seat, even
 with the officer box. Such a person is a titular officer receiving a
@@ -78,9 +108,13 @@ installed, the role comes from a model trained on full-990 people with the
 boxes hidden (predict_roles()): title, pay, hours and the filing's
 make-up. Without xgboost, or with use_model = FALSE, the rules above
 decide. role.method records which one.
-Scored against the 316-person labeled set of 2010-12 filings
+Scored against the 312-person labeled set of 2010-12 filings
 (data-raw/partvii-validation/09-gold-check.R, gold-check/gold-v2.csv),
-the rules agree with the label for 88.8% of full-990 people. On 990-EZ
+the rules agree with the label for 90.1% of full-990 people. On 750
+filings of 2019-2023 labeled for their chief executive
+(data-raw/partvii-validation/ceo-sample/), step 09 names the right one
+for 87.6%; on 126 held-out filings of the thesaurus's organization types,
+81.7% (FINDINGS.md F-031 to F-033). On 990-EZ
 people the model agrees for 92.5%, and the rules for 82.5%. On 23,931 people
 from organizations that switch between the forms, labeled by their
 full-990-year role, the model agrees for 95.0% and the rules for 92.0%."></head><body>
@@ -160,10 +194,23 @@ flagged so).</p></li>
 <li><p>Otherwise, the highest-paid plausible leader is <code>imputed</code>: a paid
 person with the officer box or a leadership title. A paid board chair
 who ticks the trustee box and works under 25 hours a week doesn't count.</p></li>
-<li><p>If no paid person qualifies, the filing is <code>board_governed</code> and no CEO
-is named.</p></li>
+<li><p>If no paid person qualifies, an unpaid president, chair or other
+leader working 35+ hours a week with the officer box is the
+<code>imputed</code> CEO, when exactly one person fits.</p></li>
+<li><p>Otherwise the filing is <code>board_governed</code> and no CEO is named.</p></li>
+<li><p><strong>The CEO thesaurus</strong> (<a href="ceo.thesaurus.html">ceo.thesaurus</a>) then applies to the
+organization types of <code><a href="org_type_levels.html">org_type_levels()</a></code> (<code><a href="org_types.html">org_types()</a></code>). A title
+that runs that kind of organization (a post adjutant, a club's
+general manager, a union's business manager) is the <code>thesaurus</code> CEO.
+It is named when the filing has no CEO, when its CEO was only
+imputed, or when its CEO's title is one the entry outranks. A
+stipend title (a lodge secretary) is never imputed.</p></li>
 </ul></li>
-</ol><p>A board title (president, secretary, treasurer...) held by someone who
+</ol><p>A past president or president-elect (a FORMER or FUTURE status from step
+06, with no date) holds a board seat (MEMBER), not the office. An imputed
+leader who reports hours must work at least 5 a week, unless they are a
+president.</p>
+<p>A board title (president, secretary, treasurer...) held by someone who
 works under 10 hours a week and is paid under $25,000 is a board seat, even
 with the officer box. Such a person is a titular officer receiving a
 stipend, not a paid executive. On a 990-EZ, which has no boxes, the same
@@ -173,9 +220,13 @@ installed, the role comes from a model trained on full-990 people with the
 boxes hidden (<code><a href="predict_roles.html">predict_roles()</a></code>): title, pay, hours and the filing's
 make-up. Without xgboost, or with <code>use_model = FALSE</code>, the rules above
 decide. <code>role.method</code> records which one.</p>
-<p>Scored against the 316-person labeled set of 2010-12 filings
+<p>Scored against the 312-person labeled set of 2010-12 filings
 (<code>data-raw/partvii-validation/09-gold-check.R</code>, <code>gold-check/gold-v2.csv</code>),
-the rules agree with the label for 88.8% of full-990 people. On 990-EZ
+the rules agree with the label for 90.1% of full-990 people. On 750
+filings of 2019-2023 labeled for their chief executive
+(<code>data-raw/partvii-validation/ceo-sample/</code>), step 09 names the right one
+for 87.6%; on 126 held-out filings of the thesaurus's organization types,
+81.7% (FINDINGS.md F-031 to F-033). On 990-EZ
 people the model agrees for 92.5%, and the rules for 82.5%. On 23,931 people
 from organizations that switch between the forms, labeled by their
 full-990-year role, the model agrees for 95.0% and the rules for 92.0%.</p>
@@ -209,10 +260,10 @@ each of the person's rows):</p><dl><dt>role.position</dt>
 <dd><p>CEO, OFFICER, MANAGER, PROFESSIONAL, STAFF, or BOARD</p></dd>
 
 <dt>role.board</dt>
-<dd><p>for BOARD: CHAIR, VICE CHAIR, SECRETARY, TREASURER, or MEMBER</p></dd>
+<dd><p>for BOARD: CHAIR, VICE CHAIR, SECRETARY TREASURER, SECRETARY, TREASURER, or MEMBER</p></dd>
 
 <dt>role.ceo</dt>
-<dd><p>for CEO: designated, co-ceo, interim, imputed, or model</p></dd>
+<dd><p>for CEO: designated, co-ceo, interim, imputed, thesaurus, or model</p></dd>
 
 <dt>role.source</dt>
 <dd><p>what settled the position: checkbox, title+pay, or title</p></dd>
@@ -224,7 +275,13 @@ each of the person's rows):</p><dl><dt>role.position</dt>
 <dd><p>TRUE on one row per person</p></dd>
 
 <dt>org.leadership</dt>
-<dd><p>per filing: designated, imputed, model, board_governed, or no_paid</p></dd>
+<dd><p>per filing: designated, thesaurus, imputed, model, board_governed, or no_paid</p></dd>
+
+<dt>org.type</dt>
+<dd><p>per filing: the organization type of <code><a href="org_types.html">org_types()</a></code>, or NA</p></dd>
+
+<dt>org.type.source</dt>
+<dd><p>where <code>org.type</code> came from: supplied, codes, inferred, or none</p></dd>
 
 
 </dl></div>

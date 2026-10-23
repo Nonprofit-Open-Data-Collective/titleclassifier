@@ -223,7 +223,7 @@
 <span><span class="co">#&gt; [OK] conditional logic step complete</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 315 112</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 315 114</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="the-result">The result<a class="anchor" aria-label="anchor" href="#the-result"></a>
@@ -234,17 +234,17 @@
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">title.raw</span>, <span class="va">title.standard</span>, <span class="va">domain.label</span>, <span class="va">tot.comp</span>, <span class="va">tot.hours</span>, <span class="va">role.final</span>, <span class="va">role.ceo</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html" class="external-link">desc</a></span><span class="op">(</span><span class="va">tot.comp</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                     title.raw          title.standard       domain.label</span></span>
-<span><span class="co">#&gt; 1                   PRESIDENT         BOARD PRESIDENT              board</span></span>
-<span><span class="co">#&gt; 2                   SECRETARY         BOARD SECRETARY              board</span></span>
-<span><span class="co">#&gt; 3                  CONTROLLER             COMPTROLLER            finance</span></span>
-<span><span class="co">#&gt; 4                    DIRECTOR            BOARD MEMBER              board</span></span>
-<span><span class="co">#&gt; 5            STAFF PHARMACIST              PHARMACIST            medical</span></span>
-<span><span class="co">#&gt; 6            SR ADMINISTRATOR           ADMINISTRATOR     administration</span></span>
-<span><span class="co">#&gt; 7          DIRECTOR OF EVENTS                DIRECTOR     administration</span></span>
-<span><span class="co">#&gt; 8                    EMPLOYEE                EMPLOYEE     administration</span></span>
-<span><span class="co">#&gt; 9  INTERIM EXECUTIVE DIRECTOR      EXECUTIVE DIRECTOR general management</span></span>
-<span><span class="co">#&gt; 10    CHIEF FINANCIAL OFFICER CHIEF FINANCIAL OFFICER            finance</span></span>
+<span><span class="co">#&gt;                     title.raw          title.standard        domain.label</span></span>
+<span><span class="co">#&gt; 1                   PRESIDENT         BOARD PRESIDENT               board</span></span>
+<span><span class="co">#&gt; 2                   SECRETARY         BOARD SECRETARY               board</span></span>
+<span><span class="co">#&gt; 3                  CONTROLLER             COMPTROLLER             finance</span></span>
+<span><span class="co">#&gt; 4                    DIRECTOR            BOARD MEMBER               board</span></span>
+<span><span class="co">#&gt; 5            STAFF PHARMACIST              PHARMACIST             medical</span></span>
+<span><span class="co">#&gt; 6            SR ADMINISTRATOR           ADMINISTRATOR      administration</span></span>
+<span><span class="co">#&gt; 7          DIRECTOR OF EVENTS      DIRECTOR OF EVENTS programs and events</span></span>
+<span><span class="co">#&gt; 8                    EMPLOYEE                EMPLOYEE      administration</span></span>
+<span><span class="co">#&gt; 9  INTERIM EXECUTIVE DIRECTOR      EXECUTIVE DIRECTOR  general management</span></span>
+<span><span class="co">#&gt; 10    CHIEF FINANCIAL OFFICER CHIEF FINANCIAL OFFICER             finance</span></span>
 <span><span class="co">#&gt;    tot.comp tot.hours   role.final role.ceo</span></span>
 <span><span class="co">#&gt; 1   2389606      40.0          CEO  imputed</span></span>
 <span><span class="co">#&gt; 2    444028      53.0          CEO  imputed</span></span>
@@ -261,15 +261,14 @@
 <code class="sourceCode R"><span><span class="va">people</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">df</span>, <span class="va">role.primary</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">people</span>, <span class="va">formtype</span>, <span class="va">role.final</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   formtype   role.final   n</span></span>
-<span><span class="co">#&gt; 1      990        BOARD 192</span></span>
-<span><span class="co">#&gt; 2      990          CEO  20</span></span>
-<span><span class="co">#&gt; 3      990      OFFICER   2</span></span>
+<span><span class="co">#&gt; 1      990        BOARD 193</span></span>
+<span><span class="co">#&gt; 2      990          CEO  18</span></span>
+<span><span class="co">#&gt; 3      990      OFFICER   3</span></span>
 <span><span class="co">#&gt; 4      990 PROFESSIONAL   1</span></span>
 <span><span class="co">#&gt; 5      990        STAFF   2</span></span>
-<span><span class="co">#&gt; 6    990EZ        BOARD  79</span></span>
+<span><span class="co">#&gt; 6    990EZ        BOARD  80</span></span>
 <span><span class="co">#&gt; 7    990EZ          CEO   2</span></span>
-<span><span class="co">#&gt; 8    990EZ      OFFICER   1</span></span>
-<span><span class="co">#&gt; 9    990EZ        STAFF   1</span></span></code></pre></div>
+<span><span class="co">#&gt; 8    990EZ        STAFF   1</span></span></code></pre></div>
 <p>The successive title versions make the cleaning transparent — you can see exactly what each step changed:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df</span> <span class="op">|&gt;</span></span>

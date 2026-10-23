@@ -1389,17 +1389,19 @@ change.
 |---|---|---|---|
 | Right chief executive (126 filings) | 79.4% | 80.2% | **81.7%** |
 | CEO precision / recall | 74.6 / 75.8% | 78.3 / 75.8% | 80.0 / 77.4% |
-| Lodge | 68.8% | 81.2% | 81.2% |
+| Lodge | 68.8% | 81.2% | 87.5% |
 | Veterans post | 93.8% | 87.5% | 93.8% |
 | Others | unchanged | unchanged | unchanged |
 
-The gain on new organizations is smaller than in-sample: +2.3 points against
-+2.5. Most is in lodges, where stipended secretaries were made CEO.
+The gain on new organizations is about the same as in-sample: +2.3 points
+against +2.5. All of it is in lodges, where stipended secretaries were made
+CEO (veterans posts end where they began).
 - **Stipend-hours fix.** As first built, the veterans not_ceo row blocked the
   paid full-time secretary-treasurer (40 h/wk, sole employee) of an American
-  Legion Auxiliary. The not_ceo rows now apply only under 35 h/wk. This fix
-  was found on the held-out set, so the last column is no longer fully
-  held out. The in-sample score is unchanged by it.
+  Legion Auxiliary. The not_ceo rows now apply only under 35 h/wk. The fix
+  also let a lodge's full-time paid officer be named. It was found on the
+  held-out set, so the last column is no longer fully held out. The
+  in-sample score is unchanged by it.
 - **BMF codes.** Codes give the same held-out score as inference from the
   name. In-sample they raise CEO precision 87.8 -> 88.3%: a fire company
   whose name has no FIRE DEPARTMENT is typed by NTEE M24.

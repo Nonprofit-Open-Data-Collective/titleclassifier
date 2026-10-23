@@ -50,8 +50,22 @@ conditional_logic <- function(comp.data)
 #'    - Otherwise, the highest-paid plausible leader is `imputed`: a paid
 #'      person with the officer box or a leadership title. A paid board chair
 #'      who ticks the trustee box and works under 25 hours a week doesn't count.
-#'    - If no paid person qualifies, the filing is `board_governed` and no CEO
-#'      is named.
+#'    - If no paid person qualifies, an unpaid president, chair or other
+#'      leader working 35+ hours a week with the officer box is the
+#'      `imputed` CEO, when exactly one person fits.
+#'    - Otherwise the filing is `board_governed` and no CEO is named.
+#'    - **The CEO thesaurus** ([ceo.thesaurus]) then applies to the
+#'      organization types of [org_type_levels()] ([org_types()]). A title
+#'      that runs that kind of organization (a post adjutant, a club's
+#'      general manager, a union's business manager) is the `thesaurus` CEO.
+#'      It is named when the filing has no CEO, when its CEO was only
+#'      imputed, or when its CEO's title is one the entry outranks. A
+#'      stipend title (a lodge secretary) is never imputed.
+#'
+#' A past president or president-elect (a FORMER or FUTURE status from step
+#' 06, with no date) holds a board seat (MEMBER), not the office. An imputed
+#' leader who reports hours must work at least 5 a week, unless they are a
+#' president.
 #'
 #' A board title (president, secretary, treasurer...) held by someone who
 #' works under 10 hours a week and is paid under $25,000 is a board seat, even
@@ -65,9 +79,13 @@ conditional_logic <- function(comp.data)
 #' make-up. Without xgboost, or with `use_model = FALSE`, the rules above
 #' decide. `role.method` records which one.
 #'
-#' Scored against the 316-person labeled set of 2010-12 filings
+#' Scored against the 312-person labeled set of 2010-12 filings
 #' (`data-raw/partvii-validation/09-gold-check.R`, `gold-check/gold-v2.csv`),
-#' the rules agree with the label for 88.8% of full-990 people. On 990-EZ
+#' the rules agree with the label for 90.1% of full-990 people. On 750
+#' filings of 2019-2023 labeled for their chief executive
+#' (`data-raw/partvii-validation/ceo-sample/`), step 09 names the right one
+#' for 87.6%; on 126 held-out filings of the thesaurus's organization types,
+#' 81.7% (FINDINGS.md F-031 to F-033). On 990-EZ
 #' people the model agrees for 92.5%, and the rules for 82.5%. On 23,931 people
 #' from organizations that switch between the forms, labeled by their
 #' full-990-year role, the model agrees for 95.0% and the rules for 92.0%.
@@ -78,11 +96,13 @@ conditional_logic <- function(comp.data)
 #'     \item{role.position}{board, officer, board_officer, staff, or unknown}
 #'     \item{role.final}{CEO, OFFICER, MANAGER, PROFESSIONAL, STAFF, or BOARD}
 #'     \item{role.board}{for BOARD: CHAIR, VICE CHAIR, SECRETARY TREASURER, SECRETARY, TREASURER, or MEMBER}
-#'     \item{role.ceo}{for CEO: designated, co-ceo, interim, imputed, or model}
+#'     \item{role.ceo}{for CEO: designated, co-ceo, interim, imputed, thesaurus, or model}
 #'     \item{role.source}{what settled the position: checkbox, title+pay, or title}
 #'     \item{role.method}{rules, or model (990-EZ, xgboost installed)}
 #'     \item{role.primary}{TRUE on one row per person}
-#'     \item{org.leadership}{per filing: designated, imputed, model, board_governed, or no_paid}
+#'     \item{org.leadership}{per filing: designated, thesaurus, imputed, model, board_governed, or no_paid}
+#'     \item{org.type}{per filing: the organization type of [org_types()], or NA}
+#'     \item{org.type.source}{where `org.type` came from: supplied, codes, inferred, or none}
 #'   }
 #'
 #' @export

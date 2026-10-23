@@ -18,8 +18,8 @@ the regex-based cleaning steps).
 
 ## Crosswalks
 
-The four crosswalks are package data (`title.xwalk`, `title.patterns`, `title.taxonomy`,
-`status.codes`). Their source is the CSV tables in `data-raw/crosswalks/` of the
+The five crosswalks are package data (`title.xwalk`, `title.patterns`, `title.taxonomy`,
+`status.codes`, `ceo.thesaurus`). Their source is the CSV tables in `data-raw/crosswalks/` of the
 source repository: edit a table, then run `data-raw/crosswalks/build-crosswalks.R`
 to rebuild the package data. (Until October 2026 the crosswalks were kept in a
 Google Sheet; it is retired, and an export of every tab is archived in
@@ -64,7 +64,9 @@ A title is either an employee level or a board role:
   - `PROFESSIONAL`: non-managerial jobs often reported for their pay, such as
     physicians, lawyers, professors and coaches.
   - `STAFF`: everything else.
-- `board.role`: `CHAIR`, `VICE CHAIR`, `SECRETARY`, `TREASURER` or `MEMBER`.
+- `board.role`: `CHAIR`, `VICE CHAIR`, `SECRETARY`, `SECRETARY TREASURER`, `TREASURER`
+  or `MEMBER`. Board titles map to six standards, BOARD PRESIDENT through
+  BOARD MEMBER; the combined secretary-treasurer office is kept whole.
 
 The legacy flags (`ceo`, `c.level`, `mgr`, `spec`, `board`, `pres`, ...) are
 derived from these two columns. `dir.vp` is retired. Used in step 08,
@@ -89,6 +91,23 @@ standardized `status.qualifier` (e.g. `INTERIM`, `FORMER`). Used in step 06,
 sc <- get_status_codes()
 dim(sc)
 head(sc, 8)
+```
+
+### CEO thesaurus (`get_ceo_thesaurus()`)
+
+Chief-executive titles by organization type: a post adjutant, a club's
+general manager, a union's business manager. Each entry is a regular
+expression on the cleaned title for one `org_type`, with its pay and hours
+thresholds. Some entries list the titles they outrank. Others (`not_ceo`)
+mark titles never made CEO on a stipend, such as a lodge secretary. Used in
+step 09, `resolve_roles()`. See
+[Step 09](step-09-conditional-logic.html#the-ceo-thesaurus) for where the
+organization type comes from.
+
+```{r}
+th <- get_ceo_thesaurus()
+dim(th)
+th[, c("org_type", "title_pattern", "effect", "min_hours", "min_pay")]
 ```
 
 ## Word lists (package data)

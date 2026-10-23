@@ -24,7 +24,7 @@ that line. The pipeline uses four kinds:
 | **Text rules** | steps 02-06 | regular expressions: `\bVP\b` becomes VICE PRESIDENT; a date like 6/2023 is removed and flagged |
 | **Lookup tables** | steps 06-08 | the crosswalks: the variant "EXEC DIR" maps to EXECUTIVE DIRECTOR, whose taxonomy row says CEO, general management, SOC 11-1011 |
 | **Learned rules** | step 07 | the pattern rules: a title the crosswalk does not list but that starts with MANAGER maps to MANAGER. They were found by counting how titles with each head are coded, and kept only where they were right at least 80% of the time, but once learned they are applied as fixed rules |
-| **Decision rules** | step 09 | an if-then cascade on checkboxes, pay and hours: officer box + CEO-level title = designated CEO; a board title held under 10 hours a week for under $25,000 = board seat |
+| **Decision rules** | step 09 | an if-then cascade on checkboxes, pay and hours: officer box + CEO-level title = designated CEO; a board title held under 10 hours a week for under $25,000 = board seat. The CEO thesaurus, a lookup table by organization type, adds the titles that run particular kinds of organization: a club's general manager, a post adjutant |
 
 Rules are transparent and stable. They give the same answer every time,
 anyone can read why, and an error is fixed by editing a CSV or a line of
@@ -36,8 +36,8 @@ officer or a key employee.
 The rules live in:
 
 * `data-raw/crosswalks/*.csv` (the lookup tables and pattern rules), loaded
-  with `get_title_xwalk()`, `get_title_taxonomy()`, `get_status_codes()` and
-  `get_title_patterns()`;
+  with `get_title_xwalk()`, `get_title_taxonomy()`, `get_status_codes()`,
+  `get_title_patterns()` and `get_ceo_thesaurus()`;
 * the word lists (`date.words`, `likely.titles`, ...), loaded with `data()`;
 * the code of each step, in particular `fix_spelling()` and `resolve_roles()`.
 

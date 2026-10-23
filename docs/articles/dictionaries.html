@@ -94,7 +94,7 @@
 <div class="section level2">
 <h2 id="crosswalks">Crosswalks<a class="anchor" aria-label="anchor" href="#crosswalks"></a>
 </h2>
-<p>The four crosswalks are package data (<code>title.xwalk</code>, <code>title.patterns</code>, <code>title.taxonomy</code>, <code>status.codes</code>). Their source is the CSV tables in <code>data-raw/crosswalks/</code> of the source repository: edit a table, then run <code>data-raw/crosswalks/build-crosswalks.R</code> to rebuild the package data. (Until October 2026 the crosswalks were kept in a Google Sheet; it is retired, and an export of every tab is archived in <code>data-raw/crosswalks/archive/</code>.)</p>
+<p>The five crosswalks are package data (<code>title.xwalk</code>, <code>title.patterns</code>, <code>title.taxonomy</code>, <code>status.codes</code>, <code>ceo.thesaurus</code>). Their source is the CSV tables in <code>data-raw/crosswalks/</code> of the source repository: edit a table, then run <code>data-raw/crosswalks/build-crosswalks.R</code> to rebuild the package data. (Until October 2026 the crosswalks were kept in a Google Sheet; it is retired, and an export of every tab is archived in <code>data-raw/crosswalks/archive/</code>.)</p>
 <div class="section level3">
 <h3 id="title-standardization-get_title_xwalk">Title standardization (<code>get_title_xwalk()</code>)<a class="anchor" aria-label="anchor" href="#title-standardization-get_title_xwalk"></a>
 </h3>
@@ -102,7 +102,7 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">xwalk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_title_xwalk.html">get_title_xwalk</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">xwalk</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 9181    4</span></span>
+<span><span class="co">#&gt; [1] 9301    4</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">xwalk</span>, <span class="fl">8</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                title.variant title.standard strata strata.label</span></span>
 <span><span class="co">#&gt; 1                                  NO TITLE                    </span></span>
@@ -121,7 +121,7 @@
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_title_patterns.html">get_title_patterns</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">pat</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 121   6</span></span>
+<span><span class="co">#&gt; [1] 110   6</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">pat</span>, <span class="fl">6</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   position      head title.standard     rule support precision</span></span>
 <span><span class="co">#&gt; 1   prefix    ACTIVE   BOARD MEMBER majority       6     0.833</span></span>
@@ -152,13 +152,13 @@
 </ul>
 </li>
 <li>
-<code>board.role</code>: <code>CHAIR</code>, <code>VICE CHAIR</code>, <code>SECRETARY</code>, <code>TREASURER</code> or <code>MEMBER</code>.</li>
+<code>board.role</code>: <code>CHAIR</code>, <code>VICE CHAIR</code>, <code>SECRETARY</code>, <code>SECRETARY TREASURER</code>, <code>TREASURER</code> or <code>MEMBER</code>. Board titles map to six standards, BOARD PRESIDENT through BOARD MEMBER; the combined secretary-treasurer office is kept whole.</li>
 </ul>
 <p>The legacy flags (<code>ceo</code>, <code>c.level</code>, <code>mgr</code>, <code>spec</code>, <code>board</code>, <code>pres</code>, …) are derived from these two columns. <code>dir.vp</code> is retired. Used in step 08, <code><a href="../reference/categorize_titles.html">categorize_titles()</a></code>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tax</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_title_taxonomy.html">get_title_taxonomy</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">tax</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 450  22</span></span>
+<span><span class="co">#&gt; [1] 377  22</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tax</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"title.standard"</span>, <span class="st">"domain.label"</span>, <span class="st">"soc.label"</span>,</span>
 <span>             <span class="st">"emp.level"</span>, <span class="st">"board.role"</span><span class="op">)</span><span class="op">]</span>, <span class="fl">8</span><span class="op">)</span></span>
 <span><span class="co">#&gt;             title.standard     domain.label</span></span>
@@ -166,27 +166,29 @@
 <span><span class="co">#&gt; 2      ACCOUNTING DIRECTOR          finance</span></span>
 <span><span class="co">#&gt; 3                    ACTOR arts and history</span></span>
 <span><span class="co">#&gt; 4                  ACTUARY          finance</span></span>
-<span><span class="co">#&gt; 5  ADMINISTRATION DIRECTOR   administration</span></span>
-<span><span class="co">#&gt; 6   ADMINISTRATION OFFICER   administration</span></span>
-<span><span class="co">#&gt; 7 ADMINISTRATIVE ASSISTANT   administration</span></span>
-<span><span class="co">#&gt; 8            ADMINISTRATOR   administration</span></span>
+<span><span class="co">#&gt; 5   ADMINISTRATION OFFICER   administration</span></span>
+<span><span class="co">#&gt; 6 ADMINISTRATIVE ASSISTANT   administration</span></span>
+<span><span class="co">#&gt; 7            ADMINISTRATOR   administration</span></span>
+<span><span class="co">#&gt; 8       ADOPTION COUNSELOR  social services</span></span>
 <span><span class="co">#&gt;                                   soc.label    emp.level board.role</span></span>
 <span><span class="co">#&gt; 1                  Accountants and Auditors PROFESSIONAL           </span></span>
 <span><span class="co">#&gt; 2                        Financial Managers      MANAGER           </span></span>
 <span><span class="co">#&gt; 3                                    Actors PROFESSIONAL           </span></span>
 <span><span class="co">#&gt; 4                                 Actuaries PROFESSIONAL           </span></span>
-<span><span class="co">#&gt; 5          Administrative Services Managers      MANAGER           </span></span>
-<span><span class="co">#&gt; 6                                                  STAFF           </span></span>
-<span><span class="co">#&gt; 7 Secretaries and Administrative Assistants        STAFF           </span></span>
-<span><span class="co">#&gt; 8          Administrative Services Managers      MANAGER</span></span>
+<span><span class="co">#&gt; 5                                                  STAFF           </span></span>
+<span><span class="co">#&gt; 6 Secretaries and Administrative Assistants        STAFF           </span></span>
+<span><span class="co">#&gt; 7          Administrative Services Managers      MANAGER           </span></span>
+<span><span class="co">#&gt; 8                                Counselors        STAFF</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">tax</span><span class="op">$</span><span class="va">emp.level</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;                       CEO      MANAGER      OFFICER PROFESSIONAL        STAFF </span></span>
-<span><span class="co">#&gt;           15           11          129          139           40          116</span></span>
+<span><span class="co">#&gt;           15            8          109          114           35           96</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">tax</span><span class="op">$</span><span class="va">board.role</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;                 CHAIR     MEMBER  SECRETARY  TREASURER VICE CHAIR </span></span>
-<span><span class="co">#&gt;        445          1          1          1          1          1</span></span></code></pre></div>
+<span><span class="co">#&gt;                                   CHAIR              MEMBER           SECRETARY </span></span>
+<span><span class="co">#&gt;                 371                   1                   1                   1 </span></span>
+<span><span class="co">#&gt; SECRETARY TREASURER           TREASURER          VICE CHAIR </span></span>
+<span><span class="co">#&gt;                   1                   1                   1</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="status-codes-get_status_codes">Status codes (<code>get_status_codes()</code>)<a class="anchor" aria-label="anchor" href="#status-codes-get_status_codes"></a>
@@ -195,7 +197,7 @@
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_status_codes.html">get_status_codes</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">sc</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 294   2</span></span>
+<span><span class="co">#&gt; [1] 293   2</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sc</span>, <span class="fl">8</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   status.variant status.qualifier</span></span>
 <span><span class="co">#&gt; 1      AS NEEDED         AT LARGE</span></span>
@@ -206,6 +208,58 @@
 <span><span class="co">#&gt; 6        CURRENT          CURRENT</span></span>
 <span><span class="co">#&gt; 7     EX OFFICIO        EXOFFICIO</span></span>
 <span><span class="co">#&gt; 8     EX-OFFICIO        EXOFFICIO</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="ceo-thesaurus-get_ceo_thesaurus">CEO thesaurus (<code>get_ceo_thesaurus()</code>)<a class="anchor" aria-label="anchor" href="#ceo-thesaurus-get_ceo_thesaurus"></a>
+</h3>
+<p>Chief-executive titles by organization type: a post adjutant, a club’s general manager, a union’s business manager. Each entry is a regular expression on the cleaned title for one <code>org_type</code>, with its pay and hours thresholds. Some entries list the titles they outrank. Others (<code>not_ceo</code>) mark titles never made CEO on a stipend, such as a lodge secretary. Used in step 09, <code><a href="../reference/resolve_roles.html">resolve_roles()</a></code>. See <a href="step-09-conditional-logic.html#the-ceo-thesaurus">Step 09</a> for where the organization type comes from.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">th</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_ceo_thesaurus.html">get_ceo_thesaurus</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">th</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 13  7</span></span>
+<span><span class="va">th</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"org_type"</span>, <span class="st">"title_pattern"</span>, <span class="st">"effect"</span>, <span class="st">"min_hours"</span>, <span class="st">"min_pay"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="co">#&gt;      org_type</span></span>
+<span><span class="co">#&gt; 1    veterans</span></span>
+<span><span class="co">#&gt; 2    veterans</span></span>
+<span><span class="co">#&gt; 3   fraternal</span></span>
+<span><span class="co">#&gt; 4        club</span></span>
+<span><span class="co">#&gt; 5        club</span></span>
+<span><span class="co">#&gt; 6        coop</span></span>
+<span><span class="co">#&gt; 7       trust</span></span>
+<span><span class="co">#&gt; 8       union</span></span>
+<span><span class="co">#&gt; 9  university</span></span>
+<span><span class="co">#&gt; 10   ministry</span></span>
+<span><span class="co">#&gt; 11       fire</span></span>
+<span><span class="co">#&gt; 12       fire</span></span>
+<span><span class="co">#&gt; 13   cemetery</span></span>
+<span><span class="co">#&gt;                                                                                 title_pattern</span></span>
+<span><span class="co">#&gt; 1                                                                              \\bADJUTANT\\b</span></span>
+<span><span class="co">#&gt; 2                  \\b(TREASURER|FINANCE OFFICER|QUARTERMASTER|TRUSTEE|SECRETARY|ADJUTANT)\\b</span></span>
+<span><span class="co">#&gt; 3                                                        \\b(SECRETARY|RECORDER|TREASURER)\\b</span></span>
+<span><span class="co">#&gt; 4                                                     \\b(GENERAL MANAGER|CLUB MANAGER|GM)\\b</span></span>
+<span><span class="co">#&gt; 5                                              \\b(POOL|SNACK|CANTEEN|BAR|GROUNDS) MANAGER\\b</span></span>
+<span><span class="co">#&gt; 6                                                                  \\b(GENERAL MANAGER|GM)\\b</span></span>
+<span><span class="co">#&gt; 7                                         ^(FUND |PLAN |TRUST |BENEFITS? )?A?D?MINISTRATOR\\b</span></span>
+<span><span class="co">#&gt; 8                                                            \\b(BUSINESS MANAGER|BUS MGR)\\b</span></span>
+<span><span class="co">#&gt; 9                                                                               ^PRESIDENT\\b</span></span>
+<span><span class="co">#&gt; 10 ^(SENIOR |LEAD |GENERAL |HEAD )?PASTOR\\b|\\bBISHOP\\b|\\bOVERSEER\\b|^RABBI\\b|^RECTOR\\b</span></span>
+<span><span class="co">#&gt; 11                                                             ^(FIRE )?CHIEF$|^FIRE CHIEF\\b</span></span>
+<span><span class="co">#&gt; 12                                                                \\b(SECRETARY|TREASURER)\\b</span></span>
+<span><span class="co">#&gt; 13                                                                       \\bSUPERINTENDENT\\b</span></span>
+<span><span class="co">#&gt;     effect min_hours min_pay</span></span>
+<span><span class="co">#&gt; 1      ceo        20   25000</span></span>
+<span><span class="co">#&gt; 2  not_ceo        35   30000</span></span>
+<span><span class="co">#&gt; 3  not_ceo        35   40000</span></span>
+<span><span class="co">#&gt; 4      ceo        20   25000</span></span>
+<span><span class="co">#&gt; 5  not_ceo        NA   25000</span></span>
+<span><span class="co">#&gt; 6      ceo        20   25000</span></span>
+<span><span class="co">#&gt; 7      ceo        20   25000</span></span>
+<span><span class="co">#&gt; 8      ceo        20   25000</span></span>
+<span><span class="co">#&gt; 9      ceo        20   50000</span></span>
+<span><span class="co">#&gt; 10     ceo        20       0</span></span>
+<span><span class="co">#&gt; 11     ceo        20   25000</span></span>
+<span><span class="co">#&gt; 12 not_ceo        35   40000</span></span>
+<span><span class="co">#&gt; 13 not_ceo        NA       1</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -285,7 +339,7 @@
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">number.words</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">number.words</span>, <span class="fl">12</span><span class="op">)</span></span>
 <span><span class="co">#&gt;  [1] "ONE"    "TWO"    "THREE"  "FOUR"   "FIVE"   "SIX"    "SEVEN"  "EIGHT" </span></span>
@@ -320,7 +374,7 @@
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">tinypartvii</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">tinypartvii</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">8</span><span class="op">]</span>, vec.len <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="co">#&gt; 'data.frame':    81309 obs. of  8 variables:</span></span>

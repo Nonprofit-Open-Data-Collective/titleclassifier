@@ -110,6 +110,11 @@
 <li>
 <strong>Regression baseline</strong> — re-run <code>tests/regression/check-regression.R</code> after any pipeline change; re-baseline (<code>data-raw/demo/build-demo.R</code>) only for intentional output changes.</li>
 </ul></div>
+<div class="section level2">
+<h2 id="crosswalk-review-for-odd-mappings-done-2026-10-22">Crosswalk review for odd mappings (done, 2026-10-22)<a class="anchor" aria-label="anchor" href="#crosswalk-review-for-odd-mappings-done-2026-10-22"></a></h2>
+<p>Some mappings look wrong: staff titles mapped to board standards (VOLUNTEER COORDINATOR, YOUTH DIRECTOR), inconsistent assistant board offices, a pattern rule that makes YOUTH SOCCER COACH a board member, frequent titles left uncoded (EXECUTIVE OFFICER), and status-code contradictions (NEW, PRESENT). They are listed in <code>data-dev/CROSSWALK-ODDITIES.md</code>. That file’s section 6 is the task: review the full crosswalk, the pattern rules and the status codes for similar issues, using the checkbox and pay evidence in the calibration sample. Then re-measure and rebaseline.</p>
+<p>Done in F-030 (<code>data-raw/partvii-validation/FINDINGS.md</code>): the per-variant decisions are in <code>crosswalk-review/review-table.csv</code>.</p>
+</div>
 </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
