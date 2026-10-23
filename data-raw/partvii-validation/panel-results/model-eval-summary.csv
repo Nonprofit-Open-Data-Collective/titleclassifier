@@ -1,0 +1,6 @@
+model,returned,valid,rows_scored,missing,role_acc,board_prec,board_rec,board_role_right,ceo_prec,ceo_rec,filings,ceo_filing_right,none_right,overlap_filings,overlap_right,year_pairs,transitions,trans_prec,trans_rec,trans_exact
+step 09 (package),9293,9293,9102,4,95,99.3,97.2,98.7,89.1,88.9,606,88,93.6,26,76.9,469,75,70.5,89.3,84.2
+haiku,9297,9297,9102,0,94.9,99.9,94.9,98.8,92.3,92.3,606,89.9,90.1,26,92.3,469,75,87.8,86.7,88.1
+sonnet,9297,9297,9102,0,98.2,99.9,98.7,99.4,94.1,97.4,606,94.6,91.6,26,92.3,469,75,91.8,89.3,93.6
+opus,9297,9297,9102,0,99.7,99.8,99.9,99.3,97.6,97.2,606,96.2,96.1,26,92.3,469,75,97.3,96,95.9
+fable,9297,9297,9102,0,98.8,99,99.6,99.3,96.5,98.8,606,97.7,96.6,26,92.3,469,75,97.3,96,97.2
