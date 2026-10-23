@@ -37,6 +37,7 @@
 "BOARD MEMBER","governance","board","","","","","","","MEMBER","","","","","","","X","","","","","X"
 "BOARD PRESIDENT","governance","board","","","","","","","CHAIR","","","","","","","X","X","","","",""
 "BOARD SECRETARY","governance","board","","","","","","","SECRETARY","","","","","","","X","","","X","",""
+"BOARD SECRETARY TREASURER","governance","board","","","","","","","SECRETARY TREASURER","","","","","","","X","","","X","X",""
 "BOARD TREASURER","governance","board","","","","","","","TREASURER","","","","","","","X","","","","X",""
 "BOARD VICE PRESIDENT","governance","board","","","","","","","VICE CHAIR","","","","","","","X","","X","","",""
 "BOOKKEEPER","operations","finance","Bookkeeping, Accounting, and Auditing Clerks","43","43-3000","43-3030","43-3031","STAFF","","X","","","","","X","","","","","",""

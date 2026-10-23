@@ -1212,3 +1212,106 @@ errors are concentrated in three patterns:
 - **Veterans posts.** The department commander and senior vice commander are
   read as MEMBER; the labels have CHAIR and VICE CHAIR. COMMANDER is another
   type-specific term.
+
+### F-032 Step 09 rules fixed against the CEO / board labels (done)
+
+Each change was scored on its own against the F-031 labels, re-running the
+whole pipeline on the 750 filings (`27-ceo-rerun.R`, then `26-ceo-score.R`).
+Only changes that improved the score were kept. A fifth rule was dropped:
+"a former CEO is not a current CEO when another is named" cost 0.1 point
+alone, because the labels count an outgoing CEO who served part of the year.
+
+**Board roles** (`resolve_roles()`, and `28-ceo-crosswalk.R` with
+`ceo-sample/crosswalk-decisions.csv`):
+- **Past and elect.** A seat flagged FORMER (PAST, IMMEDIATE PAST) or FUTURE
+  (ELECT, INCOMING) by step 06 is board role MEMBER. The exception is a flag
+  that came with a removed date: CHAIR THRU 6/20 or TREASURER SINCE 3/21 is a
+  change during the year, so that person held the office.
+  - Flags without the date exception score 97.6%; with it, 97.7%.
+- **Office read from the standard title.** For an employee title that turned
+  out to be a board seat, the office now comes from the standard title. An
+  uncoded title counts only when it starts with the office (TREASURER &
+  TRUSTREE). So SGA PRESIDENT, CHAPTER PRESIDENT and MEDICAL STAFF PRESIDENT
+  (another body's officer on this board) are MEMBER.
+- **Crosswalk.**
+  - Junior warden, assistant rabban, and the lecturing and loyal knights
+    become BOARD MEMBER.
+  - DEPARTMENT COMMANDER becomes BOARD PRESIDENT; DEPARTMENT SENIOR [VICE
+    COMMANDER] becomes BOARD VICE PRESIDENT.
+  - 11 variants in all; 6 rows of `crosswalk-changes.csv` are superseded.
+
+**CEO rules** (`resolve_roles()`):
+- **R1, a seat held an hour a week.** A pay-inferred CEO must report at least
+  5 hours a week; 0 hours counts as not reported. Paid presidents are exempt:
+  in 2010-12 filings they often report 0.1 hours.
+- **R2, the 990-EZ model's CEO.** If the model names a CEO with no CEO-level
+  title who works under 20 hours a week for under $50k, the person keeps the
+  role the rules give instead (BOARD, MANAGER or STAFF).
+- **R3, an unpaid full-time leader (guide rule 7).** When no one else is the
+  CEO, an unpaid person with a leader or chair title, 35+ hours a week and
+  the officer box is the CEO, with `role.ceo` = "imputed".
+
+**Effect on the labels:**
+
+| Measure | main (3e9d1cc) | this branch |
+|---|---|---|
+| F-031 set: right chief executive (750 filings) | 80.9% | **85.1%** |
+| F-031: CEO precision / recall (people) | 80.7 / 83.8% | 84.7 / 85.3% |
+| F-031: board role right (board seats) | 96.4% | **98.7%** |
+| F-031: role | 94.4% | 94.7% |
+| Labeled set v1 (2010-12, 155 people) | 94.2% | **95.5%** |
+| Labeled set v2 (2010-12, 312 people) | 89.7% | **90.4%** |
+| v2 board seats with the right board role | 105 of 109 | 108 of 110 |
+
+On the F-031 set, each rule adds about this much alone: R1 +1.8, R2 +1.4,
+R3 +1.1. The board changes add +2.2. Chief executive by stratum:
+
+| Stratum | main | this branch |
+|---|---|---|
+| University | 54% | 78% |
+| Club or co-op | 74% | 84% |
+| Veterans post | 54% | 60% |
+| Fire department | 84% | 90% |
+| Orchestra | 90% | 96% |
+| Union | 78% | 82% |
+| Multi-CEO system | 78% | 82% |
+
+**On the 2019-2023 sample** (60,520 filings, run in
+`~/Documents/PARTVII-rules/`):
+- **Role.** 1,770 of 668,168 people (0.26%) change role:
+  - CEO -> BOARD 568: board directors, secretaries and treasurers paid $25k+
+    at under 5 h/wk, and small 990-EZ presidents;
+  - BOARD -> CEO 541: unpaid presidents, chairs and commanders at 35-60 h/wk
+    with the officer box;
+  - CEO -> OFFICER 305.
+- **Board role.** 11,699 board roles change. About 6,600 are past presidents
+  and presidents-elect going from CHAIR to MEMBER.
+- **CEO named.** Filings that pay anyone and name a CEO fall from 84.5% to
+  82.5%: stipend holders are no longer called CEOs. The fall is largest for
+  c9 trusts (40.1% to 35.4%) and c7 clubs (70.3% to 68.0%).
+
+**Secretary-treasurer is its own office** (user decision, 2026-10-23).
+- Before, the crosswalk filed SECRETARY TREASURER under BOARD TREASURER but
+  BOARD SECRETARY TREASURER under BOARD SECRETARY, and the guide said "the
+  first office named".
+- Now there is a sixth board standard, BOARD SECRETARY TREASURER, with board
+  role SECRETARY TREASURER. 13 variants map to it. A person whose title was
+  split into a secretary row and a treasurer row also gets SECRETARY
+  TREASURER.
+- The legacy flags set both `sec` and `treas`. The 990-EZ role model still
+  sees it as TREASURER, as it was trained.
+- The scorers (`26-ceo-score.R`, `09-gold-check.R`, `21-performance.R`)
+  accept it for a label of SECRETARY or TREASURER, since the labels predate
+  it. The guide now has it as a board role.
+- F-031 board role: 98.6% -> 98.7%.
+
+**Regression and tests.** The reference is rebuilt: md5 `0769408f...`, 4,125
+x 112. On the demo, the role and board-role changes match the patterns above.
+245 tests pass, 8 of them new for these rules.
+
+**Open:**
+- **The rest of the CEO errors.** Of the remaining 112 wrong filings, about 30
+  are type-specific titles (`data-dev/CEO-THESAURUS-PLAN.md`). The rest are:
+  - stipend officers at 5+ hours;
+  - unpaid presidents with no officer box;
+  - former and interim CEOs, which need the tax period's dates.

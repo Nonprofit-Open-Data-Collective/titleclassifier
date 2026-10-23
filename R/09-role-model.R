@@ -62,6 +62,9 @@ role_model_features <- function( comp.data )
   colnames(kw) <- paste0( "kw_", names(.role_keywords) )
 
   lvl  <- chr( x$emp.level ); brole <- chr( x$board.role )
+  # the model was trained before SECRETARY TREASURER was its own board role,
+  # when the crosswalk filed it under TREASURER
+  brole[ brole == "SECRETARY TREASURER" ] <- "TREASURER"
   x[ , `:=`( .comp = log1p( pmax( num(tot.comp), 0 ) ), .hours = pmax( num(tot.hours), 0 ) ) ]
   x[ , .paid := as.integer( num(tot.comp) > 0 ) ]
   x[ , .lvl := lvl ][ , .brd := brole ]

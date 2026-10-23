@@ -47,7 +47,7 @@ test_that("role flags are X or blank and levels imply their parent flag (F-014)"
 
 test_that("each title has one employee level or one board role (F-020)", {
   expect_true(all(tx$emp.level %in% c("", "CEO", "OFFICER", "MANAGER", "PROFESSIONAL", "STAFF")))
-  expect_true(all(tx$board.role %in% c("", "CHAIR", "VICE CHAIR", "SECRETARY", "TREASURER", "MEMBER")))
+  expect_true(all(tx$board.role %in% c("", "CHAIR", "VICE CHAIR", "SECRETARY", "SECRETARY TREASURER", "TREASURER", "MEMBER")))
   expect_equal(tx$title.standard[nzchar(tx$emp.level) & nzchar(tx$board.role)], character(0))
   # the legacy flags follow the two columns; dir.vp is retired
   expect_identical(is_x("emp"), nzchar(tx$emp.level))
@@ -55,8 +55,8 @@ test_that("each title has one employee level or one board role (F-020)", {
   expect_false(any(is_x("dir.vp")))
 })
 
-test_that("board titles use the five core board standards (F-016)", {
-  core <- c("BOARD PRESIDENT", "BOARD VICE PRESIDENT", "BOARD SECRETARY", "BOARD TREASURER", "BOARD MEMBER")
+test_that("board titles use the six core board standards (F-016, F-032)", {
+  core <- c("BOARD PRESIDENT", "BOARD VICE PRESIDENT", "BOARD SECRETARY", "BOARD SECRETARY TREASURER", "BOARD TREASURER", "BOARD MEMBER")
   expect_setequal(tx$title.standard[nzchar(tx$board.role)], core)
 })
 

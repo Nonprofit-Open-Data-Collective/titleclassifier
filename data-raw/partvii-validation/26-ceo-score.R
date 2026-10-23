@@ -23,7 +23,7 @@ OUT  <- file.path(PV, "ceo-sample")
 REPO <- "data-raw/partvii-validation/ceo-sample"
 CLS  <- Sys.getenv("CLASSIFIED", file.path(OUT, "classified.rds"))
 roles  <- c("CEO", "OFFICER", "MANAGER", "PROFESSIONAL", "STAFF", "BOARD", "DUAL", "UNSURE", "NONE")
-broles <- c("CHAIR", "VICE CHAIR", "SECRETARY", "TREASURER", "MEMBER")
+broles <- c("CHAIR", "VICE CHAIR", "SECRETARY", "SECRETARY TREASURER", "TREASURER", "MEMBER")
 
 read_labels <- function(who) {
   fs <- list.files(file.path(OUT, paste0("labels-", who)), "^batch-[0-9]+[.]csv$", full.names = TRUE)
@@ -105,9 +105,11 @@ cat(sprintf("\nconsensus rows matched to the classifier: %d of %d\n", sum(!is.na
 S <- G[!is.na(pred) & !role %in% c("UNSURE", "NONE")]
 S[, hit := ifelse(role == "DUAL", pred %in% c("CEO", "OFFICER", "BOARD"), role == pred)]
 S[, label_board := role %in% c("BOARD", "DUAL")]
+# a secretary-treasurer (one board role since F-032) matches a label of either office
+br_ok <- function(lab, pred) lab == pred | (pred %in% "SECRETARY TREASURER" & lab %in% c("SECRETARY", "TREASURER"))
 acc <- function(x) x[, .(people = .N, role_accuracy = round(100 * mean(hit), 1),
                          board_seats = sum(label_board & pred == "BOARD"),
-                         board_role_right = round(100 * mean((board_role == pred_board)[label_board & pred == "BOARD"]), 1),
+                         board_role_right = round(100 * mean(br_ok(board_role, pred_board)[label_board & pred == "BOARD"]), 1),
                          ceo_precision = round(100 * sum(pred_ceo & ceo) / sum(pred_ceo), 1),
                          ceo_recall = round(100 * sum(pred_ceo & ceo) / sum(ceo), 1))]
 # filing level: the set of chief executives

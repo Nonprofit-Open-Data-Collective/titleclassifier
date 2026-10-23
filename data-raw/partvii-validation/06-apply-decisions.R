@@ -32,7 +32,7 @@ if (nrow(ta)) ta <- ta[!is_draft(reviewer)]
 # new taxonomy rows
 if (nrow(ta)) {
   emp_levels  <- c("CEO", "OFFICER", "MANAGER", "PROFESSIONAL", "STAFF")
-  board_roles <- c("CHAIR", "VICE CHAIR", "SECRETARY", "TREASURER", "MEMBER")
+  board_roles <- c("CHAIR", "VICE CHAIR", "SECRETARY", "SECRETARY TREASURER", "TREASURER", "MEMBER")
   new_tx <- rbindlist(lapply(seq_len(nrow(ta)), function(i) {
     p <- trimws(strsplit(ta$new_taxonomy[i], "/", fixed = TRUE)[[1]])
     r <- as.list(setNames(rep("", ncol(tx)), names(tx)))

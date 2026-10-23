@@ -168,7 +168,7 @@ Three thresholds keep token pay from making a leader:
 | Column | Values |
 |---|---|
 | `role.final` | CEO, OFFICER, MANAGER, PROFESSIONAL, STAFF, BOARD |
-| `role.board` | for BOARD: CHAIR, VICE CHAIR, SECRETARY, TREASURER, MEMBER |
+| `role.board` | for BOARD: CHAIR, VICE CHAIR, SECRETARY TREASURER, SECRETARY, TREASURER, MEMBER |
 | `role.ceo` | for CEO: designated, co-ceo, interim, imputed, model |
 | `role.position` | board, officer, board_officer, staff, unknown |
 | `role.source` | what settled the position: checkbox, title+pay, title |

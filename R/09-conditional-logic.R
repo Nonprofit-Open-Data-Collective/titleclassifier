@@ -77,7 +77,7 @@ conditional_logic <- function(comp.data)
 #'   \describe{
 #'     \item{role.position}{board, officer, board_officer, staff, or unknown}
 #'     \item{role.final}{CEO, OFFICER, MANAGER, PROFESSIONAL, STAFF, or BOARD}
-#'     \item{role.board}{for BOARD: CHAIR, VICE CHAIR, SECRETARY, TREASURER, or MEMBER}
+#'     \item{role.board}{for BOARD: CHAIR, VICE CHAIR, SECRETARY TREASURER, SECRETARY, TREASURER, or MEMBER}
 #'     \item{role.ceo}{for CEO: designated, co-ceo, interim, imputed, or model}
 #'     \item{role.source}{what settled the position: checkbox, title+pay, or title}
 #'     \item{role.method}{rules, or model (990-EZ, xgboost installed)}
@@ -160,9 +160,11 @@ resolve_roles <- function( comp.data, use_model = TRUE )
   # director: only a board-only position rules a CEO title out
   p[ , .desig := .p_ceo_t & role.position %in% c( "officer", "board_officer", "unknown" ) ]
   p[ , .chair_pattern := .p_tru & .p_hrs < 25 & .p_pres ]
-  # an imputed leader must do more than token work: 15+ hours a week or $25k+
+  # an imputed leader must do more than token work: 15+ hours a week or $25k+,
+  # and, when hours are reported, at least 5 a week: pay for a seat held an hour a week is a
+  # stipend or comes from a related organization (FINDINGS.md F-032)
   p[ , .elig := .p_paid & ! .chair_pattern & ( .p_off | .p_lead ) &
-                ( .p_hrs >= 15 | .p_comp >= 25000 ) ]
+                ( .p_hrs >= 15 | .p_comp >= 25000 ) & ( .p_hrs >= 5 | .p_hrs == 0 | .p_pres ) ]
   p[ , `:=`( .n_desig = sum(.desig), .any_paid = any(.p_paid),
              .best = if( any(.elig) ) max( .p_comp[.elig] ) else NA_real_ ),
      by = object.id ]
@@ -175,6 +177,13 @@ resolve_roles <- function( comp.data, use_model = TRUE )
   # a tie for top pay among imputed leaders: keep the first person
   p[ role.ceo %in% "imputed", .k := seq_len(.N), by = object.id ]
   p[ role.ceo %in% "imputed" & .k > 1, role.ceo := NA_character_ ]
+  # an unpaid full-time leader (labeling guide rule 7): when no one else is the
+  # CEO, an unpaid president, chair or other leader working 35+ hours a week
+  # with the officer box runs the organization (F-032)
+  p[ , .no_ceo := ! any( ! is.na( role.ceo ) ), by = object.id ]
+  p[ , .rule7 := .no_ceo & .boxes & ! .p_paid & .p_hrs >= 35 & .p_off & ( .p_lead | .p_pres ) ]
+  p[ .rule7 == TRUE, .k7 := seq_len(.N) == which.max( .p_hrs ), by = object.id ]
+  p[ .rule7 & .k7 %in% TRUE, role.ceo := "imputed" ]
   p[ , org.leadership := data.table::fcase(
           .n_desig[1] > 0,                   "designated",
           any( role.ceo %in% "imputed" ),    "imputed",
@@ -215,6 +224,12 @@ resolve_roles <- function( comp.data, use_model = TRUE )
     {
       d[ , .model := pred[ .row ] ]
       p[ d[ .primary == TRUE ], on = c( "object.id", "person.id" ), .model := i..model ]
+      # a CEO the model names on a 990-EZ must work 20+ hours a week, unless the
+      # title names the CEO; otherwise it is the role the rules give (F-032)
+      p[ ! .boxes & .model %in% "CEO" & ! .desig & .p_hrs < 20 & .p_comp < 50000,
+           .model := data.table::fifelse( role.final == "CEO",
+                       data.table::fifelse( .level %in% c( "MANAGER", "PROFESSIONAL", "STAFF" ), .level,
+                         data.table::fifelse( .p_board_t, "BOARD", "STAFF" ) ), role.final ) ]
       ez <- ! p$.boxes
       p[ ez, `:=`( role.final = .model, role.method = "model" ) ]
       # a CEO named by the model keeps a designated or co-CEO label from its
@@ -234,19 +249,42 @@ resolve_roles <- function( comp.data, use_model = TRUE )
 
   # the board role: the crosswalk's, or read from the title for an employee
   # title that turned out to be a board seat (VICE PRESIDENT, SECRETARY, ...)
-  brank <- c( CHAIR = 1L, `VICE CHAIR` = 2L, SECRETARY = 3L, TREASURER = 4L, MEMBER = 5L )
+  brank <- c( CHAIR = 1L, `VICE CHAIR` = 2L, `SECRETARY TREASURER` = 3L, SECRETARY = 4L, TREASURER = 5L, MEMBER = 6L )
   # an assistant secretary or treasurer on the board holds a seat, not the
   # office: the board keeps one secretary and one treasurer
   asst_office <- chr( d$title.standard ) %in% c( "ASSISTANT SECRETARY", "ASSISTANT TREASURER" )
+  # a past or elected-but-not-yet-serving officer (PAST PRESIDENT, PRESIDENT
+  # ELECT) holds a seat, not the office: step 06 flags them FORMER or FUTURE.
+  # A flag that came with a date marks a change during the year (CHAIR THRU
+  # 6/20, TREASURER SINCE 3/21): that person did hold the office, so it stays
+  flagnum <- function(x) if( is.null(x) ) rep( 0, nrow(d) ) else { x <- suppressWarnings( as.numeric(x) ); x[ is.na(x) ] <- 0; x }
+  not_seated <- ( flagnum( d$former.x ) > 0 | flagnum( d$future.x ) > 0 ) & flagnum( d$date.x ) == 0
+  # an employee title that turned out to be a board seat keeps its office
+  # (VICE PRESIDENT, SECRETARY). The office is read from the standard title; an
+  # uncoded title counts only when it starts with the office (TREASURER &
+  # TRUSTREE), so one naming another body's officer (SGA PRESIDENT, CHAPTER
+  # PRESIDENT, MEDICAL STAFF PRESIDENT) is a plain seat (F-032)
+  std <- toupper( chr( d$title.standard ) )
+  v7  <- toupper( chr( if( is.null( d$title.v7 ) ) d$title.raw else d$title.v7 ) )
+  lead_office <- "^(VICE (PRESIDENT|CHAIR)|PRESIDENT|CHAIR|SECRETARY|TREASURER)\\b"
+  fb  <- data.table::fifelse( nzchar( std ), std,
+           data.table::fifelse( grepl( lead_office, v7 ) & ! grepl( "DESIGNEE|ALUMNI", v7 ), v7, "" ) )
   d[ , .brole_t := data.table::fcase(
+          not_seated,                                       "MEMBER",
           nzchar(.brole),                                   .brole,
           asst_office,                                      "MEMBER",
-          grepl( "VICE (PRESIDENT|CHAIR)", title ),         "VICE CHAIR",
-          grepl( "PRESIDENT|CHAIR", title ),                "CHAIR",
-          grepl( "SECRETARY", title ),                      "SECRETARY",
-          grepl( "TREASURER", title ),                      "TREASURER",
+          grepl( "OF MEDICAL STAFF", fb ),                  "MEMBER",
+          grepl( "VICE (PRESIDENT|CHAIR)", fb ),            "VICE CHAIR",
+          grepl( "PRESIDENT|CHAIR", fb ),                   "CHAIR",
+          grepl( "SECRETARY.*TREASURER|TREASURER.*SECRETARY", fb ), "SECRETARY TREASURER",
+          grepl( "SECRETARY", fb ),                         "SECRETARY",
+          grepl( "TREASURER", fb ),                         "TREASURER",
           default = "MEMBER" ) ]
-  pb <- d[ , .( role.board = names(brank)[ min( brank[.brole_t] ) ] ), by = .( object.id, person.id ) ]
+  # a person whose title was split into a secretary row and a treasurer row
+  # holds the combined office
+  pb <- d[ , .( role.board = if( all( c( "SECRETARY", "TREASURER" ) %in% .brole_t ) && min( brank[.brole_t] ) >= 3L )
+                               "SECRETARY TREASURER" else names(brank)[ min( brank[.brole_t] ) ] ),
+           by = .( object.id, person.id ) ]
   p <- merge( p, pb, by = c( "object.id", "person.id" ), all.x = TRUE )
   p[ role.final != "BOARD", role.board := NA_character_ ]
 
