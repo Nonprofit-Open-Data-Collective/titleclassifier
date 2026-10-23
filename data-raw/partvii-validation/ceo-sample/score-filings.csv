@@ -1,0 +1,751 @@
+org_id,year,stratum,lab,pred,lab_n,pred_n,outcome
+O001,2019,benefit trust or cemetery,O001-2019-01,"",1,0,CEO missed
+O001,2020,benefit trust or cemetery,O001-2020-01;O001-2020-04,O001-2020-01,2,1,wrong person
+O001,2021,benefit trust or cemetery,O001-2021-02,"",1,0,CEO missed
+O001,2022,benefit trust or cemetery,O001-2022-03,O001-2022-03,1,1,right CEO
+O001,2023,benefit trust or cemetery,O001-2023-02,O001-2023-03,1,1,wrong person
+O002,2019,benefit trust or cemetery,O002-2019-01,O002-2019-01,1,1,right CEO
+O002,2020,benefit trust or cemetery,O002-2020-01,O002-2020-01,1,1,right CEO
+O002,2021,benefit trust or cemetery,O002-2021-01,O002-2021-01,1,1,right CEO
+O002,2022,benefit trust or cemetery,O002-2022-01,O002-2022-01,1,1,right CEO
+O002,2023,benefit trust or cemetery,O002-2023-01,O002-2023-01,1,1,right CEO
+O003,2019,benefit trust or cemetery,O003-2019-01,O003-2019-01,1,1,right CEO
+O003,2020,benefit trust or cemetery,O003-2020-01,O003-2020-01,1,1,right CEO
+O003,2021,benefit trust or cemetery,O003-2021-01,O003-2021-01,1,1,right CEO
+O003,2022,benefit trust or cemetery,O003-2022-01,O003-2022-01,1,1,right CEO
+O003,2023,benefit trust or cemetery,O003-2023-01,O003-2023-01,1,1,right CEO
+O004,2019,benefit trust or cemetery,O004-2019-01,O004-2019-01,1,1,right CEO
+O004,2020,benefit trust or cemetery,O004-2020-01,O004-2020-02,1,1,wrong person
+O004,2021,benefit trust or cemetery,O004-2021-01,O004-2021-05,1,1,wrong person
+O004,2022,benefit trust or cemetery,"",O004-2022-05,0,1,"CEO named, none labeled"
+O004,2023,benefit trust or cemetery,"",O004-2023-04,0,1,"CEO named, none labeled"
+O005,2019,benefit trust or cemetery,"","",0,0,right: no CEO
+O005,2020,benefit trust or cemetery,"","",0,0,right: no CEO
+O005,2021,benefit trust or cemetery,O005-2021-01,O005-2021-01,1,1,right CEO
+O005,2022,benefit trust or cemetery,O005-2022-01,O005-2022-01,1,1,right CEO
+O005,2023,benefit trust or cemetery,O005-2023-01,O005-2023-01,1,1,right CEO
+O006,2019,benefit trust or cemetery,"","",0,0,right: no CEO
+O006,2020,benefit trust or cemetery,"","",0,0,right: no CEO
+O006,2021,benefit trust or cemetery,"","",0,0,right: no CEO
+O006,2022,benefit trust or cemetery,"","",0,0,right: no CEO
+O006,2023,benefit trust or cemetery,"","",0,0,right: no CEO
+O007,2019,benefit trust or cemetery,"","",0,0,right: no CEO
+O007,2020,benefit trust or cemetery,"","",0,0,right: no CEO
+O007,2021,benefit trust or cemetery,"","",0,0,right: no CEO
+O007,2022,benefit trust or cemetery,"","",0,0,right: no CEO
+O007,2023,benefit trust or cemetery,"","",0,0,right: no CEO
+O008,2019,benefit trust or cemetery,"","",0,0,right: no CEO
+O008,2020,benefit trust or cemetery,"","",0,0,right: no CEO
+O008,2021,benefit trust or cemetery,"","",0,0,right: no CEO
+O008,2022,benefit trust or cemetery,"","",0,0,right: no CEO
+O008,2023,benefit trust or cemetery,"","",0,0,right: no CEO
+O009,2019,benefit trust or cemetery,"","",0,0,right: no CEO
+O009,2020,benefit trust or cemetery,"","",0,0,right: no CEO
+O009,2021,benefit trust or cemetery,"","",0,0,right: no CEO
+O009,2022,benefit trust or cemetery,"","",0,0,right: no CEO
+O009,2023,benefit trust or cemetery,"","",0,0,right: no CEO
+O010,2019,benefit trust or cemetery,"","",0,0,right: no CEO
+O010,2020,benefit trust or cemetery,"","",0,0,right: no CEO
+O010,2021,benefit trust or cemetery,"","",0,0,right: no CEO
+O010,2022,benefit trust or cemetery,"","",0,0,right: no CEO
+O010,2023,benefit trust or cemetery,"","",0,0,right: no CEO
+O011,2019,club or co-op,O011-2019-01,O011-2019-01,1,1,right CEO
+O011,2020,club or co-op,O011-2020-01,O011-2020-01,1,1,right CEO
+O011,2021,club or co-op,O011-2021-01,O011-2021-01,1,1,right CEO
+O011,2022,club or co-op,O011-2022-01,O011-2022-01,1,1,right CEO
+O011,2023,club or co-op,O011-2023-01,O011-2023-01,1,1,right CEO
+O012,2019,club or co-op,O012-2019-01,O012-2019-01,1,1,right CEO
+O012,2020,club or co-op,O012-2020-01,O012-2020-01,1,1,right CEO
+O012,2021,club or co-op,O012-2021-01,O012-2021-01,1,1,right CEO
+O012,2022,club or co-op,O012-2022-01,O012-2022-01,1,1,right CEO
+O012,2023,club or co-op,O012-2023-01,O012-2023-01,1,1,right CEO
+O013,2019,club or co-op,O013-2019-01;O013-2019-05,O013-2019-02,2,1,wrong person
+O013,2020,club or co-op,O013-2020-01,O013-2020-02,1,1,wrong person
+O013,2021,club or co-op,O013-2021-01,O013-2021-02,1,1,wrong person
+O013,2022,club or co-op,O013-2022-01,O013-2022-02,1,1,wrong person
+O013,2023,club or co-op,O013-2023-01,O013-2023-02,1,1,wrong person
+O014,2019,club or co-op,O014-2019-01,O014-2019-01,1,1,right CEO
+O014,2020,club or co-op,O014-2020-01,O014-2020-01,1,1,right CEO
+O014,2021,club or co-op,O014-2021-01,O014-2021-01,1,1,right CEO
+O014,2022,club or co-op,O014-2022-02,O014-2022-02,1,1,right CEO
+O014,2023,club or co-op,O014-2023-01,O014-2023-01,1,1,right CEO
+O015,2019,club or co-op,O015-2019-01,O015-2019-01,1,1,right CEO
+O015,2020,club or co-op,O015-2020-01,O015-2020-01,1,1,right CEO
+O015,2021,club or co-op,O015-2021-01,O015-2021-01,1,1,right CEO
+O015,2022,club or co-op,O015-2022-01,O015-2022-01,1,1,right CEO
+O015,2023,club or co-op,O015-2023-01,O015-2023-01,1,1,right CEO
+O016,2019,club or co-op,"","",0,0,right: no CEO
+O016,2020,club or co-op,"","",0,0,right: no CEO
+O016,2021,club or co-op,"","",0,0,right: no CEO
+O016,2022,club or co-op,"","",0,0,right: no CEO
+O016,2023,club or co-op,"","",0,0,right: no CEO
+O017,2019,club or co-op,"",O017-2019-02,0,1,"CEO named, none labeled"
+O017,2020,club or co-op,"","",0,0,right: no CEO
+O017,2021,club or co-op,"",O017-2021-02,0,1,"CEO named, none labeled"
+O017,2022,club or co-op,"","",0,0,right: no CEO
+O017,2023,club or co-op,"","",0,0,right: no CEO
+O018,2019,club or co-op,"",O018-2019-01,0,1,"CEO named, none labeled"
+O018,2020,club or co-op,"",O018-2020-01,0,1,"CEO named, none labeled"
+O018,2021,club or co-op,"",O018-2021-01,0,1,"CEO named, none labeled"
+O018,2022,club or co-op,"",O018-2022-01,0,1,"CEO named, none labeled"
+O018,2023,club or co-op,"",O018-2023-01,0,1,"CEO named, none labeled"
+O019,2019,club or co-op,"","",0,0,right: no CEO
+O019,2020,club or co-op,"","",0,0,right: no CEO
+O019,2021,club or co-op,"","",0,0,right: no CEO
+O019,2022,club or co-op,"","",0,0,right: no CEO
+O019,2023,club or co-op,"","",0,0,right: no CEO
+O020,2019,club or co-op,O020-2019-01,O020-2019-01,1,1,right CEO
+O020,2020,club or co-op,O020-2020-01,O020-2020-01,1,1,right CEO
+O020,2021,club or co-op,O020-2021-01,O020-2021-01,1,1,right CEO
+O020,2022,club or co-op,O020-2022-01,O020-2022-01,1,1,right CEO
+O020,2023,club or co-op,O020-2023-02,O020-2023-01,1,1,wrong person
+O021,2019,control charity,O021-2019-01,O021-2019-01,1,1,right CEO
+O021,2020,control charity,O021-2020-01,O021-2020-01,1,1,right CEO
+O021,2021,control charity,O021-2021-01,O021-2021-01,1,1,right CEO
+O021,2022,control charity,O021-2022-01,O021-2022-01,1,1,right CEO
+O021,2023,control charity,O021-2023-01,O021-2023-01,1,1,right CEO
+O022,2019,control charity,O022-2019-01,O022-2019-01,1,1,right CEO
+O022,2020,control charity,O022-2020-01,O022-2020-01,1,1,right CEO
+O022,2021,control charity,O022-2021-01,O022-2021-01,1,1,right CEO
+O022,2022,control charity,O022-2022-01,O022-2022-01,1,1,right CEO
+O022,2023,control charity,O022-2023-01,O022-2023-01,1,1,right CEO
+O023,2019,control charity,O023-2019-01;O023-2019-02,O023-2019-01;O023-2019-02,2,2,right CEO
+O023,2020,control charity,O023-2020-01,O023-2020-01,1,1,right CEO
+O023,2021,control charity,O023-2021-01,O023-2021-01,1,1,right CEO
+O023,2022,control charity,O023-2022-01,O023-2022-01,1,1,right CEO
+O023,2023,control charity,O023-2023-01;O023-2023-02,O023-2023-01;O023-2023-02,2,2,right CEO
+O024,2019,control charity,O024-2019-01,O024-2019-01,1,1,right CEO
+O024,2020,control charity,O024-2020-01,O024-2020-01,1,1,right CEO
+O024,2021,control charity,"","",0,0,right: no CEO
+O024,2022,control charity,O024-2022-01,O024-2022-01,1,1,right CEO
+O024,2023,control charity,O024-2023-01,O024-2023-01,1,1,right CEO
+O025,2019,control charity,O025-2019-01,O025-2019-01,1,1,right CEO
+O025,2020,control charity,O025-2020-01,O025-2020-01,1,1,right CEO
+O025,2021,control charity,O025-2021-01,O025-2021-01,1,1,right CEO
+O025,2022,control charity,O025-2022-01,O025-2022-01,1,1,right CEO
+O025,2023,control charity,O025-2023-01,O025-2023-01;O025-2023-02,1,2,extra CEO named
+O026,2019,control charity,O026-2019-01,O026-2019-01,1,1,right CEO
+O026,2020,control charity,O026-2020-01,O026-2020-01,1,1,right CEO
+O026,2021,control charity,O026-2021-01,"",1,0,CEO missed
+O026,2022,control charity,O026-2022-01,"",1,0,CEO missed
+O026,2023,control charity,O026-2023-01,"",1,0,CEO missed
+O027,2019,control charity,O027-2019-01,O027-2019-01,1,1,right CEO
+O027,2020,control charity,O027-2020-01,O027-2020-01,1,1,right CEO
+O027,2021,control charity,O027-2021-01,O027-2021-01,1,1,right CEO
+O027,2022,control charity,O027-2022-01;O027-2022-02,O027-2022-01,2,1,wrong person
+O027,2023,control charity,O027-2023-01,O027-2023-01,1,1,right CEO
+O028,2019,control charity,O028-2019-01,O028-2019-01,1,1,right CEO
+O028,2020,control charity,O028-2020-01,O028-2020-01;O028-2020-04,1,2,extra CEO named
+O028,2021,control charity,O028-2021-01;O028-2021-04,O028-2021-01;O028-2021-04,2,2,right CEO
+O028,2022,control charity,O028-2022-01,O028-2022-01,1,1,right CEO
+O028,2023,control charity,O028-2023-01,O028-2023-01,1,1,right CEO
+O029,2019,control charity,O029-2019-01,O029-2019-01,1,1,right CEO
+O029,2020,control charity,O029-2020-01,O029-2020-01,1,1,right CEO
+O029,2021,control charity,O029-2021-01,O029-2021-01,1,1,right CEO
+O029,2022,control charity,O029-2022-01,O029-2022-01,1,1,right CEO
+O029,2023,control charity,O029-2023-01,O029-2023-01,1,1,right CEO
+O030,2019,control charity,"","",0,0,right: no CEO
+O030,2020,control charity,"","",0,0,right: no CEO
+O030,2021,control charity,"","",0,0,right: no CEO
+O030,2022,control charity,"","",0,0,right: no CEO
+O030,2023,control charity,"","",0,0,right: no CEO
+O031,2019,control charity,"","",0,0,right: no CEO
+O031,2020,control charity,"","",0,0,right: no CEO
+O031,2021,control charity,"",O031-2021-01,0,1,"CEO named, none labeled"
+O031,2022,control charity,"","",0,0,right: no CEO
+O031,2023,control charity,"","",0,0,right: no CEO
+O032,2019,control charity,O032-2019-01,O032-2019-01,1,1,right CEO
+O032,2020,control charity,"","",0,0,right: no CEO
+O032,2021,control charity,"","",0,0,right: no CEO
+O032,2022,control charity,"","",0,0,right: no CEO
+O032,2023,control charity,"","",0,0,right: no CEO
+O033,2019,control charity,O033-2019-01,O033-2019-01,1,1,right CEO
+O033,2020,control charity,O033-2020-01,O033-2020-01,1,1,right CEO
+O033,2021,control charity,O033-2021-01,O033-2021-01,1,1,right CEO
+O033,2022,control charity,O033-2022-01,O033-2022-01,1,1,right CEO
+O033,2023,control charity,O033-2023-01,O033-2023-01,1,1,right CEO
+O034,2019,control charity,"","",0,0,right: no CEO
+O034,2020,control charity,"","",0,0,right: no CEO
+O034,2021,control charity,"","",0,0,right: no CEO
+O034,2022,control charity,"","",0,0,right: no CEO
+O034,2023,control charity,"","",0,0,right: no CEO
+O035,2019,control charity,O035-2019-01,O035-2019-01,1,1,right CEO
+O035,2020,control charity,O035-2020-01,O035-2020-01,1,1,right CEO
+O035,2021,control charity,O035-2021-01,O035-2021-01,1,1,right CEO
+O035,2022,control charity,O035-2022-01,O035-2022-01,1,1,right CEO
+O035,2023,control charity,O035-2023-01,O035-2023-01,1,1,right CEO
+O036,2019,control charity,"","",0,0,right: no CEO
+O036,2020,control charity,"","",0,0,right: no CEO
+O036,2021,control charity,"","",0,0,right: no CEO
+O036,2022,control charity,"","",0,0,right: no CEO
+O036,2023,control charity,"","",0,0,right: no CEO
+O037,2019,control charity,"","",0,0,right: no CEO
+O037,2020,control charity,"","",0,0,right: no CEO
+O037,2021,control charity,"","",0,0,right: no CEO
+O037,2022,control charity,"",O037-2022-01,0,1,"CEO named, none labeled"
+O037,2023,control charity,"","",0,0,right: no CEO
+O038,2019,control charity,"","",0,0,right: no CEO
+O038,2020,control charity,O038-2020-05,"",1,0,CEO missed
+O038,2021,control charity,O038-2021-06,"",1,0,CEO missed
+O038,2022,control charity,"","",0,0,right: no CEO
+O038,2023,control charity,O038-2023-01,O038-2023-01,1,1,right CEO
+O039,2019,control charity,O039-2019-01,O039-2019-01,1,1,right CEO
+O039,2020,control charity,O039-2020-01,O039-2020-01,1,1,right CEO
+O039,2021,control charity,O039-2021-01,O039-2021-01,1,1,right CEO
+O039,2022,control charity,O039-2022-01,O039-2022-01,1,1,right CEO
+O039,2023,control charity,O039-2023-01,O039-2023-01,1,1,right CEO
+O040,2019,control charity,O040-2019-03,O040-2019-01,1,1,wrong person
+O040,2020,control charity,O040-2020-09,"",1,0,CEO missed
+O040,2021,control charity,O040-2021-03,O040-2021-01,1,1,wrong person
+O040,2022,control charity,O040-2022-03,O040-2022-01,1,1,wrong person
+O040,2023,control charity,O040-2023-08,"",1,0,CEO missed
+O041,2019,fire department,O041-2019-01,O041-2019-01,1,1,right CEO
+O041,2020,fire department,O041-2020-01,O041-2020-01,1,1,right CEO
+O041,2021,fire department,O041-2021-01,O041-2021-01,1,1,right CEO
+O041,2022,fire department,O041-2022-01,O041-2022-01,1,1,right CEO
+O041,2023,fire department,O041-2023-01,O041-2023-01,1,1,right CEO
+O042,2019,fire department,O042-2019-01,O042-2019-01,1,1,right CEO
+O042,2020,fire department,O042-2020-01,O042-2020-01,1,1,right CEO
+O042,2021,fire department,O042-2021-01,O042-2021-01,1,1,right CEO
+O042,2022,fire department,O042-2022-01,O042-2022-01,1,1,right CEO
+O042,2023,fire department,O042-2023-01,O042-2023-01,1,1,right CEO
+O043,2019,fire department,"","",0,0,right: no CEO
+O043,2020,fire department,O043-2020-01,O043-2020-01,1,1,right CEO
+O043,2021,fire department,O043-2021-01,O043-2021-01,1,1,right CEO
+O043,2022,fire department,O043-2022-01,O043-2022-01,1,1,right CEO
+O043,2023,fire department,"","",0,0,right: no CEO
+O044,2019,fire department,O044-2019-01,"",1,0,CEO missed
+O044,2020,fire department,O044-2020-01,"",1,0,CEO missed
+O044,2021,fire department,O044-2021-01,"",1,0,CEO missed
+O044,2022,fire department,O044-2022-01;O044-2022-02,O044-2022-01;O044-2022-02,2,2,right CEO
+O044,2023,fire department,O044-2023-01,O044-2023-01,1,1,right CEO
+O045,2019,fire department,O045-2019-01,O045-2019-01,1,1,right CEO
+O045,2020,fire department,O045-2020-01,O045-2020-01,1,1,right CEO
+O045,2021,fire department,O045-2021-01,O045-2021-01,1,1,right CEO
+O045,2022,fire department,O045-2022-01,O045-2022-01,1,1,right CEO
+O045,2023,fire department,O045-2023-01,O045-2023-01,1,1,right CEO
+O046,2019,fire department,"","",0,0,right: no CEO
+O046,2020,fire department,"","",0,0,right: no CEO
+O046,2021,fire department,"","",0,0,right: no CEO
+O046,2022,fire department,"","",0,0,right: no CEO
+O046,2023,fire department,"","",0,0,right: no CEO
+O047,2019,fire department,"","",0,0,right: no CEO
+O047,2020,fire department,"","",0,0,right: no CEO
+O047,2021,fire department,"","",0,0,right: no CEO
+O047,2022,fire department,"","",0,0,right: no CEO
+O047,2023,fire department,"","",0,0,right: no CEO
+O048,2019,fire department,"","",0,0,right: no CEO
+O048,2020,fire department,"","",0,0,right: no CEO
+O048,2021,fire department,"","",0,0,right: no CEO
+O048,2022,fire department,"","",0,0,right: no CEO
+O048,2023,fire department,"","",0,0,right: no CEO
+O049,2019,fire department,"","",0,0,right: no CEO
+O049,2020,fire department,"","",0,0,right: no CEO
+O049,2021,fire department,"","",0,0,right: no CEO
+O049,2022,fire department,"","",0,0,right: no CEO
+O049,2023,fire department,"","",0,0,right: no CEO
+O050,2019,fire department,O050-2019-01,O050-2019-02,1,1,wrong person
+O050,2020,fire department,O050-2020-01,O050-2020-02,1,1,wrong person
+O050,2021,fire department,O050-2021-01,O050-2021-02,1,1,wrong person
+O050,2022,fire department,O050-2022-01,O050-2022-02,1,1,wrong person
+O050,2023,fire department,O050-2023-01,O050-2023-02,1,1,wrong person
+O051,2019,lodge,"","",0,0,right: no CEO
+O051,2020,lodge,"","",0,0,right: no CEO
+O051,2021,lodge,"","",0,0,right: no CEO
+O051,2022,lodge,O051-2022-01,O051-2022-01,1,1,right CEO
+O051,2023,lodge,"","",0,0,right: no CEO
+O052,2019,lodge,O052-2019-01,O052-2019-01,1,1,right CEO
+O052,2020,lodge,O052-2020-02,"",1,0,CEO missed
+O052,2021,lodge,O052-2021-02,O052-2021-01,1,1,wrong person
+O052,2022,lodge,O052-2022-01,O052-2022-01,1,1,right CEO
+O052,2023,lodge,O052-2023-02,O052-2023-01,1,1,wrong person
+O053,2019,lodge,O053-2019-01,O053-2019-01,1,1,right CEO
+O053,2020,lodge,"","",0,0,right: no CEO
+O053,2021,lodge,"","",0,0,right: no CEO
+O053,2022,lodge,"","",0,0,right: no CEO
+O053,2023,lodge,"","",0,0,right: no CEO
+O054,2019,lodge,"",O054-2019-01,0,1,"CEO named, none labeled"
+O054,2020,lodge,"",O054-2020-01,0,1,"CEO named, none labeled"
+O054,2021,lodge,"","",0,0,right: no CEO
+O054,2022,lodge,"",O054-2022-01,0,1,"CEO named, none labeled"
+O054,2023,lodge,"",O054-2023-01,0,1,"CEO named, none labeled"
+O055,2019,lodge,"","",0,0,right: no CEO
+O055,2020,lodge,"","",0,0,right: no CEO
+O055,2021,lodge,"","",0,0,right: no CEO
+O055,2022,lodge,O055-2022-01,O055-2022-01,1,1,right CEO
+O055,2023,lodge,O055-2023-02,O055-2023-02,1,1,right CEO
+O056,2019,lodge,"","",0,0,right: no CEO
+O056,2020,lodge,"","",0,0,right: no CEO
+O056,2021,lodge,"","",0,0,right: no CEO
+O056,2022,lodge,"","",0,0,right: no CEO
+O056,2023,lodge,"","",0,0,right: no CEO
+O057,2019,lodge,"","",0,0,right: no CEO
+O057,2020,lodge,"","",0,0,right: no CEO
+O057,2021,lodge,"","",0,0,right: no CEO
+O057,2022,lodge,"","",0,0,right: no CEO
+O057,2023,lodge,"","",0,0,right: no CEO
+O058,2019,lodge,"","",0,0,right: no CEO
+O058,2020,lodge,"","",0,0,right: no CEO
+O058,2021,lodge,"","",0,0,right: no CEO
+O058,2022,lodge,"","",0,0,right: no CEO
+O058,2023,lodge,"","",0,0,right: no CEO
+O059,2019,lodge,"","",0,0,right: no CEO
+O059,2020,lodge,"","",0,0,right: no CEO
+O059,2021,lodge,"","",0,0,right: no CEO
+O059,2022,lodge,"","",0,0,right: no CEO
+O059,2023,lodge,"","",0,0,right: no CEO
+O060,2019,lodge,"","",0,0,right: no CEO
+O060,2020,lodge,"","",0,0,right: no CEO
+O060,2021,lodge,"","",0,0,right: no CEO
+O060,2022,lodge,"","",0,0,right: no CEO
+O060,2023,lodge,"","",0,0,right: no CEO
+O061,2019,ministry,O061-2019-01,O061-2019-01,1,1,right CEO
+O061,2020,ministry,O061-2020-01,O061-2020-01,1,1,right CEO
+O061,2021,ministry,O061-2021-01,O061-2021-01,1,1,right CEO
+O061,2022,ministry,O061-2022-01,O061-2022-01,1,1,right CEO
+O061,2023,ministry,O061-2023-01,O061-2023-01,1,1,right CEO
+O062,2019,ministry,O062-2019-01,O062-2019-01,1,1,right CEO
+O062,2020,ministry,O062-2020-01,O062-2020-01,1,1,right CEO
+O062,2021,ministry,O062-2021-01,O062-2021-01,1,1,right CEO
+O062,2022,ministry,O062-2022-01,O062-2022-01,1,1,right CEO
+O062,2023,ministry,O062-2023-01,O062-2023-01,1,1,right CEO
+O063,2019,ministry,O063-2019-01,O063-2019-01,1,1,right CEO
+O063,2020,ministry,O063-2020-01,O063-2020-01,1,1,right CEO
+O063,2021,ministry,O063-2021-01,O063-2021-01,1,1,right CEO
+O063,2022,ministry,O063-2022-01,O063-2022-01,1,1,right CEO
+O063,2023,ministry,O063-2023-01,O063-2023-01,1,1,right CEO
+O064,2019,ministry,O064-2019-01,O064-2019-01,1,1,right CEO
+O064,2020,ministry,O064-2020-01,O064-2020-01;O064-2020-02,1,2,extra CEO named
+O064,2021,ministry,O064-2021-01,O064-2021-01,1,1,right CEO
+O064,2022,ministry,O064-2022-01,O064-2022-01,1,1,right CEO
+O064,2023,ministry,O064-2023-01,O064-2023-01;O064-2023-02,1,2,extra CEO named
+O065,2019,ministry,O065-2019-01,O065-2019-01,1,1,right CEO
+O065,2020,ministry,O065-2020-01;O065-2020-02,O065-2020-01;O065-2020-02,2,2,right CEO
+O065,2021,ministry,O065-2021-01,O065-2021-01,1,1,right CEO
+O065,2022,ministry,O065-2022-01,O065-2022-01,1,1,right CEO
+O065,2023,ministry,O065-2023-01;O065-2023-02,O065-2023-01;O065-2023-02,2,2,right CEO
+O066,2019,ministry,O066-2019-01,O066-2019-01,1,1,right CEO
+O066,2020,ministry,O066-2020-01,O066-2020-01,1,1,right CEO
+O066,2021,ministry,O066-2021-01,O066-2021-01,1,1,right CEO
+O066,2022,ministry,O066-2022-01,O066-2022-01,1,1,right CEO
+O066,2023,ministry,O066-2023-01,"",1,0,CEO missed
+O067,2019,ministry,O067-2019-01,O067-2019-01,1,1,right CEO
+O067,2020,ministry,O067-2020-01,O067-2020-01,1,1,right CEO
+O067,2021,ministry,O067-2021-01,"",1,0,CEO missed
+O067,2022,ministry,O067-2022-01,"",1,0,CEO missed
+O067,2023,ministry,O067-2023-01,"",1,0,CEO missed
+O068,2019,ministry,O068-2019-01,O068-2019-01,1,1,right CEO
+O068,2020,ministry,O068-2020-01,O068-2020-01,1,1,right CEO
+O068,2021,ministry,O068-2021-01,O068-2021-01,1,1,right CEO
+O068,2022,ministry,O068-2022-01,O068-2022-01,1,1,right CEO
+O068,2023,ministry,O068-2023-01,O068-2023-01,1,1,right CEO
+O069,2019,ministry,"","",0,0,right: no CEO
+O069,2020,ministry,"","",0,0,right: no CEO
+O069,2021,ministry,"","",0,0,right: no CEO
+O069,2022,ministry,O069-2022-01,O069-2022-01,1,1,right CEO
+O069,2023,ministry,O069-2023-01,O069-2023-01,1,1,right CEO
+O070,2019,ministry,"","",0,0,right: no CEO
+O070,2020,ministry,O070-2020-01,O070-2020-01,1,1,right CEO
+O070,2021,ministry,O070-2021-01,O070-2021-01,1,1,right CEO
+O070,2022,ministry,O070-2022-01,O070-2022-01,1,1,right CEO
+O070,2023,ministry,O070-2023-02,O070-2023-02,1,1,right CEO
+O071,2019,multi-CEO system,O071-2019-01;O071-2019-02,O071-2019-01;O071-2019-02,2,2,right CEO
+O071,2020,multi-CEO system,O071-2020-01,O071-2020-01,1,1,right CEO
+O071,2021,multi-CEO system,O071-2021-01,O071-2021-01,1,1,right CEO
+O071,2022,multi-CEO system,O071-2022-01,O071-2022-01,1,1,right CEO
+O071,2023,multi-CEO system,O071-2023-01,O071-2023-01,1,1,right CEO
+O072,2019,multi-CEO system,O072-2019-01,O072-2019-01,1,1,right CEO
+O072,2020,multi-CEO system,O072-2020-01;O072-2020-04,O072-2020-01;O072-2020-04,2,2,right CEO
+O072,2021,multi-CEO system,O072-2021-01;O072-2021-06,O072-2021-01;O072-2021-06,2,2,right CEO
+O072,2022,multi-CEO system,O072-2022-01;O072-2022-03,O072-2022-01;O072-2022-03,2,2,right CEO
+O072,2023,multi-CEO system,O072-2023-01,O072-2023-01,1,1,right CEO
+O073,2019,multi-CEO system,O073-2019-01;O073-2019-03,O073-2019-01;O073-2019-03,2,2,right CEO
+O073,2020,multi-CEO system,O073-2020-01,O073-2020-01,1,1,right CEO
+O073,2021,multi-CEO system,O073-2021-01,O073-2021-01,1,1,right CEO
+O073,2022,multi-CEO system,O073-2022-01,O073-2022-01,1,1,right CEO
+O073,2023,multi-CEO system,O073-2023-02,O073-2023-02,1,1,right CEO
+O074,2019,multi-CEO system,O074-2019-01,O074-2019-01,1,1,right CEO
+O074,2020,multi-CEO system,O074-2020-02,O074-2020-02,1,1,right CEO
+O074,2021,multi-CEO system,O074-2021-01,O074-2021-01,1,1,right CEO
+O074,2022,multi-CEO system,O074-2022-07;O074-2022-08,O074-2022-07;O074-2022-08,2,2,right CEO
+O074,2023,multi-CEO system,O074-2023-01,O074-2023-01,1,1,right CEO
+O075,2019,multi-CEO system,O075-2019-01,O075-2019-01;O075-2019-07,1,2,extra CEO named
+O075,2020,multi-CEO system,O075-2020-01,O075-2020-01;O075-2020-09,1,2,extra CEO named
+O075,2021,multi-CEO system,O075-2021-01;O075-2021-05,O075-2021-01;O075-2021-02;O075-2021-05,2,3,extra CEO named
+O075,2022,multi-CEO system,O075-2022-02,O075-2022-02;O075-2022-05,1,2,extra CEO named
+O075,2023,multi-CEO system,O075-2023-07;O075-2023-32,O075-2023-07;O075-2023-08;O075-2023-32;O075-2023-38,2,4,extra CEO named
+O076,2019,multi-CEO system,O076-2019-13,O076-2019-13,1,1,right CEO
+O076,2020,multi-CEO system,O076-2020-12,O076-2020-12,1,1,right CEO
+O076,2021,multi-CEO system,O076-2021-12,O076-2021-12,1,1,right CEO
+O076,2022,multi-CEO system,O076-2022-08;O076-2022-13;O076-2022-14,O076-2022-08;O076-2022-13;O076-2022-14,3,3,right CEO
+O076,2023,multi-CEO system,O076-2023-10,O076-2023-10,1,1,right CEO
+O077,2019,multi-CEO system,O077-2019-01,O077-2019-01,1,1,right CEO
+O077,2020,multi-CEO system,O077-2020-01,O077-2020-01,1,1,right CEO
+O077,2021,multi-CEO system,O077-2021-01,O077-2021-01,1,1,right CEO
+O077,2022,multi-CEO system,O077-2022-01,O077-2022-01,1,1,right CEO
+O077,2023,multi-CEO system,O077-2023-01,O077-2023-01,1,1,right CEO
+O078,2019,multi-CEO system,O078-2019-01,O078-2019-02,1,1,wrong person
+O078,2020,multi-CEO system,O078-2020-01,O078-2020-02,1,1,wrong person
+O078,2021,multi-CEO system,O078-2021-16,O078-2021-02;O078-2021-03,1,2,wrong person
+O078,2022,multi-CEO system,"",O078-2022-01,0,1,"CEO named, none labeled"
+O078,2023,multi-CEO system,"",O078-2023-02,0,1,"CEO named, none labeled"
+O079,2019,multi-CEO system,O079-2019-02;O079-2019-05,O079-2019-02;O079-2019-05,2,2,right CEO
+O079,2020,multi-CEO system,O079-2020-02,O079-2020-02;O079-2020-05,1,2,extra CEO named
+O079,2021,multi-CEO system,O079-2021-02,O079-2021-02,1,1,right CEO
+O079,2022,multi-CEO system,O079-2022-01,O079-2022-01,1,1,right CEO
+O079,2023,multi-CEO system,O079-2023-02,O079-2023-02,1,1,right CEO
+O080,2019,multi-CEO system,O080-2019-17,O080-2019-17,1,1,right CEO
+O080,2020,multi-CEO system,O080-2020-01,O080-2020-01,1,1,right CEO
+O080,2021,multi-CEO system,O080-2021-01,O080-2021-01,1,1,right CEO
+O080,2022,multi-CEO system,O080-2022-01,O080-2022-01,1,1,right CEO
+O080,2023,multi-CEO system,O080-2023-02;O080-2023-04,O080-2023-02;O080-2023-04,2,2,right CEO
+O081,2019,museum,"","",0,0,right: no CEO
+O081,2020,museum,O081-2020-01,O081-2020-01,1,1,right CEO
+O081,2021,museum,O081-2021-18,O081-2021-18,1,1,right CEO
+O081,2022,museum,O081-2022-01,O081-2022-01,1,1,right CEO
+O081,2023,museum,O081-2023-01,O081-2023-01,1,1,right CEO
+O082,2019,museum,O082-2019-01,O082-2019-01,1,1,right CEO
+O082,2020,museum,O082-2020-01,O082-2020-01,1,1,right CEO
+O082,2021,museum,O082-2021-01,O082-2021-01,1,1,right CEO
+O082,2022,museum,O082-2022-01,O082-2022-01,1,1,right CEO
+O082,2023,museum,O082-2023-01;O082-2023-02,O082-2023-01;O082-2023-02,2,2,right CEO
+O083,2019,museum,O083-2019-01,O083-2019-01,1,1,right CEO
+O083,2020,museum,O083-2020-01,O083-2020-01,1,1,right CEO
+O083,2021,museum,O083-2021-01,O083-2021-01,1,1,right CEO
+O083,2022,museum,O083-2022-01,O083-2022-01,1,1,right CEO
+O083,2023,museum,O083-2023-01,O083-2023-01,1,1,right CEO
+O084,2019,museum,O084-2019-01,O084-2019-01,1,1,right CEO
+O084,2020,museum,O084-2020-01,O084-2020-01,1,1,right CEO
+O084,2021,museum,O084-2021-01,O084-2021-01,1,1,right CEO
+O084,2022,museum,O084-2022-01,O084-2022-01,1,1,right CEO
+O084,2023,museum,O084-2023-01,O084-2023-01,1,1,right CEO
+O085,2019,museum,O085-2019-01,O085-2019-01,1,1,right CEO
+O085,2020,museum,O085-2020-01,O085-2020-01,1,1,right CEO
+O085,2021,museum,O085-2021-01,O085-2021-01,1,1,right CEO
+O085,2022,museum,O085-2022-01,O085-2022-01,1,1,right CEO
+O085,2023,museum,O085-2023-02,O085-2023-02,1,1,right CEO
+O086,2019,museum,O086-2019-01,O086-2019-01,1,1,right CEO
+O086,2020,museum,O086-2020-01,O086-2020-01,1,1,right CEO
+O086,2021,museum,O086-2021-01,O086-2021-01,1,1,right CEO
+O086,2022,museum,O086-2022-01,O086-2022-01,1,1,right CEO
+O086,2023,museum,O086-2023-01,O086-2023-01,1,1,right CEO
+O087,2019,museum,"","",0,0,right: no CEO
+O087,2020,museum,O087-2020-01,O087-2020-01,1,1,right CEO
+O087,2021,museum,O087-2021-01,O087-2021-01,1,1,right CEO
+O087,2022,museum,O087-2022-01,O087-2022-01,1,1,right CEO
+O087,2023,museum,O087-2023-01,O087-2023-01,1,1,right CEO
+O088,2019,museum,O088-2019-01,O088-2019-01,1,1,right CEO
+O088,2020,museum,O088-2020-01,"",1,0,CEO missed
+O088,2021,museum,O088-2021-01,"",1,0,CEO missed
+O088,2022,museum,O088-2022-01,"",1,0,CEO missed
+O088,2023,museum,O088-2023-01,"",1,0,CEO missed
+O089,2019,museum,"","",0,0,right: no CEO
+O089,2020,museum,"","",0,0,right: no CEO
+O089,2021,museum,"","",0,0,right: no CEO
+O089,2022,museum,"","",0,0,right: no CEO
+O089,2023,museum,"","",0,0,right: no CEO
+O090,2019,museum,O090-2019-01,O090-2019-01,1,1,right CEO
+O090,2020,museum,O090-2020-01,O090-2020-01,1,1,right CEO
+O090,2021,museum,O090-2021-01,O090-2021-01,1,1,right CEO
+O090,2022,museum,O090-2022-01,O090-2022-01,1,1,right CEO
+O090,2023,museum,O090-2023-01,O090-2023-01,1,1,right CEO
+O091,2019,orchestra,O091-2019-01,O091-2019-01,1,1,right CEO
+O091,2020,orchestra,O091-2020-01,O091-2020-01,1,1,right CEO
+O091,2021,orchestra,O091-2021-01,O091-2021-01,1,1,right CEO
+O091,2022,orchestra,O091-2022-01,O091-2022-01,1,1,right CEO
+O091,2023,orchestra,O091-2023-01,O091-2023-01,1,1,right CEO
+O092,2019,orchestra,O092-2019-01,O092-2019-01,1,1,right CEO
+O092,2020,orchestra,O092-2020-01,O092-2020-01,1,1,right CEO
+O092,2021,orchestra,O092-2021-01,O092-2021-01,1,1,right CEO
+O092,2022,orchestra,O092-2022-01,O092-2022-01,1,1,right CEO
+O092,2023,orchestra,O092-2023-01,O092-2023-01,1,1,right CEO
+O093,2019,orchestra,O093-2019-01,O093-2019-01,1,1,right CEO
+O093,2020,orchestra,O093-2020-01,O093-2020-01,1,1,right CEO
+O093,2021,orchestra,O093-2021-01,O093-2021-01,1,1,right CEO
+O093,2022,orchestra,O093-2022-01,O093-2022-01,1,1,right CEO
+O093,2023,orchestra,O093-2023-01,O093-2023-01,1,1,right CEO
+O094,2019,orchestra,O094-2019-01,O094-2019-01,1,1,right CEO
+O094,2020,orchestra,O094-2020-01,O094-2020-01,1,1,right CEO
+O094,2021,orchestra,O094-2021-01,O094-2021-01,1,1,right CEO
+O094,2022,orchestra,O094-2022-01,O094-2022-01,1,1,right CEO
+O094,2023,orchestra,O094-2023-01,O094-2023-01,1,1,right CEO
+O095,2019,orchestra,O095-2019-01,O095-2019-01,1,1,right CEO
+O095,2020,orchestra,O095-2020-01,O095-2020-01,1,1,right CEO
+O095,2021,orchestra,O095-2021-01,O095-2021-01,1,1,right CEO
+O095,2022,orchestra,O095-2022-01,O095-2022-01,1,1,right CEO
+O095,2023,orchestra,O095-2023-01;O095-2023-07,O095-2023-01;O095-2023-07,2,2,right CEO
+O096,2019,orchestra,"","",0,0,right: no CEO
+O096,2020,orchestra,"","",0,0,right: no CEO
+O096,2021,orchestra,"","",0,0,right: no CEO
+O096,2022,orchestra,"","",0,0,right: no CEO
+O096,2023,orchestra,O096-2023-01,O096-2023-01,1,1,right CEO
+O097,2019,orchestra,"","",0,0,right: no CEO
+O097,2020,orchestra,"","",0,0,right: no CEO
+O097,2021,orchestra,"","",0,0,right: no CEO
+O097,2022,orchestra,"","",0,0,right: no CEO
+O097,2023,orchestra,"","",0,0,right: no CEO
+O098,2019,orchestra,O098-2019-01,O098-2019-01,1,1,right CEO
+O098,2020,orchestra,"","",0,0,right: no CEO
+O098,2021,orchestra,"","",0,0,right: no CEO
+O098,2022,orchestra,"","",0,0,right: no CEO
+O098,2023,orchestra,"","",0,0,right: no CEO
+O099,2019,orchestra,O099-2019-01,O099-2019-01,1,1,right CEO
+O099,2020,orchestra,O099-2020-02,O099-2020-02,1,1,right CEO
+O099,2021,orchestra,"","",0,0,right: no CEO
+O099,2022,orchestra,"","",0,0,right: no CEO
+O099,2023,orchestra,"","",0,0,right: no CEO
+O100,2019,orchestra,"",O100-2019-01,0,1,"CEO named, none labeled"
+O100,2020,orchestra,"",O100-2020-01,0,1,"CEO named, none labeled"
+O100,2021,orchestra,"",O100-2021-01,0,1,"CEO named, none labeled"
+O100,2022,orchestra,"",O100-2022-01,0,1,"CEO named, none labeled"
+O100,2023,orchestra,"",O100-2023-01,0,1,"CEO named, none labeled"
+O101,2019,trade association,O101-2019-01,O101-2019-01,1,1,right CEO
+O101,2020,trade association,O101-2020-01,O101-2020-01,1,1,right CEO
+O101,2021,trade association,O101-2021-01,O101-2021-01,1,1,right CEO
+O101,2022,trade association,O101-2022-01,O101-2022-01,1,1,right CEO
+O101,2023,trade association,O101-2023-01,O101-2023-01,1,1,right CEO
+O102,2019,trade association,O102-2019-01,O102-2019-01,1,1,right CEO
+O102,2020,trade association,O102-2020-01;O102-2020-02,O102-2020-01;O102-2020-02,2,2,right CEO
+O102,2021,trade association,O102-2021-01;O102-2021-02,O102-2021-01;O102-2021-02;O102-2021-03,2,3,extra CEO named
+O102,2022,trade association,O102-2022-01,O102-2022-01,1,1,right CEO
+O102,2023,trade association,O102-2023-01,O102-2023-01,1,1,right CEO
+O103,2019,trade association,O103-2019-01,O103-2019-01,1,1,right CEO
+O103,2020,trade association,O103-2020-01,O103-2020-01,1,1,right CEO
+O103,2021,trade association,O103-2021-01,O103-2021-01,1,1,right CEO
+O103,2022,trade association,O103-2022-01,O103-2022-01,1,1,right CEO
+O103,2023,trade association,O103-2023-01,O103-2023-01,1,1,right CEO
+O104,2019,trade association,O104-2019-01,O104-2019-01,1,1,right CEO
+O104,2020,trade association,O104-2020-01,O104-2020-01,1,1,right CEO
+O104,2021,trade association,O104-2021-01,O104-2021-01,1,1,right CEO
+O104,2022,trade association,O104-2022-01,O104-2022-01,1,1,right CEO
+O104,2023,trade association,O104-2023-01,O104-2023-01,1,1,right CEO
+O105,2019,trade association,"","",0,0,right: no CEO
+O105,2020,trade association,"","",0,0,right: no CEO
+O105,2021,trade association,"","",0,0,right: no CEO
+O105,2022,trade association,O105-2022-01,O105-2022-01,1,1,right CEO
+O105,2023,trade association,O105-2023-01,O105-2023-01,1,1,right CEO
+O106,2019,trade association,"","",0,0,right: no CEO
+O106,2020,trade association,"",O106-2020-01,0,1,"CEO named, none labeled"
+O106,2021,trade association,O106-2021-02,O106-2021-01,1,1,wrong person
+O106,2022,trade association,O106-2022-01,O106-2022-01,1,1,right CEO
+O106,2023,trade association,"","",0,0,right: no CEO
+O107,2019,trade association,O107-2019-01,O107-2019-01,1,1,right CEO
+O107,2020,trade association,O107-2020-01,O107-2020-01,1,1,right CEO
+O107,2021,trade association,O107-2021-01;O107-2021-02,O107-2021-01;O107-2021-02,2,2,right CEO
+O107,2022,trade association,O107-2022-01,O107-2022-01,1,1,right CEO
+O107,2023,trade association,O107-2023-01,O107-2023-01,1,1,right CEO
+O108,2019,trade association,O108-2019-01,O108-2019-01,1,1,right CEO
+O108,2020,trade association,O108-2020-01,O108-2020-01,1,1,right CEO
+O108,2021,trade association,O108-2021-01,O108-2021-01,1,1,right CEO
+O108,2022,trade association,O108-2022-01,O108-2022-01,1,1,right CEO
+O108,2023,trade association,O108-2023-01,O108-2023-01,1,1,right CEO
+O109,2019,trade association,O109-2019-01,O109-2019-01,1,1,right CEO
+O109,2020,trade association,O109-2020-01,O109-2020-01,1,1,right CEO
+O109,2021,trade association,O109-2021-01,O109-2021-01,1,1,right CEO
+O109,2022,trade association,O109-2022-01,O109-2022-01,1,1,right CEO
+O109,2023,trade association,O109-2023-01,O109-2023-01,1,1,right CEO
+O110,2019,trade association,"","",0,0,right: no CEO
+O110,2020,trade association,"","",0,0,right: no CEO
+O110,2021,trade association,"","",0,0,right: no CEO
+O110,2022,trade association,"","",0,0,right: no CEO
+O110,2023,trade association,"","",0,0,right: no CEO
+O111,2019,union,O111-2019-01,O111-2019-01,1,1,right CEO
+O111,2020,union,O111-2020-01,O111-2020-01,1,1,right CEO
+O111,2021,union,O111-2021-01,O111-2021-01,1,1,right CEO
+O111,2022,union,O111-2022-01,O111-2022-01,1,1,right CEO
+O111,2023,union,O111-2023-01,O111-2023-01,1,1,right CEO
+O112,2019,union,O112-2019-01,O112-2019-01,1,1,right CEO
+O112,2020,union,O112-2020-01,O112-2020-01,1,1,right CEO
+O112,2021,union,O112-2021-01,O112-2021-01,1,1,right CEO
+O112,2022,union,O112-2022-01,O112-2022-01,1,1,right CEO
+O112,2023,union,O112-2023-01;O112-2023-02,O112-2023-01,2,1,wrong person
+O113,2019,union,O113-2019-01,O113-2019-01,1,1,right CEO
+O113,2020,union,O113-2020-01;O113-2020-02,O113-2020-01,2,1,wrong person
+O113,2021,union,O113-2021-01,O113-2021-01,1,1,right CEO
+O113,2022,union,O113-2022-02,O113-2022-01,1,1,wrong person
+O113,2023,union,O113-2023-01,O113-2023-01,1,1,right CEO
+O114,2019,union,"",O114-2019-01,0,1,"CEO named, none labeled"
+O114,2020,union,"",O114-2020-01,0,1,"CEO named, none labeled"
+O114,2021,union,O114-2021-01,O114-2021-01,1,1,right CEO
+O114,2022,union,O114-2022-01,O114-2022-01,1,1,right CEO
+O114,2023,union,O114-2023-01,O114-2023-01,1,1,right CEO
+O115,2019,union,O115-2019-01,O115-2019-01,1,1,right CEO
+O115,2020,union,O115-2020-01,O115-2020-01,1,1,right CEO
+O115,2021,union,O115-2021-01,O115-2021-01,1,1,right CEO
+O115,2022,union,O115-2022-01,O115-2022-01,1,1,right CEO
+O115,2023,union,O115-2023-01,O115-2023-01,1,1,right CEO
+O116,2019,union,O116-2019-01,"",1,0,CEO missed
+O116,2020,union,O116-2020-01,"",1,0,CEO missed
+O116,2021,union,O116-2021-01,"",1,0,CEO missed
+O116,2022,union,O116-2022-01,"",1,0,CEO missed
+O116,2023,union,O116-2023-02,"",1,0,CEO missed
+O117,2019,union,"","",0,0,right: no CEO
+O117,2020,union,"","",0,0,right: no CEO
+O117,2021,union,"","",0,0,right: no CEO
+O117,2022,union,"","",0,0,right: no CEO
+O117,2023,union,"","",0,0,right: no CEO
+O118,2019,union,"","",0,0,right: no CEO
+O118,2020,union,"","",0,0,right: no CEO
+O118,2021,union,"","",0,0,right: no CEO
+O118,2022,union,"","",0,0,right: no CEO
+O118,2023,union,"","",0,0,right: no CEO
+O119,2019,union,O119-2019-01,O119-2019-01,1,1,right CEO
+O119,2020,union,O119-2020-06,"",1,0,CEO missed
+O119,2021,union,O119-2021-01,O119-2021-01,1,1,right CEO
+O119,2022,union,O119-2022-01,O119-2022-01,1,1,right CEO
+O119,2023,union,O119-2023-01,O119-2023-01,1,1,right CEO
+O120,2019,union,"","",0,0,right: no CEO
+O120,2020,union,"","",0,0,right: no CEO
+O120,2021,union,"","",0,0,right: no CEO
+O120,2022,union,"","",0,0,right: no CEO
+O120,2023,union,"","",0,0,right: no CEO
+O121,2019,university,O121-2019-02,O121-2019-02,1,1,right CEO
+O121,2020,university,O121-2020-01,O121-2020-01,1,1,right CEO
+O121,2021,university,O121-2021-01,O121-2021-01,1,1,right CEO
+O121,2022,university,O121-2022-01,O121-2022-01,1,1,right CEO
+O121,2023,university,O121-2023-01,O121-2023-01,1,1,right CEO
+O122,2019,university,"","",0,0,right: no CEO
+O122,2020,university,"","",0,0,right: no CEO
+O122,2021,university,"","",0,0,right: no CEO
+O122,2022,university,"","",0,0,right: no CEO
+O122,2023,university,"","",0,0,right: no CEO
+O123,2019,university,O123-2019-01,O123-2019-02,1,1,wrong person
+O123,2020,university,O123-2020-01,O123-2020-02,1,1,wrong person
+O123,2021,university,O123-2021-01,O123-2021-02,1,1,wrong person
+O123,2022,university,O123-2022-01,O123-2022-02,1,1,wrong person
+O123,2023,university,O123-2023-01,O123-2023-01,1,1,right CEO
+O124,2019,university,"","",0,0,right: no CEO
+O124,2020,university,"","",0,0,right: no CEO
+O124,2021,university,"","",0,0,right: no CEO
+O124,2022,university,"","",0,0,right: no CEO
+O124,2023,university,"","",0,0,right: no CEO
+O125,2019,university,O125-2019-07,O125-2019-01,1,1,wrong person
+O125,2020,university,O125-2020-05,O125-2020-03,1,1,wrong person
+O125,2021,university,O125-2021-04,O125-2021-02,1,1,wrong person
+O125,2022,university,O125-2022-03,O125-2022-03,1,1,right CEO
+O125,2023,university,O125-2023-03,O125-2023-02,1,1,wrong person
+O126,2019,university,"",O126-2019-05,0,1,"CEO named, none labeled"
+O126,2020,university,"",O126-2020-02,0,1,"CEO named, none labeled"
+O126,2021,university,"",O126-2021-02,0,1,"CEO named, none labeled"
+O126,2022,university,"",O126-2022-02,0,1,"CEO named, none labeled"
+O126,2023,university,"",O126-2023-02,0,1,"CEO named, none labeled"
+O127,2019,university,O127-2019-01,O127-2019-01,1,1,right CEO
+O127,2020,university,O127-2020-01,O127-2020-01,1,1,right CEO
+O127,2021,university,O127-2021-01,"",1,0,CEO missed
+O127,2022,university,O127-2022-01,"",1,0,CEO missed
+O127,2023,university,"","",0,0,right: no CEO
+O128,2019,university,O128-2019-02,O128-2019-01;O128-2019-02,1,2,extra CEO named
+O128,2020,university,O128-2020-02,O128-2020-01;O128-2020-02,1,2,extra CEO named
+O128,2021,university,O128-2021-02,O128-2021-02,1,1,right CEO
+O128,2022,university,O128-2022-02,O128-2022-02,1,1,right CEO
+O128,2023,university,O128-2023-02,O128-2023-02,1,1,right CEO
+O129,2019,university,"",O129-2019-03,0,1,"CEO named, none labeled"
+O129,2020,university,"",O129-2020-01,0,1,"CEO named, none labeled"
+O129,2021,university,"",O129-2021-05,0,1,"CEO named, none labeled"
+O129,2022,university,"",O129-2022-04,0,1,"CEO named, none labeled"
+O129,2023,university,"",O129-2023-03,0,1,"CEO named, none labeled"
+O130,2019,university,O130-2019-01,"",1,0,CEO missed
+O130,2020,university,"","",0,0,right: no CEO
+O130,2021,university,"","",0,0,right: no CEO
+O130,2022,university,"","",0,0,right: no CEO
+O130,2023,university,"","",0,0,right: no CEO
+O131,2019,veterans post,"",O131-2019-02,0,1,"CEO named, none labeled"
+O131,2020,veterans post,"",O131-2020-02,0,1,"CEO named, none labeled"
+O131,2021,veterans post,"",O131-2021-02,0,1,"CEO named, none labeled"
+O131,2022,veterans post,"",O131-2022-01,0,1,"CEO named, none labeled"
+O131,2023,veterans post,"",O131-2023-01,0,1,"CEO named, none labeled"
+O132,2019,veterans post,O132-2019-02,O132-2019-01,1,1,wrong person
+O132,2020,veterans post,O132-2020-02,O132-2020-01,1,1,wrong person
+O132,2021,veterans post,O132-2021-02,O132-2021-01,1,1,wrong person
+O132,2022,veterans post,O132-2022-02,O132-2022-01,1,1,wrong person
+O132,2023,veterans post,O132-2023-02,O132-2023-01,1,1,wrong person
+O133,2019,veterans post,"","",0,0,right: no CEO
+O133,2020,veterans post,"","",0,0,right: no CEO
+O133,2021,veterans post,"","",0,0,right: no CEO
+O133,2022,veterans post,"","",0,0,right: no CEO
+O133,2023,veterans post,"","",0,0,right: no CEO
+O134,2019,veterans post,O134-2019-01,"",1,0,CEO missed
+O134,2020,veterans post,O134-2020-01,"",1,0,CEO missed
+O134,2021,veterans post,O134-2021-01,"",1,0,CEO missed
+O134,2022,veterans post,O134-2022-01,"",1,0,CEO missed
+O134,2023,veterans post,O134-2023-01,O134-2023-01,1,1,right CEO
+O135,2019,veterans post,"","",0,0,right: no CEO
+O135,2020,veterans post,"",O135-2020-01,0,1,"CEO named, none labeled"
+O135,2021,veterans post,"",O135-2021-01,0,1,"CEO named, none labeled"
+O135,2022,veterans post,"",O135-2022-01,0,1,"CEO named, none labeled"
+O135,2023,veterans post,"",O135-2023-01,0,1,"CEO named, none labeled"
+O136,2019,veterans post,"","",0,0,right: no CEO
+O136,2020,veterans post,"","",0,0,right: no CEO
+O136,2021,veterans post,"","",0,0,right: no CEO
+O136,2022,veterans post,"","",0,0,right: no CEO
+O136,2023,veterans post,"","",0,0,right: no CEO
+O137,2019,veterans post,"","",0,0,right: no CEO
+O137,2020,veterans post,"","",0,0,right: no CEO
+O137,2021,veterans post,"","",0,0,right: no CEO
+O137,2022,veterans post,"","",0,0,right: no CEO
+O137,2023,veterans post,"","",0,0,right: no CEO
+O138,2019,veterans post,"","",0,0,right: no CEO
+O138,2020,veterans post,"","",0,0,right: no CEO
+O138,2021,veterans post,"","",0,0,right: no CEO
+O138,2022,veterans post,"","",0,0,right: no CEO
+O138,2023,veterans post,"","",0,0,right: no CEO
+O139,2019,veterans post,"","",0,0,right: no CEO
+O139,2020,veterans post,"","",0,0,right: no CEO
+O139,2021,veterans post,"","",0,0,right: no CEO
+O139,2022,veterans post,"","",0,0,right: no CEO
+O139,2023,veterans post,"","",0,0,right: no CEO
+O140,2019,veterans post,O140-2019-04,"",1,0,CEO missed
+O140,2020,veterans post,O140-2020-04,"",1,0,CEO missed
+O140,2021,veterans post,O140-2021-01,"",1,0,CEO missed
+O140,2022,veterans post,O140-2022-01,"",1,0,CEO missed
+O140,2023,veterans post,O140-2023-01,"",1,0,CEO missed
+O141,2019,veterinary association,O141-2019-01,O141-2019-01,1,1,right CEO
+O141,2020,veterinary association,O141-2020-01,O141-2020-01,1,1,right CEO
+O141,2021,veterinary association,O141-2021-01,O141-2021-01,1,1,right CEO
+O141,2022,veterinary association,O141-2022-01,O141-2022-01,1,1,right CEO
+O141,2023,veterinary association,O141-2023-01,O141-2023-01,1,1,right CEO
+O142,2019,veterinary association,O142-2019-01,O142-2019-01,1,1,right CEO
+O142,2020,veterinary association,O142-2020-01,O142-2020-01,1,1,right CEO
+O142,2021,veterinary association,O142-2021-01,O142-2021-01,1,1,right CEO
+O142,2022,veterinary association,O142-2022-01,O142-2022-01,1,1,right CEO
+O142,2023,veterinary association,O142-2023-01,O142-2023-01,1,1,right CEO
+O143,2019,veterinary association,O143-2019-01;O143-2019-03,O143-2019-01;O143-2019-03,2,2,right CEO
+O143,2020,veterinary association,O143-2020-01,O143-2020-01,1,1,right CEO
+O143,2021,veterinary association,O143-2021-01,O143-2021-01,1,1,right CEO
+O143,2022,veterinary association,O143-2022-01;O143-2022-02,O143-2022-01,2,1,wrong person
+O143,2023,veterinary association,O143-2023-01,O143-2023-01,1,1,right CEO
+O144,2019,veterinary association,O144-2019-01;O144-2019-02,O144-2019-01;O144-2019-02,2,2,right CEO
+O144,2020,veterinary association,O144-2020-01,O144-2020-01,1,1,right CEO
+O144,2021,veterinary association,O144-2021-01,O144-2021-01,1,1,right CEO
+O144,2022,veterinary association,O144-2022-01,O144-2022-01,1,1,right CEO
+O144,2023,veterinary association,O144-2023-01,O144-2023-01,1,1,right CEO
+O145,2019,veterinary association,O145-2019-01,O145-2019-01,1,1,right CEO
+O145,2020,veterinary association,O145-2020-01,O145-2020-01,1,1,right CEO
+O145,2021,veterinary association,O145-2021-01,O145-2021-01,1,1,right CEO
+O145,2022,veterinary association,O145-2022-01,O145-2022-01,1,1,right CEO
+O145,2023,veterinary association,O145-2023-01,O145-2023-01,1,1,right CEO
+O146,2019,veterinary association,"","",0,0,right: no CEO
+O146,2020,veterinary association,"","",0,0,right: no CEO
+O146,2021,veterinary association,"","",0,0,right: no CEO
+O146,2022,veterinary association,"","",0,0,right: no CEO
+O146,2023,veterinary association,"","",0,0,right: no CEO
+O147,2019,veterinary association,O147-2019-12,O147-2019-12,1,1,right CEO
+O147,2020,veterinary association,O147-2020-10,O147-2020-10,1,1,right CEO
+O147,2021,veterinary association,O147-2021-01,O147-2021-01,1,1,right CEO
+O147,2022,veterinary association,O147-2022-01,O147-2022-01,1,1,right CEO
+O147,2023,veterinary association,O147-2023-01,O147-2023-01,1,1,right CEO
+O148,2019,veterinary association,O148-2019-01,O148-2019-01,1,1,right CEO
+O148,2020,veterinary association,O148-2020-01,O148-2020-01,1,1,right CEO
+O148,2021,veterinary association,O148-2021-01,O148-2021-01,1,1,right CEO
+O148,2022,veterinary association,O148-2022-01,O148-2022-01,1,1,right CEO
+O148,2023,veterinary association,O148-2023-01,O148-2023-01,1,1,right CEO
+O149,2019,veterinary association,O149-2019-01,O149-2019-01,1,1,right CEO
+O149,2020,veterinary association,O149-2020-01,O149-2020-01,1,1,right CEO
+O149,2021,veterinary association,O149-2021-01,O149-2021-01,1,1,right CEO
+O149,2022,veterinary association,O149-2022-01,O149-2022-01,1,1,right CEO
+O149,2023,veterinary association,O149-2023-01,O149-2023-01,1,1,right CEO
+O150,2019,veterinary association,"",O150-2019-01,0,1,"CEO named, none labeled"
+O150,2020,veterinary association,"",O150-2020-01,0,1,"CEO named, none labeled"
+O150,2021,veterinary association,"",O150-2021-01,0,1,"CEO named, none labeled"
+O150,2022,veterinary association,"",O150-2022-01,0,1,"CEO named, none labeled"
+O150,2023,veterinary association,"",O150-2023-01,0,1,"CEO named, none labeled"
