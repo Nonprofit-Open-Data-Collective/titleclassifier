@@ -142,3 +142,45 @@ test_that("an assistant treasurer on the board holds a seat, not the treasurer's
   expect_equal(ra$role.board[ra$person.id == "g1"], "TREASURER")
   expect_equal(ra$role.board[ra$person.id == "g2"], "MEMBER")
 })
+
+# F-032: rules checked against the 2019-2023 CEO / board labels
+pr_of <- function(x) { r <- resolve_roles(x, use_model = FALSE); r[r$role.primary, ] }
+
+test_that("a past president or president-elect holds a seat; a dated change keeps the office (F-032)", {
+  h <- rbind(person("H", "h1", "BOARD PRESIDENT", board.role = "CHAIR", hours = 2, trustee = 1, officer = 1),
+             person("H", "h2", "BOARD PRESIDENT", board.role = "CHAIR", hours = 2, trustee = 1, title.raw = "PAST PRESIDENT"),
+             person("H", "h3", "BOARD PRESIDENT", board.role = "CHAIR", hours = 2, trustee = 1, title.raw = "PRESIDENT ELECT"),
+             person("H", "h4", "BOARD TREASURER", board.role = "TREASURER", hours = 2, trustee = 1, title.raw = "TREASURER THRU 6/2021"))
+  h$former.x <- c(0, 1, 0, 1); h$future.x <- c(0, 0, 1, 0); h$date.x <- c(0, 0, 0, 1)
+  ph <- pr_of(h)
+  expect_equal(ph$role.board[match(c("h1", "h2", "h3", "h4"), ph$person.id)], c("CHAIR", "MEMBER", "MEMBER", "TREASURER"))
+})
+
+test_that("an uncoded title naming another body's officer is a plain seat (F-032)", {
+  s <- rbind(person("S", "s1", NA, hours = 1, trustee = 1, title.raw = "SGA PRESIDENT"),
+             person("S", "s2", "VICE PRESIDENT", "OFFICER", hours = 1, trustee = 1, title.raw = "VICE PRESIDENT"))
+  ps <- pr_of(s)
+  expect_equal(ps$role.board[match(c("s1", "s2"), ps$person.id)], c("MEMBER", "VICE CHAIR"))
+})
+
+test_that("pay for a seat held an hour a week does not make a treasurer the CEO (F-032)", {
+  t <- rbind(person("T", "t1", "BOARD TREASURER", board.role = "TREASURER", comp = 79000, hours = 1, trustee = 1, officer = 1),
+             person("T", "t2", "BOARD PRESIDENT", board.role = "CHAIR", hours = 2, trustee = 1, officer = 1))
+  pt <- pr_of(t)
+  expect_false(any(pt$role.final == "CEO"))
+  expect_equal(unique(pt$org.leadership), "board_governed")
+})
+
+test_that("an unpaid full-time leader with the officer box is the CEO when no one else is (F-032)", {
+  u <- rbind(person("U", "u1", "BOARD PRESIDENT", board.role = "CHAIR", hours = 50, trustee = 1, officer = 1),
+             person("U", "u2", "BOARD MEMBER", board.role = "MEMBER", hours = 2, trustee = 1),
+             person("U", "u3", "STAFF", "STAFF", comp = 30000, hours = 40, key = 1))
+  pu <- pr_of(u)
+  expect_equal(pu$role.final[pu$person.id == "u1"], "CEO")
+  expect_equal(pu$role.ceo[pu$person.id == "u1"], "imputed")
+})
+
+test_that("an uncoded title that starts with an office keeps it (F-032)", {
+  w <- person("W", "w1", NA, hours = 1, trustee = 1, officer = 1, title.raw = "TREASURER AND TRUSTREE")
+  expect_equal(pr_of(w)$role.board, "TREASURER")
+})
