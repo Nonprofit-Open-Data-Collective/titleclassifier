@@ -131,3 +131,14 @@ test_that("990-EZ filings use the role model when xgboost is installed", {
   r3 <- resolve_roles(rbind(ez, full), use_model = FALSE)
   expect_true(all(r3$role.method == "rules"))
 })
+
+test_that("an assistant treasurer on the board holds a seat, not the treasurer's office (F-030)", {
+  a <- rbind(person("G", "g1", "BOARD TREASURER", board.role = "TREASURER", hours = 2, trustee = 1, officer = 1),
+             person("G", "g2", "ASSISTANT TREASURER", "STAFF", hours = 1, trustee = 1, officer = 1,
+                    title.raw = "ASSISTANT TREASURER"))
+  ra <- resolve_roles(a, use_model = FALSE)
+  ra <- ra[ra$role.primary, ]
+  expect_equal(ra$role.final, c("BOARD", "BOARD"))
+  expect_equal(ra$role.board[ra$person.id == "g1"], "TREASURER")
+  expect_equal(ra$role.board[ra$person.id == "g2"], "MEMBER")
+})

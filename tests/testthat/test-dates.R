@@ -38,3 +38,11 @@ test_that("region-code substitution only hits standalone codes (M1)", {
   expect_false(grepl("REGION", remove_date("DIRECTOR-1")))
   expect_false(grepl("REGION", remove_date("MGR-2")))
 })
+
+test_that("a bare year next to a time word sets the date flag (crosswalk review, F-030)", {
+  expect_true (has_date("TRUSTEE SINCE 2019"))
+  expect_true (has_date("DIRECTOR (UNTIL 2023)"))
+  expect_true (has_date("TREASURER 2019 - PRESENT"))
+  # a year alone may be a union local's number
+  expect_false(has_date("PRESIDENT LOCAL 2001"))
+})

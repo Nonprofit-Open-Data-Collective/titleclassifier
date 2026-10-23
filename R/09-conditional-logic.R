@@ -235,8 +235,12 @@ resolve_roles <- function( comp.data, use_model = TRUE )
   # the board role: the crosswalk's, or read from the title for an employee
   # title that turned out to be a board seat (VICE PRESIDENT, SECRETARY, ...)
   brank <- c( CHAIR = 1L, `VICE CHAIR` = 2L, SECRETARY = 3L, TREASURER = 4L, MEMBER = 5L )
+  # an assistant secretary or treasurer on the board holds a seat, not the
+  # office: the board keeps one secretary and one treasurer
+  asst_office <- chr( d$title.standard ) %in% c( "ASSISTANT SECRETARY", "ASSISTANT TREASURER" )
   d[ , .brole_t := data.table::fcase(
           nzchar(.brole),                                   .brole,
+          asst_office,                                      "MEMBER",
           grepl( "VICE (PRESIDENT|CHAIR)", title ),         "VICE CHAIR",
           grepl( "PRESIDENT|CHAIR", title ),                "CHAIR",
           grepl( "SECRETARY", title ),                      "SECRETARY",

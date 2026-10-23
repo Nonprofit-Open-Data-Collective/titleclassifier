@@ -94,8 +94,16 @@ has_date <- function(TitleTxt)
   #date strings
   date <- paste0( "\\b", date.words, "\\b", collapse="|" )
   format5 <- grepl( date, TitleTxt )
-  
-  has.date <- format1 | format2 | format3 | format4 | format5
+
+  # a bare year next to a time word: TRUSTEE SINCE 2019, DIRECTOR (UNTIL 2023),
+  # 2019 - PRESENT. remove_date() drops the digits, so the flag must be set
+  # here; a year alone is not enough (LOCAL 2001 is a union local)
+  time.words <- "SINCE|FROM|UNTIL|TILL|THRU|THROUGH|TO|AS OF|BEG[A-Z]*|END[A-Z]*|EFF[A-Z]*|START[A-Z]*|JOINED|LEFT|ELECTED|APPOINTED|RESIGNED|RETIRED|TERM|EXPIRE[A-Z]*|IN"
+  year <- "(19|20)[[:digit:]]{2}"
+  format6 <- grepl( paste0( "\\b(", time.words, ")\\W+", year, "\\b" ), TitleTxt ) |
+             grepl( paste0( "\\b", year, "\\W*(-|TO)\\W*(PRESENT|NOW|CURRENT)\\b" ), TitleTxt )
+
+  has.date <- format1 | format2 | format3 | format4 | format5 | format6
   return( has.date ) 
 }
 

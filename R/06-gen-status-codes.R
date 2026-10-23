@@ -22,14 +22,26 @@ gen_status_codes <- function( comp.data, title="TitleTxt5", gs_status_codes=NULL
   
   TitleTxt <- comp.data[[title]]
 
-  # no flag for current
-  TitleTxt <- gsub( "\\bCURRENT\\b", "", TitleTxt )
+  # load dtk status codes
+  # from the package data
+  if( is.null(gs_status_codes) )
+  { gs_status_codes <- get_status_codes() }
+
+  # no flag for a current term: CURRENT, PRESENT ('BOARD MEMBER (JAN-PRESENT)')
+  current <- get_variants( "CURRENT", gs_status_codes )
+  if( ! nzchar( current ) ) current <- "\\bCURRENT\\b"
+  TitleTxt <- gsub( current, "", TitleTxt )
 
   # edge cases - standardize first
   # TitleTxt <- gsub( "\\bEX\\s", "FORMER", TitleTxt )
   TitleTxt <- gsub( "\\bEX$",   "FORMER", TitleTxt )
   TitleTxt <- gsub( "\\bEND$",  "FORMER", TitleTxt )
-  TitleTxt <- gsub( "\\bNEW$",  "FORMER", TitleTxt )
+  # NEW marks a newly started term only at the end of a title ('TRUSTEE - NEW')
+  # or before an office ('NEW TRUSTEE'); elsewhere it is part of a name (NEW
+  # YORK, NEW MEMBER COORDINATOR), so it is not in the status table
+  TitleTxt <- gsub( "\\bNEW\\W*$",  "INCOMING", TitleTxt )
+  TitleTxt <- gsub( "^NEW (?=(BOARD|TRUSTEE|DIRECTOR|OFFICER|PRESIDENT|VICE|SECRETARY|TREASURER|CHAIR|CEO|CFO|COO|EXECUTIVE)\\b)",
+                    "INCOMING ", TitleTxt, perl = TRUE )
   TitleTxt <- gsub( "\\bFMR\\b", "FORMER", TitleTxt )   # FMR TRUSTEE, FMR VICE PRESIDENT
 
   # 'IMMEDIATE PA' is a truncated IMMEDIATE PAST (PRESIDENT), not Pennsylvania
@@ -54,12 +66,7 @@ gen_status_codes <- function( comp.data, title="TitleTxt5", gs_status_codes=NULL
   # passing the df through flag steps
   title <- "TitleTxt6"
   comp.data[[title]] <- TitleTxt
-  
-  # load dtk status codes
-  # from the package data
-  if( is.null(gs_status_codes) )
-  { gs_status_codes <- get_status_codes() }
-  
+
   # don't remove 'regional' because 
   # it changes the title meaning
   
