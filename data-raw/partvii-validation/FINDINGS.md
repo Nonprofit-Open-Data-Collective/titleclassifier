@@ -1104,3 +1104,111 @@ treasurers, executive secretaries and EXECUTIVE OFFICER. 237 tests pass.
 `~/Documents/PARTVII-before/` and `~/Documents/PARTVII-after/`. The canonical
 `~/Documents/PARTVII/sample/` (2026-10-09 run) is unchanged. Refresh it from
 the after run once this is merged.
+
+### F-031 CEO and board labels: 150 organizations, 2019-2023 (labeled; 193 rows await a decision)
+
+**Why.** The labeled sets v1 and v2 (F-023, F-024) are small and come from
+2010-12. A cross-tab of CEO cases on the 2019-2023 sample, by NTEE code and
+501(c) subsection from the NCCS BMF, showed that step 09 finds the chief
+executive far less often in some organization types. With anyone paid, the
+title names the CEO for 64% of c3 filings, but only 0-13% of c5 unions, c8/c10
+lodges, c9 trusts, c13 cemeteries and c19 veterans posts.
+
+**Sample** (`24-ceo-sample.R`):
+- 150 organizations that filed Part VII in every year 2019-2023 (750 filings,
+  9,297 rows), drawn from all e-filers.
+- 14 strata: museums, universities, lodges, ministries, orchestras, fire
+  departments, veterinary associations, unions, trade associations, clubs and
+  co-ops, benefit trusts and cemeteries, veterans posts, multi-CEO systems,
+  and control charities.
+- 10 organizations per stratum and 20 controls. Half are drawn from
+  organizations that pay someone $25k+ for 20+ h/wk.
+- Stratum assignment comes from the NTEE code, the subsection and the name.
+  It is approximate: for example, an orchestra musicians' union is under
+  orchestras and a student singing group under universities.
+
+**Labels** (`25-ceo-cases.R`, `ceo-sample/LABELING-GUIDE-ceo.md`):
+- Two independent agents, A and B, labeled every row of all five years of
+  each organization, without seeing step 09's output.
+- The guide is the v2 guide plus a `ceo` column marking each filing's chief
+  executive, and a rule to follow people across years.
+- **Agreement:**
+  - role: 98.4% (kappa 0.95);
+  - board role: 99.4%;
+  - the filing's chief executive: 98.4% of filings.
+- Both labelers are instances of the same model, so agreement overstates
+  independence.
+- **193 rows in 144 filings disagree.** They are in
+  `ceo-sample/disagreements.csv` for a person to decide; `26-ceo-score.R`
+  applies the decisions on its next run. The scores below use the 9,104 rows
+  both agreed on.
+
+**Step 09 against the labels** (`26-ceo-score.R`, main at 3e9d1cc):
+
+| Stratum | People | Role | Board role | Right chief executive |
+|---|---|---|---|---|
+| All | 9,098 | 94.4% | 96.4% | 80.9% of 750 filings |
+| University | 889 | 92.9% | 95.9% | 54% |
+| Veterans post | 761 | 94.2% | 94.9% | 54% |
+| Club or co-op | 566 | 89.9% | 100% | 74% |
+| Multi-CEO system | 890 | 91.1% | 98.7% | 78% |
+| Union | 416 | 86.1% | 96.1% | 78% |
+| Benefit trust or cemetery | 291 | 94.5% | 98.8% | 84% |
+| Fire department | 431 | 91.4% | 100% | 84% |
+| Control charity | 1,158 | 96.6% | 98.0% | 85% |
+| Lodge | 471 | 96.4% | 90.7% | 86% |
+| Ministry | 247 | 94.7% | 99.4% | 88% |
+| Veterinary association | 721 | 95.4% | 85.9% | 88% |
+| Orchestra | 1,030 | 97.3% | 99.2% | 90% |
+| Museum | 681 | 98.4% | 98.4% | 92% |
+| Trade association | 546 | 97.8% | 96.5% | 94% |
+
+Role accuracy is high because most rows are board seats. The chief-executive
+column is the CEO measure.
+
+**Where the CEO goes wrong (143 filings):**
+- **A CEO named where the board runs the organization (49).** A treasurer,
+  secretary, pool or orchestra manager paid a stipend is named CEO: inferred
+  from pay (29), by the 990-EZ model (13), or by title (7). These cases
+  concentrate in veterans posts, colleges' student associations, clubs and
+  lodges.
+- **The wrong person (42).** Most of these come from pay inference picking
+  the top-paid person. Examples:
+  - a golf course superintendent over the club's general manager;
+  - a Legion treasurer over the department adjutant;
+  - a chancellor or VP over the university president;
+  - a fire company's secretary-treasurer over its paid chief.
+- **No CEO found (39).**
+  - Unpaid or barely paid full-time leaders: president, commander, director
+    (guide rule 7).
+  - Executive titles step 09 doesn't read as CEO: a trust ADMINISTRATOR, a
+    general pastor, a foundation director.
+- **An extra CEO (13).** A former CEO still on the payroll, or a second
+  pastor or interim ED, named as a co-CEO.
+
+**What this says about a type-specific CEO thesaurus.**
+- It addresses part of "wrong person" and "no CEO found": the general manager
+  in clubs, the adjutant in veterans posts, the administrator in benefit
+  trusts, the president in universities and unions, the business manager in
+  unions.
+- That is roughly a quarter of the CEO errors.
+- The larger share is rules, not vocabulary:
+  - the pay threshold that makes a stipend-paid officer the CEO of a board-run
+    organization;
+  - the rule for unpaid full-time leaders;
+  - the treatment of former CEOs.
+- Both can be scored on this set by re-running `26-ceo-score.R` with
+  `CLASSIFIED=` pointing at new output.
+
+**Board seats.** The board role is right for 96.4% of board seats. The
+errors are concentrated in three patterns:
+- **Presidents-elect and past presidents are made CHAIR.** Step 06 strips
+  ELECT and PAST as status words, leaving PRESIDENT, so a filing gets two or
+  three chairs. This is most of the veterinary associations' 86%; it also
+  occurs in veterans posts and lodges. The labelers did not settle
+  president-elect either: MEMBER or VICE CHAIR.
+- **Lodge offices.** Junior warden, assistant rabban and the knight offices
+  are read as VICE CHAIR; the labels have MEMBER (91%).
+- **Veterans posts.** The department commander and senior vice commander are
+  read as MEMBER; the labels have CHAIR and VICE CHAIR. COMMANDER is another
+  type-specific term.
