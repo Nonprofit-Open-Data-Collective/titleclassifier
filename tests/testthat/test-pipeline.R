@@ -109,3 +109,16 @@ test_that("crosswalks load from package data", {
   expect_warning(x <- get_googlesheets_status_codes(refresh = TRUE), "retired")
   expect_identical(x, get_status_codes())
 })
+
+test_that("person ids do not depend on how filings are batched", {
+  skip_if_not(exists("tinypartvii"))
+  d <- as.data.frame(tinypartvii)
+  objs <- unique(d$OBJECTID)
+  d <- d[d$OBJECTID %in% objs[1:6], ]
+  whole <- suppressMessages(classify_titles(d, workers = 1, preserve_input = TRUE))
+  parts <- rbind(
+    suppressMessages(classify_titles(d[d$OBJECTID %in% objs[4:6], ], workers = 1, preserve_input = TRUE)),
+    suppressMessages(classify_titles(d[d$OBJECTID %in% objs[1:3], ], workers = 1, preserve_input = TRUE)))
+  key <- function(x) paste(x$OBJECTID, x$person.id, x$title.raw)
+  expect_setequal(key(parts), key(whole))
+})

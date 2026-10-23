@@ -273,9 +273,12 @@ standardize_comma <- function(TitleTxt)
   # find most common 'of' cases
   TitleTxt <- replace_w_of_except( TitleTxt )
   
-  type <- 
-    ifelse( grepl(",", TitleTxt), 
-            unlist( lapply( TitleTxt, comma_helper ) ), 2 )
+  # vapply() keeps one type per title. unlist(lapply()) silently dropped any
+  # NULL, so every later title in the batch took its neighbour's type and the
+  # result depended on which filings shared a batch.
+  type <-
+    ifelse( grepl(",", TitleTxt),
+            vapply( TitleTxt, comma_helper, numeric(1), USE.NAMES = FALSE ), 2 )
   
   #comma as separator
   TitleTxt <- ifelse(type == 0, gsub(","," &",TitleTxt), TitleTxt) 
@@ -468,10 +471,12 @@ comma_helper <- function(x){
       com_true <- (com_true & titlePresent)
     }
     if(com_true) return(0)
-    else if(com_eq_of) return(1)
+    # Otherwise the comma reads as "of" ("VP, FINANCE") or sets off a
+    # qualifier ("PRESIDENT, HOSPITAL AUXILIARY"); either way it becomes a
+    # space. This used to return NULL when com_eq_of was FALSE.
+    return(1)
   }
-  else return(2)
-  
+  return(2)
 }
 
 
