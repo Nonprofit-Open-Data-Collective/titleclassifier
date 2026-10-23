@@ -60,6 +60,8 @@ navbar:
       - text: "09 - Resolve roles"
         href: articles/step-09-conditional-logic.html
       - text: -------
+      - text: "Identifying CEOs"
+        href: articles/identifying-ceos.html
       - text: "Rules and models"
         href: articles/classifiers.html
       - text: "Dictionaries and crosswalks"
@@ -80,6 +82,7 @@ articles:
 - title: Pipeline steps
   contents:
   - starts_with("step-")
+  - articles/identifying-ceos
   - articles/classifiers
 - title: Reference
   contents:
