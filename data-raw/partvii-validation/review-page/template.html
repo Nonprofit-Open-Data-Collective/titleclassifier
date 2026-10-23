@@ -1,0 +1,385 @@
+<title>Part VII Label Review</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@500;600&display=swap">
+<style>
+/* Layout: a two-pane review desk. Queue down the left, one case at a time on
+   the right, laid out like a 990 schedule: the filing's Part VII table, the
+   competing labels, then the decision. */
+:root {
+  --paper: #f5f6f3;
+  --sheet: #ffffff;
+  --ink: #1d2733;
+  --ink-soft: #55606c;
+  --rule: #d7dbd5;
+  --rule-strong: #b8beb6;
+  --accent: #23577a;
+  --accent-ink: #ffffff;
+  --mark: #fde9a6;
+  --mark-ink: #4a3b00;
+  --good: #2f6b3f;
+  --warn: #8a5a00;
+  --bad: #9b2f2f;
+  --chip: #e8ece6;
+  --font-sans: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --font-cond: "IBM Plex Sans Condensed", "Arial Narrow", "IBM Plex Sans", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #14191e; --sheet: #1b2228; --ink: #e3e8ec; --ink-soft: #9aa6b1;
+    --rule: #2c353d; --rule-strong: #3c4751; --accent: #7fb5d9; --accent-ink: #0d1a24;
+    --mark: #4a3f13; --mark-ink: #f6e3a1; --good: #7cc48d; --warn: #e2b155; --bad: #e58c8c;
+    --chip: #253038; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #14191e; --sheet: #1b2228; --ink: #e3e8ec; --ink-soft: #9aa6b1;
+  --rule: #2c353d; --rule-strong: #3c4751; --accent: #7fb5d9; --accent-ink: #0d1a24;
+  --mark: #4a3f13; --mark-ink: #f6e3a1; --good: #7cc48d; --warn: #e2b155; --bad: #e58c8c;
+  --chip: #253038; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body { background: var(--paper); color: var(--ink); font: 14px/1.45 var(--font-sans); }
+button, input, select, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.app { display: grid; grid-template-columns: 300px minmax(0, 1fr); height: 100%; }
+.side { border-right: 1px solid var(--rule); display: flex; flex-direction: column; min-height: 0; background: var(--sheet);
+  padding-left: max(0px, env(safe-area-inset-left, 0px)); }
+.side-head { padding: 16px 16px 12px; border-bottom: 1px solid var(--rule); display: grid; gap: 10px; }
+.side-head h1 { font: 600 16px/1.2 var(--font-cond); letter-spacing: .02em; margin: 0; text-wrap: balance; }
+.progress { display: grid; gap: 4px; font-size: 12px; color: var(--ink-soft); }
+.bar { height: 6px; background: var(--chip); border-radius: 3px; overflow: hidden; }
+.bar > i { display: block; height: 100%; background: var(--good); width: 0; transition: width .3s; }
+.filters { display: flex; flex-wrap: wrap; gap: 6px; }
+.filters select, .filters input { padding: 5px 8px; border: 1px solid var(--rule-strong); border-radius: 4px; background: var(--sheet); min-width: 0; }
+.filters input { flex: 1 1 100%; }
+.filters select { flex: 1 1 0; }
+.list { overflow-y: auto; flex: 1; min-height: 0; }
+.list button { display: grid; grid-template-columns: 1fr auto; gap: 2px 8px; width: 100%; text-align: left; padding: 9px 16px;
+  border: 0; border-bottom: 1px solid var(--rule); background: none; cursor: pointer; }
+.list button:hover { background: var(--chip); }
+.list button[aria-current="true"] { background: var(--mark); color: var(--mark-ink); }
+.list .who { font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.list .meta { grid-column: 1 / -1; font-size: 12px; color: var(--ink-soft); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.list button[aria-current="true"] .meta { color: inherit; opacity: .8; }
+.dot { width: 9px; height: 9px; border-radius: 50%; align-self: center; border: 1.5px solid var(--rule-strong); }
+.dot.done { background: var(--good); border-color: var(--good); }
+
+.main { overflow-y: auto; min-height: 0; padding-block: 20px 48px;
+  padding-left: max(24px, env(safe-area-inset-left, 0px)); padding-right: max(24px, env(safe-area-inset-right, 0px)); }
+.case { max-width: 1080px; margin: 0 auto; display: grid; gap: 18px; }
+.eyebrow { font: 600 11px/1 var(--font-cond); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); }
+.case-head { display: grid; gap: 6px; }
+.case-head h2 { margin: 0; font: 600 22px/1.2 var(--font-cond); text-wrap: balance; }
+.case-head .sub { color: var(--ink-soft); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { font: 500 12px/1 var(--font-sans); padding: 4px 8px; border-radius: 3px; background: var(--chip); }
+.chip.q1, .chip.q2 { background: color-mix(in srgb, var(--bad) 18%, var(--sheet)); color: var(--bad); }
+.chip.q3, .chip.q5 { background: color-mix(in srgb, var(--warn) 18%, var(--sheet)); color: var(--warn); }
+.chip.q4 { background: color-mix(in srgb, var(--good) 18%, var(--sheet)); color: var(--good); }
+.nav { display: flex; gap: 8px; align-items: center; margin-left: auto; }
+.toprow { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-start; }
+
+.panel { background: var(--sheet); border: 1px solid var(--rule); border-radius: 6px; padding: 14px 16px; display: grid; gap: 10px; min-width: 0; }
+.panel h3 { margin: 0; font: 600 13px/1.2 var(--font-cond); letter-spacing: .04em; text-transform: uppercase; color: var(--ink-soft); }
+.grid2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: 18px; align-items: start; }
+.person { display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; }
+.person dt { color: var(--ink-soft); font-size: 12px; padding-top: 2px; }
+.person dd { margin: 0; }
+.num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 13px; }
+th { text-align: left; font: 600 11px/1.2 var(--font-cond); letter-spacing: .05em; text-transform: uppercase; color: var(--ink-soft);
+  padding: 6px 8px; border-bottom: 1.5px solid var(--rule-strong); white-space: nowrap; }
+td { padding: 6px 8px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+td.r, th.r { text-align: right; }
+tr.target td { background: var(--mark); color: var(--mark-ink); }
+tr.target td:first-child { box-shadow: inset 3px 0 0 var(--warn); }
+.box { font-family: var(--font-mono); letter-spacing: .12em; }
+
+.labels td.src { white-space: nowrap; font-weight: 500; }
+.labels td.lab { font-family: var(--font-mono); font-size: 12.5px; white-space: nowrap; }
+.labels td.note { color: var(--ink-soft); min-width: 220px; }
+.labels tr.agree td.lab { color: var(--good); }
+.use { padding: 3px 9px; border: 1px solid var(--rule-strong); background: var(--sheet); border-radius: 4px; cursor: pointer; font-size: 12px; white-space: nowrap; }
+.use:hover { border-color: var(--accent); color: var(--accent); }
+.tag { font: 500 11px/1 var(--font-sans); padding: 2px 5px; border-radius: 3px; background: var(--chip); margin-left: 6px; color: var(--ink-soft); }
+
+form.decide { display: grid; gap: 12px; }
+.fields { display: flex; flex-wrap: wrap; gap: 12px; align-items: end; }
+.field { display: grid; gap: 4px; min-width: 0; }
+.field label { font-size: 12px; color: var(--ink-soft); }
+.field select, .field input[type=text], .field textarea { padding: 6px 8px; border: 1px solid var(--rule-strong); border-radius: 4px; background: var(--sheet); }
+.field textarea { width: 100%; min-height: 54px; resize: vertical; }
+.check { display: flex; gap: 6px; align-items: center; padding-bottom: 6px; }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.btn { padding: 7px 14px; border-radius: 4px; border: 1px solid var(--rule-strong); background: var(--sheet); cursor: pointer; font-weight: 500; }
+.btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.btn:disabled { opacity: .5; cursor: default; }
+.status { font-size: 12.5px; color: var(--ink-soft); }
+.status.ok { color: var(--good); } .status.err { color: var(--bad); }
+.saved { border-left: 3px solid var(--good); padding-left: 10px; font-size: 13px; }
+.banner { padding: 8px 12px; border-radius: 4px; background: color-mix(in srgb, var(--warn) 15%, var(--sheet)); color: var(--warn); font-size: 13px; }
+.keys { font-size: 12px; color: var(--ink-soft); }
+kbd { font-family: var(--font-mono); font-size: 11px; padding: 1px 5px; border: 1px solid var(--rule-strong); border-radius: 3px; }
+.empty { color: var(--ink-soft); padding: 24px 16px; }
+
+@media (max-width: 1200px) { .grid2 { grid-template-columns: 1fr; } }
+@media (max-width: 860px) {
+  .app { grid-template-columns: 1fr; grid-template-rows: auto minmax(0, 1fr); }
+  .side { max-height: 42vh; border-right: 0; border-bottom: 1px solid var(--rule); }
+  .grid2 { grid-template-columns: 1fr; }
+  .main { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+}
+@media (prefers-reduced-motion: reduce) { .bar > i { transition: none; } }
+</style>
+
+<div class="app">
+  <aside class="side" aria-label="Review queue">
+    <div class="side-head">
+      <h1>Part VII label review</h1>
+      <div class="progress"><div class="bar"><i id="bar"></i></div><span id="progress-text">Loading decisions&hellip;</span></div>
+      <div class="filters">
+        <input id="search" type="search" placeholder="Search organization, person or title" aria-label="Search">
+        <select id="f-queue" aria-label="Queue"><option value="">All queues</option></select>
+        <select id="f-status" aria-label="Status">
+          <option value="open">To decide</option><option value="done">Decided</option><option value="">All</option>
+        </select>
+      </div>
+    </div>
+    <div class="list" id="list" role="list"></div>
+  </aside>
+  <main class="main"><div class="case" id="case"></div></main>
+</div>
+
+<script type="application/json" id="data">/*__DATA__*/</script>
+<script>
+const DATA = JSON.parse(document.getElementById("data").textContent);
+const CASES = DATA.cases;
+const ROLES = ["CEO", "OFFICER", "MANAGER", "PROFESSIONAL", "STAFF", "BOARD", "DUAL", "UNSURE", "NONE"];
+const BOARDS = ["", "CHAIR", "VICE CHAIR", "SECRETARY", "SECRETARY TREASURER", "TREASURER", "MEMBER"];
+const SOURCES = [
+  ["reference", "Agreed label", "Both original labelers"],
+  ["A", "Labeler A", "Original labeler"], ["B", "Labeler B", "Original labeler"],
+  ["fable", "Fable 5.1", ""], ["opus", "Opus 5.5", ""], ["sonnet", "Sonnet 5.5", ""], ["haiku", "Haiku 5.5", ""],
+  ["step09", "Step 09", "The package's rules"]
+];
+let decisions = {};          // row_id -> decision document
+let db = null, uid = null, canWrite = true, dbReady = false;
+let current = 0;
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+// "ROLE (BOARD) +CEO" -> parts
+function parseLabel(s) {
+  const m = /^([A-Z]+)(?: \(([^)]+)\))?( \+CEO)?$/.exec(s || "");
+  return m ? { role: m[1], board: m[2] || "", ceo: !!m[3] } : null;
+}
+const keyOf = (p) => p ? `${p.role}|${["BOARD", "DUAL"].includes(p.role) ? p.board : ""}|${p.ceo}` : "";
+
+// ---- queue list ------------------------------------------------------------------
+function initFilters() {
+  for (const [k, v] of Object.entries(DATA.queue_names)) {
+    const o = document.createElement("option"); o.value = k; o.textContent = `${k}. ${v} (${DATA.counts[k] || 0})`;
+    $("f-queue").append(o);
+  }
+  for (const id of ["search", "f-queue", "f-status"]) $(id).addEventListener("input", renderList);
+}
+function filtered() {
+  const q = $("search").value.trim().toLowerCase(), qu = $("f-queue").value, st = $("f-status").value;
+  return CASES.map((c, i) => i).filter((i) => {
+    const c = CASES[i];
+    if (qu && String(c.queue) !== qu) return false;
+    if (st === "open" && decisions[c.row_id]) return false;
+    if (st === "done" && !decisions[c.row_id]) return false;
+    if (q) {
+      const org = (DATA.orgs[c.org_id] || {}).name || "";
+      if (!`${org} ${c.person} ${c.title} ${c.row_id}`.toLowerCase().includes(q)) return false;
+    }
+    return true;
+  });
+}
+function renderList() {
+  const idx = filtered(), el = $("list");
+  if (!idx.length) { el.innerHTML = `<p class="empty">No cases match. Change the filters to see more.</p>`; return; }
+  el.innerHTML = idx.map((i) => {
+    const c = CASES[i], org = (DATA.orgs[c.org_id] || {}).name || c.org_id;
+    return `<button type="button" role="listitem" data-i="${i}" aria-current="${i === current}">
+      <span class="who">${esc(c.person)}&nbsp;&middot; ${esc(c.title)}</span><span class="dot${decisions[c.row_id] ? " done" : ""}" title="${decisions[c.row_id] ? "Decided" : "To decide"}"></span>
+      <span class="meta">${c.queue}. ${esc(org)}&nbsp;&middot; ${c.year}</span></button>`;
+  }).join("");
+  el.querySelectorAll("button").forEach((b) => b.addEventListener("click", () => show(+b.dataset.i)));
+}
+function renderProgress() {
+  const n = CASES.length, d = CASES.filter((c) => decisions[c.row_id]).length;
+  $("bar").style.width = `${(100 * d / n).toFixed(1)}%`;
+  $("progress-text").textContent = dbReady ? `${d} of ${n} decided` : (db === null ? `${n} cases · decisions can't be saved in this view` : "Loading decisions…");
+}
+
+// ---- one case ----------------------------------------------------------------------
+function show(i) {
+  current = Math.max(0, Math.min(CASES.length - 1, i));
+  renderCase(); renderList();
+  const b = $("list").querySelector(`[data-i="${current}"]`); if (b) b.scrollIntoView({ block: "nearest" });
+  $("case").parentElement.scrollTop = 0;
+}
+function step(dir) {
+  const idx = filtered(); if (!idx.length) return;
+  const pos = idx.indexOf(current);
+  const next = pos === -1 ? idx[0] : idx[Math.max(0, Math.min(idx.length - 1, pos + dir))];
+  show(next);
+}
+function renderCase() {
+  const c = CASES[current], org = DATA.orgs[c.org_id] || {}, fil = DATA.filings[`${c.org_id} ${c.year}`] || { people: [] };
+  const dec = decisions[c.row_id];
+  const ref = c.labels.reference ? keyOf(parseLabel(c.labels.reference.label)) : "";
+  const labelRows = SOURCES.filter(([k]) => c.labels[k]).map(([k, name, sub]) => {
+    const L = c.labels[k], agree = ref && k !== "reference" && keyOf(parseLabel(L.label)) === ref;
+    return `<tr class="${agree ? "agree" : ""}"><td class="src">${name}${sub ? `<span class="tag">${sub}</span>` : ""}</td>
+      <td class="lab">${esc(L.label)}</td><td class="note">${esc(L.note || "")}</td>
+      <td><button type="button" class="use" data-label="${esc(L.label)}" data-note="${esc(name)}">Use</button></td></tr>`;
+  }).join("");
+  const why = {
+    1: "The original labelers disagree and the stronger models don't settle it.",
+    2: "Both labelers agreed, but Sonnet, Opus and Fable all reject their label.",
+    3: `The labelers disagree; most of the stronger models side with labeler ${c.lean}.`,
+    4: `The labelers disagree; all three stronger models side with labeler ${c.lean}.`,
+    5: "Both labelers agreed, but only one of Sonnet, Opus and Fable confirms it."
+  }[c.queue];
+  const others = (c.other_years || []).map((o) => `<tr><td>${o.year}</td><td>${esc(o.title)}</td><td class="r num">${esc(o.pay)}</td><td class="r num">${esc(o.hrs)}</td><td class="box">${esc(o.boxes) || "&mdash;"}</td></tr>`).join("");
+  const people = fil.people.map((p) => `<tr class="${p.row_id === c.row_id ? "target" : ""}"><td>${esc(p.name)}</td><td>${esc(p.title)}</td>
+      <td class="r num">${esc(p.pay)}</td><td class="r num">${p.rel_pay && p.rel_pay !== "0" ? esc(p.rel_pay) : ""}</td>
+      <td class="r num">${esc(p.hrs)}</td><td class="box">${esc(p.boxes) || "&mdash;"}</td><td>${esc(p.ref)}</td><td>${esc(p.s9)}</td></tr>`).join("");
+  const pos = filtered().indexOf(current);
+  $("case").innerHTML = `
+    <div class="toprow">
+      <div class="case-head">
+        <span class="eyebrow">${esc(c.row_id)}&nbsp;&middot; ${esc(c.stratum)}</span>
+        <h2>${esc(org.name || c.org_id)}, ${c.year}</h2>
+        <span class="sub">${esc(fil.info || "")}</span>
+        <div class="chips"><span class="chip q${c.queue}">${c.queue}. ${esc(c.queue_name)}</span><span class="chip">${c.kind === "consensus" ? "Agreed label" : "Labelers disagree"}</span><span class="chip">Form ${esc(c.form)}</span></div>
+      </div>
+      <div class="nav">
+        <span class="keys">${pos >= 0 ? `${pos + 1} of ${filtered().length}` : ""}</span>
+        <button type="button" class="btn" id="prev" aria-label="Previous case">&lsaquo; Prev</button>
+        <button type="button" class="btn" id="next" aria-label="Next case">Next &rsaquo;</button>
+      </div>
+    </div>
+    ${db === null ? `<div class="banner">Decisions can't be saved in this view. Open the page signed in as its owner or an editor to record them.</div>` : ""}
+    <div class="grid2">
+      <section class="panel" aria-labelledby="h-person">
+        <h3 id="h-person">The person</h3>
+        <dl class="person">
+          <dt>Name</dt><dd>${esc(c.person)}</dd><dt>Title</dt><dd>${esc(c.title)}</dd>
+          <dt>Pay</dt><dd class="num">${esc(c.pay)}</dd><dt>Hours</dt><dd class="num">${esc(c.hrs)} a week</dd>
+          <dt>Boxes</dt><dd class="box">${esc(c.boxes) || "none"}</dd>
+        </dl>
+        ${others ? `<div class="tablewrap"><table><thead><tr><th>Other years</th><th>Title</th><th class="r">Pay</th><th class="r">Hours</th><th>Boxes</th></tr></thead><tbody>${others}</tbody></table></div>` : `<p class="keys">Not found in the organization's other years.</p>`}
+        <p class="keys">${esc(org.info || "")}</p>
+      </section>
+      <section class="panel" aria-labelledby="h-labels">
+        <h3 id="h-labels">Labels</h3>
+        <p class="keys">${why}</p>
+        <div class="tablewrap"><table class="labels"><thead><tr><th>Source</th><th>Label</th><th>Note</th><th></th></tr></thead><tbody>${labelRows}</tbody></table></div>
+      </section>
+    </div>
+    <section class="panel" aria-labelledby="h-decide">
+      <h3 id="h-decide">Your decision</h3>
+      ${dec ? `<div class="saved">Saved: <b>${esc(dec.role)}${dec.board_role ? ` (${esc(dec.board_role)})` : ""}${dec.ceo ? " +CEO" : ""}</b>${dec.ceo_note ? `&nbsp;&middot; ${esc(dec.ceo_note)}` : ""}${dec.note ? `&nbsp;&middot; ${esc(dec.note)}` : ""}. Edit below to change it.</div>` : ""}
+      <form class="decide" id="decide">
+        <div class="fields">
+          <div class="field"><label for="d-role">Role</label><select id="d-role">${ROLES.map((r) => `<option>${r}</option>`).join("")}</select></div>
+          <div class="field"><label for="d-board">Board office</label><select id="d-board">${BOARDS.map((b) => `<option value="${b}">${b || "&mdash;"}</option>`).join("")}</select></div>
+          <label class="check"><input type="checkbox" id="d-ceo"> Chief executive this year</label>
+          <div class="field"><label for="d-ceonote">CEO note</label><select id="d-ceonote"><option value="">&mdash;</option><option>co</option><option>interim</option><option>outgoing</option></select></div>
+        </div>
+        <div class="field"><label for="d-note">Note (optional)</label><textarea id="d-note" placeholder="The deciding evidence, in a phrase"></textarea></div>
+        <div class="actions">
+          <button type="submit" class="btn primary" id="save" ${db === null || !canWrite ? "disabled" : ""}>Save and next</button>
+          <button type="button" class="btn" id="skip">Skip</button>
+          <span class="status" id="status" role="status"></span>
+          <span class="keys" style="margin-left:auto"><kbd>j</kbd> <kbd>k</kbd> next / previous</span>
+        </div>
+      </form>
+    </section>
+    <section class="panel" aria-labelledby="h-filing">
+      <h3 id="h-filing">Part VII, ${c.year}&nbsp;&middot; every person on the filing</h3>
+      <div class="tablewrap"><table><thead><tr><th>Name</th><th>Title</th><th class="r">Pay</th><th class="r">Related pay</th><th class="r">Hours</th><th>Boxes</th><th>Agreed label</th><th>Step 09</th></tr></thead><tbody>${people}</tbody></table></div>
+      <p class="keys">Boxes: T trustee, I institutional trustee, O officer, K key employee, H highly compensated, F former. A 990-EZ has none.</p>
+    </section>`;
+  // fill the form: the saved decision, else the label the models favor
+  const start = dec ? { role: dec.role, board: dec.board_role || "", ceo: !!dec.ceo }
+    : parseLabel((c.labels.reference || c.labels[c.lean] || c.labels.fable || c.labels.opus || {}).label);
+  if (start) { $("d-role").value = start.role; $("d-board").value = start.board; $("d-ceo").checked = start.ceo; }
+  if (dec) { $("d-ceonote").value = dec.ceo_note || ""; $("d-note").value = dec.note || ""; }
+  syncBoard();
+  $("d-role").addEventListener("change", syncBoard);
+  $("prev").addEventListener("click", () => step(-1));
+  $("next").addEventListener("click", () => step(1));
+  $("skip").addEventListener("click", () => step(1));
+  $("case").querySelectorAll(".use").forEach((b) => b.addEventListener("click", () => {
+    const p = parseLabel(b.dataset.label); if (!p) return;
+    $("d-role").value = p.role; $("d-board").value = p.board; $("d-ceo").checked = p.ceo; syncBoard();
+    $("status").className = "status"; $("status").textContent = `Filled from ${b.dataset.note}.`;
+  }));
+  $("decide").addEventListener("submit", save);
+}
+function syncBoard() {
+  const on = ["BOARD", "DUAL"].includes($("d-role").value);
+  $("d-board").disabled = !on; if (!on) $("d-board").value = "";
+}
+
+// ---- saving ------------------------------------------------------------------------
+async function save(e) {
+  e.preventDefault();
+  if (!db) return;
+  const c = CASES[current], role = $("d-role").value, board = $("d-board").value;
+  const st = $("status");
+  if (["BOARD", "DUAL"].includes(role) && !board) { st.className = "status err"; st.textContent = "Pick the board office for a board seat."; return; }
+  const doc = { row_id: c.row_id, role, board_role: board, ceo: $("d-ceo").checked, ceo_note: $("d-ceonote").value,
+    note: $("d-note").value.trim(), queue: c.queue, kind: c.kind, decided_at: new Date().toISOString(), decided_by: uid || "" };
+  $("save").disabled = true; st.className = "status"; st.textContent = "Saving…";
+  try {
+    await db.collection("decisions").doc(c.row_id).set(doc);
+    decisions[c.row_id] = doc; renderProgress();
+    step(1);
+    $("status").className = "status ok"; $("status").textContent = `Saved ${c.row_id}.`;
+  } catch (err) {
+    $("save").disabled = false; st.className = "status err";
+    if (err && err.code === "invalid_argument") { canWrite = false; st.textContent = "This view can't save decisions. Open the page as its owner or an editor."; }
+    else if (err && err.code === "quota_exceeded") st.textContent = "The decision store is full. Tell Claude so it can move decisions out.";
+    else st.textContent = "Couldn't save. Check your connection and press Save again.";
+  }
+}
+
+// ---- keyboard ----------------------------------------------------------------------
+document.addEventListener("keydown", (e) => {
+  if (e.target.closest("input, select, textarea") || e.metaKey || e.ctrlKey || e.altKey) return;
+  if (e.key === "j") step(1);
+  if (e.key === "k") step(-1);
+});
+
+// ---- start ---------------------------------------------------------------------------
+initFilters();
+show(0);
+renderProgress();
+(async () => {
+  const use = (n) => (window.claude && window.claude.use ? window.claude.use(n) : Promise.resolve(null));
+  db = await use("db");
+  const user = await use("user");
+  if (user) { try { uid = await user.id(); } catch (_) {} const w = user.can ? await user.can("data.write") : null; if (w === false) canWrite = false; }
+  if (!db) { renderProgress(); renderCase(); return; }
+  db.collection("decisions").limit(1000).onSnapshot((snap) => {
+    decisions = {};
+    snap.docs.forEach((d) => { decisions[d.id] = d.data(); });
+    const first = !dbReady; dbReady = true;
+    renderProgress(); renderList();
+    if (first) { const idx = filtered(); show(idx.length ? idx[0] : 0); }
+  }, () => { renderProgress(); });
+  renderCase();
+})();
+</script>

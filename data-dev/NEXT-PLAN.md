@@ -26,7 +26,12 @@ counts of F-031/F-032 under this rule: some are not errors.
   (`ceo-sample/disagreements.csv`) and 45 rows in 30 filings of the held-out
   set (`ceo-holdout/disagreements.csv`) are undecided. Every CEO score
   excludes them, and they concentrate in the hard cases.
-- Build a review page or sheet that shows each case with the filing, both
+- **Review page (built 2026-10-23):** https://claude.ai/artifact/GKCuuJThFW1KwGmmy2Lr3M
+  (`30-review-queue.R` + `review-page/template.html`). 320 cases ranked by
+  model agreement (F-035): 22 models split, 31 likely label errors, 90 lean
+  one way, 81 unanimous, 96 weakly confirmed. Decisions are saved in the
+  page's store (collection `decisions`, one document per row_id).
+- Originally planned: a review page or sheet that shows each case with the filing, both
   labels and the step 09 answer, and records a decision.
   `26-ceo-score.R` applies `decision_*` columns on its next run.
 
