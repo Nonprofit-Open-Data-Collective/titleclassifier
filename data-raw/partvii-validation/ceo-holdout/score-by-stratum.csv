@@ -1,0 +1,10 @@
+stratum,people,role_accuracy,board_seats,board_role_right,ceo_precision,ceo_recall,filings,ceo_right
+ALL,1342,93.5,1111,97.3,80,77.4,126,81.7
+ministry,81,98.8,69,89.9,70,70,14,57.1
+university,394,91.6,289,99,66.7,50,16,62.5
+club or co-op,150,94,125,99.2,72.7,88.9,16,75
+fire department,159,98.7,150,98,80,80,16,87.5
+lodge,119,90.8,104,97.1,50,100,16,87.5
+union,165,89.7,137,92.7,100,77.8,16,87.5
+veterans post,149,94.6,129,97.7,100,87.5,16,93.8
+benefit trust or cemetery,125,95.2,108,100,100,100,16,100

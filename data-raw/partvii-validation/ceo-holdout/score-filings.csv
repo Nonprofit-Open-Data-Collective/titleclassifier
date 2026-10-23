@@ -1,0 +1,127 @@
+org_id,year,stratum,lab,pred,lab_n,pred_n,outcome
+H001,2021,benefit trust or cemetery,H001-2021-01,H001-2021-01,1,1,right CEO
+H001,2023,benefit trust or cemetery,H001-2023-01,H001-2023-01,1,1,right CEO
+H002,2021,benefit trust or cemetery,H002-2021-02,H002-2021-02,1,1,right CEO
+H002,2023,benefit trust or cemetery,H002-2023-02,H002-2023-02,1,1,right CEO
+H003,2021,benefit trust or cemetery,H003-2021-01,H003-2021-01,1,1,right CEO
+H003,2023,benefit trust or cemetery,"","",0,0,right: no CEO
+H004,2021,benefit trust or cemetery,H004-2021-01,H004-2021-01,1,1,right CEO
+H004,2023,benefit trust or cemetery,H004-2023-01,H004-2023-01,1,1,right CEO
+H005,2021,benefit trust or cemetery,"","",0,0,right: no CEO
+H005,2023,benefit trust or cemetery,"","",0,0,right: no CEO
+H006,2021,benefit trust or cemetery,"","",0,0,right: no CEO
+H006,2023,benefit trust or cemetery,"","",0,0,right: no CEO
+H007,2021,benefit trust or cemetery,"","",0,0,right: no CEO
+H007,2023,benefit trust or cemetery,"","",0,0,right: no CEO
+H008,2021,benefit trust or cemetery,"","",0,0,right: no CEO
+H008,2023,benefit trust or cemetery,"","",0,0,right: no CEO
+H009,2021,club or co-op,H009-2021-01,H009-2021-01,1,1,right CEO
+H009,2023,club or co-op,H009-2023-02,H009-2023-02,1,1,right CEO
+H010,2021,club or co-op,H010-2021-01,H010-2021-01,1,1,right CEO
+H010,2023,club or co-op,H010-2023-01;H010-2023-03,H010-2023-01,2,1,wrong person
+H011,2021,club or co-op,H011-2021-01,H011-2021-01,1,1,right CEO
+H011,2023,club or co-op,H011-2023-01,H011-2023-01,1,1,right CEO
+H012,2021,club or co-op,H012-2021-01,H012-2021-01,1,1,right CEO
+H012,2023,club or co-op,H012-2023-01,H012-2023-01,1,1,right CEO
+H013,2021,club or co-op,"","",0,0,right: no CEO
+H013,2023,club or co-op,"","",0,0,right: no CEO
+H014,2021,club or co-op,"",H014-2021-01,0,1,"CEO named, none labeled"
+H014,2023,club or co-op,"","",0,0,right: no CEO
+H015,2021,club or co-op,"","",0,0,right: no CEO
+H015,2023,club or co-op,"","",0,0,right: no CEO
+H016,2021,club or co-op,"",H016-2021-01,0,1,"CEO named, none labeled"
+H016,2023,club or co-op,"",H016-2023-01,0,1,"CEO named, none labeled"
+H017,2021,fire department,H017-2021-08,"",1,0,CEO missed
+H017,2023,fire department,"","",0,0,right: no CEO
+H018,2021,fire department,"",H018-2021-01,0,1,"CEO named, none labeled"
+H018,2023,fire department,"","",0,0,right: no CEO
+H019,2021,fire department,H019-2021-01,H019-2021-01,1,1,right CEO
+H019,2023,fire department,H019-2023-01,H019-2023-01,1,1,right CEO
+H020,2021,fire department,H020-2021-01,H020-2021-01,1,1,right CEO
+H020,2023,fire department,H020-2023-01,H020-2023-01,1,1,right CEO
+H021,2021,fire department,"","",0,0,right: no CEO
+H021,2023,fire department,"","",0,0,right: no CEO
+H022,2021,fire department,"","",0,0,right: no CEO
+H022,2023,fire department,"","",0,0,right: no CEO
+H023,2021,fire department,"","",0,0,right: no CEO
+H023,2023,fire department,"","",0,0,right: no CEO
+H024,2021,fire department,"","",0,0,right: no CEO
+H024,2023,fire department,"","",0,0,right: no CEO
+H025,2021,lodge,"","",0,0,right: no CEO
+H025,2023,lodge,"","",0,0,right: no CEO
+H026,2021,lodge,"","",0,0,right: no CEO
+H026,2023,lodge,"","",0,0,right: no CEO
+H027,2021,lodge,"",H027-2021-01,0,1,"CEO named, none labeled"
+H027,2023,lodge,"","",0,0,right: no CEO
+H028,2021,lodge,H028-2021-01,H028-2021-01,1,1,right CEO
+H028,2023,lodge,H028-2023-01,H028-2023-01,1,1,right CEO
+H029,2021,lodge,"","",0,0,right: no CEO
+H029,2023,lodge,"",H029-2023-01,0,1,"CEO named, none labeled"
+H030,2021,lodge,"","",0,0,right: no CEO
+H030,2023,lodge,"","",0,0,right: no CEO
+H031,2021,lodge,"","",0,0,right: no CEO
+H031,2023,lodge,"","",0,0,right: no CEO
+H032,2021,lodge,"","",0,0,right: no CEO
+H032,2023,lodge,"","",0,0,right: no CEO
+H033,2021,ministry,H033-2021-01,H033-2021-01,1,1,right CEO
+H033,2023,ministry,H033-2023-01,H033-2023-01,1,1,right CEO
+H035,2021,ministry,H035-2021-01,"",1,0,CEO missed
+H035,2023,ministry,H035-2023-01,"",1,0,CEO missed
+H036,2021,ministry,H036-2021-01,H036-2021-01;H036-2021-02,1,2,extra CEO named
+H036,2023,ministry,H036-2023-01,"",1,0,CEO missed
+H037,2021,ministry,"",H037-2021-06,0,1,"CEO named, none labeled"
+H037,2023,ministry,"",H037-2023-01,0,1,"CEO named, none labeled"
+H038,2021,ministry,H038-2021-01,H038-2021-01,1,1,right CEO
+H038,2023,ministry,H038-2023-01,H038-2023-01,1,1,right CEO
+H039,2021,ministry,"","",0,0,right: no CEO
+H039,2023,ministry,"","",0,0,right: no CEO
+H040,2021,ministry,H040-2021-01,H040-2021-01,1,1,right CEO
+H040,2023,ministry,H040-2023-01,H040-2023-01,1,1,right CEO
+H041,2021,union,H041-2021-01,H041-2021-01,1,1,right CEO
+H041,2023,union,H041-2023-01,H041-2023-01,1,1,right CEO
+H042,2021,union,H042-2021-01,"",1,0,CEO missed
+H042,2023,union,H042-2023-01,"",1,0,CEO missed
+H043,2021,union,H043-2021-01,H043-2021-01,1,1,right CEO
+H043,2023,union,H043-2023-01,H043-2023-01,1,1,right CEO
+H044,2021,union,H044-2021-01,H044-2021-01,1,1,right CEO
+H044,2023,union,H044-2023-02,H044-2023-02,1,1,right CEO
+H045,2021,union,"","",0,0,right: no CEO
+H045,2023,union,"","",0,0,right: no CEO
+H046,2021,union,"","",0,0,right: no CEO
+H046,2023,union,"","",0,0,right: no CEO
+H047,2021,union,"","",0,0,right: no CEO
+H047,2023,union,"","",0,0,right: no CEO
+H048,2021,union,"","",0,0,right: no CEO
+H048,2023,union,H048-2023-01,H048-2023-01,1,1,right CEO
+H049,2021,university,H049-2021-01,H049-2021-01,1,1,right CEO
+H049,2023,university,H049-2023-01,H049-2023-01,1,1,right CEO
+H050,2021,university,H050-2021-09,H050-2021-01,1,1,wrong person
+H050,2023,university,H050-2023-09,H050-2023-01,1,1,wrong person
+H051,2021,university,"","",0,0,right: no CEO
+H051,2023,university,"","",0,0,right: no CEO
+H052,2021,university,H052-2021-01,H052-2021-01,1,1,right CEO
+H052,2023,university,H052-2023-01,H052-2023-01,1,1,right CEO
+H053,2021,university,H053-2021-01,"",1,0,CEO missed
+H053,2023,university,H053-2023-01,"",1,0,CEO missed
+H054,2021,university,"","",0,0,right: no CEO
+H054,2023,university,H054-2023-01,H054-2023-01,1,1,right CEO
+H055,2021,university,H055-2021-01,H055-2021-09,1,1,wrong person
+H055,2023,university,H055-2023-01;H055-2023-05,H055-2023-01,2,1,wrong person
+H056,2021,university,"","",0,0,right: no CEO
+H056,2023,university,"","",0,0,right: no CEO
+H057,2021,veterans post,H057-2021-01,H057-2021-01,1,1,right CEO
+H057,2023,veterans post,H057-2023-01,H057-2023-01,1,1,right CEO
+H058,2021,veterans post,H058-2021-01,H058-2021-01,1,1,right CEO
+H058,2023,veterans post,H058-2023-01,H058-2023-01,1,1,right CEO
+H059,2021,veterans post,H059-2021-01,H059-2021-01,1,1,right CEO
+H059,2023,veterans post,H059-2023-01,H059-2023-01,1,1,right CEO
+H060,2021,veterans post,H060-2021-01,"",1,0,CEO missed
+H060,2023,veterans post,H060-2023-01,H060-2023-01,1,1,right CEO
+H061,2021,veterans post,"","",0,0,right: no CEO
+H061,2023,veterans post,"","",0,0,right: no CEO
+H062,2021,veterans post,"","",0,0,right: no CEO
+H062,2023,veterans post,"","",0,0,right: no CEO
+H063,2021,veterans post,"","",0,0,right: no CEO
+H063,2023,veterans post,"","",0,0,right: no CEO
+H064,2021,veterans post,"","",0,0,right: no CEO
+H064,2023,veterans post,"","",0,0,right: no CEO

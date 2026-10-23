@@ -6,10 +6,24 @@
 \alias{titleclassifier-package}
 \title{titleclassifier: Clean, Standardize, and Classify Nonprofit Executive Titles}
 \description{
-Tools to transform the raw, free-text officer and key-employee titles reported on IRS Form 990 Part VII into a structured, analysis-ready taxonomy. The pipeline standardizes the raw compensation table, removes dates, normalizes conjunctions and separators, splits multi-title strings, harmonizes spelling and abbreviations, flags status qualifiers, maps titles to canonical forms via a crosswalk, and assigns taxonomy categories with organization-level features. Includes helpers to fetch Part VII tables directly from the public NCCS efile store.
+Tools to transform the raw, free-text officer and key-employee titles reported on IRS Form 990 Part VII into a structured, analysis-ready taxonomy. The pipeline standardizes the raw compensation table, removes dates, normalizes conjunctions and separators, splits multi-title strings, harmonizes spelling and abbreviations, flags status qualifiers, maps titles to canonical forms via a crosswalk, and assigns taxonomy categories with organization-level features, and resolves each person's role (chief executive, officer, manager, professional, staff, or board seat) from the filer's checkboxes, pay and hours, with a model for 990-EZ returns, which have no checkboxes. Includes helpers to fetch Part VII tables directly from the public NCCS efile store.
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://nonprofit-open-data-collective.github.io/titleclassifier/}
+  \item \url{https://github.com/Nonprofit-Open-Data-Collective/titleclassifier}
+  \item Report bugs at \url{https://github.com/Nonprofit-Open-Data-Collective/titleclassifier/issues}
+}
+
 }
 \author{
-\strong{Maintainer}: Kevin Cui \email{kc734@cornell.edu}
+\strong{Maintainer}: Jesse Lecy \email{jdlecy@gmail.com} (\href{https://orcid.org/0000-0003-4974-0782}{ORCID})
+
+Authors:
+\itemize{
+  \item Kevin Cui \email{kc734@cornell.edu}
+}
 
 }
 \keyword{internal}

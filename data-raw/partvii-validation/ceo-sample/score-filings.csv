@@ -1,9 +1,9 @@
 org_id,year,stratum,lab,pred,lab_n,pred_n,outcome
-O001,2019,benefit trust or cemetery,O001-2019-01,"",1,0,CEO missed
+O001,2019,benefit trust or cemetery,O001-2019-01,O001-2019-01,1,1,right CEO
 O001,2020,benefit trust or cemetery,O001-2020-01;O001-2020-04,O001-2020-01,2,1,wrong person
-O001,2021,benefit trust or cemetery,O001-2021-02,"",1,0,CEO missed
+O001,2021,benefit trust or cemetery,O001-2021-02,O001-2021-02,1,1,right CEO
 O001,2022,benefit trust or cemetery,O001-2022-03,O001-2022-03,1,1,right CEO
-O001,2023,benefit trust or cemetery,O001-2023-02,O001-2023-03,1,1,wrong person
+O001,2023,benefit trust or cemetery,O001-2023-02,O001-2023-02,1,1,right CEO
 O002,2019,benefit trust or cemetery,O002-2019-01,O002-2019-01,1,1,right CEO
 O002,2020,benefit trust or cemetery,O002-2020-01,O002-2020-01,1,1,right CEO
 O002,2021,benefit trust or cemetery,O002-2021-01,O002-2021-01,1,1,right CEO
@@ -59,11 +59,11 @@ O012,2020,club or co-op,O012-2020-01,O012-2020-01,1,1,right CEO
 O012,2021,club or co-op,O012-2021-01,O012-2021-01,1,1,right CEO
 O012,2022,club or co-op,O012-2022-01,O012-2022-01,1,1,right CEO
 O012,2023,club or co-op,O012-2023-01,O012-2023-01,1,1,right CEO
-O013,2019,club or co-op,O013-2019-01;O013-2019-05,O013-2019-02,2,1,wrong person
-O013,2020,club or co-op,O013-2020-01,O013-2020-02,1,1,wrong person
-O013,2021,club or co-op,O013-2021-01,O013-2021-02,1,1,wrong person
-O013,2022,club or co-op,O013-2022-01,O013-2022-02,1,1,wrong person
-O013,2023,club or co-op,O013-2023-01,O013-2023-02,1,1,wrong person
+O013,2019,club or co-op,O013-2019-01;O013-2019-05,O013-2019-01,2,1,wrong person
+O013,2020,club or co-op,O013-2020-01,O013-2020-01,1,1,right CEO
+O013,2021,club or co-op,O013-2021-01,O013-2021-01,1,1,right CEO
+O013,2022,club or co-op,O013-2022-01,O013-2022-01,1,1,right CEO
+O013,2023,club or co-op,O013-2023-01,O013-2023-01,1,1,right CEO
 O014,2019,club or co-op,O014-2019-01,O014-2019-01,1,1,right CEO
 O014,2020,club or co-op,O014-2020-01,O014-2020-01,1,1,right CEO
 O014,2021,club or co-op,O014-2021-01,O014-2021-01,1,1,right CEO
@@ -244,9 +244,9 @@ O049,2020,fire department,"","",0,0,right: no CEO
 O049,2021,fire department,"","",0,0,right: no CEO
 O049,2022,fire department,"","",0,0,right: no CEO
 O049,2023,fire department,"","",0,0,right: no CEO
-O050,2019,fire department,O050-2019-01,O050-2019-02,1,1,wrong person
-O050,2020,fire department,O050-2020-01,O050-2020-02,1,1,wrong person
-O050,2021,fire department,O050-2021-01,O050-2021-02,1,1,wrong person
+O050,2019,fire department,O050-2019-01,"",1,0,CEO missed
+O050,2020,fire department,O050-2020-01,"",1,0,CEO missed
+O050,2021,fire department,O050-2021-01,"",1,0,CEO missed
 O050,2022,fire department,O050-2022-01,O050-2022-02,1,1,wrong person
 O050,2023,fire department,O050-2023-01,O050-2023-02,1,1,wrong person
 O051,2019,lodge,"","",0,0,right: no CEO
@@ -264,11 +264,11 @@ O053,2020,lodge,"","",0,0,right: no CEO
 O053,2021,lodge,"","",0,0,right: no CEO
 O053,2022,lodge,"","",0,0,right: no CEO
 O053,2023,lodge,"","",0,0,right: no CEO
-O054,2019,lodge,"",O054-2019-01,0,1,"CEO named, none labeled"
-O054,2020,lodge,"",O054-2020-01,0,1,"CEO named, none labeled"
+O054,2019,lodge,"","",0,0,right: no CEO
+O054,2020,lodge,"","",0,0,right: no CEO
 O054,2021,lodge,"","",0,0,right: no CEO
-O054,2022,lodge,"",O054-2022-01,0,1,"CEO named, none labeled"
-O054,2023,lodge,"",O054-2023-01,0,1,"CEO named, none labeled"
+O054,2022,lodge,"","",0,0,right: no CEO
+O054,2023,lodge,"","",0,0,right: no CEO
 O055,2019,lodge,"","",0,0,right: no CEO
 O055,2020,lodge,"","",0,0,right: no CEO
 O055,2021,lodge,"","",0,0,right: no CEO
@@ -283,7 +283,7 @@ O057,2019,lodge,"","",0,0,right: no CEO
 O057,2020,lodge,"","",0,0,right: no CEO
 O057,2021,lodge,"","",0,0,right: no CEO
 O057,2022,lodge,"","",0,0,right: no CEO
-O057,2023,lodge,"","",0,0,right: no CEO
+O057,2023,lodge,"",O057-2023-03,0,1,"CEO named, none labeled"
 O058,2019,lodge,"","",0,0,right: no CEO
 O058,2020,lodge,"","",0,0,right: no CEO
 O058,2021,lodge,"","",0,0,right: no CEO
@@ -328,12 +328,12 @@ O066,2019,ministry,O066-2019-01,O066-2019-01,1,1,right CEO
 O066,2020,ministry,O066-2020-01,O066-2020-01,1,1,right CEO
 O066,2021,ministry,O066-2021-01,O066-2021-01,1,1,right CEO
 O066,2022,ministry,O066-2022-01,O066-2022-01,1,1,right CEO
-O066,2023,ministry,O066-2023-01,"",1,0,CEO missed
+O066,2023,ministry,O066-2023-01,O066-2023-01,1,1,right CEO
 O067,2019,ministry,O067-2019-01,O067-2019-01,1,1,right CEO
 O067,2020,ministry,O067-2020-01,O067-2020-01,1,1,right CEO
-O067,2021,ministry,O067-2021-01,"",1,0,CEO missed
-O067,2022,ministry,O067-2022-01,"",1,0,CEO missed
-O067,2023,ministry,O067-2023-01,"",1,0,CEO missed
+O067,2021,ministry,O067-2021-01,O067-2021-01,1,1,right CEO
+O067,2022,ministry,O067-2022-01,O067-2022-01,1,1,right CEO
+O067,2023,ministry,O067-2023-01,O067-2023-01,1,1,right CEO
 O068,2019,ministry,O068-2019-01,O068-2019-01,1,1,right CEO
 O068,2020,ministry,O068-2020-01,O068-2020-01,1,1,right CEO
 O068,2021,ministry,O068-2021-01,O068-2021-01,1,1,right CEO
@@ -619,11 +619,11 @@ O124,2020,university,"","",0,0,right: no CEO
 O124,2021,university,"","",0,0,right: no CEO
 O124,2022,university,"","",0,0,right: no CEO
 O124,2023,university,"","",0,0,right: no CEO
-O125,2019,university,O125-2019-07,O125-2019-01,1,1,wrong person
-O125,2020,university,O125-2020-05,O125-2020-03,1,1,wrong person
-O125,2021,university,O125-2021-04,O125-2021-02,1,1,wrong person
+O125,2019,university,O125-2019-07,O125-2019-07,1,1,right CEO
+O125,2020,university,O125-2020-05,O125-2020-05,1,1,right CEO
+O125,2021,university,O125-2021-04,O125-2021-04,1,1,right CEO
 O125,2022,university,O125-2022-03,O125-2022-03,1,1,right CEO
-O125,2023,university,O125-2023-03,O125-2023-02,1,1,wrong person
+O125,2023,university,O125-2023-03,O125-2023-03,1,1,right CEO
 O126,2019,university,"","",0,0,right: no CEO
 O126,2020,university,"","",0,0,right: no CEO
 O126,2021,university,"","",0,0,right: no CEO
@@ -631,8 +631,8 @@ O126,2022,university,"","",0,0,right: no CEO
 O126,2023,university,"","",0,0,right: no CEO
 O127,2019,university,O127-2019-01,O127-2019-01,1,1,right CEO
 O127,2020,university,O127-2020-01,O127-2020-01,1,1,right CEO
-O127,2021,university,O127-2021-01,O127-2021-01,1,1,right CEO
-O127,2022,university,O127-2022-01,O127-2022-01,1,1,right CEO
+O127,2021,university,O127-2021-01,"",1,0,CEO missed
+O127,2022,university,O127-2022-01,"",1,0,CEO missed
 O127,2023,university,"","",0,0,right: no CEO
 O128,2019,university,O128-2019-02,O128-2019-01;O128-2019-02,1,2,extra CEO named
 O128,2020,university,O128-2020-02,O128-2020-01;O128-2020-02,1,2,extra CEO named
@@ -649,8 +649,8 @@ O130,2020,university,"","",0,0,right: no CEO
 O130,2021,university,"","",0,0,right: no CEO
 O130,2022,university,"","",0,0,right: no CEO
 O130,2023,university,"","",0,0,right: no CEO
-O131,2019,veterans post,"",O131-2019-02,0,1,"CEO named, none labeled"
-O131,2020,veterans post,"",O131-2020-02,0,1,"CEO named, none labeled"
+O131,2019,veterans post,"","",0,0,right: no CEO
+O131,2020,veterans post,"",O131-2020-04,0,1,"CEO named, none labeled"
 O131,2021,veterans post,"",O131-2021-02,0,1,"CEO named, none labeled"
 O131,2022,veterans post,"",O131-2022-01,0,1,"CEO named, none labeled"
 O131,2023,veterans post,"",O131-2023-01,0,1,"CEO named, none labeled"
@@ -670,8 +670,8 @@ O134,2021,veterans post,O134-2021-01,"",1,0,CEO missed
 O134,2022,veterans post,O134-2022-01,"",1,0,CEO missed
 O134,2023,veterans post,O134-2023-01,O134-2023-01,1,1,right CEO
 O135,2019,veterans post,"","",0,0,right: no CEO
-O135,2020,veterans post,"",O135-2020-01,0,1,"CEO named, none labeled"
-O135,2021,veterans post,"",O135-2021-01,0,1,"CEO named, none labeled"
+O135,2020,veterans post,"","",0,0,right: no CEO
+O135,2021,veterans post,"","",0,0,right: no CEO
 O135,2022,veterans post,"",O135-2022-01,0,1,"CEO named, none labeled"
 O135,2023,veterans post,"",O135-2023-01,0,1,"CEO named, none labeled"
 O136,2019,veterans post,"","",0,0,right: no CEO

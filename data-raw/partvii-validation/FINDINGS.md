@@ -1315,3 +1315,139 @@ x 112. On the demo, the role and board-role changes match the patterns above.
   - stipend officers at 5+ hours;
   - unpaid presidents with no officer box;
   - former and interim CEOs, which need the tax period's dates.
+
+### F-033 CEO thesaurus by organization type, with a held-out check (done)
+
+The plan is `data-dev/CEO-THESAURUS-PLAN.md`. The org type comes from both
+routes (user decision, 2026-10-23).
+
+**What was built.**
+- **`data-raw/crosswalks/ceo-thesaurus.csv`** (`ceo.thesaurus`): 13 rows over
+  11 org types. Each row is a title pattern with an effect:
+  - **ceo**: the holder runs that kind of organization when paid and working
+    enough: a post or department adjutant, a club or co-op general manager,
+    a trust's fund administrator, a union's business manager, a university's
+    president, a senior pastor, a fire chief. `outranks` lists titles it wins
+    over even when a CEO is already named: the GM over a better-paid golf
+    superintendent or chef, the business manager over a paid president, the
+    university president over a chancellor or vice president.
+  - **not_ceo**: a holder paid under `min_pay` who works under `min_hours`
+    is never made the CEO from pay: lodge secretaries, recorders and
+    treasurers, post officers, fire-company secretary-treasurers on a
+    stipend. A full-time paid holder is still eligible.
+- **`R/09-org-type.R`.** `org_types()` gives one type per filing from, in
+  order:
+  1. an `org.type` column the user supplies;
+  2. BMF NTEE code and 501(c) subsection columns (`ntee_code_clean`,
+     `subsection_code`, or `ntee`, `subsection`), via
+     `org_type_from_codes()`;
+  3. the name and the filing's titles, via `org_type_from_name()`.
+
+  With codes, the name may only add university, fire, orchestra or ministry
+  (types the NTEE code can miss), never a membership type: a 501(c)(3) "Union
+  Rescue Mission" is not a union. Step 08 now carries these columns through
+  when they are supplied. The output gains `org.type` and `org.type.source`.
+- **Step 09.** A thesaurus CEO (`role.ceo` "thesaurus") is named when the
+  filing has no CEO, when its CEO was only inferred from pay or the 990-EZ
+  model, or when its CEO's title is in `outranks`. On 990-EZ filings it
+  applies after the model.
+- **Rule 7 ties.** Rule 7 (an unpaid full-time leader, F-032) no longer picks
+  arbitrarily among people tied for the most hours: a student group whose 27
+  members all report 50 hours a week has no imputed CEO.
+
+**In-sample (the F-031 labels; the entries were written from these):**
+
+| Measure | step09-rules (F-032) | thesaurus |
+|---|---|---|
+| Right chief executive (750 filings) | 85.1% | **87.6%** |
+| CEO precision / recall (people) | 84.7 / 85.3% | 88.3 / 88.1% |
+| Role / board role | 94.7 / 98.7% | 95.0 / 98.7% |
+| Veterans post | 60% | 66% |
+| Club or co-op | 84% | 92% |
+| Lodge | 86% | 92% |
+| Ministry | 88% | 96% |
+| Benefit trust or cemetery | 84% | 90% |
+| University | 78% | 82% |
+
+The labeled sets v1 (95.5%) and v2 (90.4%; board seats 108 of 110) do not
+change.
+
+**Held-out check (`ceo-holdout/`).** `CEO_SET=ceo-holdout` reruns
+24-27 on a fresh sample:
+- **Sample.** 8 organizations in each of the 8 strata the thesaurus covers
+  (veterans, lodges, unions, clubs and co-ops, trusts and cemeteries,
+  universities, ministries, fire departments). None of them is in the F-031
+  sample. Seed 2027; the 2021 and 2023 filings only. That is 128 filings and
+  1,389 rows.
+- **Labels.** Two independent labelers, same guide and design as F-031.
+  - They agree on role 97.3% of the time (kappa 0.91), board role 99.4%, and
+    the filing's chief executive 96.9%.
+  - The 45 rows where they disagree (30 filings) are undecided. The scores use
+    the 1,344 consensus rows.
+
+| Held-out measure | step09-rules | thesaurus as built | + stipend-hours fix |
+|---|---|---|---|
+| Right chief executive (126 filings) | 79.4% | 80.2% | **81.7%** |
+| CEO precision / recall | 74.6 / 75.8% | 78.3 / 75.8% | 80.0 / 77.4% |
+| Lodge | 68.8% | 81.2% | 81.2% |
+| Veterans post | 93.8% | 87.5% | 93.8% |
+| Others | unchanged | unchanged | unchanged |
+
+The gain on new organizations is smaller than in-sample: +2.3 points against
++2.5. Most is in lodges, where stipended secretaries were made CEO.
+- **Stipend-hours fix.** As first built, the veterans not_ceo row blocked the
+  paid full-time secretary-treasurer (40 h/wk, sole employee) of an American
+  Legion Auxiliary. The not_ceo rows now apply only under 35 h/wk. This fix
+  was found on the held-out set, so the last column is no longer fully
+  held out. The in-sample score is unchanged by it.
+- **BMF codes.** Codes give the same held-out score as inference from the
+  name. In-sample they raise CEO precision 87.8 -> 88.3%: a fire company
+  whose name has no FIRE DEPARTMENT is typed by NTEE M24.
+- **Remaining held-out errors.** These are mostly not type titles:
+  - stipended club secretaries and newsletter editors at 20 h/wk named CEO
+    (base rule);
+  - an unpaid Benedictine college president;
+  - a $268k president reporting 1 h/wk, losing to an unpaid chancellor;
+  - an IBEW "BMFINSEC" (business manager / financial secretary) the union
+    pattern does not match;
+  - two-leader ministries.
+
+  None was added to the thesaurus, so the held-out check stays honest.
+
+**On the 2019-2023 sample** (60,520 filings, BMF codes joined; run in
+`~/Documents/PARTVII-thes/`, compared with `PARTVII-rules/`):
+- **Org type.** 13,393 filings (22%) get a type: 11,712 from codes and 1,681
+  inferred. Ministry 3,328, union 3,046, trust 1,379, club 1,351, fraternal
+  961, fire 806, university 683, coop 540, veterans 521, cemetery 401,
+  orchestra 377.
+- **CEO person.** 417 filings (0.7%) change who is the CEO, and 112 get a
+  thesaurus CEO:
+  - among filings that pay anyone, by type: university presidents 45, club
+    general managers 28, union business managers 20, fire chiefs 5, co-op
+    general managers 3, pastors 2, adjutants 1;
+  - the rest are unpaid pastors and chiefs.
+- **Role.** 611 of 668,168 people change role. Most go CEO -> OFFICER (204)
+  or CEO -> BOARD (163).
+  - Lodge secretaries, treasurers and recorders lose the CEO: about 140.
+  - Others lose the CEO to the type's leader: a university's CIO and football
+    coaches give way to the president, a club's superintendent and COO to
+    the general manager.
+- **CEO named, filings that pay anyone:**
+  - fraternal 43.4% -> 19.0%;
+  - veterans 48.5% -> 38.6%;
+  - fire 30.3% -> 28.9%;
+  - other types and untyped filings unchanged.
+
+**Regression and tests.** The reference is rebuilt: md5 `54100c86...`, 4,125
+x 114 (adds `org.type` and `org.type.source`). On the demo, 3 CEO picks
+change:
+- a temple's vice president no longer wins a rule 7 tie;
+- a pension fund's administrator replaces a pay-imputed real-estate manager.
+
+279 tests pass, 34 of them new (`test-org-type.R`).
+
+**Open:**
+- the 45 held-out disagreements await a decision, like the 193 of F-031;
+- union abbreviations (BM/FS, BMFINSEC);
+- unpaid religious presidents of colleges;
+- a minimum gap for pay ties in rule 4.

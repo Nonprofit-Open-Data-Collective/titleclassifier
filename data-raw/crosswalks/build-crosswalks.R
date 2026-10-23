@@ -75,6 +75,21 @@ bad <- setdiff(title.patterns$title.standard, title.taxonomy$title.standard)
 if (length(bad)) stop("title-patterns.csv targets standards not in the taxonomy: ", paste(bad, collapse = ", "))
 if (!all(title.patterns$position %in% c("suffix", "prefix"))) stop("title-patterns.csv: position must be suffix or prefix")
 
+# the CEO thesaurus: chief-executive titles by organization type (F-033)
+ceo.thesaurus <- read_table("ceo-thesaurus.csv",
+                            c("org_type", "title_pattern", "effect", "min_hours", "min_pay", "outranks", "evidence"))
+ceo.thesaurus$min_hours <- suppressWarnings(as.numeric(ceo.thesaurus$min_hours))
+ceo.thesaurus$min_pay   <- suppressWarnings(as.numeric(ceo.thesaurus$min_pay))
+org_types_ok <- c("veterans", "fraternal", "union", "club", "coop", "trust", "cemetery",
+                  "university", "ministry", "fire", "orchestra")
+if (!all(ceo.thesaurus$org_type %in% org_types_ok))
+  stop("ceo-thesaurus.csv: unknown org_type: ", paste(setdiff(ceo.thesaurus$org_type, org_types_ok), collapse = ", "))
+if (!all(ceo.thesaurus$effect %in% c("ceo", "not_ceo"))) stop("ceo-thesaurus.csv: effect must be ceo or not_ceo")
+# every pattern must compile
+invisible(lapply(c(ceo.thesaurus$title_pattern, ceo.thesaurus$outranks[nzchar(ceo.thesaurus$outranks)]),
+                 function(p) grepl(p, "", perl = TRUE)))
+
+save(ceo.thesaurus,  file = "data/ceo-thesaurus.rda",  compress = "xz")
 save(status.codes,   file = "data/status-codes.rda",   compress = "xz")
 save(title.patterns, file = "data/title-patterns.rda", compress = "xz")
 save(title.xwalk,    file = "data/title-xwalk.rda",    compress = "xz")

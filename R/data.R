@@ -41,6 +41,30 @@ NULL
 #'   title-taxonomy-map Google Sheet (retired 2026-10-08).
 NULL
 
+#' @name ceo.thesaurus
+#' @docType data
+#' @title Chief-executive titles by organization type.
+#'
+#' @description Used by `resolve_roles()` (step 09) for the organization types
+#'   of [org_type_levels()]. Each row is a title pattern (a regular expression
+#'   on the cleaned title, `title.v7`) for one `org_type`, with an `effect`:
+#'   \describe{
+#'     \item{ceo}{the holder runs the organization when they work at least
+#'       `min_hours` a week and are paid at least `min_pay`. They become the
+#'       CEO (`role.ceo` "thesaurus") when the filing has no CEO, when its CEO
+#'       was only inferred from pay, or when its CEO's title matches
+#'       `outranks`.}
+#'     \item{not_ceo}{a holder paid under `min_pay` is never made the CEO (a
+#'       lodge secretary or a post treasurer on a stipend).}
+#'   }
+#'   `evidence` names the labeled filings or cross-tab behind each entry
+#'   (FINDINGS.md F-031, F-033). Load it with [get_ceo_thesaurus()].
+#'
+#' @format A data frame: `org_type`, `title_pattern`, `effect`, `outranks`,
+#'   `evidence` (character), `min_hours`, `min_pay` (numeric).
+#' @source `data-raw/crosswalks/ceo-thesaurus.csv`.
+NULL
+
 #' @name title.patterns
 #' @docType data
 #' @title Head rules for titles the crosswalk does not list.

@@ -12,6 +12,18 @@ Rscript data-raw/crosswalks/build-crosswalks.R
 | `title-standardization.csv` | `title.xwalk` (`data/title-xwalk.rda`) | step 07, `standardize_titles()` | cleaned title variant (`title.variant`, matched to `TitleTxt7`) |
 | `title-taxonomy.csv` | `title.taxonomy` (`data/title-taxonomy.rda`) | step 08, `categorize_titles()` | standard title (`title.standard`) |
 | `status-codes.csv` | `status.codes` (`data/status-codes.rda`) | step 06, `gen_status_codes()` | status-word variant (`status.variant`) |
+| `ceo-thesaurus.csv` | `ceo.thesaurus` (`data/ceo-thesaurus.rda`) | step 09, `resolve_roles()` | chief-executive title pattern for one organization type (`org_type`, see `org_type_levels()`) |
+
+`ceo-thesaurus.csv` (FINDINGS.md F-033) lists, by organization type, titles
+whose holder runs the organization (`effect` "ceo": an adjutant, a club's
+general manager, a union's business manager) or never does on stipend-level
+pay (`effect` "not_ceo": a lodge secretary). `title_pattern` and `outranks`
+are Perl regular expressions on the cleaned title; `min_pay` and `min_hours`
+are the thresholds (for "not_ceo", `min_hours` is the hours at which a holder
+is no longer on a stipend). `evidence` cites the labeled filings behind each
+row. The org type comes from an `org.type` column, or BMF NTEE codes and
+501(c) subsections (`ntee_code_clean`, `subsection_code`) joined to the input,
+or the name and titles of the filing, in that order (`org_types()`).
 
 `title-taxonomy.csv` gives each standard title an `emp.level` (CEO, OFFICER,
 MANAGER, PROFESSIONAL, STAFF) or a `board.role` (CHAIR, VICE CHAIR, SECRETARY,

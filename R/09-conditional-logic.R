@@ -147,23 +147,53 @@ resolve_roles <- function( comp.data, use_model = TRUE )
              .primary = seq_len(.N) == which.min(.rank) ),
      by = .( object.id, person.id ) ]
   d[ , role.position := names(rank)[ .pmin ] ]
+  # the CEO thesaurus (F-033): chief-executive titles by organization type.
+  # A "ceo" entry marks a holder who runs that kind of organization (an
+  # adjutant, a club's general manager); a "not_ceo" entry a holder who never
+  # does on stipend-level pay (a lodge secretary, a post treasurer)
+  ot <- org_types( comp.data )
+  d[ ot, on = "object.id", .otype := i.org.type ]
+  d[ , .v7 := toupper( chr( if( is.null( d$title.v7 ) ) d$title.raw else d$title.v7 ) ) ]
+  d[ , `:=`( .th_ceo = FALSE, .th_not = FALSE, .th_out = NA_character_ ) ]
+  thes <- get_ceo_thesaurus()
+  if( ! is.null( thes ) && nrow( thes ) && any( ! is.na( d$.otype ) ) )
+    for( i in seq_len( nrow( thes ) ) )
+    {
+      hit <- d$.otype %in% thes$org_type[i] & grepl( thes$title_pattern[i], d$.v7, perl = TRUE )
+      if( ! any( hit ) ) next
+      mp <- thes$min_pay[i]; if( is.na(mp) ) mp <- 0
+      mh <- thes$min_hours[i]; if( is.na(mh) ) mh <- 0
+      if( thes$effect[i] == "ceo" ) {
+        # unreported hours (0) do not rule a paid holder out
+        ok <- hit & d$.comp >= mp & ( d$.hrs >= mh | ( d$.hrs == 0 & d$.comp > 0 ) | mh == 0 )
+        d[ ok, `:=`( .th_ceo = TRUE, .th_out = thes$outranks[i] ) ]
+      } else {
+        # for not_ceo, min_hours bounds a stipend: a holder working that much
+        # (a full-time post secretary-treasurer) is not ruled out
+        d[ hit & d$.comp < mp & ( mh == 0 | d$.hrs < mh ), .th_not := TRUE ]
+      }
+    }
+
   # person-level signals, from any of their rows
   d[ , `:=`( .p_paid = any(.paid), .p_comp = max(.comp), .p_hrs = max(.hrs),
              .p_ceo_t = any(.ceo_t), .p_exec = any(.exec), .p_board_t = any(.board_t),
              .p_lead = any(.lead), .p_off = any(.cb_off), .p_tru = any(.cb_tru),
-             .p_pres = any(.pres), .p_interim = any(.interim) ),
+             .p_pres = any(.pres), .p_interim = any(.interim),
+             .p_th_ceo = any(.th_ceo), .p_th_not = any(.th_not) & ! any(.th_ceo),
+             .p_th_out = .th_out[ .th_ceo ][1], .p_titles = paste( unique(.v7), collapse = " | " ) ),
      by = .( object.id, person.id ) ]
 
   # ---- 3. leadership, per filing (on one row per person) -----------------------
   p <- d[ .primary == TRUE ]
   # an unpaid executive director with no checkbox is still the executive
   # director: only a board-only position rules a CEO title out
-  p[ , .desig := .p_ceo_t & role.position %in% c( "officer", "board_officer", "unknown" ) ]
+  p[ , .desig := .p_ceo_t & role.position %in% c( "officer", "board_officer", "unknown" ) & ! .p_th_not ]
   p[ , .chair_pattern := .p_tru & .p_hrs < 25 & .p_pres ]
   # an imputed leader must do more than token work: 15+ hours a week or $25k+,
-  # and, when hours are reported, at least 5 a week: pay for a seat held an hour a week is a
-  # stipend or comes from a related organization (FINDINGS.md F-032)
-  p[ , .elig := .p_paid & ! .chair_pattern & ( .p_off | .p_lead ) &
+  # and, when hours are reported, at least 5 a week: pay for a seat held an
+  # hour a week is a stipend or comes from a related organization (F-032).
+  # A thesaurus "not_ceo" title is never imputed (F-033)
+  p[ , .elig := .p_paid & ! .chair_pattern & ( .p_off | .p_lead ) & ! .p_th_not &
                 ( .p_hrs >= 15 | .p_comp >= 25000 ) & ( .p_hrs >= 5 | .p_hrs == 0 | .p_pres ) ]
   p[ , `:=`( .n_desig = sum(.desig), .any_paid = any(.p_paid),
              .best = if( any(.elig) ) max( .p_comp[.elig] ) else NA_real_ ),
@@ -182,12 +212,36 @@ resolve_roles <- function( comp.data, use_model = TRUE )
   # with the officer box runs the organization (F-032)
   p[ , .no_ceo := ! any( ! is.na( role.ceo ) ), by = object.id ]
   p[ , .rule7 := .no_ceo & .boxes & ! .p_paid & .p_hrs >= 35 & .p_off & ( .p_lead | .p_pres ) ]
-  p[ .rule7 == TRUE, .k7 := seq_len(.N) == which.max( .p_hrs ), by = object.id ]
+  # only one clear leader: when several candidates tie for the most hours (a
+  # student group whose officers all report 50), no one is imputed
+  if( any( p$.rule7 ) )
+    p[ .rule7 == TRUE, .k7 := .p_hrs == max( .p_hrs ) & sum( .p_hrs == max( .p_hrs ) ) == 1, by = object.id ]
+  else p[ , .k7 := FALSE ]
   p[ .rule7 & .k7 %in% TRUE, role.ceo := "imputed" ]
+  # the CEO thesaurus (F-033): the best-paid holder of a "ceo" title for the
+  # organization's type is the CEO when the filing has none, when its CEO was
+  # only inferred from pay, or when the CEO's title is one the entry outranks
+  # (a university president over a chancellor)
+  th_apply <- function( pick, ceo, out, titles )
+  {
+    k <- which( pick ); cur <- which( ! is.na( ceo ) )
+    if( ! length( k ) || k %in% cur ) return( FALSE )
+    if( ! length( cur ) || all( ceo[cur] %in% c( "imputed", "model" ) ) ) return( TRUE )
+    o <- out[k]
+    ! is.na( o ) && nzchar( o ) && any( grepl( o, titles[cur], perl = TRUE ) )
+  }
+  p[ , .th_best := if( any( .p_th_ceo ) ) max( .p_comp[ .p_th_ceo ] ) else NA_real_, by = object.id ]
+  p[ , .th_pick := .p_th_ceo & .p_comp == .th_best ]
+  p[ .th_pick == TRUE, .kt := seq_len(.N), by = object.id ]
+  p[ .th_pick & .kt > 1, .th_pick := FALSE ]
+  p[ , .th_apply := th_apply( .th_pick, role.ceo, .p_th_out, .p_titles ), by = object.id ]
+  p[ .th_apply & ! .th_pick, role.ceo := NA_character_ ]
+  p[ .th_apply & .th_pick, role.ceo := "thesaurus" ]
   p[ , org.leadership := data.table::fcase(
-          .n_desig[1] > 0,                   "designated",
-          any( role.ceo %in% "imputed" ),    "imputed",
-          .any_paid[1],                      "board_governed",
+          any( role.ceo %in% c( "designated", "co-ceo", "interim" ) ), "designated",
+          any( role.ceo %in% "thesaurus" ),                             "thesaurus",
+          any( role.ceo %in% "imputed" ),                               "imputed",
+          .any_paid[1],                                                 "board_governed",
           default = "no_paid" ),
      by = object.id ]
 
@@ -231,14 +285,21 @@ resolve_roles <- function( comp.data, use_model = TRUE )
                        data.table::fifelse( .level %in% c( "MANAGER", "PROFESSIONAL", "STAFF" ), .level,
                          data.table::fifelse( .p_board_t, "BOARD", "STAFF" ) ), role.final ) ]
       ez <- ! p$.boxes
+      p[ , .rules_final := role.final ]
       p[ ez, `:=`( role.final = .model, role.method = "model" ) ]
       # a CEO named by the model keeps a designated or co-CEO label from its
       # title, and is "model" otherwise; anyone else is not a CEO
       p[ ez, role.ceo := data.table::fifelse( role.final == "CEO",
                                               data.table::fcoalesce( role.ceo, "model" ), NA_character_ ) ]
       p[ ez & role.ceo %in% "imputed", role.ceo := "model" ]
+      # the thesaurus also outranks the model's own pick (F-033)
+      p[ ez, .th_apply := th_apply( .th_pick, role.ceo, .p_th_out, .p_titles ) | .th_apply, by = object.id ]
+      p[ ez & .th_apply & ! .th_pick & role.final == "CEO" & ! role.ceo %in% c( "designated", "co-ceo", "interim" ),
+         `:=`( role.final = data.table::fifelse( .rules_final == "CEO", "STAFF", .rules_final ), role.ceo = NA_character_ ) ]
+      p[ ez & .th_apply & .th_pick, `:=`( role.final = "CEO", role.ceo = "thesaurus" ) ]
       p[ , org.leadership := data.table::fcase(
               any( role.ceo %in% c( "designated", "co-ceo", "interim" ) ), "designated",
+              any( role.ceo %in% "thesaurus" ),                             "thesaurus",
               any( role.ceo %in% "imputed" ),                               "imputed",
               any( role.ceo %in% "model" ),                                 "model",
               .any_paid[1],                                                 "board_governed",
@@ -294,10 +355,12 @@ resolve_roles <- function( comp.data, use_model = TRUE )
                 p[ , .( object.id, person.id, role.final, role.board, role.ceo, role.method, org.leadership ) ],
                 by = c( "object.id", "person.id" ), all.x = TRUE )
   data.table::setorder( out, .row )
+  out[ ot, on = "object.id", `:=`( org.type = i.org.type, org.type.source = i.org.type.source ) ]
 
   res <- as.data.frame( comp.data )
   for( v in c( "role.position", "role.final", "role.board", "role.ceo",
-               "role.source", "role.method", "role.primary", "org.leadership" ) )
+               "role.source", "role.method", "role.primary", "org.leadership",
+               "org.type", "org.type.source" ) )
   { res[[v]] <- out[[v]] }
   res
 }
