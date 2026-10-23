@@ -103,7 +103,7 @@
 <p>Four example filings, built by hand. “Before” is the title-only answer from steps 07-08. “After” is step 09’s answer for each person.</p>
 <p>Boxes: <strong>T</strong> trustee, <strong>O</strong> officer, <strong>K</strong> key employee, <strong>H</strong> highly compensated.</p>
 <table class="table">
-<caption>A large organization (990). org.leadership: designated</caption>
+<caption>A large organization (990). org.leadership: designated; org.type: NA (none)</caption>
 <thead><tr class="header">
 <th align="left">title</th>
 <th align="left">pay</th>
@@ -190,7 +190,7 @@
 </table>
 <p>The checkboxes settle most of filing A. The CEO is <code>designated</code> by a CEO-level title in an officer position. The board titles with the trustee box are board seats. The paid staff keep the level their title implies.</p>
 <table class="table">
-<caption>B paid president, no CEO title (990). org.leadership: imputed</caption>
+<caption>B paid president, no CEO title (990). org.leadership: imputed; org.type: NA (none)</caption>
 <thead><tr class="header">
 <th align="left">title</th>
 <th align="left">pay</th>
@@ -241,7 +241,7 @@
 </table>
 <p>No title in filing B names a CEO, but the president is paid $85,000 for 40 hours a week and ticks the officer box: the president is the <code>imputed</code> CEO. The unpaid vice president is a board seat (VICE CHAIR), not a staff officer.</p>
 <table class="table">
-<caption>C run by its board (990). org.leadership: board_governed</caption>
+<caption>C run by its board (990). org.leadership: board_governed; org.type: NA (none)</caption>
 <thead><tr class="header">
 <th align="left">title</th>
 <th align="left">pay</th>
@@ -292,7 +292,7 @@
 </table>
 <p>Filing C pays its president a $6,000 stipend for 5 hours a week. A board title held under 10 hours a week for under $25,000 is a board seat, even with the officer box. No paid person qualifies as a leader (the bookkeeper is staff), so the filing is <code>board_governed</code>: no CEO is named.</p>
 <table class="table">
-<caption>D small organization (990-EZ). org.leadership: model</caption>
+<caption>D small organization (990-EZ). org.leadership: model; org.type: NA (none)</caption>
 <colgroup>
 <col width="19%">
 <col width="5%">
@@ -361,6 +361,127 @@
 </table>
 <p>A 990-EZ has no checkboxes. When the xgboost package is installed, roles on a 990-EZ come from the no-checkbox model, and <code>role.method</code> says <code>model</code>. Without xgboost, or with <code>resolve_roles(use_model = FALSE)</code>, the rules decide. Here they disagree on two people: - <strong>Director of Operations.</strong> The rules read the title as a department head (MANAGER). The model reads an unpaid person working 10 hours a week in a small filing as a volunteer board member. - <strong>Administrator.</strong> The model makes the second paid full-timer an officer rather than a manager.</p>
 <p><a href="classifiers.html">Rules and models</a> explains the difference.</p>
+<p>Some kinds of organization name their chief executive with a title of their own. The <strong>CEO thesaurus</strong> covers them (see below).</p>
+<table class="table">
+<caption>E country club (990). org.leadership: thesaurus; org.type: club (inferred)</caption>
+<thead><tr class="header">
+<th align="left">title</th>
+<th align="left">pay</th>
+<th align="right">hours</th>
+<th align="left">boxes</th>
+<th align="left">before: title only</th>
+<th align="left">after: step 09</th>
+<th align="left">method</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">Golf Course Superintendent</td>
+<td align="left">142,000</td>
+<td align="right">50</td>
+<td align="left">H</td>
+<td align="left">MANAGER</td>
+<td align="left">MANAGER</td>
+<td align="left">rules</td>
+</tr>
+<tr class="even">
+<td align="left">General Manager</td>
+<td align="left">128,000</td>
+<td align="right">55</td>
+<td align="left">O</td>
+<td align="left">MANAGER</td>
+<td align="left">CEO (thesaurus)</td>
+<td align="left">rules</td>
+</tr>
+<tr class="odd">
+<td align="left">Executive Chef</td>
+<td align="left">96,000</td>
+<td align="right">50</td>
+<td align="left">H</td>
+<td align="left">STAFF</td>
+<td align="left">STAFF</td>
+<td align="left">rules</td>
+</tr>
+<tr class="even">
+<td align="left">President</td>
+<td align="left">0</td>
+<td align="right">4</td>
+<td align="left">TO</td>
+<td align="left">BOARD CHAIR</td>
+<td align="left">BOARD CHAIR</td>
+<td align="left">rules</td>
+</tr>
+<tr class="odd">
+<td align="left">Treasurer</td>
+<td align="left">0</td>
+<td align="right">2</td>
+<td align="left">TO</td>
+<td align="left">BOARD TREASURER</td>
+<td align="left">BOARD TREASURER</td>
+<td align="left">rules</td>
+</tr>
+</tbody>
+</table>
+<p>In a country club the general manager runs the club, even when the golf course superintendent is paid more. The taxonomy files GENERAL MANAGER as a manager, not a CEO-level title. The name marks filing E as a <code>club</code>, so the thesaurus makes the general manager the <code>thesaurus</code> CEO.</p>
+<table class="table">
+<caption>F lodge (990). org.leadership: board_governed; org.type: fraternal (inferred)</caption>
+<thead><tr class="header">
+<th align="left">title</th>
+<th align="left">pay</th>
+<th align="right">hours</th>
+<th align="left">boxes</th>
+<th align="left">before: title only</th>
+<th align="left">after: step 09</th>
+<th align="left">method</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">Secretary</td>
+<td align="left">21,000</td>
+<td align="right">20</td>
+<td align="left">O</td>
+<td align="left">BOARD SECRETARY</td>
+<td align="left">OFFICER</td>
+<td align="left">rules</td>
+</tr>
+<tr class="even">
+<td align="left">Exalted Ruler</td>
+<td align="left">0</td>
+<td align="right">10</td>
+<td align="left">TO</td>
+<td align="left">BOARD CHAIR</td>
+<td align="left">BOARD CHAIR</td>
+<td align="left">rules</td>
+</tr>
+<tr class="odd">
+<td align="left">Treasurer</td>
+<td align="left">3,000</td>
+<td align="right">5</td>
+<td align="left">TO</td>
+<td align="left">BOARD TREASURER</td>
+<td align="left">BOARD TREASURER</td>
+<td align="left">rules</td>
+</tr>
+<tr class="even">
+<td align="left">Trustee</td>
+<td align="left">0</td>
+<td align="right">2</td>
+<td align="left">T</td>
+<td align="left">BOARD MEMBER</td>
+<td align="left">BOARD MEMBER</td>
+<td align="left">rules</td>
+</tr>
+<tr class="odd">
+<td align="left">Bookkeeper</td>
+<td align="left">12,000</td>
+<td align="right">12</td>
+<td align="left"></td>
+<td align="left">STAFF</td>
+<td align="left">STAFF</td>
+<td align="left">rules</td>
+</tr>
+</tbody>
+</table>
+<p>A lodge’s secretary is often paid a stipend for keeping the books. Pay alone would make the secretary of filing F the CEO. The thesaurus marks a <code>fraternal</code> secretary paid under $40,000 for under 35 hours a week as never the CEO. The secretary stays an officer and the lodge is <code>board_governed</code>: no one runs it as a paid executive. The bookkeeper is part-time staff.</p>
 </div>
 <div class="section level2">
 <h2 id="what-it-does">What it does<a class="anchor" aria-label="anchor" href="#what-it-does"></a>
@@ -374,19 +495,192 @@
 |                             the most senior position; role.primary marks one row
 +- 3. leadership, per filing  a CEO-level title in an officer position = designated CEO;
 |                             else the highest-paid plausible leader = imputed CEO;
+|                             else one unpaid full-time leader with the officer box = imputed CEO;
 |                             else board_governed (paid people, no leader) or no_paid
-+- 4. final role              CEO, OFFICER, MANAGER, PROFESSIONAL, STAFF or BOARD,
++- 4. CEO thesaurus           for the organization's type, a title that runs it = thesaurus CEO
++- 5. final role              CEO, OFFICER, MANAGER, PROFESSIONAL, STAFF or BOARD,
 |                             and for BOARD the board role
-+- 5. 990-EZ                  the no-checkbox model replaces the rules' answer</code></pre>
-<p>Three thresholds keep token pay from making a leader:</p>
++- 6. 990-EZ                  the no-checkbox model replaces the rules' answer
+                              (the thesaurus still applies after it)</code></pre>
+<p>These thresholds keep token pay from making a leader:</p>
 <ul>
 <li>
-<strong>Imputed CEO.</strong> A leader with no CEO title must work at least 15 hours a week or earn at least $25,000, and have the officer box or a leadership title.</li>
+<strong>Imputed CEO.</strong> A leader with no CEO title must have the officer box or a leadership title. They must also work at least 15 hours a week or earn at least $25,000. When hours are reported, they must be at least 5 a week, unless the person is a president: pay for a seat held an hour a week is a stipend, or pay from a related organization.</li>
 <li>
 <strong>Board chair pattern.</strong> A paid board chair with the trustee box who works under 25 hours a week is not imputed as CEO.</li>
 <li>
-<strong>Stipend rule.</strong> A board title held under 10 hours a week for under $25,000 is a board seat, with or without the officer box. On a 990-EZ the same holds for a board title paid a small fee.</li>
+<strong>Stipend rule.</strong> A board title held under 10 hours a week for under $25,000 is a board seat, with or without the officer box. On a 990-EZ the same holds for a board title paid a small fee. When the 990-EZ model names a CEO with no CEO-level title who works under 20 hours for under $50,000, the rules’ answer stands.</li>
+<li>
+<strong>Unpaid full-time leader.</strong> When no one else is the CEO, an unpaid president, chair or leader with the officer box who works 35+ hours a week runs the organization. If several people tie for the most hours, no one is named.</li>
 </ul>
+<p>Board roles have rules of their own:</p>
+<ul>
+<li>
+<strong>Past and elect.</strong> A past president or president-elect holds a seat (MEMBER), not the office. The flags come from step 06’s FORMER and FUTURE statuses. A dated change is the exception: CHAIR THRU 6/20 held the office for part of the year.</li>
+<li>
+<strong>Secretary-treasurer.</strong> The combined office is kept whole, as SECRETARY TREASURER.</li>
+</ul>
+</div>
+<div class="section level2">
+<h2 id="the-ceo-thesaurus">The CEO thesaurus<a class="anchor" aria-label="anchor" href="#the-ceo-thesaurus"></a>
+</h2>
+<p>A post adjutant, a club’s general manager, a union local’s business manager and a senior pastor each run their organization, but their titles are not CEO-level titles in the taxonomy. <code>ceo.thesaurus</code> lists such titles by organization type, as regular expressions on the cleaned title. Each entry has an effect:</p>
+<ul>
+<li>
+<strong>ceo:</strong> the holder runs the organization when paid at least <code>min_pay</code> and working at least <code>min_hours</code>. They are named when the filing has no CEO, when its CEO was only imputed from pay, or when its CEO’s title matches <code>outranks</code>: a university president over a chancellor, a union’s business manager over a paid president.</li>
+<li>
+<strong>not_ceo:</strong> a holder paid under <code>min_pay</code> and working under <code>min_hours</code> is never imputed as CEO. Examples are a lodge secretary or a post treasurer on a stipend.</li>
+</ul>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">th</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_ceo_thesaurus.html">get_ceo_thesaurus</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">th</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"org_type"</span>, <span class="st">"title_pattern"</span>, <span class="st">"effect"</span>, <span class="st">"min_hours"</span>, <span class="st">"min_pay"</span>, <span class="st">"outranks"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
+<table class="table">
+<colgroup>
+<col width="4%">
+<col width="46%">
+<col width="3%">
+<col width="3%">
+<col width="3%">
+<col width="38%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">org_type</th>
+<th align="left">title_pattern</th>
+<th align="left">effect</th>
+<th align="right">min_hours</th>
+<th align="right">min_pay</th>
+<th align="left">outranks</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">veterans</td>
+<td align="left">ceo</td>
+<td align="left">20</td>
+<td align="right">25000</td>
+<td align="right"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">veterans</td>
+<td align="left">TREASURER|FINANCE OFFICER|QUARTERMASTER|TRUSTEE|SECRETARY|ADJUTANT)not_ceo</td>
+<td align="left">35</td>
+<td align="right">30000</td>
+<td align="right"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">fraternal</td>
+<td align="left">SECRETARY|RECORDER|TREASURER)not_ceo</td>
+<td align="left">35</td>
+<td align="right">40000</td>
+<td align="right"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">club</td>
+<td align="left">GENERAL MANAGER|CLUB MANAGER|GM)ceo</td>
+<td align="left">20</td>
+<td align="right">25000</td>
+<td align="right">SUPERINTENDENT|GOLF|PROFESSIONAL|\b|CHEF|CONTROLLER|DIRECTOR OF</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">club</td>
+<td align="left">POOL|SNACK|CANTEEN|BAR|GROUNDS) MANAGERnot_ceo</td>
+<td align="left">NA</td>
+<td align="right">25000</td>
+<td align="right"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">coop</td>
+<td align="left">GENERAL MANAGER|GM)ceo</td>
+<td align="left">20</td>
+<td align="right">25000</td>
+<td align="right"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">trust</td>
+<td align="left">^(FUND |PLAN |TRUST |BENEFITS? )?A?D?MINISTRATORceo</td>
+<td align="left">20</td>
+<td align="right">25000</td>
+<td align="right"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">union</td>
+<td align="left">BUSINESS MANAGER|BUS MGR)ceo</td>
+<td align="left">20</td>
+<td align="right">25000</td>
+<td align="right">PRESIDENT</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">university</td>
+<td align="left">^PRESIDENTceo</td>
+<td align="left">20</td>
+<td align="right">50000</td>
+<td align="right">CHANCELLOR|PROVOST|VICE PRESIDENT|</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">ministry</td>
+<td align="left">^(SENIOR |LEAD |GENERAL |HEAD )?PASTOR\b|\b|\b|<sup>RABBI\b|</sup>RECTORceo</td>
+<td align="left">20</td>
+<td align="right">0</td>
+<td align="right"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">fire</td>
+<td align="left">^(FIRE )?CHIEF$|^FIRE CHIEFceo</td>
+<td align="left">20</td>
+<td align="right">25000</td>
+<td align="right"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">fire</td>
+<td align="left">SECRETARY|TREASURER)not_ceo</td>
+<td align="left">35</td>
+<td align="right">40000</td>
+<td align="right"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">cemetery</td>
+<td align="left">not_ceo</td>
+<td align="left">NA</td>
+<td align="right">1</td>
+<td align="right"></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<p>The organization type, <code>org.type</code>, comes from the first of these that the input has (<code>org.type.source</code> records which):</p>
+<ol style="list-style-type: decimal">
+<li>
+<strong>supplied:</strong> an <code>org.type</code> column, one of <code><a href="../reference/org_type_levels.html">org_type_levels()</a></code>;</li>
+<li>
+<strong>codes:</strong> the IRS Business Master File’s NTEE code and 501(c) subsection, in columns <code>ntee_code_clean</code> and <code>subsection_code</code> (or <code>ntee</code> and <code>subsection</code>), mapped by <code><a href="../reference/org_type_from_codes.html">org_type_from_codes()</a></code>. For example, 501(c)(19) is veterans, 501(c)(8) fraternal and NTEE M24 fire;</li>
+<li>
+<strong>inferred:</strong> the organization’s name and titles, read by <code><a href="../reference/org_type_from_name.html">org_type_from_name()</a></code>: AMERICAN LEGION, LODGE, COUNTRY CLUB, LOCAL 123, or an ADJUTANT or EXALTED RULER among the titles.</li>
+</ol>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/org_type_from_codes.html">org_type_from_codes</a></span><span class="op">(</span>ntee <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"J40"</span>, <span class="cn">NA</span>, <span class="st">"M24"</span>, <span class="st">"X21"</span><span class="op">)</span>, subsection <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">19</span>, <span class="fl">3</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "union"    "veterans" "fire"     "ministry"</span></span>
+<span><span class="fu"><a href="../reference/org_type_from_name.html">org_type_from_name</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AMERICAN LEGION POST 12"</span>, <span class="st">"OAK HILL COUNTRY CLUB"</span>, <span class="st">"SMITH COLLEGE"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "veterans"   "club"       "university"</span></span></code></pre></div>
+<p>Codes are more reliable than names. To use them, join the NCCS unified BMF (<code><a href="https://rdrr.io/pkg/panel990/man/bmf_retrieve.html" class="external-link">panel990::bmf_retrieve()</a></code>) to the Part VII rows by EIN before step 01:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">bmf</span> <span class="op">&lt;-</span> <span class="fu">panel990</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/panel990/man/bmf_retrieve.html" class="external-link">bmf_retrieve</a></span><span class="op">(</span><span class="op">)</span>   <span class="co"># EIN2, ntee_code_clean, subsection_code, ...</span></span>
+<span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">partvii</span>, <span class="va">bmf</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"EIN2"</span>, <span class="st">"ntee_code_clean"</span>, <span class="st">"subsection_code"</span><span class="op">)</span><span class="op">]</span>, by <span class="op">=</span> <span class="st">"EIN2"</span>, all.x <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">d</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/standardize_df.html">standardize_df</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/remove_dates.html">remove_dates</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/standardize_conj.html">standardize_conj</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/split_titles.html">split_titles</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/standardize_spelling.html">standardize_spelling</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/gen_status_codes.html">gen_status_codes</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/standardize_titles.html">standardize_titles</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/categorize_titles.html">categorize_titles</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/conditional_logic.html">conditional_logic</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>In checks against hand labels, the thesaurus raised the share of filings with the right chief executive from 85.1% to 87.6% on the 750 filings it was written from. On 126 filings from organizations it had not seen, the share rose from 79.4% to 81.7%. The gains were largest for lodges, clubs and ministries (<a href="performance.html">Performance</a>).</p>
 </div>
 <div class="section level2">
 <h2 id="columns-added">Columns added<a class="anchor" aria-label="anchor" href="#columns-added"></a>
@@ -407,11 +701,11 @@
 </tr>
 <tr class="even">
 <td><code>role.board</code></td>
-<td>for BOARD: CHAIR, VICE CHAIR, SECRETARY, TREASURER, MEMBER</td>
+<td>for BOARD: CHAIR, VICE CHAIR, SECRETARY TREASURER, SECRETARY, TREASURER, MEMBER</td>
 </tr>
 <tr class="odd">
 <td><code>role.ceo</code></td>
-<td>for CEO: designated, co-ceo, interim, imputed, model</td>
+<td>for CEO: designated, co-ceo, interim, imputed, thesaurus, model</td>
 </tr>
 <tr class="even">
 <td><code>role.position</code></td>
@@ -431,7 +725,15 @@
 </tr>
 <tr class="even">
 <td><code>org.leadership</code></td>
-<td>per filing: designated, imputed, model, board_governed, no_paid</td>
+<td>per filing: designated, thesaurus, imputed, model, board_governed, no_paid</td>
+</tr>
+<tr class="odd">
+<td><code>org.type</code></td>
+<td>per filing: veterans, fraternal, union, club, coop, trust, cemetery, university, ministry, fire, orchestra, or NA</td>
+</tr>
+<tr class="even">
+<td><code>org.type.source</code></td>
+<td>supplied, codes, inferred, or none</td>
 </tr>
 </tbody>
 </table>
@@ -471,12 +773,26 @@
 <code><a href="../reference/predict_roles.html">predict_roles()</a></code>; features from <code><a href="../reference/role_model_features.html">role_model_features()</a></code>
 </td>
 </tr>
+<tr class="odd">
+<td><code>ceo.thesaurus</code></td>
+<td>crosswalk (package data, <code>data-raw/crosswalks/ceo-thesaurus.csv</code>)</td>
+<td>chief-executive and stipend titles by organization type</td>
+<td><code><a href="../reference/get_ceo_thesaurus.html">get_ceo_thesaurus()</a></code></td>
+</tr>
+<tr class="even">
+<td>organization types</td>
+<td>functions</td>
+<td>the type each filing is matched on</td>
+<td>
+<code><a href="../reference/org_types.html">org_types()</a></code>, <code><a href="../reference/org_type_from_codes.html">org_type_from_codes()</a></code>, <code><a href="../reference/org_type_from_name.html">org_type_from_name()</a></code>
+</td>
+</tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"role-model"</span>, package <span class="op">=</span> <span class="st">"titleclassifier"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "feature-names.txt" "role-model.ubj"</span></span></code></pre></div>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># the model's input: one row per person-title, no checkboxes</span></span>
 <span><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/role_model_features.html">role_model_features</a></span><span class="op">(</span><span class="va">ex</span><span class="op">[</span><span class="va">ex</span><span class="op">$</span><span class="va">object.id</span> <span class="op">==</span> <span class="st">"D small organization (990-EZ)"</span>, <span class="op">]</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span></span>
@@ -490,7 +806,7 @@
 <div class="section level2">
 <h2 id="try-it-on-the-demo-data">Try it on the demo data<a class="anchor" aria-label="anchor" href="#try-it-on-the-demo-data"></a>
 </h2>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">tinypartvii</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">8</span><span class="op">)</span></span>
 <span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/sample_n.html" class="external-link">sample_n</a></span><span class="op">(</span><span class="va">tinypartvii</span>, <span class="fl">1500</span><span class="op">)</span></span>
@@ -513,50 +829,50 @@
 <span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">people</span><span class="op">$</span><span class="va">role.final</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;        BOARD          CEO      MANAGER      OFFICER PROFESSIONAL        STAFF </span></span>
-<span><span class="co">#&gt;         1333          120            2           24            1           20</span></span>
+<span><span class="co">#&gt;         1335          115            2           27            1           20</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">people</span><span class="op">$</span><span class="va">formtype</span>, <span class="va">people</span><span class="op">$</span><span class="va">role.method</span><span class="op">)</span></span>
 <span><span class="co">#&gt;        </span></span>
 <span><span class="co">#&gt;         model rules</span></span>
 <span><span class="co">#&gt;   990       0  1082</span></span>
 <span><span class="co">#&gt;   990EZ   418     0</span></span></code></pre></div>
 <p>Titles the crosswalk files as board seats but that resolve otherwise, here a paid board president who runs the organization:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">people</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">title.standard</span> <span class="op">==</span> <span class="st">"BOARD PRESIDENT"</span>, <span class="va">role.final</span> <span class="op">!=</span> <span class="st">"BOARD"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">org.name</span>, <span class="va">title.raw</span>, <span class="va">tot.comp</span>, <span class="va">tot.hours</span>, <span class="va">role.final</span>, <span class="va">role.ceo</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">8</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                                                              org.name</span></span>
-<span><span class="co">#&gt; 1                                 Noah Webster Educational Foundation</span></span>
-<span><span class="co">#&gt; 2                            LABORERS' INTERNATIONAL UNION LOCAL 1092</span></span>
-<span><span class="co">#&gt; 3 LOCAL NO 1 ELEVATOR CONSTRUCTORS UNIONOF NEW YORK CITY AND VICINITY</span></span>
-<span><span class="co">#&gt; 4                              JUNIOR ACHIEVEMENT OF THE OCOEE REGION</span></span>
-<span><span class="co">#&gt; 5                            AMERICAN FEDERATION OF LABOROHIO AFL-CIO</span></span>
-<span><span class="co">#&gt; 6                                            THE KEYSTONE PROJECT INC</span></span>
-<span><span class="co">#&gt; 7                                       METROPORT CHAMBER OF COMMERCE</span></span>
-<span><span class="co">#&gt; 8                            Nonprofit Holistic Community Care Center</span></span>
+<span><span class="co">#&gt; 1                                  MOUNTAINEER UNITED SOCCER CLUB INC</span></span>
+<span><span class="co">#&gt; 2                                 Noah Webster Educational Foundation</span></span>
+<span><span class="co">#&gt; 3                            LABORERS' INTERNATIONAL UNION LOCAL 1092</span></span>
+<span><span class="co">#&gt; 4 LOCAL NO 1 ELEVATOR CONSTRUCTORS UNIONOF NEW YORK CITY AND VICINITY</span></span>
+<span><span class="co">#&gt; 5                              JUNIOR ACHIEVEMENT OF THE OCOEE REGION</span></span>
+<span><span class="co">#&gt; 6                            AMERICAN FEDERATION OF LABOROHIO AFL-CIO</span></span>
+<span><span class="co">#&gt; 7                                            THE KEYSTONE PROJECT INC</span></span>
+<span><span class="co">#&gt; 8                                   NATIONAL GREYHOUND FOUNDATION INC</span></span>
 <span><span class="co">#&gt;                title.raw tot.comp tot.hours role.final role.ceo</span></span>
-<span><span class="co">#&gt; 1              President    55015        30        CEO  imputed</span></span>
-<span><span class="co">#&gt; 2              PRESIDENT   255118        40        CEO  imputed</span></span>
-<span><span class="co">#&gt; 3 PRESIDENT/BUSINESS MGR   423136        55        CEO  imputed</span></span>
-<span><span class="co">#&gt; 4              PRESIDENT    62704        40        CEO  imputed</span></span>
-<span><span class="co">#&gt; 5              PRESIDENT   302557        40        CEO  imputed</span></span>
-<span><span class="co">#&gt; 6              PRESIDENT   106291        40        CEO  imputed</span></span>
-<span><span class="co">#&gt; 7           PRESIDENT, C   202089        50        CEO  imputed</span></span>
-<span><span class="co">#&gt; 8              President    14481        40        CEO    model</span></span></code></pre></div>
+<span><span class="co">#&gt; 1              President        0        40        CEO  imputed</span></span>
+<span><span class="co">#&gt; 2              President    55015        30        CEO  imputed</span></span>
+<span><span class="co">#&gt; 3              PRESIDENT   255118        40        CEO  imputed</span></span>
+<span><span class="co">#&gt; 4 PRESIDENT/BUSINESS MGR   423136        55        CEO  imputed</span></span>
+<span><span class="co">#&gt; 5              PRESIDENT    62704        40        CEO  imputed</span></span>
+<span><span class="co">#&gt; 6              PRESIDENT   302557        40        CEO  imputed</span></span>
+<span><span class="co">#&gt; 7              PRESIDENT   106291        40        CEO  imputed</span></span>
+<span><span class="co">#&gt; 8              PRESIDENT        0        40        CEO  imputed</span></span></code></pre></div>
 <p>How each filing is led:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html" class="external-link">distinct</a></span><span class="op">(</span><span class="va">object.id</span>, <span class="va">formtype</span>, <span class="va">org.leadership</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">formtype</span>, <span class="va">org.leadership</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   formtype org.leadership   n</span></span>
-<span><span class="co">#&gt; 1      990 board_governed  53</span></span>
+<span><span class="co">#&gt; 1      990 board_governed  61</span></span>
 <span><span class="co">#&gt; 2      990     designated  32</span></span>
-<span><span class="co">#&gt; 3      990        imputed  66</span></span>
-<span><span class="co">#&gt; 4      990        no_paid 775</span></span>
-<span><span class="co">#&gt; 5    990EZ board_governed  20</span></span>
+<span><span class="co">#&gt; 3      990        imputed  63</span></span>
+<span><span class="co">#&gt; 4      990        no_paid 770</span></span>
+<span><span class="co">#&gt; 5    990EZ board_governed  21</span></span>
 <span><span class="co">#&gt; 6    990EZ     designated  12</span></span>
-<span><span class="co">#&gt; 7    990EZ          model  10</span></span>
-<span><span class="co">#&gt; 8    990EZ        no_paid 352</span></span></code></pre></div>
+<span><span class="co">#&gt; 7    990EZ          model   8</span></span>
+<span><span class="co">#&gt; 8    990EZ        no_paid 353</span></span></code></pre></div>
 <p><strong>Input:</strong> the output of <code><a href="../reference/categorize_titles.html">categorize_titles()</a></code>. <strong>Output:</strong> the same rows with the role columns added. See <a href="performance.html">Performance</a> for how often the roles agree with hand labels.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

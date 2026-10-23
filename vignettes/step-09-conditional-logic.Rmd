@@ -36,9 +36,9 @@ steps 07-08. "After" is step 09's answer for each person.
 
 ```{r, include = FALSE}
 # one hand-built filing: a row per person
-filing <- function(id, form, people) {
+filing <- function(id, form, people, name = "EXAMPLE ORGANIZATION INC") {
   d <- titleclassifier::tinypartvii[rep(1, nrow(people)), ]
-  d$OBJECTID <- id; d$RETURN_TYPE <- form
+  d$OBJECTID <- id; d$RETURN_TYPE <- form; d$ORG_NAME_L1 <- name; d$ORG_NAME_L2 <- ""
   d$F9_07_COMP_DTK_TITLE <- people$title
   d$F9_07_COMP_DTK_NAME_PERS <- paste(id, seq_len(nrow(people)))
   d$F9_07_COMP_DTK_AVE_HOUR_WEEK <- as.character(people$hours)
@@ -68,9 +68,17 @@ C <- filing("C run by its board (990)", "990", p(
 D <- filing("D small organization (990-EZ)", "990EZ", p(
   title = c("President", "Administrator", "Director of Operations", "Secretary", "Treasurer"),
   pay   = c(38000, 30000, 0, 0, 0), hours = c(40, 40, 10, 2, 2), boxes = ""))
+E <- filing("E country club (990)", "990", p(
+  title = c("Golf Course Superintendent", "General Manager", "Executive Chef", "President", "Treasurer"),
+  pay   = c(142000, 128000, 96000, 0, 0), hours = c(50, 55, 50, 4, 2), boxes = c("H", "O", "H", "TO", "TO")),
+  name = "OAK HILL COUNTRY CLUB")
+F <- filing("F lodge (990)", "990", p(
+  title = c("Secretary", "Exalted Ruler", "Treasurer", "Trustee", "Bookkeeper"),
+  pay   = c(21000, 0, 3000, 0, 12000), hours = c(20, 10, 5, 2, 12), boxes = c("O", "TO", "TO", "T", "")),
+  name = "BPO ELKS LODGE 1234")
 steps08 <- function(d) d |> standardize_df() |> remove_dates() |> standardize_conj() |> split_titles() |>
   standardize_spelling() |> gen_status_codes() |> standardize_titles() |> categorize_titles()
-ex  <- quiet(steps08(rbind(A, B, C, D)))
+ex  <- quiet(steps08(rbind(A, B, C, D, E, F)))
 res <- quiet(conditional_logic(ex))
 res$rules.only <- quiet(resolve_roles(ex, use_model = FALSE))$role.final
 show <- function(id) {
@@ -86,7 +94,8 @@ show <- function(id) {
                           boxes = if (r$formtype[1] == "990EZ") "none on a 990-EZ" else boxes,
                           `before: title only` = before, `after: step 09` = after,
                           method = r$role.method, check.names = FALSE), row.names = FALSE,
-               caption = sprintf("%s. org.leadership: %s", id, r$org.leadership[1]))
+               caption = sprintf("%s. org.leadership: %s; org.type: %s (%s)", id, r$org.leadership[1],
+                                 r$org.type[1], r$org.type.source[1]))
 }
 ```
 
@@ -134,6 +143,28 @@ Here they disagree on two people:
 
 [Rules and models](classifiers.html) explains the difference.
 
+Some kinds of organization name their chief executive with a title of their
+own. The **CEO thesaurus** covers them (see below).
+
+```{r, echo = FALSE}
+show("E country club (990)")
+```
+
+In a country club the general manager runs the club, even when the golf
+course superintendent is paid more. The taxonomy files GENERAL MANAGER as a
+manager, not a CEO-level title. The name marks filing E as a `club`, so the
+thesaurus makes the general manager the `thesaurus` CEO.
+
+```{r, echo = FALSE}
+show("F lodge (990)")
+```
+
+A lodge's secretary is often paid a stipend for keeping the books. Pay alone
+would make the secretary of filing F the CEO. The thesaurus marks a
+`fraternal` secretary paid under $40,000 for under 35 hours a week as never
+the CEO. The secretary stays an officer and the lodge is `board_governed`:
+no one runs it as a paid executive. The bookkeeper is part-time staff.
+
 ## What it does
 
 ```
@@ -146,22 +177,99 @@ conditional_logic()  ->  resolve_roles()
 |                             the most senior position; role.primary marks one row
 +- 3. leadership, per filing  a CEO-level title in an officer position = designated CEO;
 |                             else the highest-paid plausible leader = imputed CEO;
+|                             else one unpaid full-time leader with the officer box = imputed CEO;
 |                             else board_governed (paid people, no leader) or no_paid
-+- 4. final role              CEO, OFFICER, MANAGER, PROFESSIONAL, STAFF or BOARD,
++- 4. CEO thesaurus           for the organization's type, a title that runs it = thesaurus CEO
++- 5. final role              CEO, OFFICER, MANAGER, PROFESSIONAL, STAFF or BOARD,
 |                             and for BOARD the board role
-+- 5. 990-EZ                  the no-checkbox model replaces the rules' answer
++- 6. 990-EZ                  the no-checkbox model replaces the rules' answer
+                              (the thesaurus still applies after it)
 ```
 
-Three thresholds keep token pay from making a leader:
+These thresholds keep token pay from making a leader:
 
-* **Imputed CEO.** A leader with no CEO title must work at least 15 hours a
-  week or earn at least $25,000, and have the officer box or a leadership
-  title.
+* **Imputed CEO.** A leader with no CEO title must have the officer box or a
+  leadership title. They must also work at least 15 hours a week or earn at
+  least $25,000. When hours are reported, they must be at least 5 a week,
+  unless the person is a president: pay for a seat held an hour a week is a
+  stipend, or pay from a related organization.
 * **Board chair pattern.** A paid board chair with the trustee box who works
   under 25 hours a week is not imputed as CEO.
 * **Stipend rule.** A board title held under 10 hours a week for under
   $25,000 is a board seat, with or without the officer box. On a 990-EZ the
-  same holds for a board title paid a small fee.
+  same holds for a board title paid a small fee. When the 990-EZ model names
+  a CEO with no CEO-level title who works under 20 hours for under $50,000,
+  the rules' answer stands.
+* **Unpaid full-time leader.** When no one else is the CEO, an unpaid
+  president, chair or leader with the officer box who works 35+ hours a week
+  runs the organization. If several people tie for the most hours, no one is
+  named.
+
+Board roles have rules of their own:
+
+* **Past and elect.** A past president or president-elect holds a seat
+  (MEMBER), not the office. The flags come from step 06's FORMER and FUTURE
+  statuses. A dated change is the exception: CHAIR THRU 6/20 held the office
+  for part of the year.
+* **Secretary-treasurer.** The combined office is kept whole, as SECRETARY
+  TREASURER.
+
+## The CEO thesaurus
+
+A post adjutant, a club's general manager, a union local's business manager
+and a senior pastor each run their organization, but their titles are not
+CEO-level titles in the taxonomy. `ceo.thesaurus` lists such titles by
+organization type, as regular expressions on the cleaned title. Each entry
+has an effect:
+
+* **ceo:** the holder runs the organization when paid at least `min_pay` and
+  working at least `min_hours`. They are named when the filing has no CEO,
+  when its CEO was only imputed from pay, or when its CEO's title matches
+  `outranks`: a university president over a chancellor, a union's business
+  manager over a paid president.
+* **not_ceo:** a holder paid under `min_pay` and working under `min_hours` is
+  never imputed as CEO. Examples are a lodge secretary or a post treasurer on
+  a stipend.
+
+```{r}
+th <- get_ceo_thesaurus()
+knitr::kable(th[, c("org_type", "title_pattern", "effect", "min_hours", "min_pay", "outranks")])
+```
+
+The organization type, `org.type`, comes from the first of these that the
+input has (`org.type.source` records which):
+
+1. **supplied:** an `org.type` column, one of `org_type_levels()`;
+2. **codes:** the IRS Business Master File's NTEE code and 501(c)
+   subsection, in columns `ntee_code_clean` and `subsection_code` (or `ntee`
+   and `subsection`), mapped by `org_type_from_codes()`. For example, 501(c)(19)
+   is veterans, 501(c)(8) fraternal and NTEE M24 fire;
+3. **inferred:** the organization's name and titles, read by
+   `org_type_from_name()`: AMERICAN LEGION, LODGE, COUNTRY CLUB, LOCAL 123, or
+   an ADJUTANT or EXALTED RULER among the titles.
+
+```{r}
+org_type_from_codes(ntee = c("J40", NA, "M24", "X21"), subsection = c(5, 19, 3, 3))
+org_type_from_name(c("AMERICAN LEGION POST 12", "OAK HILL COUNTRY CLUB", "SMITH COLLEGE"))
+```
+
+Codes are more reliable than names. To use them, join the NCCS unified BMF
+(`panel990::bmf_retrieve()`) to the Part VII rows by EIN before step 01:
+
+```{r, eval = FALSE}
+bmf <- panel990::bmf_retrieve()   # EIN2, ntee_code_clean, subsection_code, ...
+d <- merge(partvii, bmf[, c("EIN2", "ntee_code_clean", "subsection_code")], by = "EIN2", all.x = TRUE)
+d |>
+  standardize_df() |> remove_dates() |> standardize_conj() |> split_titles() |>
+  standardize_spelling() |> gen_status_codes() |> standardize_titles() |>
+  categorize_titles() |> conditional_logic()
+```
+
+In checks against hand labels, the thesaurus raised the share of filings
+with the right chief executive from 85.1% to 87.6% on the 750 filings it was
+written from. On 126 filings from organizations it had not seen, the share
+rose from 79.4% to 81.7%. The gains were largest for lodges, clubs and
+ministries ([Performance](performance.html)).
 
 ## Columns added
 
@@ -169,12 +277,14 @@ Three thresholds keep token pay from making a leader:
 |---|---|
 | `role.final` | CEO, OFFICER, MANAGER, PROFESSIONAL, STAFF, BOARD |
 | `role.board` | for BOARD: CHAIR, VICE CHAIR, SECRETARY TREASURER, SECRETARY, TREASURER, MEMBER |
-| `role.ceo` | for CEO: designated, co-ceo, interim, imputed, model |
+| `role.ceo` | for CEO: designated, co-ceo, interim, imputed, thesaurus, model |
 | `role.position` | board, officer, board_officer, staff, unknown |
 | `role.source` | what settled the position: checkbox, title+pay, title |
 | `role.method` | rules, or model (990-EZ with xgboost installed) |
 | `role.primary` | TRUE on one row per person (count people with it) |
-| `org.leadership` | per filing: designated, imputed, model, board_governed, no_paid |
+| `org.leadership` | per filing: designated, thesaurus, imputed, model, board_governed, no_paid |
+| `org.type` | per filing: veterans, fraternal, union, club, coop, trust, cemetery, university, ministry, fire, orchestra, or NA |
+| `org.type.source` | supplied, codes, inferred, or none |
 
 The crosswalk's own `emp.level` and `board.role` are kept: `role.final` is the
 resolved answer, the crosswalk columns the title-only default.
@@ -186,6 +296,8 @@ resolved answer, the crosswalk columns the title-only default.
 |---|---|---|---|
 | `emp.level`, `board.role` | columns of `title.taxonomy` (from step 08) | the title-only role each rule starts from | `get_title_taxonomy()` |
 | the role model | xgboost model file, `inst/extdata/role-model/` | roles on 990-EZ filings | `predict_roles()`; features from `role_model_features()` |
+| `ceo.thesaurus` | crosswalk (package data, `data-raw/crosswalks/ceo-thesaurus.csv`) | chief-executive and stipend titles by organization type | `get_ceo_thesaurus()` |
+| organization types | functions | the type each filing is matched on | `org_types()`, `org_type_from_codes()`, `org_type_from_name()` |
 
 ```{r}
 system.file("extdata", "role-model", package = "titleclassifier") |> list.files()

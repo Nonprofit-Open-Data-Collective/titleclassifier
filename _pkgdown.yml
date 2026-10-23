@@ -106,6 +106,13 @@ reference:
   contents:
   - predict_roles
   - role_model_features
+- title: Organization types
+  desc: The organization type each filing is matched on by the CEO thesaurus in step 09.
+  contents:
+  - org_types
+  - org_type_from_codes
+  - org_type_from_name
+  - org_type_levels
 - title: Title patterns
   desc: The step 07 fallback for titles the crosswalk does not list.
   contents:
@@ -122,12 +129,13 @@ reference:
   - read_partvii
   - get_partvii
 - title: Crosswalk loaders
-  desc: Load the title, status and taxonomy crosswalks (package data built from data-raw/crosswalks/).
+  desc: Load the title, status, taxonomy and CEO-thesaurus crosswalks (package data built from data-raw/crosswalks/).
   contents:
   - get_status_codes
   - get_title_xwalk
   - get_title_taxonomy
   - get_title_patterns
+  - get_ceo_thesaurus
   - get_googlesheets
 - title: Spelling & cleaning helpers
   desc: The fix_* routines used inside standardize_spelling().
@@ -201,3 +209,4 @@ reference:
   - title.taxonomy
   - status.codes
   - title.patterns
+  - ceo.thesaurus

@@ -34,6 +34,8 @@ source repository, run on the NCCS efile tables (release `efile_v2_3`).
 | **Calibration sample** | 60,520 filings from 2019-2023: 6,000 organizations followed for all five years, plus 6,000 fresh organizations a year. Stratified by form (990, 990-EZ), size (total expenses, Part I) and number of paid people, with design weights | coverage; checkbox agreement; stability over time |
 | **Hand-labeled set** | 316 people on 2010-2012 filings (276 on full 990s, 40 on 990-EZs), drawn to over-represent hard cases: paid presidents, board-run organizations, managers. Each was labeled from the whole filing in two independent passes, with disagreements settled by hand | accuracy |
 | **Form switchers** | 23,931 people at organizations that filed a 990-EZ one year and a full 990 the next (or the reverse), matched across years with [synthid](https://github.com/Nonprofit-Open-Data-Collective/synthid). Their full-990 role, decided with the checkboxes, labels their 990-EZ year | accuracy on 990-EZ returns |
+| **CEO label set** | 750 filings from 2019-2023: 150 organizations over five years, in 14 strata chosen where the chief executive is hard to find (unions, clubs, lodges, veterans posts, universities, ministries, fire departments, multi-CEO systems...) plus ordinary charities. Two independent labelers gave every row a role and board role, and named each filing's chief executive; the scores use the rows where they agree | chief executive and board role, by kind of organization |
+| **Held-out CEO set** | 126 filings (2021 and 2023) from 64 other organizations of the 8 types the CEO thesaurus covers, labeled the same way. The thesaurus was written before they were labeled; one threshold was adjusted after | the same, on organizations the rules were not written from |
 
 Size bins are total expenses: $0, $1-150k, $150k-1m, $1m-10m, $10m-100m and
 $100m+. Filers reporting $0 get their own bin because they almost never pay
@@ -221,6 +223,62 @@ over 95% from $1m up. The rest are `board_governed`: small organizations
 whose only paid people are a bookkeeper or a part-time helper, or whose paid
 president works a few hours for a stipend.
 
+### The chief executive, by kind of organization
+
+Naming a CEO is not the same as naming the right one. The CEO label sets
+test that on 2019-2023 filings, where the labelers chose each filing's chief
+executive (or none, for a board-run organization).
+
+```{r}
+CS  <- file.path("..", "..", "data-raw", "partvii-validation")
+sbs <- function(set) utils::read.csv(file.path(CS, set, "score-by-stratum.csv"), stringsAsFactors = FALSE)
+agr <- function(set) utils::read.csv(file.path(CS, set, "agreement.csv"), stringsAsFactors = FALSE)
+s1 <- sbs("ceo-sample"); s2 <- sbs("ceo-holdout")
+same <- function(a) a$value[a$measure == "filings: same chief executive"]
+```
+
+The two labelers named the same chief executive for
+`r pct(same(agr("ceo-sample")))` of the 750 filings and
+`r pct(same(agr("ceo-holdout")))` of the held-out ones.
+
+```{r}
+both <- merge(s1[, c("stratum", "filings", "ceo_right", "board_role_right")],
+              s2[, c("stratum", "filings", "ceo_right")], by = "stratum", all.x = TRUE, suffixes = c("", ".h"))
+both <- both[order(both$stratum != "ALL", -both$ceo_right), ]
+both$stratum[both$stratum == "ALL"] <- "All"
+kt(data.frame(Organizations = both$stratum, Filings = both$filings, `Right CEO` = pct(both$ceo_right),
+              `Board role right` = pct(both$board_role_right),
+              `Held out: filings` = big(both$filings.h), `Held out: right CEO` = pct(both$ceo_right.h),
+              check.names = FALSE))
+```
+
+Step 09 names the right chief executive for
+**`r pct(s1$ceo_right[s1$stratum == "ALL"])` of the 750 filings** and for
+`r pct(s2$ceo_right[s2$stratum == "ALL"])` of the held-out ones. Board seats
+get the right board role `r pct(s1$board_role_right[s1$stratum == "ALL"])` of
+the time.
+
+Two rounds of changes were made against the 750 filings:
+
+1. Rules for stipends, past presidents and unpaid full-time leaders raised
+   the right-CEO share from 80.9% to 85.1%.
+2. The [CEO thesaurus](step-09-conditional-logic.html#the-ceo-thesaurus)
+   raised it to 87.6%.
+
+On the held-out filings the thesaurus raised it from 79.4% to 81.7%, all of
+it in lodges (68.8% to 87.5%).
+
+Veterans posts are the hardest of the 750. Their adjutants, quartermasters
+and commanders split the work, and often the labelers name no CEO at all.
+Unions come next: the one in charge may be a business manager, a paid
+president or a secretary-treasurer.
+
+In the held-out set, ministries and universities are the weakest, each with
+only 14-16 filings:
+* a ministry run by two people, such as a married couple;
+* an unpaid religious president of a college;
+* a president who reports one hour a week while a chancellor is listed.
+
 ### Stability over time
 
 For the 6,000 organizations followed for five years, people were matched from
@@ -259,3 +317,4 @@ The scripts run in order; each states its inputs at the top.
 | `09-gold-check.R` | accuracy on the hand-labeled set |
 | `18-switch-labels.R`, `20-role-model-ship.R` | the form-switcher test set and the shipped model |
 | `21-performance.R` | the coverage tables and the accuracy breakdowns on this page |
+| `24-ceo-sample.R` to `27-ceo-rerun.R` | the CEO label sets (`CEO_SET=ceo-holdout` for the held-out one): sample, blind case files, scores |

@@ -66,7 +66,7 @@ categorize_titles()
 | `domain.category`, `domain.label` | the functional area (executive / general management, operations / finance, industry-specific / medical, ...) |
 | `major.group` ... `detailed.occupation`, `soc.label` | the 2018 BLS Standard Occupational Classification code, at four levels |
 | `emp.level` | for a job: CEO, OFFICER, MANAGER, PROFESSIONAL or STAFF |
-| `board.role` | for a board seat: CHAIR, VICE CHAIR, SECRETARY, TREASURER or MEMBER |
+| `board.role` | for a board seat: CHAIR, VICE CHAIR, SECRETARY, SECRETARY TREASURER, TREASURER or MEMBER |
 | `emp`, `ceo`, `c.level`, `mgr`, `spec`, `board`, `pres`, `vp`, `sec`, `treas`, `mem` | legacy 0/1 flags, derived from `emp.level` and `board.role` |
 
 ### Engineered features

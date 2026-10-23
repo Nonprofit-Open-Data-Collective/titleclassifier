@@ -28,6 +28,7 @@
 <url><loc>https://nonprofit-open-data-collective.github.io/titleclassifier/reference/apply_misc_split_rules.html</loc></url>
 <url><loc>https://nonprofit-open-data-collective.github.io/titleclassifier/reference/basic_csuite_fixes.html</loc></url>
 <url><loc>https://nonprofit-open-data-collective.github.io/titleclassifier/reference/categorize_titles.html</loc></url>
+<url><loc>https://nonprofit-open-data-collective.github.io/titleclassifier/reference/ceo.thesaurus.html</loc></url>
 <url><loc>https://nonprofit-open-data-collective.github.io/titleclassifier/reference/classify_titles.html</loc></url>
 <url><loc>https://nonprofit-open-data-collective.github.io/titleclassifier/reference/clean_up_ceos.html</loc></url>
 <url><loc>https://nonprofit-open-data-collective.github.io/titleclassifier/reference/comma_helper.html</loc></url>
@@ -98,6 +99,7 @@
 <url><loc>https://nonprofit-open-data-collective.github.io/titleclassifier/reference/gen_helpful_tables.html</loc></url>
 <url><loc>https://nonprofit-open-data-collective.github.io/titleclassifier/reference/gen_status_codes.html</loc></url>
 <url><loc>https://nonprofit-open-data-collective.github.io/titleclassifier/reference/gen_taxonomy.html</loc></url>
+<url><loc>https://nonprofit-open-data-collective.github.io/titleclassifier/reference/get_ceo_thesaurus.html</loc></url>
 <url><loc>https://nonprofit-open-data-collective.github.io/titleclassifier/reference/get_googlesheets.html</loc></url>
 <url><loc>https://nonprofit-open-data-collective.github.io/titleclassifier/reference/get_partvii.html</loc></url>
 <url><loc>https://nonprofit-open-data-collective.github.io/titleclassifier/reference/get_status_codes.html</loc></url>
@@ -115,6 +117,10 @@
 <url><loc>https://nonprofit-open-data-collective.github.io/titleclassifier/reference/match_title_patterns.html</loc></url>
 <url><loc>https://nonprofit-open-data-collective.github.io/titleclassifier/reference/number.words.html</loc></url>
 <url><loc>https://nonprofit-open-data-collective.github.io/titleclassifier/reference/of_title_helper.html</loc></url>
+<url><loc>https://nonprofit-open-data-collective.github.io/titleclassifier/reference/org_types.html</loc></url>
+<url><loc>https://nonprofit-open-data-collective.github.io/titleclassifier/reference/org_type_from_codes.html</loc></url>
+<url><loc>https://nonprofit-open-data-collective.github.io/titleclassifier/reference/org_type_from_name.html</loc></url>
+<url><loc>https://nonprofit-open-data-collective.github.io/titleclassifier/reference/org_type_levels.html</loc></url>
 <url><loc>https://nonprofit-open-data-collective.github.io/titleclassifier/reference/possible.regional.list.html</loc></url>
 <url><loc>https://nonprofit-open-data-collective.github.io/titleclassifier/reference/possible.titles.html</loc></url>
 <url><loc>https://nonprofit-open-data-collective.github.io/titleclassifier/reference/predict_roles.html</loc></url>

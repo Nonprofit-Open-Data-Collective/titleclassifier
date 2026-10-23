@@ -155,6 +155,41 @@
         </dt>
         <dd>features for the no-checkbox role model</dd>
       </dl></div><div class="section level2">
+      <h2 id="organization-types">Organization types<a class="anchor" aria-label="anchor" href="#organization-types"></a></h2>
+
+      <div class="section-desc"><p>The organization type each filing is matched on by the CEO thesaurus in step 09.</p></div>
+
+
+    </div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="org_types.html">org_types()</a></code>
+
+        </dt>
+        <dd>organization type per filing</dd>
+      </dl><dl><dt>
+
+          <code><a href="org_type_from_codes.html">org_type_from_codes()</a></code>
+
+        </dt>
+        <dd>organization type from NTEE code and 501(c) subsection</dd>
+      </dl><dl><dt>
+
+          <code><a href="org_type_from_name.html">org_type_from_name()</a></code>
+
+        </dt>
+        <dd>organization type inferred from the filing</dd>
+      </dl><dl><dt>
+
+          <code><a href="org_type_levels.html">org_type_levels()</a></code>
+
+        </dt>
+        <dd>organization types for the CEO thesaurus</dd>
+      </dl></div><div class="section level2">
       <h2 id="title-patterns">Title patterns<a class="anchor" aria-label="anchor" href="#title-patterns"></a></h2>
 
       <div class="section-desc"><p>The step 07 fallback for titles the crosswalk does not list.</p></div>
@@ -226,7 +261,7 @@
       </dl></div><div class="section level2">
       <h2 id="crosswalk-loaders">Crosswalk loaders<a class="anchor" aria-label="anchor" href="#crosswalk-loaders"></a></h2>
 
-      <div class="section-desc"><p>Load the title, status and taxonomy crosswalks (package data built from data-raw/crosswalks/).</p></div>
+      <div class="section-desc"><p>Load the title, status, taxonomy and CEO-thesaurus crosswalks (package data built from data-raw/crosswalks/).</p></div>
 
 
     </div><div class="section level2">
@@ -258,6 +293,12 @@
 
         </dt>
         <dd>Load the title head rules</dd>
+      </dl><dl><dt>
+
+          <code><a href="get_ceo_thesaurus.html">get_ceo_thesaurus()</a></code>
+
+        </dt>
+        <dd>Load the CEO thesaurus</dd>
       </dl><dl><dt>
 
           <code><a href="get_googlesheets.html">get_googlesheets_status_codes()</a></code> <code><a href="get_googlesheets.html">get_googlesheets_title_xwalk()</a></code> <code><a href="get_googlesheets.html">get_googlesheets_title_taxonomy()</a></code>
@@ -1004,6 +1045,12 @@
 
         </dt>
         <dd>Head rules for titles the crosswalk does not list.</dd>
+      </dl><dl><dt>
+
+          <code><a href="ceo.thesaurus.html">ceo.thesaurus</a></code>
+
+        </dt>
+        <dd>Chief-executive titles by organization type.</dd>
       </dl></div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>

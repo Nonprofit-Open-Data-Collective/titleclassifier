@@ -268,13 +268,13 @@
 <td align="left">MEMBER</td>
 </tr>
 <tr class="even">
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
+<td align="left">PASTOR</td>
+<td align="left">industry-specific</td>
+<td align="left">religion</td>
+<td align="left">21-2011</td>
+<td align="left">Clergy</td>
+<td align="left">CEO</td>
+<td align="left"></td>
 </tr>
 </tbody>
 </table>
@@ -319,7 +319,7 @@
 </tr>
 <tr class="even">
 <td><code>board.role</code></td>
-<td>for a board seat: CHAIR, VICE CHAIR, SECRETARY, TREASURER or MEMBER</td>
+<td>for a board seat: CHAIR, VICE CHAIR, SECRETARY, SECRETARY TREASURER, TREASURER or MEMBER</td>
 </tr>
 <tr class="odd">
 <td>
@@ -415,25 +415,27 @@
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tax</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_title_taxonomy.html">get_title_taxonomy</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">tax</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 450  22</span></span>
+<span><span class="co">#&gt; [1] 377  22</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">tax</span><span class="op">$</span><span class="va">emp.level</span>, useNA <span class="op">=</span> <span class="st">"ifany"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;                       CEO      MANAGER      OFFICER PROFESSIONAL        STAFF </span></span>
-<span><span class="co">#&gt;           15           11          129          139           40          116</span></span>
+<span><span class="co">#&gt;           15            8          109          114           35           96</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">tax</span><span class="op">$</span><span class="va">board.role</span><span class="op">[</span><span class="va">tax</span><span class="op">$</span><span class="va">board.role</span> <span class="op">!=</span> <span class="st">""</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;      CHAIR     MEMBER  SECRETARY  TREASURER VICE CHAIR </span></span>
-<span><span class="co">#&gt;          1          1          1          1          1</span></span>
+<span><span class="co">#&gt;               CHAIR              MEMBER           SECRETARY SECRETARY TREASURER </span></span>
+<span><span class="co">#&gt;                   1                   1                   1                   1 </span></span>
+<span><span class="co">#&gt;           TREASURER          VICE CHAIR </span></span>
+<span><span class="co">#&gt;                   1                   1</span></span>
 <span><span class="va">tax</span><span class="op">[</span><span class="va">tax</span><span class="op">$</span><span class="va">title.standard</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"CEO"</span>, <span class="st">"DIRECTOR OF DEVELOPMENT"</span>, <span class="st">"BOARD TREASURER"</span><span class="op">)</span>,</span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"title.standard"</span>, <span class="st">"domain.label"</span>, <span class="st">"detailed.occupation"</span>, <span class="st">"soc.label"</span>, <span class="st">"emp.level"</span>, <span class="st">"board.role"</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="co">#&gt;              title.standard               domain.label detailed.occupation</span></span>
-<span><span class="co">#&gt; 45          BOARD TREASURER                      board                    </span></span>
-<span><span class="co">#&gt; 56                      CEO         general management             11-1011</span></span>
-<span><span class="co">#&gt; 152 DIRECTOR OF DEVELOPMENT fundraising and membership             11-2033</span></span>
+<span><span class="co">#&gt; 40          BOARD TREASURER                      board                    </span></span>
+<span><span class="co">#&gt; 48                      CEO         general management             11-1011</span></span>
+<span><span class="co">#&gt; 134 DIRECTOR OF DEVELOPMENT fundraising and membership             11-2033</span></span>
 <span><span class="co">#&gt;                soc.label emp.level board.role</span></span>
-<span><span class="co">#&gt; 45                                  TREASURER</span></span>
-<span><span class="co">#&gt; 56      Chief Executives       CEO           </span></span>
-<span><span class="co">#&gt; 152 Fundraising Managers   MANAGER</span></span></code></pre></div>
+<span><span class="co">#&gt; 40                                  TREASURER</span></span>
+<span><span class="co">#&gt; 48      Chief Executives       CEO           </span></span>
+<span><span class="co">#&gt; 134 Fundraising Managers   MANAGER</span></span></code></pre></div>
 <p><strong>Input:</strong> the output of step 07. <strong>Output:</strong> one row per person and title with the taxonomy fields, the status flags, the engineered features, and the title at each step (<code>title.raw</code>, <code>title.v1</code> … <code>title.v7</code>). Continue with <a href="step-09-conditional-logic.html">step 09</a>.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

@@ -103,24 +103,32 @@ table(tax$emp.level[tax$emp.level != ""])
 | **CHAIR** | BOARD PRESIDENT | CHAIR, CHAIRMAN, CHAIRPERSON, PRESIDENT (unpaid) |
 | **VICE CHAIR** | BOARD VICE PRESIDENT | VICE CHAIR, VICE PRESIDENT (on the board) |
 | **SECRETARY** | BOARD SECRETARY | SECRETARY, CLERK, ADJUTANT |
+| **SECRETARY TREASURER** | BOARD SECRETARY TREASURER | SECRETARY TREASURER, SECRETARY/TREASURER, SEC-TREAS |
 | **TREASURER** | BOARD TREASURER | TREASURER |
 | **MEMBER** | BOARD MEMBER | DIRECTOR, TRUSTEE, GOVERNOR, COMMITTEE MEMBER, ... |
 
 When step 09 turns an employee title into a board seat (an unpaid VICE
 PRESIDENT who ticks only the trustee box, say), `role.board` is read from the
-title: VICE PRESIDENT becomes VICE CHAIR.
+title: VICE PRESIDENT becomes VICE CHAIR. A past president or
+president-elect holds a seat (MEMBER), not the office. A person whose title
+was split into a secretary row and a treasurer row is a SECRETARY TREASURER.
+(An ADJUTANT is a board secretary by title. In a veterans organization a
+paid full-time adjutant is often the chief executive, which step 09's CEO
+thesaurus picks up.)
 
 ### Resolved role columns
 
 | Column | Values | Meaning |
 |---|---|---|
 | `role.final` | CEO, OFFICER, MANAGER, PROFESSIONAL, STAFF, BOARD | the person's role |
-| `role.board` | CHAIR, VICE CHAIR, SECRETARY, TREASURER, MEMBER | for BOARD: the seat; for a person with several board titles, the most senior |
-| `role.ceo` | designated, co-ceo, interim, imputed, model | for CEO: how the CEO was found. `designated`: a CEO-level title in an officer position. `co-ceo`: two or more designated. `interim`: designated and flagged interim. `imputed`: no CEO title, the highest-paid plausible leader. `model`: named by the 990-EZ model |
+| `role.board` | CHAIR, VICE CHAIR, SECRETARY TREASURER, SECRETARY, TREASURER, MEMBER | for BOARD: the seat; for a person with several board titles, the most senior |
+| `role.ceo` | designated, co-ceo, interim, imputed, thesaurus, model | for CEO: how the CEO was found. `designated`: a CEO-level title in an officer position. `co-ceo`: two or more designated. `interim`: designated and flagged interim. `imputed`: no CEO title, the highest-paid plausible leader (or the one unpaid full-time leader). `thesaurus`: a title that runs this kind of organization, from the CEO thesaurus (an adjutant, a club's general manager). `model`: named by the 990-EZ model |
 | `role.position` | board, officer, board_officer, staff, unknown | the position from the checkboxes (or title and pay) |
 | `role.source` | checkbox, title+pay, title | what settled the position |
 | `role.method` | rules, model | which classifier decided ([Rules and models](classifiers.html)) |
-| `org.leadership` | designated, imputed, model, board_governed, no_paid | per filing: how its chief executive was found. `board_governed`: people are paid but none is a plausible leader. `no_paid`: nobody is paid |
+| `org.leadership` | designated, thesaurus, imputed, model, board_governed, no_paid | per filing: how its chief executive was found. `board_governed`: people are paid but none is a plausible leader. `no_paid`: nobody is paid |
+| `org.type` | veterans, fraternal, union, club, coop, trust, cemetery, university, ministry, fire, orchestra, or NA | per filing: the kind of organization the CEO thesaurus is keyed on |
+| `org.type.source` | supplied, codes, inferred, none | where `org.type` came from: a supplied column, BMF NTEE and 501(c) codes, or the name and titles |
 
 ## Strata
 

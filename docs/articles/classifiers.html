@@ -125,7 +125,7 @@
 <tr class="even">
 <td><strong>Decision rules</strong></td>
 <td>step 09</td>
-<td>an if-then cascade on checkboxes, pay and hours: officer box + CEO-level title = designated CEO; a board title held under 10 hours a week for under $25,000 = board seat</td>
+<td>an if-then cascade on checkboxes, pay and hours: officer box + CEO-level title = designated CEO; a board title held under 10 hours a week for under $25,000 = board seat. The CEO thesaurus, a lookup table by organization type, adds the titles that run particular kinds of organization: a club’s general manager, a post adjutant</td>
 </tr>
 </tbody>
 </table>
@@ -133,7 +133,7 @@
 <p>The rules live in:</p>
 <ul>
 <li>
-<code>data-raw/crosswalks/*.csv</code> (the lookup tables and pattern rules), loaded with <code><a href="../reference/get_title_xwalk.html">get_title_xwalk()</a></code>, <code><a href="../reference/get_title_taxonomy.html">get_title_taxonomy()</a></code>, <code><a href="../reference/get_status_codes.html">get_status_codes()</a></code> and <code><a href="../reference/get_title_patterns.html">get_title_patterns()</a></code>;</li>
+<code>data-raw/crosswalks/*.csv</code> (the lookup tables and pattern rules), loaded with <code><a href="../reference/get_title_xwalk.html">get_title_xwalk()</a></code>, <code><a href="../reference/get_title_taxonomy.html">get_title_taxonomy()</a></code>, <code><a href="../reference/get_status_codes.html">get_status_codes()</a></code>, <code><a href="../reference/get_title_patterns.html">get_title_patterns()</a></code> and <code><a href="../reference/get_ceo_thesaurus.html">get_ceo_thesaurus()</a></code>;</li>
 <li>the word lists (<code>date.words</code>, <code>likely.titles</code>, …), loaded with <code><a href="https://rdrr.io/r/utils/data.html" class="external-link">data()</a></code>;</li>
 <li>the code of each step, in particular <code><a href="../reference/fix_spelling.html">fix_spelling()</a></code> and <code><a href="../reference/resolve_roles.html">resolve_roles()</a></code>.</li>
 </ul>
@@ -314,8 +314,8 @@
 <span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">roles</span><span class="op">$</span><span class="va">role.final</span><span class="op">[</span><span class="va">ez</span><span class="op">]</span>, rules <span class="op">=</span> <span class="va">rules</span><span class="op">$</span><span class="va">role.final</span><span class="op">[</span><span class="va">ez</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="co">#&gt;          rules</span></span>
 <span><span class="co">#&gt; model     BOARD CEO MANAGER STAFF</span></span>
-<span><span class="co">#&gt;   BOARD     174   0       1    10</span></span>
-<span><span class="co">#&gt;   CEO         1   4       0     1</span></span>
+<span><span class="co">#&gt;   BOARD     174   0       1    11</span></span>
+<span><span class="co">#&gt;   CEO         0   4       0     1</span></span>
 <span><span class="co">#&gt;   OFFICER     1   0       0     2</span></span></code></pre></div>
 <p><code><a href="../reference/predict_roles.html">predict_roles()</a></code> returns the model’s prediction for any rows, including full 990 rows, which is useful for checking how often it agrees with the rules.</p>
 </div>
