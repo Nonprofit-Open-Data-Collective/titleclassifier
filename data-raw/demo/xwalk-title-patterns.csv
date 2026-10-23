@@ -6,8 +6,6 @@
 "prefix","ALT","BOARD MEMBER","majority",11,1
 "prefix","ALTERNATE","BOARD MEMBER","majority",16,0.875
 "prefix","ASSISTANT CHIEF","CHIEF","majority",6,0.833
-"prefix","AWARDS","BOARD MEMBER","majority",5,0.8
-"prefix","BASEBALL","BOARD MEMBER","majority",7,0.857
 "prefix","BETA","BOARD MEMBER","majority",16,1
 "prefix","BOARD","BOARD MEMBER","majority",107,0.822
 "prefix","BOARD MEMBER","BOARD MEMBER","majority",52,0.865
@@ -16,38 +14,30 @@
 "prefix","CFO","CHIEF FINANCIAL OFFICER","majority",18,0.889
 "prefix","CHIEF MARKETING","CHIEF MARKETING OFFICER","level",7,1
 "prefix","COMMITTEE","BOARD MEMBER","majority",18,0.944
-"prefix","COMMUNITY","BOARD MEMBER","majority",29,0.828
 "prefix","DEAN","DEAN","majority",22,1
 "prefix","DELTA","BOARD MEMBER","majority",12,1
 "prefix","DIRECTOR OF MARKETING","DIRECTOR OF MARKETING","level",8,1
 "prefix","EPSILON","BOARD MEMBER","majority",13,1
 "prefix","EQUIPMENT","BOARD MEMBER","majority",9,1
-"prefix","EVENTS","BOARD MEMBER","majority",5,0.8
 "prefix","GAMMA","BOARD MEMBER","majority",16,1
 "prefix","GOVERNOR","BOARD MEMBER","majority",10,1
 "prefix","HONORARY","BOARD MEMBER","majority",16,0.938
 "prefix","INDIVIDUAL TRUSTEE","BOARD MEMBER","majority",5,0.8
 "prefix","IOTA","BOARD MEMBER","majority",11,1
 "prefix","KAPPA","BOARD MEMBER","majority",13,1
-"prefix","LEADERSHIP","BOARD MEMBER","majority",5,0.8
 "prefix","MANAGER","MANAGER","majority",27,0.852
-"prefix","MASTER","BOARD MEMBER","majority",5,0.8
 "prefix","MEMBER","BOARD MEMBER","majority",65,0.862
 "prefix","MEMBER BOARD","BOARD MEMBER","majority",8,0.875
-"prefix","NEWSLETTER","BOARD MEMBER","majority",5,0.8
 "prefix","NUMBER","BOARD MEMBER","majority",9,1
 "prefix","NURSE","NURSE","majority",8,0.875
-"prefix","PARENT","BOARD MEMBER","majority",12,0.833
 "prefix","REGIONAL BOARD","BOARD MEMBER","majority",6,1
 "prefix","REGIONAL COUNCIL","BOARD MEMBER","majority",5,0.8
 "prefix","REPRESENTATIVE","BOARD MEMBER","majority",13,1
 "prefix","SCHOOL BOARD","BOARD MEMBER","majority",5,1
 "prefix","SENIOR VICE","BOARD VICE PRESIDENT","majority",9,0.889
 "prefix","SERGEANT","BOARD MEMBER","majority",9,1
-"prefix","SOCIAL","BOARD MEMBER","majority",9,0.889
 "prefix","STUDENT","BOARD MEMBER","majority",13,0.923
 "prefix","THETA","BOARD MEMBER","majority",9,1
-"prefix","TRAVEL","BOARD MEMBER","majority",8,0.875
 "prefix","TRUSTEE","BOARD MEMBER","majority",68,0.868
 "prefix","UNION TRUSTEE","BOARD MEMBER","majority",5,1
 "prefix","VICE PRESIDENT MEMBER","BOARD VICE PRESIDENT","majority",6,0.833
@@ -56,7 +46,6 @@
 "prefix","VICE PRESIDENT OF FINANCE","VICE PRESIDENT OF FINANCE","level",22,0.955
 "prefix","VICE PRESIDENT OF STRATEGY","VICE PRESIDENT OF STRATEGY","level",20,1
 "prefix","VOTING","BOARD MEMBER","majority",6,1
-"prefix","YOUTH","BOARD MEMBER","majority",16,0.875
 "suffix","ADJUTANT","BOARD SECRETARY","majority",5,0.8
 "suffix","ALTERNATE","BOARD MEMBER","majority",5,1
 "suffix","APPOINTEE","BOARD MEMBER","majority",5,1

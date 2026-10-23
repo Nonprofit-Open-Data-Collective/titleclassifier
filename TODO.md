@@ -53,7 +53,7 @@ suite (see below) and drop the exports:
 - **Regression baseline** — re-run `tests/regression/check-regression.R` after any pipeline
   change; re-baseline (`data-raw/demo/build-demo.R`) only for intentional output changes.
 
-## Crosswalk review for odd mappings (open, 2026-10-09)
+## Crosswalk review for odd mappings (done, 2026-10-22)
 
 Some mappings look wrong: staff titles mapped to board standards (VOLUNTEER
 COORDINATOR, YOUTH DIRECTOR), inconsistent assistant board offices, a pattern
@@ -63,3 +63,6 @@ They are listed in `data-dev/CROSSWALK-ODDITIES.md`. That file's section 6 is
 the task: review the full crosswalk, the pattern rules and the status codes
 for similar issues, using the checkbox and pay evidence in the calibration
 sample. Then re-measure and rebaseline.
+
+Done in F-030 (`data-raw/partvii-validation/FINDINGS.md`): the per-variant
+decisions are in `crosswalk-review/review-table.csv`.

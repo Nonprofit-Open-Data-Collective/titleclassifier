@@ -1,8 +1,32 @@
 # Crosswalk oddities (2026-10-09)
 
 Cases noticed while writing the pkgdown step articles (PR "Docs: step
-articles..."). None has been changed yet. Each needs a decision: fix the
-crosswalk, fix the code, or record why the current mapping is intended.
+articles..."). Each needs a decision: fix the crosswalk, fix the code, or
+record why the current mapping is intended.
+
+**Reviewed 2026-10-22** (section 6; FINDINGS.md F-030). Every flagged case has
+a decision in `data-raw/partvii-validation/crosswalk-review/review-table.csv`.
+In short:
+1. Staff words on board standards: most are seats, and stay. On full 990
+   returns VOLUNTEER COORDINATOR holders tick the trustee box 62% of the time,
+   and the pooled COORDINATOR family 71%. The variants whose holders are paid
+   key employees moved to staff standards (PHYSICIAN..., PROGRAMS..., AGENT,
+   ASSISTANT HEAD COACH, BOARD ASSISTANT, YOUTH DIRECTOR).
+2. Assistant offices: one rule. An assistant, deputy, associate or vice
+   secretary or treasurer maps to ASSISTANT SECRETARY or the new ASSISTANT
+   TREASURER (strata subordinate). Step 09 gives such a seat `role.board`
+   MEMBER. Deputy, associate or assistant chairs and presidents are vice chairs.
+3. Pattern rules: 11 topic-prefix rules under 0.9 precision are dropped
+   (YOUTH, MASTER, COMMUNITY, ...). A job-noun suffix does not outrank a topic
+   prefix: the crosswalk does not support it (most such titles are board
+   titles).
+4. Uncoded titles: 89 entries added (EXECUTIVE OFFICER -> CHIEF OFFICER,
+   STAFF PHYSIATRIST -> DOCTOR, SENIOR RABBI -> PASTOR, ...). GENERAL is left
+   uncoded.
+5. Status codes: a trailing NEW is FUTURE, not FORMER. NEW elsewhere is part
+   of a name (NEW YORK). PRESENT means current, not interim. A year next to a
+   time word sets the date flag. PROGRAMS and CHAPTER -> REGIONAL are
+   intended, and stay.
 
 Sources: `data-raw/crosswalks/title-standardization.csv` (title.xwalk),
 `title-patterns.csv` (title.patterns), `title-taxonomy.csv`, `status-codes.csv`,

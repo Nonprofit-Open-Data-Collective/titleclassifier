@@ -995,3 +995,112 @@ was scored on the other half. It barely helps: 96.5% -> 96.6%, and non-board
   md5 `92d22d7b...`, 4,126 x 112.
 - R CMD check: 0 errors. The warning and the code-problems note are
   pre-existing.
+
+### F-030 Crosswalk review: odd mappings, rank words, pattern rules, status words (done)
+
+The review in `data-dev/CROSSWALK-ODDITIES.md`, section 6. The evidence is
+the 2019-2023 calibration sample (F-025), run on main at 3dd87b3. For each
+crosswalk variant it counts the people who hold it, the share who tick each
+Part VII box (full 990 only), and the share paid.
+- `22-crosswalk-review.R` builds the evidence and the checks, and decides
+  each flagged case. A case follows a rule unless
+  `crosswalk-review/manual-decisions.csv` overrides it.
+- `23-apply-crosswalk-review.R` applies the decisions and logs each change in
+  `crosswalk-review/applied-log.csv`. It also updates the 31 rows of
+  `crosswalk-changes.csv` (draft consensus votes) it supersedes, so a re-run of
+  06 does not undo them.
+- **`crosswalk-review/review-table.csv` has one row per flagged variant,
+  with its evidence, decision and reason.** It has 1,503 rows, of which 189
+  change the crosswalk. A variant flagged by several checks is one row, and
+  is counted under each of its checks below.
+
+**Why the boxes limit the stakes.** On full 990 returns the boxes settle step
+09's role for all but 1.3% of rows. The mapping still matters in three
+places:
+- in the title-level output (`title.standard`, `emp.level`, domain);
+- on 990-EZ returns, through the role model's features;
+- for officer-box holders, where a board title makes an unpaid or token-paid
+  officer a board seat.
+
+So a board variant moves to a staff standard only when its holders behave like
+staff. That means 40%+ of full-990 holders tick the key-employee box, or the
+median pay is $10k+ with few trustee boxes. Variants with few holders are
+judged by their pooled family.
+
+**Decisions:**
+
+| Check | Flagged | Changed | Decision |
+|---|---|---|---|
+| 1. Board standard, job word | 973 | 50 | Most are seats. VOLUNTEER COORDINATOR: trustee box 62%, 23% paid. The COORDINATOR family: trustee box 71%, key box 13%. The COACH, LIAISON, ADVISOR and REPRESENTATIVE families also hold seats. The PHYSICIAN and PROGRAMS families, and paid key-employee variants, move to staff standards: AGENT -> BUSINESS AGENT, ASSISTANT HEAD COACH -> COACH, BOARD ASSISTANT -> ASSISTANT. |
+| 2. Staff standard, seat evidence | 19 | 15 | Seat names mapped to DIRECTOR (MANAGER) move to BOARD MEMBER: CORPORATE, INSTITUTIONAL, LABOR and LIFE DIRECTOR, with 93-100% trustee box. So do REGIONAL COORDINATOR and MEMBER MANAGER. Occupations stay: CONSULTANT, CANTEEN MANAGER, DEACON. |
+| 3. Rank words | 285 | 27 | One rule: an assistant, deputy, associate or vice secretary or treasurer is ASSISTANT SECRETARY or the new ASSISTANT TREASURER (STAFF, strata subordinate). The evidence: ASSISTANT SECRETARY holders tick the trustee box 33% of the time and the officer box 90%; ASSISTANT TREASURER, 41% and 89%. For SECRETARY and TREASURER the trustee box is 73%. Deputy, associate and assistant chairs and presidents are vice chairs. ASSISTANT, ASSOCIATE and DEPUTY CEO map to their own standards. |
+| 4. Pattern rules | 121 | 11 dropped | Topic prefixes with a board rule under 0.9 precision: AWARDS, BASEBALL, COMMUNITY, EVENTS, LEADERSHIP, MASTER, NEWSLETTER, PARENT, SOCIAL, TRAVEL, YOUTH. They coded MASTER TEACHER, COMMUNITY HEALTH WORKER and YOUTH SUPERVISOR as BOARD MEMBER. A job-noun suffix is not made to outrank a topic prefix: of the 21 crosswalk titles with that shape, 15 are board titles. |
+| 5. Top 200 uncoded | 200 | 70 added | Clear titles only: EXECUTIVE OFFICER -> CHIEF OFFICER (officer box 92%, 61% paid); STAFF PHYSIATRIST, PCP -> DOCTOR; the RN titles -> NURSE; sector, age-group and student REPRESENTATIVE or MEMBER -> BOARD MEMBER. Places, acronyms and fragments stay uncoded; so does GENERAL (mixed). SENIOR RABBI and PARISH ADMINISTRATOR are added too. |
+| 6. Spelled like another standard | 63 | 30 | A variant spelled exactly like a standard maps to it: YOUTH DIRECTOR, COACH, EXECUTIVE SECRETARY, ASSOCIATE DIRECTOR, the DIRECTOR OF / VICE PRESIDENT OF titles. Exceptions are deliberate: DIRECTOR, PRESIDENT, SECRETARY. Post offices with seat evidence (HISTORIAN, CHAPLAIN, SURGEON) also stay. |
+
+**Code:**
+- **Step 06, NEW.** A trailing NEW was recoded as FORMER (110 sample rows,
+  e.g. TRUSTEE - NEW). It now means INCOMING (FUTURE), as does NEW before an
+  office (NEW TRUSTEE). NEW is no longer a status variant, so it is not
+  stripped inside names: 76 rows had lost it, and NEW JERSEY had become
+  JERSEY with a FUTURE flag. 14 variants keep the code they had with NEW
+  stripped, e.g. NEW MEMBER EDUCATOR.
+- **Step 06, PRESENT.** PRESENT is now a CURRENT variant, removed without a
+  flag. Before, it set INTERIM on 60 rows such as BOARD MEMBER (JAN-PRESENT).
+- **Step 02.** A year next to a time word (SINCE 2019, UNTIL 2023,
+  2019 - PRESENT) sets the date flag. A year alone does not, because LOCAL
+  2001 is a union local.
+- **Step 09.** An ASSISTANT SECRETARY or ASSISTANT TREASURER board seat gets
+  `role.board` MEMBER. The board keeps one secretary and one treasurer.
+- **Kept as intended:**
+  - PROGRAM -> PROGRAMS (step 05) stays: it is one token for PROG, PRGM and
+    PROGRAM. Renaming the standards is a vocabulary decision.
+  - CHAPTER -> REGIONAL stays: chapter, district and local all name a unit.
+  - EX$ -> FORMER never fires, since step 05 has already expanded EX.
+  - END$ -> FORMER is right.
+
+**Before and after.** Main at 3dd87b3, then this branch, on the same 60,520
+filings. Cross-time links are synthid's EMP_ID, re-attached to each run.
+
+| Measure | Before | After |
+|---|---|---|
+| Labeled set v1 (`09-gold-check.R`, 155 people) | 94.2% | 94.2% |
+| Labeled set v2 (312 people) | 89.4% | **89.7%** |
+| v2, full 990 / 990-EZ | 89.0% / 92.5% | 89.3% / 92.5% |
+| v2 board seats with the right board role | 105 of 109 | 105 of 109 |
+| Title rows uncoded (sample / weighted) | 5.0% / 3.8% | 4.9% / 3.7% |
+| Rows coded exactly | 93.7% | 93.8% |
+| Full 990: BOARD role with trustee box | 91.26% | 91.30% |
+| Full 990: trustee box read as BOARD | 97.51% | 97.52% |
+| Silver labels: title, boxes and pay agree (`14-panel-calibrate.R`) | 443,224 (79.5%) | **444,010 (79.7%)** |
+| Same role next year: BOARD / CEO / OFFICER | 99.2 / 91.7 / 89.8% | 99.2 / 91.7 / 89.8% |
+| Same role next year: STAFF | 89.8% | 89.4% |
+| Same CEO next year, by stratum | 87.7-97.1% | unchanged |
+| Rows flagged FORMER / FUTURE / INTERIM / date | 14,018 / 7,983 / 1,478 / 16,170 | 13,904 / 7,916 / 1,418 / 16,277 |
+
+**What changed:**
+- 976 of 668,168 people (0.15%) change role. The main moves:
+  - BOARD -> OFFICER (327): assistant treasurers and secretaries with only the
+    officer box;
+  - STAFF -> PROFESSIONAL (302): the physician and other occupation titles
+    added or moved;
+  - STAFF -> MANAGER or OFFICER (156): unit heads and VPs now coded;
+  - OFFICER -> BOARD (80): union board titles and ASSOCIATE DIRECTOR seats.
+- 1,202 board roles change. Most are assistant offices: TREASURER -> MEMBER
+  539, SECRETARY -> MEMBER 440.
+- 963 title rows gain a code. 165 lose one: 160 of them through the dropped
+  topic rules.
+- The v2 gain is one CEO: EXEC SECY, paid $38k, was a board secretary title and is now EXECUTIVE SECRETARY, so step 09 can impute the CEO.
+- STAFF stability falls 0.4 points because STAFF loses its best-defined
+  members (physicians, unit heads) to other levels.
+
+**Regression reference.** It is rebuilt with `build-demo.R --reference-only`:
+4,125 x 112, md5 `651745a4...`. Main had already drifted from the old
+reference after PR #35 (4,126 rows). Against main rebuilt the same way, this
+branch changes 24 titles and 10 roles on the demo, all of them assistant
+treasurers, executive secretaries and EXECUTIVE OFFICER. 237 tests pass.
+
+**Run outputs.** The before and after runs are in
+`~/Documents/PARTVII-before/` and `~/Documents/PARTVII-after/`. The canonical
+`~/Documents/PARTVII/sample/` (2026-10-09 run) is unchanged. Refresh it from
+the after run once this is merged.
