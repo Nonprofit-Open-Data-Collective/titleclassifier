@@ -19,8 +19,9 @@
 
 suppressMessages(library(data.table))
 PV   <- Sys.getenv("PARTVII_DIR", file.path(Sys.getenv("USERPROFILE", "~"), "Documents", "PARTVII"))
-OUT  <- file.path(PV, "ceo-sample")
-REPO <- "data-raw/partvii-validation/ceo-sample"
+SET  <- Sys.getenv("CEO_SET", "ceo-sample")   # or ceo-holdout (24-ceo-sample.R)
+OUT  <- file.path(PV, SET)
+REPO <- file.path("data-raw/partvii-validation", SET)
 CLS  <- Sys.getenv("CLASSIFIED", file.path(OUT, "classified.rds"))
 roles  <- c("CEO", "OFFICER", "MANAGER", "PROFESSIONAL", "STAFF", "BOARD", "DUAL", "UNSURE", "NONE")
 broles <- c("CHAIR", "VICE CHAIR", "SECRETARY", "SECRETARY TREASURER", "TREASURER", "MEMBER")

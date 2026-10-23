@@ -256,6 +256,11 @@ add_features <- function( df )
       if( ".tc_row_id" %in% names(df) )
       { new.order <- c( new.order, ".tc_row_id" ) }
 
+      # carry the org-type inputs of org_types() (step 09) when supplied: an
+      # org.type column, or BMF NTEE codes and 501(c) subsections
+      org.cols <- c( "org.type", "ntee", "ntee_code_clean", "subsection", "subsection_code" )
+      new.order <- c( new.order, setdiff( intersect( org.cols, names(df) ), new.order ) )
+
       df <- df[ new.order ]
 
    return( df )

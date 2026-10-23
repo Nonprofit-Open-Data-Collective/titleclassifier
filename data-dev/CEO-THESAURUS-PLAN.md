@@ -1,7 +1,10 @@
 # CEO thesaurus by organization type: plan (2026-10-23)
 
-Status: plan, not built. The evidence is in FINDINGS.md F-031 (the 150-org
-label set) and F-032 (the step 09 rule fixes measured on it).
+Status: **built** (FINDINGS.md F-033): `data-raw/crosswalks/ceo-thesaurus.csv`,
+`R/09-org-type.R` and the hook in `resolve_roles()`. The org type comes from
+both routes of section 2 (user decision, 2026-10-23). The plan below is kept
+as written. The evidence is in FINDINGS.md F-031 (the 150-org label set) and
+F-032 (the step 09 rule fixes measured on it).
 
 ## Why
 

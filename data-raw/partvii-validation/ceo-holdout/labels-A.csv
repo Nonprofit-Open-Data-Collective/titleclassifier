@@ -1,0 +1,1390 @@
+row_id,role,board_role,ceo,ceo_note,confidence,notes
+H002-2021-01,MANAGER,"",FALSE,"",high,""
+H002-2021-02,CEO,"",TRUE,"",medium,"fund administrator runs day-to-day ops of trustee-governed benefit fund; K box, top paid incl related"
+H002-2021-03,OFFICER,"",FALSE,"",medium,deputy to administrator; K box
+H002-2021-04,MANAGER,"",FALSE,"",high,""
+H002-2021-05,PROFESSIONAL,"",FALSE,"",medium,non-managerial programmer/analyst
+H002-2021-06,BOARD,CHAIR,FALSE,"",high,""
+H002-2021-07,BOARD,SECRETARY,FALSE,"",high,""
+H002-2021-08,BOARD,MEMBER,FALSE,"",high,""
+H002-2021-09,BOARD,MEMBER,FALSE,"",high,""
+H002-2021-10,BOARD,MEMBER,FALSE,"",high,""
+H002-2021-11,BOARD,MEMBER,FALSE,"",high,""
+H002-2021-12,BOARD,MEMBER,FALSE,"",high,""
+H002-2021-13,BOARD,MEMBER,FALSE,"",high,""
+H002-2021-14,BOARD,MEMBER,FALSE,"",high,""
+H002-2021-15,BOARD,MEMBER,FALSE,"",high,alternate trustee
+H002-2021-16,BOARD,MEMBER,FALSE,"",high,""
+H002-2021-17,MANAGER,"",FALSE,"",medium,paid by related org; manages supplemental pension
+H002-2023-01,MANAGER,"",FALSE,"",high,""
+H002-2023-02,CEO,"",TRUE,"",medium,"fund administrator runs day-to-day ops of trustee-governed benefit fund; K box, top paid"
+H002-2023-03,MANAGER,"",FALSE,"",high,""
+H002-2023-04,OFFICER,"",FALSE,"",medium,deputy to administrator; K box
+H002-2023-05,PROFESSIONAL,"",FALSE,"",medium,non-managerial programmer/analyst
+H002-2023-06,BOARD,MEMBER,FALSE,"",high,former chair; marked former in name
+H002-2023-07,BOARD,MEMBER,FALSE,"",high,former secretary; marked former in name
+H002-2023-08,BOARD,MEMBER,FALSE,"",high,""
+H002-2023-09,BOARD,MEMBER,FALSE,"",high,""
+H002-2023-10,BOARD,MEMBER,FALSE,"",high,""
+H002-2023-11,BOARD,CHAIR,FALSE,"",high,""
+H002-2023-12,BOARD,MEMBER,FALSE,"",high,marked former in name
+H002-2023-13,BOARD,MEMBER,FALSE,"",high,""
+H002-2023-14,BOARD,MEMBER,FALSE,"",high,""
+H002-2023-15,BOARD,MEMBER,FALSE,"",high,""
+H002-2023-16,BOARD,SECRETARY,FALSE,"",high,""
+H002-2023-17,BOARD,MEMBER,FALSE,"",high,""
+H002-2023-18,BOARD,MEMBER,FALSE,"",high,alternate trustee
+H002-2023-19,BOARD,MEMBER,FALSE,"",high,""
+H002-2023-20,MANAGER,"",FALSE,"",medium,paid by related org; manages supplemental pension
+H019-2021-01,DUAL,MEMBER,TRUE,"",medium,"paid full-time fire chief heading operations of 43 staff, also T box; president unpaid 10h"
+H019-2021-02,BOARD,CHAIR,FALSE,"",high,""
+H019-2021-03,BOARD,VICE CHAIR,FALSE,"",high,""
+H019-2021-04,BOARD,TREASURER,FALSE,"",high,""
+H019-2021-05,BOARD,SECRETARY,FALSE,"",high,""
+H019-2021-06,BOARD,MEMBER,FALSE,"",medium,financial secretary; separate from secretary
+H019-2021-07,BOARD,MEMBER,FALSE,"",high,""
+H019-2021-08,BOARD,MEMBER,FALSE,"",high,""
+H019-2023-01,DUAL,MEMBER,TRUE,"",medium,"paid full-time fire chief heading operations of 65 staff, also T box"
+H019-2023-02,BOARD,TREASURER,FALSE,"",high,small stipend 1h
+H019-2023-03,BOARD,CHAIR,FALSE,"",high,"stipend $8,885 for 10h: titular president"
+H019-2023-04,BOARD,MEMBER,FALSE,"",high,small stipend
+H019-2023-05,BOARD,SECRETARY,FALSE,"",high,small stipend
+H019-2023-06,BOARD,VICE CHAIR,FALSE,"",high,""
+H019-2023-07,BOARD,MEMBER,FALSE,"",high,""
+H019-2023-08,BOARD,MEMBER,FALSE,"",high,""
+H028-2021-01,CEO,"",TRUE,"",medium,"only full-time paid person (40h, O box) running the club with other staff; board unpaid 5h"
+H028-2021-02,BOARD,CHAIR,FALSE,"",high,""
+H028-2021-03,BOARD,VICE CHAIR,FALSE,"",high,""
+H028-2021-04,BOARD,SECRETARY,FALSE,"",high,""
+H028-2021-05,BOARD,TREASURER,FALSE,"",high,""
+H028-2021-06,BOARD,MEMBER,FALSE,"",high,""
+H028-2021-07,BOARD,MEMBER,FALSE,"",high,""
+H028-2021-08,BOARD,MEMBER,FALSE,"",low,unpaid lodge ritual officer; O box but no T box
+H028-2021-09,BOARD,MEMBER,FALSE,"",medium,chairs board of trustees; aerie president is chair
+H028-2021-10,BOARD,MEMBER,FALSE,"",high,""
+H028-2023-01,CEO,"",TRUE,"",medium,"only full-time paid person (40h, O box) running the club; board unpaid 5h"
+H028-2023-02,BOARD,CHAIR,FALSE,"",high,""
+H028-2023-03,BOARD,VICE CHAIR,FALSE,"",high,""
+H028-2023-04,BOARD,SECRETARY,FALSE,"",high,""
+H028-2023-05,BOARD,TREASURER,FALSE,"",high,""
+H028-2023-06,BOARD,MEMBER,FALSE,"",high,""
+H028-2023-07,BOARD,MEMBER,FALSE,"",high,""
+H028-2023-08,BOARD,MEMBER,FALSE,"",low,unpaid lodge ritual officer; O box but no T box
+H028-2023-09,BOARD,MEMBER,FALSE,"",medium,chairs board of trustees; aerie president is chair
+H028-2023-10,BOARD,MEMBER,FALSE,"",high,""
+H028-2023-11,BOARD,MEMBER,FALSE,"",high,""
+H028-2023-12,BOARD,MEMBER,FALSE,"",high,""
+H031-2021-01,BOARD,SECRETARY,FALSE,"",medium,"elected financial secretary with small stipend, 5h; no executive"
+H031-2021-02,BOARD,TREASURER,FALSE,"",high,small stipend
+H031-2021-03,BOARD,CHAIR,FALSE,"",high,grand knight = council head; unpaid
+H031-2021-04,BOARD,VICE CHAIR,FALSE,"",high,""
+H031-2021-05,BOARD,MEMBER,FALSE,"",high,""
+H031-2023-01,BOARD,SECRETARY,FALSE,"",medium,"elected financial secretary with small stipend, 5h; no executive"
+H031-2023-02,BOARD,TREASURER,FALSE,"",high,small stipend
+H031-2023-03,BOARD,CHAIR,FALSE,"",high,grand knight = council head; unpaid
+H031-2023-04,BOARD,VICE CHAIR,FALSE,"",high,""
+H031-2023-05,BOARD,MEMBER,FALSE,"",high,""
+H039-2021-01,BOARD,CHAIR,FALSE,"",high,unpaid 15h; all-volunteer board
+H039-2021-02,BOARD,TREASURER,FALSE,"",high,""
+H039-2021-03,BOARD,SECRETARY,FALSE,"",high,""
+H039-2021-04,BOARD,MEMBER,FALSE,"",high,""
+H039-2021-05,BOARD,MEMBER,FALSE,"",high,""
+H039-2021-06,BOARD,MEMBER,FALSE,"",high,""
+H039-2021-07,BOARD,MEMBER,FALSE,"",high,""
+H039-2023-01,BOARD,CHAIR,FALSE,"",high,unpaid 12h; all-volunteer board
+H039-2023-02,BOARD,MEMBER,FALSE,"",high,""
+H039-2023-03,BOARD,MEMBER,FALSE,"",high,""
+H039-2023-04,BOARD,SECRETARY,FALSE,"",high,""
+H039-2023-05,BOARD,TREASURER,FALSE,"",high,""
+H039-2023-06,BOARD,MEMBER,FALSE,"",high,""
+H039-2023-07,BOARD,MEMBER,FALSE,"",high,""
+H042-2021-01,CEO,"",TRUE,"",medium,"business manager/financial secretary of union local, only paid person, full-time"
+H042-2021-02,BOARD,CHAIR,FALSE,"",medium,unpaid union president presiding officer
+H042-2021-03,BOARD,VICE CHAIR,FALSE,"",high,""
+H042-2021-04,BOARD,SECRETARY,FALSE,"",high,recording secretary
+H042-2021-05,BOARD,TREASURER,FALSE,"",high,""
+H042-2021-06,BOARD,CHAIR,FALSE,"",medium,executive board chair; same person as treasurer
+H042-2021-07,BOARD,MEMBER,FALSE,"",high,""
+H042-2021-08,BOARD,MEMBER,FALSE,"",high,""
+H042-2021-09,BOARD,MEMBER,FALSE,"",high,""
+H042-2021-10,BOARD,MEMBER,FALSE,"",low,apprenticeship examining board seat (committee)
+H042-2021-11,BOARD,MEMBER,FALSE,"",low,apprenticeship examining board seat (committee)
+H042-2021-12,BOARD,MEMBER,FALSE,"",low,apprenticeship examining board seat (committee)
+H042-2021-13,CEO,"",FALSE,"",low,duplicate row for business manager's examining board seat
+H042-2023-01,CEO,"",TRUE,"",low,"same business manager title as 2021 but $0 pay, 0h reported; kept as head"
+H042-2023-02,BOARD,CHAIR,FALSE,"",medium,unpaid union president presiding officer
+H042-2023-03,BOARD,VICE CHAIR,FALSE,"",high,""
+H042-2023-04,BOARD,SECRETARY,FALSE,"",high,recording secretary
+H042-2023-05,BOARD,TREASURER,FALSE,"",high,""
+H042-2023-06,BOARD,CHAIR,FALSE,"",medium,executive board chair; same person as treasurer
+H042-2023-07,BOARD,MEMBER,FALSE,"",high,""
+H042-2023-08,BOARD,MEMBER,FALSE,"",high,""
+H042-2023-09,BOARD,MEMBER,FALSE,"",high,""
+H042-2023-10,BOARD,MEMBER,FALSE,"",low,apprenticeship examining board seat (committee)
+H042-2023-11,BOARD,MEMBER,FALSE,"",low,apprenticeship examining board seat (committee)
+H042-2023-12,BOARD,MEMBER,FALSE,"",low,apprenticeship examining board seat (committee)
+H042-2023-13,CEO,"",FALSE,"",low,duplicate row for business manager's examining board seat
+H003-2021-01,CEO,"",TRUE,"",medium,"paid $37,951 at 40 h/wk, O box only, no T; full-time paid head of cemetery operations with assistant manager under him"
+H003-2021-02,DUAL,SECRETARY,FALSE,"",medium,T+O box; paid assistant manager at 40 h/wk plus board secretary
+H003-2021-03,BOARD,CHAIR,FALSE,"",high,unpaid president 2 h/wk
+H003-2021-04,BOARD,MEMBER,FALSE,"",high,""
+H003-2021-05,BOARD,MEMBER,FALSE,"",high,""
+H003-2021-06,BOARD,MEMBER,FALSE,"",high,""
+H003-2023-01,BOARD,CHAIR,FALSE,"",high,unpaid president 2 h/wk
+H003-2023-02,BOARD,MEMBER,FALSE,"",high,""
+H003-2023-03,BOARD,MEMBER,FALSE,"",high,""
+H003-2023-04,BOARD,MEMBER,FALSE,"",high,""
+H003-2023-05,BOARD,SECRETARY TREASURER,FALSE,"",medium,now unpaid at 1 h/wk (was paid full-time in 2021); no paid head listed in 2023
+H008-2021-01,BOARD,MEMBER,FALSE,"",medium,"trustee with small stipend, 1 h/wk; board-run trust, no executive"
+H008-2021-02,BOARD,MEMBER,FALSE,"",medium,"trustee with small stipend, 1 h/wk; board-run trust, no executive"
+H008-2021-03,BOARD,MEMBER,FALSE,"",high,""
+H008-2023-01,BOARD,MEMBER,FALSE,"",medium,"trustee with small stipend, 1 h/wk; board-run trust, no executive"
+H008-2023-02,BOARD,MEMBER,FALSE,"",medium,"trustee with small stipend, 1 h/wk; board-run trust, no executive"
+H008-2023-03,BOARD,MEMBER,FALSE,"",high,""
+H015-2021-01,BOARD,SECRETARY,FALSE,"",high,""
+H015-2021-02,BOARD,CHAIR,FALSE,"",high,unpaid president 1 h/wk
+H015-2021-03,BOARD,TREASURER,FALSE,"",high,""
+H015-2021-04,BOARD,VICE CHAIR,FALSE,"",high,""
+H015-2023-01,BOARD,SECRETARY,FALSE,"",high,""
+H015-2023-02,BOARD,CHAIR,FALSE,"",high,president with small stipend 1 h/wk
+H015-2023-03,BOARD,TREASURER,FALSE,"",high,""
+H015-2023-04,BOARD,VICE CHAIR,FALSE,"",medium,"VP also pump house man, but same stipend as other officers and 1 h/wk"
+H024-2021-01,BOARD,TREASURER,FALSE,"",high,""
+H024-2021-02,BOARD,VICE CHAIR,FALSE,"",high,""
+H024-2021-03,BOARD,SECRETARY,FALSE,"",high,""
+H024-2021-04,BOARD,CHAIR,FALSE,"",high,"president, small stipend, 5 h/wk; volunteer fire company with no employees"
+H024-2023-01,BOARD,SECRETARY,FALSE,"",high,""
+H024-2023-02,BOARD,VICE CHAIR,FALSE,"",high,""
+H024-2023-03,BOARD,TREASURER,FALSE,"",high,""
+H024-2023-04,BOARD,CHAIR,FALSE,"",high,"president, small stipend, 5 h/wk; volunteer fire company with no employees"
+H026-2021-01,BOARD,TREASURER,FALSE,"",medium,unpaid elected officer; 40 h/wk reported but unpaid
+H026-2021-02,BOARD,SECRETARY,FALSE,"",low,recorder unpaid at 40 h/wk; may run the office (paid full-time in 2023) but unpaid and treasurer also shows 40 h
+H026-2021-03,BOARD,VICE CHAIR,FALSE,"",medium,chief rabban is second officer of the divan
+H026-2021-04,BOARD,CHAIR,FALSE,"",medium,potentate is elected head of the temple; 1 h/wk unpaid
+H026-2021-05,BOARD,MEMBER,FALSE,"",medium,divan officer
+H026-2021-06,BOARD,MEMBER,FALSE,"",medium,divan officer
+H026-2021-07,BOARD,MEMBER,FALSE,"",medium,divan officer
+H026-2023-01,CEO,"",TRUE,"",low,"recorder paid $28,354 full-time 40 h/wk, only paid person listed, staff of 3; runs the temple office while potentate is elected annual head"
+H026-2023-02,BOARD,MEMBER,FALSE,"",medium,divan officer
+H026-2023-03,BOARD,CHAIR,FALSE,"",medium,potentate is elected head of the temple; unpaid 20 h/wk
+H026-2023-04,BOARD,VICE CHAIR,FALSE,"",medium,chief rabban is second officer of the divan
+H026-2023-05,BOARD,MEMBER,FALSE,"",medium,divan officer
+H026-2023-06,BOARD,MEMBER,FALSE,"",medium,divan officer
+H026-2023-07,BOARD,TREASURER,FALSE,"",high,""
+H054-2021-01,DUAL,CHAIR,TRUE,"",medium,"trustee and paid president ($24,000 + other); only paid person (1 employee); 2021 hours look swapped vs 2023 (35 h)"
+H054-2021-02,BOARD,TREASURER,FALSE,"",high,paid by related organization
+H054-2021-03,BOARD,MEMBER,FALSE,"",high,""
+H054-2021-04,BOARD,MEMBER,FALSE,"",high,""
+H054-2021-05,BOARD,MEMBER,FALSE,"",high,""
+H054-2021-06,BOARD,MEMBER,FALSE,"",high,""
+H054-2021-07,BOARD,SECRETARY,FALSE,"",high,""
+H054-2021-08,BOARD,MEMBER,FALSE,"",high,""
+H054-2023-01,DUAL,CHAIR,TRUE,"",medium,trustee and paid president at 35 h/wk; only paid person (1 employee)
+H054-2023-02,BOARD,TREASURER,FALSE,"",high,paid by related organization
+H054-2023-03,OFFICER,"",FALSE,"",medium,"VP of finance, O box no T; paid by related org, 1 h/wk here"
+H054-2023-04,BOARD,MEMBER,FALSE,"",high,""
+H054-2023-05,BOARD,MEMBER,FALSE,"",high,""
+H054-2023-06,BOARD,MEMBER,FALSE,"",high,""
+H054-2023-07,BOARD,SECRETARY,FALSE,"",high,""
+H054-2023-08,BOARD,MEMBER,FALSE,"",high,""
+H054-2023-09,BOARD,MEMBER,FALSE,"",high,resigned 7/2023
+H012-2021-01,CEO,"",TRUE,"",medium,"paid manager 30 h/wk, O box, only paid lead running the water system; board unpaid"
+H012-2021-02,BOARD,CHAIR,FALSE,"",high,""
+H012-2021-03,BOARD,VICE CHAIR,FALSE,"",high,""
+H012-2021-04,BOARD,SECRETARY,FALSE,"",high,""
+H012-2021-05,BOARD,MEMBER,FALSE,"",high,""
+H012-2021-06,BOARD,MEMBER,FALSE,"",high,""
+H012-2021-07,BOARD,MEMBER,FALSE,"",high,""
+H012-2023-01,CEO,"",TRUE,"",medium,"paid manager 30 h/wk, O box, only paid lead running the water system; board unpaid"
+H012-2023-02,BOARD,CHAIR,FALSE,"",high,""
+H012-2023-03,BOARD,VICE CHAIR,FALSE,"",high,""
+H012-2023-04,BOARD,SECRETARY,FALSE,"",high,""
+H012-2023-05,BOARD,MEMBER,FALSE,"",high,""
+H012-2023-06,BOARD,MEMBER,FALSE,"",high,""
+H012-2023-07,BOARD,MEMBER,FALSE,"",high,""
+H012-2023-08,BOARD,MEMBER,FALSE,"",high,""
+H022-2021-01,BOARD,TREASURER,FALSE,"",high,"$6000 stipend, 5 h/wk, T+O"
+H022-2021-02,BOARD,MEMBER,FALSE,"",medium,"volunteer fire chief, unpaid 10 h/wk, T box only; all-volunteer org with no employees"
+H022-2021-03,BOARD,SECRETARY,FALSE,"",high,""
+H022-2021-04,BOARD,CHAIR,FALSE,"",high,""
+H022-2021-05,BOARD,VICE CHAIR,FALSE,"",high,""
+H022-2021-06,BOARD,MEMBER,FALSE,"",high,""
+H022-2021-07,BOARD,MEMBER,FALSE,"",high,""
+H022-2021-08,BOARD,MEMBER,FALSE,"",high,""
+H022-2023-01,BOARD,SECRETARY TREASURER,FALSE,"",high,"$6000 stipend, 7 h/wk, T+O"
+H022-2023-02,BOARD,MEMBER,FALSE,"",medium,"volunteer fire chief, unpaid 10 h/wk, T box only; all-volunteer org with no employees"
+H022-2023-03,BOARD,CHAIR,FALSE,"",high,""
+H022-2023-04,BOARD,VICE CHAIR,FALSE,"",high,""
+H022-2023-05,BOARD,MEMBER,FALSE,"",high,""
+H022-2023-06,BOARD,MEMBER,FALSE,"",high,""
+H022-2023-07,BOARD,MEMBER,FALSE,"",high,""
+H022-2023-08,BOARD,MEMBER,FALSE,"",high,""
+H022-2023-09,BOARD,MEMBER,FALSE,"",high,""
+H022-2023-10,BOARD,MEMBER,FALSE,"",high,""
+H040-2021-01,CEO,"",TRUE,"",medium,"unpaid president 40 h/wk with O box, no employees (rule 7); also T box"
+H040-2021-02,BOARD,VICE CHAIR,FALSE,"",high,""
+H040-2021-03,BOARD,TREASURER,FALSE,"",high,""
+H040-2021-04,BOARD,VICE CHAIR,FALSE,"",high,""
+H040-2023-01,CEO,"",TRUE,"",medium,"president 40 h/wk, now paid $22k, O box; same full-time leader as 2021; also T box"
+H040-2023-02,BOARD,VICE CHAIR,FALSE,"",high,""
+H040-2023-03,BOARD,TREASURER,FALSE,"",high,""
+H047-2021-01,BOARD,TREASURER,FALSE,"",medium,"union officer stipend $10.7k, 10 h/wk"
+H047-2021-02,BOARD,SECRETARY,FALSE,"",medium,"financial secretary, stipend $9.6k, 12 h/wk; part-time elected officer"
+H047-2021-03,BOARD,CHAIR,FALSE,"",medium,"union president stipend $6.4k, 4 h/wk (rule 4 titular president); no executive runs the local"
+H047-2021-04,BOARD,SECRETARY,FALSE,"",medium,"financial secretary, stipend, 12 h/wk"
+H047-2021-05,BOARD,SECRETARY,FALSE,"",high,""
+H047-2021-06,BOARD,MEMBER,FALSE,"",high,""
+H047-2021-07,BOARD,MEMBER,FALSE,"",high,""
+H047-2021-08,BOARD,VICE CHAIR,FALSE,"",high,""
+H047-2021-09,BOARD,MEMBER,FALSE,"",high,""
+H047-2021-10,BOARD,VICE CHAIR,FALSE,"",high,""
+H047-2021-11,BOARD,MEMBER,FALSE,"",high,""
+H047-2021-12,BOARD,MEMBER,FALSE,"",medium,union conductor (executive board post)
+H047-2021-13,BOARD,MEMBER,FALSE,"",medium,union warden (executive board post)
+H047-2021-14,BOARD,MEMBER,FALSE,"",medium,union warden (executive board post)
+H047-2023-01,BOARD,SECRETARY,FALSE,"",medium,"financial secretary, stipend $13.3k, 12 h/wk; part-time elected officer"
+H047-2023-02,BOARD,TREASURER,FALSE,"",medium,"union officer stipend $11.4k, 10 h/wk"
+H047-2023-03,BOARD,CHAIR,FALSE,"",medium,"union president stipend $7k, 4 h/wk (rule 4 titular president); no executive runs the local"
+H047-2023-04,BOARD,SECRETARY,FALSE,"",high,""
+H047-2023-05,BOARD,SECRETARY,FALSE,"",high,""
+H047-2023-06,BOARD,MEMBER,FALSE,"",high,""
+H047-2023-07,BOARD,MEMBER,FALSE,"",high,""
+H047-2023-08,BOARD,VICE CHAIR,FALSE,"",high,""
+H047-2023-09,BOARD,MEMBER,FALSE,"",high,""
+H047-2023-10,BOARD,MEMBER,FALSE,"",medium,union warden (executive board post)
+H047-2023-11,BOARD,MEMBER,FALSE,"",medium,union conductor (executive board post)
+H055-2021-01,DUAL,MEMBER,TRUE,"",high,paid university president $268k plus T box; job = president
+H055-2021-02,MANAGER,"",FALSE,"",medium,dean of an academic unit; H box
+H055-2021-03,OFFICER,"",FALSE,"",high,""
+H055-2021-04,OFFICER,"",FALSE,"",high,""
+H055-2021-05,OFFICER,"",FALSE,"",high,""
+H055-2021-06,BOARD,MEMBER,FALSE,"",high,""
+H055-2021-07,BOARD,CHAIR,FALSE,"",high,""
+H055-2021-08,BOARD,MEMBER,FALSE,"",low,"honorary chancellor emeritus, unpaid, O box only, no T box"
+H055-2021-09,BOARD,MEMBER,FALSE,"",medium,"chancellor/trustee, unpaid, 0.5 h/wk: honorary title plus board seat"
+H055-2021-10,BOARD,VICE CHAIR,FALSE,"",high,""
+H055-2021-11,BOARD,MEMBER,FALSE,"",high,""
+H055-2021-12,BOARD,MEMBER,FALSE,"",high,""
+H055-2021-13,BOARD,MEMBER,FALSE,"",high,""
+H055-2021-14,BOARD,MEMBER,FALSE,"",high,""
+H055-2021-15,BOARD,MEMBER,FALSE,"",high,""
+H055-2021-16,BOARD,MEMBER,FALSE,"",high,""
+H055-2021-17,BOARD,MEMBER,FALSE,"",high,""
+H055-2023-01,CEO,"",TRUE,outgoing,medium,"former president, F box, $185k pay suggests served part of year before leaving"
+H055-2023-02,OFFICER,"",FALSE,"",high,""
+H055-2023-03,OFFICER,"",FALSE,"",high,""
+H055-2023-04,BOARD,MEMBER,FALSE,"",low,"trustee; president only as of Jan 2024, apparently after tax year; pay $12.5k"
+H055-2023-05,DUAL,VICE CHAIR,TRUE,interim,medium,"interim president (part year) and vice chair; unpaid here, 39 rel h/wk"
+H055-2023-06,BOARD,CHAIR,FALSE,"",high,""
+H055-2023-07,BOARD,MEMBER,FALSE,"",medium,"chancellor/trustee, unpaid: honorary title plus board seat"
+H055-2023-08,BOARD,MEMBER,FALSE,"",high,""
+H055-2023-09,BOARD,MEMBER,FALSE,"",high,""
+H055-2023-10,BOARD,MEMBER,FALSE,"",high,""
+H055-2023-11,OFFICER,"",FALSE,"",medium,"VP business and finance, paid via related org (39 rel h/wk)"
+H057-2021-01,CEO,"",TRUE,"",medium,paid full-time adjutant $44k 40 h/wk runs department office; only paid leader; T box likely ex officio
+H057-2021-02,BOARD,CHAIR,FALSE,"",medium,"elected state commander (titled president), unpaid 30 h/wk"
+H057-2021-03,BOARD,VICE CHAIR,FALSE,"",high,""
+H057-2021-04,BOARD,MEMBER,FALSE,"",medium,"district commander, unpaid, O box; council member"
+H057-2021-05,BOARD,MEMBER,FALSE,"",medium,"district commander, unpaid, O box; council member"
+H057-2021-06,BOARD,MEMBER,FALSE,"",medium,"district commander, unpaid, O box; council member"
+H057-2021-07,BOARD,MEMBER,FALSE,"",medium,"district commander, unpaid, O box; council member"
+H057-2021-08,BOARD,MEMBER,FALSE,"",medium,"district commander, unpaid, O box; council member"
+H057-2021-09,BOARD,MEMBER,FALSE,"",medium,"district commander, unpaid, O box; council member"
+H057-2021-10,BOARD,VICE CHAIR,FALSE,"",medium,junior vice commander
+H057-2021-11,OFFICER,"",FALSE,"",low,"same person as paid adjutant, listed again as unpaid quartermaster (finance post)"
+H057-2021-12,BOARD,MEMBER,FALSE,"",high,""
+H057-2021-13,BOARD,MEMBER,FALSE,"",high,""
+H057-2021-14,BOARD,MEMBER,FALSE,"",high,""
+H057-2021-15,BOARD,MEMBER,FALSE,"",high,""
+H057-2023-01,CEO,"",TRUE,"",medium,paid full-time adjutant $45k 40 h/wk runs department office; only paid leader
+H057-2023-02,BOARD,CHAIR,FALSE,"",medium,"elected state commander, unpaid 30 h/wk"
+H057-2023-03,BOARD,VICE CHAIR,FALSE,"",high,""
+H057-2023-04,BOARD,MEMBER,FALSE,"",medium,"district commander, unpaid, O box; council member"
+H057-2023-05,BOARD,MEMBER,FALSE,"",medium,"district commander, unpaid, O box; council member"
+H057-2023-06,BOARD,MEMBER,FALSE,"",medium,"district commander, unpaid, O box; council member"
+H057-2023-07,BOARD,MEMBER,FALSE,"",medium,"district commander, unpaid, O box; council member"
+H057-2023-08,BOARD,MEMBER,FALSE,"",medium,"district commander, unpaid, O box; council member"
+H057-2023-09,BOARD,MEMBER,FALSE,"",medium,"district commander, unpaid, O box; council member"
+H057-2023-10,BOARD,MEMBER,FALSE,"",medium,"district commander, unpaid, O box; council member"
+H057-2023-11,BOARD,VICE CHAIR,FALSE,"",medium,junior vice commander
+H057-2023-12,OFFICER,"",FALSE,"",low,"same person as paid adjutant, listed again as unpaid quartermaster (finance post)"
+H057-2023-13,BOARD,MEMBER,FALSE,"",high,""
+H057-2023-14,BOARD,MEMBER,FALSE,"",medium,"appointed chief of staff, unpaid; elected-officer body"
+H057-2023-15,BOARD,MEMBER,FALSE,"",medium,"inspector, unpaid; elected-officer body"
+H057-2023-16,BOARD,MEMBER,FALSE,"",high,""
+H057-2023-17,BOARD,MEMBER,FALSE,"",high,""
+H057-2023-18,BOARD,MEMBER,FALSE,"",high,""
+H006-2021-01,BOARD,MEMBER,FALSE,"",medium,institutional trustee (bank) paid trustee fee; VEBA with no staff and no chief executive
+H006-2023-01,BOARD,MEMBER,FALSE,"",medium,institutional trustee (bank) paid trustee fee; VEBA with no staff and no chief executive
+H016-2021-01,STAFF,"",FALSE,"",medium,part-time paid newsletter editor in volunteer-run club; no chief executive
+H016-2021-02,BOARD,TREASURER,FALSE,"",medium,small stipend; volunteer treasurer
+H016-2021-03,BOARD,CHAIR,FALSE,"",high,unpaid president of volunteer club
+H016-2021-04,BOARD,MEMBER,FALSE,"",high,""
+H016-2021-05,BOARD,MEMBER,FALSE,"",high,""
+H016-2021-06,BOARD,MEMBER,FALSE,"",high,""
+H016-2021-07,BOARD,MEMBER,FALSE,"",high,""
+H016-2021-08,BOARD,MEMBER,FALSE,"",high,""
+H016-2021-09,BOARD,VICE CHAIR,FALSE,"",high,""
+H016-2021-10,BOARD,SECRETARY,FALSE,"",high,""
+H016-2023-01,STAFF,"",FALSE,"",medium,part-time paid editor (same as 2021); club run by volunteer board
+H016-2023-02,BOARD,TREASURER,FALSE,"",high,$500 stipend
+H016-2023-03,BOARD,MEMBER,FALSE,"",medium,membership secretary (functional post); former treasurer
+H016-2023-04,BOARD,CHAIR,FALSE,"",high,unpaid president
+H016-2023-05,BOARD,MEMBER,FALSE,"",high,""
+H016-2023-06,BOARD,MEMBER,FALSE,"",high,""
+H016-2023-07,BOARD,MEMBER,FALSE,"",high,""
+H016-2023-08,BOARD,MEMBER,FALSE,"",high,judging director
+H016-2023-09,BOARD,SECRETARY,FALSE,"",medium,corresponding secretary; was secretary in 2021
+H016-2023-10,BOARD,VICE CHAIR,FALSE,"",high,""
+H020-2021-01,DUAL,MEMBER,TRUE,"",low,"paid full-time Director of (truncated) with T box; only paid listed person over 24 employees, likely runs operations"
+H020-2021-02,BOARD,TREASURER,FALSE,"",high,""
+H020-2021-03,BOARD,MEMBER,FALSE,"",high,""
+H020-2021-04,BOARD,MEMBER,FALSE,"",high,""
+H020-2021-05,BOARD,MEMBER,FALSE,"",high,township representative
+H020-2021-06,BOARD,MEMBER,FALSE,"",high,""
+H020-2021-07,BOARD,SECRETARY,FALSE,"",high,""
+H020-2021-08,BOARD,CHAIR,FALSE,"",high,unpaid president
+H020-2021-09,BOARD,MEMBER,FALSE,"",high,borough representative
+H020-2021-10,BOARD,MEMBER,FALSE,"",high,""
+H020-2021-11,BOARD,MEMBER,FALSE,"",high,""
+H020-2021-12,BOARD,VICE CHAIR,FALSE,"",high,""
+H020-2021-13,BOARD,MEMBER,FALSE,"",high,""
+H020-2021-14,BOARD,MEMBER,FALSE,"",high,""
+H020-2023-01,CEO,"",TRUE,"",low,paid full-time Director of (truncated) with O box; only paid listed person over 35 employees; title may be a function (e.g. EMS)
+H020-2023-02,BOARD,MEMBER,FALSE,"",high,""
+H020-2023-03,BOARD,MEMBER,FALSE,"",high,""
+H020-2023-04,BOARD,SECRETARY,FALSE,"",high,""
+H020-2023-05,BOARD,MEMBER,FALSE,"",high,borough representative
+H020-2023-06,BOARD,VICE CHAIR,FALSE,"",high,""
+H020-2023-07,BOARD,MEMBER,FALSE,"",high,borough representative
+H020-2023-08,BOARD,MEMBER,FALSE,"",high,""
+H020-2023-09,BOARD,MEMBER,FALSE,"",high,""
+H020-2023-10,BOARD,CHAIR,FALSE,"",high,unpaid president
+H020-2023-11,BOARD,TREASURER,FALSE,"",high,""
+H020-2023-12,BOARD,MEMBER,FALSE,"",high,""
+H020-2023-13,BOARD,MEMBER,FALSE,"",high,township representative
+H052-2021-01,CEO,"",TRUE,outgoing,high,head of school; F box suggests departing (successor in 2023)
+H052-2021-02,OFFICER,"",FALSE,"",high,assistant head of school
+H052-2021-03,MANAGER,"",FALSE,"",medium,director of development; key employee
+H052-2021-04,MANAGER,"",FALSE,"",high,""
+H052-2021-05,OFFICER,"",FALSE,"",high,CFO/COO
+H052-2021-06,MANAGER,"",FALSE,"",high,athletic director
+H052-2021-07,MANAGER,"",FALSE,"",high,""
+H052-2021-08,BOARD,CHAIR,FALSE,"",high,""
+H052-2021-09,BOARD,VICE CHAIR,FALSE,"",high,""
+H052-2021-10,BOARD,TREASURER,FALSE,"",high,""
+H052-2021-11,BOARD,MEMBER,FALSE,"",high,""
+H052-2021-12,BOARD,MEMBER,FALSE,"",high,""
+H052-2021-13,BOARD,MEMBER,FALSE,"",high,""
+H052-2021-14,BOARD,MEMBER,FALSE,"",high,""
+H052-2021-15,BOARD,MEMBER,FALSE,"",high,""
+H052-2021-16,BOARD,MEMBER,FALSE,"",high,""
+H052-2021-17,BOARD,SECRETARY,FALSE,"",high,""
+H052-2021-18,BOARD,MEMBER,FALSE,"",high,""
+H052-2021-19,BOARD,MEMBER,FALSE,"",high,""
+H052-2021-20,BOARD,MEMBER,FALSE,"",high,""
+H052-2021-21,BOARD,MEMBER,FALSE,"",high,""
+H052-2021-22,BOARD,MEMBER,FALSE,"",high,""
+H052-2021-23,BOARD,MEMBER,FALSE,"",high,""
+H052-2021-24,BOARD,MEMBER,FALSE,"",high,""
+H052-2021-25,BOARD,MEMBER,FALSE,"",high,""
+H052-2021-26,BOARD,MEMBER,FALSE,"",high,""
+H052-2021-27,BOARD,MEMBER,FALSE,"",high,""
+H052-2021-28,BOARD,MEMBER,FALSE,"",high,""
+H052-2021-29,BOARD,MEMBER,FALSE,"",high,""
+H052-2023-01,CEO,"",TRUE,"",high,head of school
+H052-2023-02,OFFICER,"",FALSE,"",high,associate head of school for advancement
+H052-2023-03,OFFICER,"",FALSE,"",high,assistant head for finance and operations
+H052-2023-04,OFFICER,"",FALSE,"",high,assistant head for academic affairs
+H052-2023-05,MANAGER,"",FALSE,"",high,""
+H052-2023-06,MANAGER,"",FALSE,"",high,""
+H052-2023-07,MANAGER,"",FALSE,"",high,""
+H052-2023-08,MANAGER,"",FALSE,"",medium,dean of college counseling; department head
+H052-2023-09,BOARD,CHAIR,FALSE,"",high,""
+H052-2023-10,BOARD,VICE CHAIR,FALSE,"",high,""
+H052-2023-11,BOARD,TREASURER,FALSE,"",high,""
+H052-2023-12,BOARD,MEMBER,FALSE,"",high,""
+H052-2023-13,BOARD,MEMBER,FALSE,"",high,""
+H052-2023-14,BOARD,MEMBER,FALSE,"",high,""
+H052-2023-15,BOARD,MEMBER,FALSE,"",high,""
+H052-2023-16,BOARD,SECRETARY,FALSE,"",high,""
+H052-2023-17,BOARD,MEMBER,FALSE,"",high,""
+H052-2023-18,BOARD,MEMBER,FALSE,"",high,""
+H052-2023-19,BOARD,MEMBER,FALSE,"",high,""
+H052-2023-20,BOARD,MEMBER,FALSE,"",high,""
+H052-2023-21,BOARD,MEMBER,FALSE,"",high,""
+H052-2023-22,BOARD,MEMBER,FALSE,"",high,""
+H052-2023-23,BOARD,MEMBER,FALSE,"",high,""
+H052-2023-24,BOARD,MEMBER,FALSE,"",high,""
+H052-2023-25,BOARD,MEMBER,FALSE,"",high,""
+H052-2023-26,BOARD,MEMBER,FALSE,"",high,""
+H052-2023-27,BOARD,MEMBER,FALSE,"",high,""
+H052-2023-28,BOARD,MEMBER,FALSE,"",high,""
+H052-2023-29,BOARD,MEMBER,FALSE,"",high,""
+H052-2023-30,BOARD,MEMBER,FALSE,"",high,""
+H052-2023-31,BOARD,MEMBER,FALSE,"",high,""
+H052-2023-32,BOARD,MEMBER,FALSE,"",high,""
+H058-2021-01,CEO,"",TRUE,"",medium,department adjutant: top paid full-time administrator with staff; commander is unpaid elected head
+H058-2021-02,STAFF,"",FALSE,"",medium,paid full-time veterans service officer
+H058-2021-03,OFFICER,"",FALSE,"",low,paid full-time judge advocate; becomes adjutant in 2023; actual job unclear
+H058-2021-04,STAFF,"",FALSE,"",medium,paid full-time assistant service officer
+H058-2021-05,BOARD,CHAIR,FALSE,"",medium,unpaid elected department commander
+H058-2021-06,BOARD,TREASURER,FALSE,"",medium,unpaid finance officer
+H058-2021-07,BOARD,MEMBER,FALSE,"",high,national executive committeeman
+H058-2021-08,BOARD,MEMBER,FALSE,"",high,past national commander
+H058-2021-09,BOARD,MEMBER,FALSE,"",high,historian
+H058-2021-10,BOARD,VICE CHAIR,FALSE,"",medium,2nd vice commander
+H058-2021-11,BOARD,MEMBER,FALSE,"",high,sergeant-at-arms
+H058-2021-12,BOARD,MEMBER,FALSE,"",high,chaplain
+H058-2021-13,BOARD,VICE CHAIR,FALSE,"",medium,1st vice commander
+H058-2021-14,BOARD,MEMBER,FALSE,"",high,americanism chair
+H058-2021-15,BOARD,MEMBER,FALSE,"",high,national executive committeeman
+H058-2023-01,DUAL,MEMBER,TRUE,"",medium,paid full-time department adjutant (chief administrator) with T box
+H058-2023-02,DUAL,MEMBER,FALSE,"",medium,paid full-time service officer with T box
+H058-2023-03,BOARD,MEMBER,FALSE,"",high,sergeant-at-arms
+H058-2023-04,BOARD,TREASURER,FALSE,"",medium,unpaid finance officer
+H058-2023-05,BOARD,MEMBER,FALSE,"",high,judge advocate (unpaid)
+H058-2023-06,BOARD,MEMBER,FALSE,"",high,national executive committeeman
+H058-2023-07,BOARD,MEMBER,FALSE,"",high,historian
+H058-2023-08,BOARD,CHAIR,FALSE,"",medium,unpaid elected department commander
+H058-2023-09,BOARD,VICE CHAIR,FALSE,"",medium,second vice commander
+H058-2023-10,BOARD,MEMBER,FALSE,"",high,chaplain
+H058-2023-11,BOARD,MEMBER,FALSE,"",high,americanism chair
+H058-2023-12,BOARD,VICE CHAIR,FALSE,"",medium,first vice commander
+H058-2023-13,BOARD,MEMBER,FALSE,"",high,national executive committeeman
+H058-2023-14,BOARD,MEMBER,FALSE,"",high,district commander
+H058-2023-15,BOARD,MEMBER,FALSE,"",high,district commander
+H058-2023-16,BOARD,MEMBER,FALSE,"",high,district commander
+H058-2023-17,BOARD,MEMBER,FALSE,"",high,district commander
+H058-2023-18,BOARD,MEMBER,FALSE,"",high,district commander
+H058-2023-19,BOARD,MEMBER,FALSE,"",high,district commander
+H058-2023-20,BOARD,MEMBER,FALSE,"",high,district commander
+H058-2023-21,BOARD,MEMBER,FALSE,"",high,district commander
+H058-2023-22,BOARD,MEMBER,FALSE,"",high,district commander
+H058-2023-23,BOARD,MEMBER,FALSE,"",high,district commander
+H058-2023-24,BOARD,MEMBER,FALSE,"",high,district commander
+H058-2023-25,BOARD,MEMBER,FALSE,"",high,district commander
+H058-2023-26,BOARD,MEMBER,FALSE,"",high,district commander
+H058-2023-27,BOARD,MEMBER,FALSE,"",high,district commander
+H058-2023-28,BOARD,MEMBER,FALSE,"",high,district commander
+H058-2023-29,BOARD,MEMBER,FALSE,"",high,district commander
+H058-2023-30,BOARD,MEMBER,FALSE,"",high,district commander
+H062-2021-01,MANAGER,"",FALSE,"",low,unpaid 40 h/wk manager (likely post home/canteen); post run by volunteer commander and officers
+H062-2021-02,BOARD,CHAIR,FALSE,"",medium,unpaid post commander
+H062-2021-03,BOARD,SECRETARY,FALSE,"",medium,post adjutant (unpaid) acts as secretary
+H062-2021-04,BOARD,TREASURER,FALSE,"",high,""
+H062-2023-01,MANAGER,"",FALSE,"",low,unpaid 40 h/wk manager (likely post home/canteen); post run by volunteer commander and officers
+H062-2023-02,BOARD,CHAIR,FALSE,"",medium,unpaid post commander
+H062-2023-03,BOARD,SECRETARY,FALSE,"",medium,post adjutant (unpaid) acts as secretary
+H062-2023-04,BOARD,TREASURER,FALSE,"",high,""
+H004-2021-01,CEO,"",TRUE,"",medium,administrator is only officer and top paid; runs the trust operations (part paid by related org)
+H004-2021-02,OFFICER,"",FALSE,"",high,controller = top finance staff
+H004-2021-03,BOARD,MEMBER,FALSE,"",high,""
+H004-2021-04,BOARD,MEMBER,FALSE,"",high,""
+H004-2021-05,BOARD,MEMBER,FALSE,"",high,""
+H004-2021-06,BOARD,MEMBER,FALSE,"",high,""
+H004-2021-07,BOARD,MEMBER,FALSE,"",high,""
+H004-2021-08,BOARD,MEMBER,FALSE,"",high,""
+H004-2021-09,BOARD,MEMBER,FALSE,"",high,""
+H004-2021-10,BOARD,MEMBER,FALSE,"",high,""
+H004-2021-11,BOARD,MEMBER,FALSE,"",high,""
+H004-2021-12,BOARD,MEMBER,FALSE,"",high,""
+H004-2021-13,BOARD,MEMBER,FALSE,"",high,""
+H004-2023-01,CEO,"",TRUE,"",medium,administrator is only officer and top paid; runs the trust operations (part paid by related org)
+H004-2023-02,OFFICER,"",FALSE,"",high,controller = top finance staff
+H004-2023-03,BOARD,MEMBER,FALSE,"",high,""
+H004-2023-04,BOARD,MEMBER,FALSE,"",high,""
+H004-2023-05,BOARD,MEMBER,FALSE,"",high,""
+H004-2023-06,BOARD,MEMBER,FALSE,"",high,""
+H004-2023-07,BOARD,MEMBER,FALSE,"",high,""
+H004-2023-08,BOARD,MEMBER,FALSE,"",high,""
+H004-2023-09,BOARD,MEMBER,FALSE,"",high,""
+H004-2023-10,BOARD,MEMBER,FALSE,"",high,""
+H004-2023-11,BOARD,MEMBER,FALSE,"",high,""
+H004-2023-12,BOARD,MEMBER,FALSE,"",high,""
+H004-2023-13,BOARD,MEMBER,FALSE,"",high,""
+H004-2023-14,BOARD,MEMBER,FALSE,"",high,""
+H004-2023-15,BOARD,MEMBER,FALSE,"",high,""
+H011-2021-01,CEO,"",TRUE,"",high,general manager full-time; co-op chief executive
+H011-2021-02,BOARD,VICE CHAIR,FALSE,"",high,""
+H011-2021-03,BOARD,TREASURER,FALSE,"",high,""
+H011-2021-04,BOARD,CHAIR,FALSE,"",high,board stipend president
+H011-2021-05,BOARD,MEMBER,FALSE,"",high,""
+H011-2021-06,BOARD,SECRETARY,FALSE,"",high,""
+H011-2023-01,CEO,"",TRUE,"",high,general manager full-time; co-op chief executive
+H011-2023-02,OFFICER,"",FALSE,"",medium,O box; ops manager is second-in-command of small co-op
+H011-2023-03,MANAGER,"",FALSE,"",medium,H box; finance department head below GM
+H011-2023-04,BOARD,VICE CHAIR,FALSE,"",high,""
+H011-2023-05,BOARD,CHAIR,FALSE,"",high,board stipend president
+H011-2023-06,BOARD,TREASURER,FALSE,"",high,""
+H011-2023-07,BOARD,SECRETARY,FALSE,"",high,""
+H011-2023-08,BOARD,MEMBER,FALSE,"",high,""
+H021-2021-01,BOARD,TREASURER,FALSE,"",high,small stipend; volunteer co with 0 employees
+H021-2021-02,BOARD,MEMBER,FALSE,"",medium,fire chief with T box and small stipend; volunteer board-run co
+H021-2021-03,BOARD,CHAIR,FALSE,"",high,""
+H021-2021-04,BOARD,VICE CHAIR,FALSE,"",high,""
+H021-2021-05,BOARD,SECRETARY,FALSE,"",high,financial secretary
+H021-2021-06,BOARD,MEMBER,FALSE,"",high,""
+H021-2021-07,BOARD,SECRETARY,FALSE,"",high,""
+H021-2021-08,BOARD,MEMBER,FALSE,"",medium,deputy chief (line officer) listed with T box
+H021-2021-09,BOARD,MEMBER,FALSE,"",high,""
+H021-2021-10,BOARD,MEMBER,FALSE,"",high,""
+H021-2021-11,BOARD,MEMBER,FALSE,"",high,""
+H021-2021-12,BOARD,MEMBER,FALSE,"",high,""
+H021-2021-13,BOARD,MEMBER,FALSE,"",high,""
+H021-2021-14,BOARD,MEMBER,FALSE,"",high,""
+H021-2021-15,BOARD,MEMBER,FALSE,"",medium,captain (line officer) listed with T box
+H021-2021-16,BOARD,MEMBER,FALSE,"",medium,lieutenant (line officer) listed with T box
+H021-2021-17,BOARD,MEMBER,FALSE,"",medium,lieutenant (line officer) listed with T box
+H021-2021-18,BOARD,MEMBER,FALSE,"",medium,chief engineer (line officer) listed with T box
+H021-2023-01,BOARD,TREASURER,FALSE,"",high,small stipend; volunteer co with 0 employees
+H021-2023-02,BOARD,MEMBER,FALSE,"",medium,fire chief and board director; small stipend; volunteer board-run co
+H021-2023-03,BOARD,CHAIR,FALSE,"",high,""
+H021-2023-04,BOARD,VICE CHAIR,FALSE,"",high,""
+H021-2023-05,BOARD,SECRETARY,FALSE,"",high,financial secretary
+H021-2023-06,BOARD,MEMBER,FALSE,"",high,""
+H021-2023-07,BOARD,SECRETARY,FALSE,"",high,""
+H021-2023-08,BOARD,MEMBER,FALSE,"",high,""
+H021-2023-09,BOARD,MEMBER,FALSE,"",medium,captain (line officer) listed with T box
+H021-2023-10,BOARD,MEMBER,FALSE,"",high,""
+H021-2023-11,BOARD,MEMBER,FALSE,"",medium,lieutenant (line officer) listed with T box
+H021-2023-12,BOARD,MEMBER,FALSE,"",high,""
+H021-2023-13,BOARD,MEMBER,FALSE,"",high,""
+H021-2023-14,BOARD,MEMBER,FALSE,"",high,""
+H021-2023-15,BOARD,MEMBER,FALSE,"",medium,assistant chief (line officer) listed with T box
+H021-2023-16,BOARD,MEMBER,FALSE,"",high,""
+H021-2023-17,BOARD,MEMBER,FALSE,"",medium,chief engineer (line officer) listed with T box
+H023-2021-01,BOARD,MEMBER,FALSE,"",high,""
+H023-2021-02,BOARD,CHAIR,FALSE,"",high,tiny stipend; all-volunteer dept
+H023-2021-03,BOARD,MEMBER,FALSE,"",high,""
+H023-2021-04,BOARD,TREASURER,FALSE,"",high,""
+H023-2021-05,BOARD,VICE CHAIR,FALSE,"",high,""
+H023-2021-06,BOARD,MEMBER,FALSE,"",high,""
+H023-2021-07,BOARD,SECRETARY,FALSE,"",high,""
+H023-2021-08,BOARD,MEMBER,FALSE,"",high,""
+H023-2021-09,BOARD,MEMBER,FALSE,"",high,duplicate listing of same person
+H023-2021-10,BOARD,MEMBER,FALSE,"",high,""
+H023-2021-11,BOARD,MEMBER,FALSE,"",high,""
+H023-2023-01,BOARD,TREASURER,FALSE,"",high,""
+H023-2023-02,BOARD,CHAIR,FALSE,"",high,""
+H023-2023-03,BOARD,SECRETARY,FALSE,"",high,""
+H023-2023-04,BOARD,VICE CHAIR,FALSE,"",high,""
+H023-2023-05,BOARD,MEMBER,FALSE,"",high,""
+H023-2023-06,BOARD,MEMBER,FALSE,"",high,""
+H023-2023-07,BOARD,MEMBER,FALSE,"",high,""
+H023-2023-08,BOARD,MEMBER,FALSE,"",high,""
+H023-2023-09,BOARD,MEMBER,FALSE,"",high,""
+H023-2023-10,BOARD,MEMBER,FALSE,"",high,""
+H023-2023-11,BOARD,MEMBER,FALSE,"",high,""
+H048-2021-01,BOARD,CHAIR,FALSE,"",medium,president with small stipend and 0 hours (rule 4 titular president)
+H048-2021-02,BOARD,SECRETARY,FALSE,"",high,""
+H048-2021-03,BOARD,VICE CHAIR,FALSE,"",high,""
+H048-2021-04,BOARD,TREASURER,FALSE,"",high,""
+H048-2021-05,BOARD,SECRETARY,FALSE,"",medium,second secretary listed; unpaid
+H048-2021-06,BOARD,MEMBER,FALSE,"",high,""
+H048-2023-01,CEO,"",TRUE,"",low,"paid president at 20 h/wk, no other exec title (rule 4); but other officers get similar stipends"
+H048-2023-02,BOARD,SECRETARY,FALSE,"",medium,executive secretary = elected officer with small stipend
+H048-2023-03,BOARD,VICE CHAIR,FALSE,"",high,""
+H048-2023-04,BOARD,TREASURER,FALSE,"",high,""
+H048-2023-05,BOARD,TREASURER,FALSE,"",medium,second treasurer listed; small stipend
+H051-2021-01,DUAL,MEMBER,TRUE,"",high,paid president (chief executive); ex officio trustee
+H051-2021-02,OFFICER,"",FALSE,"",high,VP finance & admin
+H051-2021-03,OFFICER,"",FALSE,"",high,""
+H051-2021-04,OFFICER,"",FALSE,"",high,""
+H051-2021-05,OFFICER,"",FALSE,"",high,""
+H051-2021-06,OFFICER,"",FALSE,"",high,""
+H051-2021-07,OFFICER,"",FALSE,"",medium,associate VP and dean of students
+H051-2021-08,OFFICER,"",FALSE,"",high,general counsel
+H051-2021-09,MANAGER,"",FALSE,"",medium,associate VP athletics = athletics department head
+H051-2021-10,OFFICER,"",FALSE,"",medium,former provost (F box) still full-time pay
+H051-2021-11,CEO,"",FALSE,"",low,"former president, 0 hours; paid but not chief executive in 2021"
+H051-2021-12,BOARD,MEMBER,FALSE,"",high,student trustee; small pay likely student work
+H051-2021-13,BOARD,MEMBER,FALSE,"",high,student trustee; small pay likely student work
+H051-2021-14,BOARD,VICE CHAIR,FALSE,"",high,""
+H051-2021-15,BOARD,TREASURER,FALSE,"",high,""
+H051-2021-16,BOARD,SECRETARY,FALSE,"",high,""
+H051-2021-17,BOARD,CHAIR,FALSE,"",high,""
+H051-2021-18,BOARD,MEMBER,FALSE,"",high,""
+H051-2021-19,BOARD,MEMBER,FALSE,"",high,""
+H051-2021-20,BOARD,MEMBER,FALSE,"",high,""
+H051-2021-21,BOARD,MEMBER,FALSE,"",high,""
+H051-2021-22,BOARD,MEMBER,FALSE,"",high,""
+H051-2021-23,BOARD,MEMBER,FALSE,"",high,""
+H051-2021-24,BOARD,MEMBER,FALSE,"",high,""
+H051-2021-25,BOARD,MEMBER,FALSE,"",high,""
+H051-2021-26,BOARD,MEMBER,FALSE,"",high,""
+H051-2021-27,BOARD,MEMBER,FALSE,"",high,""
+H051-2021-28,BOARD,MEMBER,FALSE,"",high,""
+H051-2021-29,BOARD,MEMBER,FALSE,"",high,""
+H051-2021-30,BOARD,MEMBER,FALSE,"",high,""
+H051-2021-31,BOARD,MEMBER,FALSE,"",high,""
+H051-2021-32,BOARD,MEMBER,FALSE,"",high,""
+H051-2021-33,BOARD,MEMBER,FALSE,"",high,""
+H051-2021-34,BOARD,MEMBER,FALSE,"",high,""
+H051-2021-35,BOARD,MEMBER,FALSE,"",high,""
+H051-2021-36,BOARD,MEMBER,FALSE,"",high,""
+H051-2021-37,BOARD,MEMBER,FALSE,"",high,""
+H051-2021-38,BOARD,MEMBER,FALSE,"",high,""
+H051-2021-39,BOARD,MEMBER,FALSE,"",high,""
+H051-2021-40,BOARD,MEMBER,FALSE,"",high,""
+H051-2021-41,BOARD,MEMBER,FALSE,"",high,""
+H051-2021-42,BOARD,MEMBER,FALSE,"",high,""
+H051-2021-43,BOARD,MEMBER,FALSE,"",high,""
+H051-2021-44,BOARD,MEMBER,FALSE,"",high,""
+H051-2021-45,BOARD,MEMBER,FALSE,"",high,""
+H051-2021-46,BOARD,MEMBER,FALSE,"",high,""
+H051-2021-47,BOARD,MEMBER,FALSE,"",high,""
+H051-2021-48,BOARD,MEMBER,FALSE,"",high,""
+H051-2021-49,BOARD,MEMBER,FALSE,"",high,""
+H051-2023-01,DUAL,MEMBER,TRUE,"",high,paid president (chief executive); ex officio trustee
+H051-2023-02,OFFICER,"",FALSE,"",high,""
+H051-2023-03,OFFICER,"",FALSE,"",high,provost
+H051-2023-04,OFFICER,"",FALSE,"",high,VP finance & admin
+H051-2023-05,OFFICER,"",FALSE,"",high,""
+H051-2023-06,OFFICER,"",FALSE,"",high,""
+H051-2023-07,OFFICER,"",FALSE,"",high,general counsel
+H051-2023-08,OFFICER,"",FALSE,"",high,VP campus life
+H051-2023-09,BOARD,MEMBER,FALSE,"",medium,student trustee; pay/other likely student aid or work
+H051-2023-10,BOARD,MEMBER,FALSE,"",medium,student trustee; pay/other likely student aid or work
+H051-2023-11,BOARD,VICE CHAIR,FALSE,"",high,""
+H051-2023-12,BOARD,TREASURER,FALSE,"",high,""
+H051-2023-13,BOARD,SECRETARY,FALSE,"",high,""
+H051-2023-14,BOARD,CHAIR,FALSE,"",high,""
+H051-2023-15,BOARD,MEMBER,FALSE,"",high,""
+H051-2023-16,BOARD,MEMBER,FALSE,"",high,""
+H051-2023-17,BOARD,MEMBER,FALSE,"",high,""
+H051-2023-18,BOARD,MEMBER,FALSE,"",high,""
+H051-2023-19,BOARD,MEMBER,FALSE,"",high,""
+H051-2023-20,BOARD,MEMBER,FALSE,"",high,""
+H051-2023-21,BOARD,MEMBER,FALSE,"",high,""
+H051-2023-22,BOARD,MEMBER,FALSE,"",high,""
+H051-2023-23,BOARD,MEMBER,FALSE,"",high,""
+H051-2023-24,BOARD,MEMBER,FALSE,"",high,""
+H051-2023-25,BOARD,MEMBER,FALSE,"",high,""
+H051-2023-26,BOARD,MEMBER,FALSE,"",high,""
+H051-2023-27,BOARD,MEMBER,FALSE,"",high,""
+H051-2023-28,BOARD,MEMBER,FALSE,"",high,""
+H051-2023-29,BOARD,MEMBER,FALSE,"",high,""
+H051-2023-30,BOARD,MEMBER,FALSE,"",high,""
+H051-2023-31,BOARD,MEMBER,FALSE,"",high,""
+H051-2023-32,BOARD,MEMBER,FALSE,"",high,""
+H051-2023-33,BOARD,MEMBER,FALSE,"",high,""
+H051-2023-34,BOARD,MEMBER,FALSE,"",high,""
+H051-2023-35,BOARD,MEMBER,FALSE,"",high,""
+H051-2023-36,BOARD,MEMBER,FALSE,"",high,""
+H051-2023-37,BOARD,MEMBER,FALSE,"",high,""
+H051-2023-38,BOARD,MEMBER,FALSE,"",high,""
+H051-2023-39,BOARD,MEMBER,FALSE,"",high,""
+H051-2023-40,BOARD,MEMBER,FALSE,"",high,""
+H051-2023-41,BOARD,MEMBER,FALSE,"",high,""
+H051-2023-42,BOARD,MEMBER,FALSE,"",high,""
+H014-2021-01,BOARD,SECRETARY,FALSE,"",medium,"T+O, small fee; board-run canal co, no paid executive in Part VII"
+H014-2021-02,BOARD,MEMBER,FALSE,"",high,""
+H014-2021-03,BOARD,CHAIR,FALSE,"",medium,"president paid director fee ($550) like other directors; titular, board-run"
+H014-2021-04,BOARD,VICE CHAIR,FALSE,"",high,""
+H014-2021-05,BOARD,MEMBER,FALSE,"",high,""
+H014-2021-06,BOARD,MEMBER,FALSE,"",high,""
+H014-2023-01,BOARD,SECRETARY,FALSE,"",medium,"T+O, small stipend, 5 h/wk"
+H014-2023-02,BOARD,VICE CHAIR,FALSE,"",high,""
+H014-2023-03,BOARD,MEMBER,FALSE,"",high,""
+H014-2023-04,BOARD,MEMBER,FALSE,"",high,""
+H014-2023-05,BOARD,MEMBER,FALSE,"",high,""
+H014-2023-06,BOARD,CHAIR,FALSE,"",high,""
+H017-2021-01,BOARD,MEMBER,FALSE,"",medium,head trustee; president is corporate chair
+H017-2021-02,BOARD,VICE CHAIR,FALSE,"",high,""
+H017-2021-03,BOARD,CHAIR,FALSE,"",high,""
+H017-2021-04,BOARD,SECRETARY,FALSE,"",high,""
+H017-2021-05,BOARD,MEMBER,FALSE,"",high,""
+H017-2021-06,OFFICER,"",FALSE,"",medium,volunteer fire chief (line officer); unpaid
+H017-2021-07,OFFICER,"",FALSE,"",medium,volunteer line officer; unpaid
+H017-2021-08,CEO,"",TRUE,"",low,"only executive-director title; 52 employees, $2.5M EMS operation; but unpaid 8 h/wk"
+H017-2021-09,OFFICER,"",FALSE,"",medium,volunteer line officer; unpaid
+H017-2023-01,BOARD,MEMBER,FALSE,"",high,""
+H017-2023-02,BOARD,MEMBER,FALSE,"",high,""
+H017-2023-03,BOARD,MEMBER,FALSE,"",high,""
+H017-2023-04,BOARD,VICE CHAIR,FALSE,"",high,""
+H017-2023-05,BOARD,CHAIR,FALSE,"",high,""
+H017-2023-06,BOARD,SECRETARY,FALSE,"",high,""
+H017-2023-07,BOARD,MEMBER,FALSE,"",medium,assistant treasurer; unpaid volunteer officer
+H017-2023-08,OFFICER,"",FALSE,"",medium,volunteer deputy fire chief; unpaid
+H017-2023-09,OFFICER,"",FALSE,"",medium,volunteer line officer; unpaid
+H017-2023-10,OFFICER,"",FALSE,"",medium,volunteer line officer; unpaid
+H017-2023-11,BOARD,TREASURER,FALSE,"",high,""
+H027-2021-01,MANAGER,"",FALSE,"",medium,"office manager $27K; lodge run by elected officers, no CEO"
+H027-2021-02,BOARD,CHAIR,FALSE,"",medium,"president stipend $3,000 for 10 h/wk: titular president of lodge"
+H027-2021-03,MANAGER,"",FALSE,"",medium,maintenance supervisor; part-time stipend
+H027-2021-04,BOARD,SECRETARY,FALSE,"",high,""
+H027-2021-05,BOARD,TREASURER,FALSE,"",high,""
+H027-2021-06,BOARD,MEMBER,FALSE,"",high,""
+H027-2021-07,BOARD,MEMBER,FALSE,"",high,""
+H027-2021-08,BOARD,MEMBER,FALSE,"",medium,state trustee; institutional trustee box
+H027-2021-09,BOARD,VICE CHAIR,FALSE,"",high,""
+H027-2023-01,BOARD,CHAIR,FALSE,"",medium,"president stipend $3,000 for 10 h/wk: titular president"
+H027-2023-02,BOARD,TREASURER,FALSE,"",high,""
+H027-2023-03,BOARD,SECRETARY,FALSE,"",high,""
+H027-2023-04,BOARD,MEMBER,FALSE,"",high,""
+H027-2023-05,BOARD,MEMBER,FALSE,"",medium,state trustee; institutional trustee box
+H027-2023-06,BOARD,VICE CHAIR,FALSE,"",high,""
+H049-2021-01,DUAL,MEMBER,TRUE,"",high,university president (paid chief executive) with trustee seat
+H049-2021-02,OFFICER,"",FALSE,"",high,""
+H049-2021-03,OFFICER,"",FALSE,"",high,""
+H049-2021-04,OFFICER,"",FALSE,"",high,""
+H049-2021-05,OFFICER,"",FALSE,"",high,""
+H049-2021-06,PROFESSIONAL,"",FALSE,"",high,""
+H049-2021-07,OFFICER,"",FALSE,"",medium,legal/general counsel (VP & GC in 2023)
+H049-2021-08,OFFICER,"",FALSE,"",high,""
+H049-2021-09,OFFICER,"",FALSE,"",high,""
+H049-2021-10,PROFESSIONAL,"",FALSE,"",high,""
+H049-2021-11,OFFICER,"",FALSE,"",high,""
+H049-2021-12,OFFICER,"",FALSE,"",high,""
+H049-2021-13,MANAGER,"",FALSE,"",high,""
+H049-2021-14,MANAGER,"",FALSE,"",medium,internal auditor; head of audit function
+H049-2021-15,MANAGER,"",FALSE,"",high,""
+H049-2021-16,MANAGER,"",FALSE,"",high,""
+H049-2021-17,MANAGER,"",FALSE,"",high,""
+H049-2021-18,BOARD,VICE CHAIR,FALSE,"",high,""
+H049-2021-19,BOARD,CHAIR,FALSE,"",high,""
+H049-2021-20,BOARD,MEMBER,FALSE,"",high,""
+H049-2021-21,BOARD,MEMBER,FALSE,"",high,""
+H049-2021-22,BOARD,MEMBER,FALSE,"",high,""
+H049-2021-23,BOARD,MEMBER,FALSE,"",high,""
+H049-2021-24,BOARD,MEMBER,FALSE,"",high,""
+H049-2021-25,BOARD,MEMBER,FALSE,"",high,""
+H049-2021-26,BOARD,MEMBER,FALSE,"",high,""
+H049-2021-27,BOARD,MEMBER,FALSE,"",high,""
+H049-2021-28,BOARD,MEMBER,FALSE,"",high,""
+H049-2021-29,BOARD,MEMBER,FALSE,"",high,""
+H049-2021-30,BOARD,MEMBER,FALSE,"",high,""
+H049-2021-31,BOARD,MEMBER,FALSE,"",high,""
+H049-2021-32,BOARD,MEMBER,FALSE,"",high,""
+H049-2021-33,BOARD,MEMBER,FALSE,"",high,""
+H049-2023-01,DUAL,MEMBER,TRUE,"",high,university president (paid chief executive) with trustee seat
+H049-2023-02,OFFICER,"",FALSE,"",high,""
+H049-2023-03,OFFICER,"",FALSE,"",high,""
+H049-2023-04,MANAGER,"",FALSE,"",high,""
+H049-2023-05,PROFESSIONAL,"",FALSE,"",high,""
+H049-2023-06,OFFICER,"",FALSE,"",high,""
+H049-2023-07,PROFESSIONAL,"",FALSE,"",high,""
+H049-2023-08,OFFICER,"",FALSE,"",high,""
+H049-2023-09,MANAGER,"",FALSE,"",high,""
+H049-2023-10,OFFICER,"",FALSE,"",high,""
+H049-2023-11,OFFICER,"",FALSE,"",high,""
+H049-2023-12,OFFICER,"",FALSE,"",high,""
+H049-2023-13,OFFICER,"",FALSE,"",high,""
+H049-2023-14,PROFESSIONAL,"",FALSE,"",high,""
+H049-2023-15,PROFESSIONAL,"",FALSE,"",high,""
+H049-2023-16,MANAGER,"",FALSE,"",high,""
+H049-2023-17,MANAGER,"",FALSE,"",high,""
+H049-2023-18,OFFICER,"",FALSE,"",high,""
+H049-2023-19,MANAGER,"",FALSE,"",high,""
+H049-2023-20,MANAGER,"",FALSE,"",high,""
+H049-2023-21,MANAGER,"",FALSE,"",medium,head of riverfront campus/dean under university president
+H049-2023-22,OFFICER,"",FALSE,"",medium,deputy chief administrative officer; K box
+H049-2023-23,MANAGER,"",FALSE,"",medium,associate VP; K box
+H049-2023-24,OFFICER,"",FALSE,"",medium,vice provost; O box
+H049-2023-25,MANAGER,"",FALSE,"",medium,chief of police: department head despite O box
+H049-2023-26,BOARD,CHAIR,FALSE,"",high,""
+H049-2023-27,BOARD,VICE CHAIR,FALSE,"",high,""
+H049-2023-28,BOARD,VICE CHAIR,FALSE,"",high,""
+H049-2023-29,BOARD,MEMBER,FALSE,"",high,""
+H049-2023-30,BOARD,MEMBER,FALSE,"",high,""
+H049-2023-31,BOARD,MEMBER,FALSE,"",high,""
+H049-2023-32,BOARD,MEMBER,FALSE,"",high,""
+H049-2023-33,BOARD,MEMBER,FALSE,"",high,""
+H049-2023-34,BOARD,MEMBER,FALSE,"",high,""
+H049-2023-35,BOARD,MEMBER,FALSE,"",high,""
+H049-2023-36,BOARD,MEMBER,FALSE,"",high,""
+H049-2023-37,BOARD,MEMBER,FALSE,"",high,""
+H049-2023-38,BOARD,MEMBER,FALSE,"",high,""
+H049-2023-39,BOARD,MEMBER,FALSE,"",high,""
+H049-2023-40,BOARD,MEMBER,FALSE,"",high,""
+H049-2023-41,BOARD,MEMBER,FALSE,"",high,""
+H049-2023-42,BOARD,MEMBER,FALSE,"",high,""
+H049-2023-43,BOARD,MEMBER,FALSE,"",high,""
+H059-2021-01,CEO,"",TRUE,"",medium,"department adjutant: top paid officer ($40K, 30 h/wk) running the department; no other leader listed"
+H059-2021-02,STAFF,"",FALSE,"",high,""
+H059-2023-01,CEO,"",TRUE,"",medium,"department adjutant: top paid officer ($48K, 30 h/wk) running the department"
+H059-2023-02,STAFF,"",FALSE,"",high,""
+H061-2021-01,DUAL,CHAIR,TRUE,"",medium,"paid president ($8,550, 15 h/wk, T+O), no other executive title: rule 4 executive"
+H061-2021-02,BOARD,VICE CHAIR,FALSE,"",high,""
+H061-2021-03,BOARD,SECRETARY,FALSE,"",high,""
+H061-2023-01,BOARD,CHAIR,FALSE,"",high,""
+H061-2023-02,BOARD,SECRETARY,FALSE,"",high,""
+H061-2023-03,BOARD,VICE CHAIR,FALSE,"",high,""
+H061-2023-04,BOARD,TREASURER,FALSE,"",high,""
+H061-2023-05,BOARD,MEMBER,FALSE,"",high,""
+H061-2023-06,BOARD,MEMBER,FALSE,"",high,""
+H061-2023-07,BOARD,MEMBER,FALSE,"",high,""
+H009-2021-01,CEO,"",TRUE,"",high,"general manager, top paid K, runs club; board officers unpaid"
+H009-2021-02,PROFESSIONAL,"",FALSE,"",high,""
+H009-2021-03,OFFICER,"",FALSE,"",high,""
+H009-2021-04,PROFESSIONAL,"",FALSE,"",high,""
+H009-2021-05,MANAGER,"",FALSE,"",medium,controller under CFO
+H009-2021-06,BOARD,CHAIR,FALSE,"",high,""
+H009-2021-07,BOARD,VICE CHAIR,FALSE,"",high,""
+H009-2021-08,BOARD,TREASURER,FALSE,"",high,""
+H009-2021-09,BOARD,SECRETARY,FALSE,"",high,""
+H009-2021-10,BOARD,MEMBER,FALSE,"",high,""
+H009-2021-11,BOARD,MEMBER,FALSE,"",high,""
+H009-2021-12,BOARD,MEMBER,FALSE,"",high,""
+H009-2021-13,BOARD,MEMBER,FALSE,"",high,""
+H009-2021-14,BOARD,MEMBER,FALSE,"",high,""
+H009-2021-15,BOARD,MEMBER,FALSE,"",high,""
+H009-2021-16,BOARD,MEMBER,FALSE,"",high,""
+H009-2021-17,BOARD,MEMBER,FALSE,"",high,""
+H009-2021-18,BOARD,MEMBER,FALSE,"",high,""
+H009-2021-19,BOARD,MEMBER,FALSE,"",high,""
+H009-2023-01,PROFESSIONAL,"",FALSE,"",high,""
+H009-2023-02,CEO,"",TRUE,"",high,"general manager, top paid K, runs club; board officers unpaid"
+H009-2023-03,MANAGER,"",FALSE,"",high,""
+H009-2023-04,STAFF,"",FALSE,"",high,""
+H009-2023-05,MANAGER,"",FALSE,"",medium,controller; consistent with 2021
+H009-2023-06,PROFESSIONAL,"",FALSE,"",high,""
+H009-2023-07,BOARD,CHAIR,FALSE,"",high,""
+H009-2023-08,BOARD,VICE CHAIR,FALSE,"",high,""
+H009-2023-09,BOARD,TREASURER,FALSE,"",high,""
+H009-2023-10,BOARD,SECRETARY,FALSE,"",high,""
+H009-2023-11,BOARD,MEMBER,FALSE,"",high,""
+H009-2023-12,BOARD,MEMBER,FALSE,"",high,""
+H009-2023-13,BOARD,MEMBER,FALSE,"",high,""
+H009-2023-14,BOARD,MEMBER,FALSE,"",high,""
+H009-2023-15,BOARD,MEMBER,FALSE,"",high,""
+H009-2023-16,BOARD,MEMBER,FALSE,"",high,""
+H009-2023-17,BOARD,MEMBER,FALSE,"",high,""
+H009-2023-18,BOARD,MEMBER,FALSE,"",high,""
+H009-2023-19,BOARD,MEMBER,FALSE,"",high,""
+H009-2023-20,BOARD,MEMBER,FALSE,"",high,""
+H013-2021-01,BOARD,CHAIR,FALSE,"",medium,"small stipend like other trustees; no employees, board-run hall; 15 h/wk but 5 in 2023"
+H013-2021-02,BOARD,SECRETARY,FALSE,"",medium,financial secretary; stipend same as other trustees
+H013-2021-03,BOARD,SECRETARY,FALSE,"",high,""
+H013-2021-04,BOARD,MEMBER,FALSE,"",high,""
+H013-2021-05,BOARD,VICE CHAIR,FALSE,"",high,""
+H013-2021-06,BOARD,MEMBER,FALSE,"",high,""
+H013-2021-07,BOARD,TREASURER,FALSE,"",high,""
+H013-2021-08,BOARD,MEMBER,FALSE,"",high,""
+H013-2021-09,BOARD,MEMBER,FALSE,"",high,""
+H013-2021-10,BOARD,MEMBER,FALSE,"",high,""
+H013-2021-11,BOARD,MEMBER,FALSE,"",high,""
+H013-2023-01,BOARD,CHAIR,FALSE,"",high,""
+H013-2023-02,BOARD,TREASURER,FALSE,"",high,""
+H013-2023-03,BOARD,MEMBER,FALSE,"",high,""
+H013-2023-04,BOARD,VICE CHAIR,FALSE,"",high,""
+H013-2023-05,BOARD,MEMBER,FALSE,"",high,""
+H013-2023-06,BOARD,SECRETARY,FALSE,"",high,""
+H013-2023-07,BOARD,MEMBER,FALSE,"",high,""
+H013-2023-08,BOARD,MEMBER,FALSE,"",high,""
+H013-2023-09,BOARD,MEMBER,FALSE,"",high,""
+H013-2023-10,BOARD,MEMBER,FALSE,"",high,""
+H025-2021-01,BOARD,CHAIR,FALSE,"",medium,"exalted ruler = elected presiding lodge officer, unpaid 20 h/wk; no executive"
+H025-2021-02,BOARD,SECRETARY,FALSE,"",medium,elected lodge secretary unpaid
+H025-2023-01,BOARD,SECRETARY,FALSE,"",medium,elected lodge secretary with small stipend
+H025-2023-02,BOARD,CHAIR,FALSE,"",medium,"exalted ruler, unpaid presiding officer"
+H038-2021-01,DUAL,SECRETARY,TRUE,"",medium,"board secretary and the paid pastoral counselor who runs the ministry ($144k, only substantial pay)"
+H038-2021-02,STAFF,"",FALSE,"",medium,no title or boxes; modest pay
+H038-2021-03,BOARD,CHAIR,FALSE,"",medium,president with small stipend
+H038-2021-04,BOARD,MEMBER,FALSE,"",high,""
+H038-2021-05,BOARD,MEMBER,FALSE,"",high,""
+H038-2023-01,DUAL,SECRETARY,TRUE,"",medium,"board secretary and the paid pastoral counselor who runs the ministry ($122k, only substantial pay)"
+H038-2023-02,STAFF,"",FALSE,"",medium,no title or boxes; modest pay
+H038-2023-03,BOARD,CHAIR,FALSE,"",medium,president with small stipend
+H038-2023-04,BOARD,MEMBER,FALSE,"",high,""
+H038-2023-05,BOARD,MEMBER,FALSE,"",high,""
+H056-2021-01,BOARD,MEMBER,FALSE,"",medium,institutional trustee (bank) of testamentary trust; no executive
+H056-2023-01,BOARD,MEMBER,FALSE,"",medium,institutional trustee (bank) of testamentary trust; no executive
+H060-2021-01,DUAL,SECRETARY TREASURER,TRUE,"",low,"paid secretary/treasurer (~$27k), only paid person; 2023 shows 40 h/wk, T+O; runs department office"
+H060-2021-02,BOARD,CHAIR,FALSE,"",high,""
+H060-2021-03,BOARD,VICE CHAIR,FALSE,"",high,""
+H060-2021-04,BOARD,VICE CHAIR,FALSE,"",high,""
+H060-2021-05,BOARD,MEMBER,FALSE,"",high,""
+H060-2021-06,BOARD,MEMBER,FALSE,"",high,""
+H060-2021-07,BOARD,MEMBER,FALSE,"",high,""
+H060-2021-08,BOARD,MEMBER,FALSE,"",high,""
+H060-2021-09,BOARD,MEMBER,FALSE,"",high,""
+H060-2023-01,DUAL,SECRETARY TREASURER,TRUE,"",medium,"paid secretary/treasurer, 40 h/wk, sole employee, T+O; runs department office"
+H060-2023-02,BOARD,VICE CHAIR,FALSE,"",high,""
+H060-2023-03,BOARD,MEMBER,FALSE,"",medium,detachment commander ex officio
+H060-2023-04,BOARD,CHAIR,FALSE,"",high,""
+H060-2023-05,BOARD,MEMBER,FALSE,"",high,""
+H060-2023-06,BOARD,VICE CHAIR,FALSE,"",high,""
+H060-2023-07,BOARD,MEMBER,FALSE,"",high,""
+H060-2023-08,BOARD,MEMBER,FALSE,"",high,""
+H060-2023-09,BOARD,MEMBER,FALSE,"",high,""
+H060-2023-10,BOARD,MEMBER,FALSE,"",medium,department commander ex officio
+H060-2023-11,BOARD,MEMBER,FALSE,"",high,""
+H060-2023-12,BOARD,MEMBER,FALSE,"",high,""
+H030-2021-01,OFFICER,"",FALSE,"",medium,"paid part-time lodge secretary (24 h, O box, no T); board-run lodge"
+H030-2021-02,BOARD,TREASURER,FALSE,"",medium,small stipend 10 h; elected lodge officer
+H030-2021-03,BOARD,CHAIR,FALSE,"",high,Exalted Ruler heads the lodge; unpaid T+O
+H030-2021-04,BOARD,VICE CHAIR,FALSE,"",medium,Leading Knight is first vice officer
+H030-2021-05,BOARD,MEMBER,FALSE,"",high,""
+H030-2021-06,BOARD,MEMBER,FALSE,"",high,""
+H030-2021-07,BOARD,MEMBER,FALSE,"",high,""
+H030-2021-08,BOARD,MEMBER,FALSE,"",high,""
+H030-2021-09,BOARD,MEMBER,FALSE,"",high,""
+H030-2023-01,OFFICER,"",FALSE,"",medium,"paid part-time lodge secretary (24 h, O box, no T); board-run lodge"
+H030-2023-02,BOARD,TREASURER,FALSE,"",medium,stipend under 25k for 10 h; elected lodge officer
+H030-2023-03,BOARD,CHAIR,FALSE,"",high,Exalted Ruler heads the lodge; unpaid T+O
+H030-2023-04,BOARD,VICE CHAIR,FALSE,"",medium,Leading Knight is first vice officer
+H030-2023-05,BOARD,MEMBER,FALSE,"",high,""
+H030-2023-06,BOARD,MEMBER,FALSE,"",high,""
+H030-2023-07,BOARD,MEMBER,FALSE,"",high,""
+H030-2023-08,BOARD,MEMBER,FALSE,"",high,""
+H030-2023-09,BOARD,MEMBER,FALSE,"",high,""
+H033-2021-01,CEO,"",TRUE,"",high,"paid president 30 h, no other executive title (rule 4)"
+H033-2021-02,BOARD,MEMBER,FALSE,"",high,""
+H033-2021-03,BOARD,MEMBER,FALSE,"",high,""
+H033-2021-04,BOARD,MEMBER,FALSE,"",high,""
+H033-2021-05,BOARD,MEMBER,FALSE,"",high,""
+H033-2023-01,CEO,"",TRUE,"",high,"paid president 30 h, no other executive title (rule 4)"
+H033-2023-02,BOARD,MEMBER,FALSE,"",high,""
+H033-2023-03,BOARD,MEMBER,FALSE,"",high,""
+H033-2023-04,BOARD,MEMBER,FALSE,"",high,""
+H033-2023-05,BOARD,MEMBER,FALSE,"",high,""
+H034-2021-01,DUAL,CHAIR,FALSE,"",low,"namesake president, paid full-time minister; ED title held by Brian Speer"
+H034-2021-02,CEO,"",TRUE,"",low,"Executive Director title, full-time; but paid less than namesake president"
+H034-2023-01,DUAL,CHAIR,FALSE,"",low,"namesake president, paid full-time minister; ED title held by Brian Speer"
+H034-2023-02,CEO,"",TRUE,"",low,"Executive Director title, full-time; pay only 1,500"
+H035-2021-01,DUAL,MEMBER,TRUE,"",low,trustee and only full-time paid worker (missionary); board officers 1 h/wk
+H035-2021-02,BOARD,CHAIR,FALSE,"",high,unpaid president 1 h
+H035-2021-03,BOARD,SECRETARY TREASURER,FALSE,"",high,""
+H035-2021-04,BOARD,MEMBER,FALSE,"",high,""
+H035-2021-05,BOARD,MEMBER,FALSE,"",high,""
+H035-2021-06,BOARD,MEMBER,FALSE,"",medium,duplicate listing of Jim Scott
+H035-2023-01,DUAL,MEMBER,TRUE,"",low,trustee and only full-time paid worker (missionary); board officers 0.25 h/wk
+H035-2023-02,BOARD,SECRETARY TREASURER,FALSE,"",high,""
+H035-2023-03,BOARD,CHAIR,FALSE,"",high,unpaid president 0.25 h
+H035-2023-04,BOARD,MEMBER,FALSE,"",high,""
+H035-2023-05,BOARD,MEMBER,FALSE,"",high,""
+H043-2021-01,DUAL,CHAIR,TRUE,"",medium,"union president, full-time paid 165k, T+O; no business manager listed"
+H043-2021-02,DUAL,TREASURER,FALSE,"",medium,"paid 137k as full-time union officer/rep (40 h in 2023), T+O"
+H043-2021-03,DUAL,VICE CHAIR,FALSE,"",low,"past VP, paid 137k full-time; likely business agent"
+H043-2021-04,MANAGER,"",FALSE,"",medium,"business agent, paid full-time, no boxes"
+H043-2021-05,DUAL,MEMBER,FALSE,"",low,auditor seat with 44k pay; full-time paid rep by 2023
+H043-2021-06,BOARD,SECRETARY,FALSE,"",high,financial secretary stipend
+H043-2021-07,BOARD,MEMBER,FALSE,"",high,""
+H043-2021-08,BOARD,SECRETARY,FALSE,"",high,recording secretary stipend
+H043-2021-09,BOARD,MEMBER,FALSE,"",high,""
+H043-2021-10,BOARD,MEMBER,FALSE,"",high,""
+H043-2021-11,BOARD,VICE CHAIR,FALSE,"",high,small stipend 2 h
+H043-2021-12,BOARD,MEMBER,FALSE,"",high,""
+H043-2023-01,DUAL,CHAIR,TRUE,"",medium,"union president, full-time paid 172k, T+O; no business manager listed"
+H043-2023-02,DUAL,VICE CHAIR,FALSE,"",medium,VP now paid 151k full-time; union officer/rep
+H043-2023-03,DUAL,MEMBER,FALSE,"",low,auditor seat with 147k pay; likely business agent
+H043-2023-04,DUAL,TREASURER,FALSE,"",medium,"paid 145k full-time, T+O; union officer/rep"
+H043-2023-05,DUAL,MEMBER,FALSE,"",medium,trustee seat; paid business agent (2021 title) 141k full-time
+H043-2023-06,BOARD,MEMBER,FALSE,"",high,""
+H043-2023-07,BOARD,MEMBER,FALSE,"",high,""
+H043-2023-08,BOARD,MEMBER,FALSE,"",high,""
+H043-2023-09,BOARD,SECRETARY,FALSE,"",high,financial secretary stipend
+H043-2023-10,BOARD,SECRETARY,FALSE,"",high,recording secretary stipend
+H053-2021-01,DUAL,CHAIR,TRUE,"",medium,"paid president 50k for 10 h, T+O, no staff; runs the fund"
+H053-2021-02,BOARD,MEMBER,FALSE,"",high,""
+H053-2021-03,BOARD,MEMBER,FALSE,"",high,""
+H053-2021-04,BOARD,MEMBER,FALSE,"",high,""
+H053-2021-05,BOARD,MEMBER,FALSE,"",high,""
+H053-2021-06,BOARD,MEMBER,FALSE,"",high,""
+H053-2021-07,BOARD,MEMBER,FALSE,"",high,""
+H053-2021-08,BOARD,MEMBER,FALSE,"",high,""
+H053-2023-01,DUAL,CHAIR,TRUE,"",medium,"paid president 50k for 10 h, T+O, no staff; runs the fund"
+H053-2023-02,BOARD,MEMBER,FALSE,"",high,""
+H053-2023-03,BOARD,MEMBER,FALSE,"",high,""
+H053-2023-04,BOARD,MEMBER,FALSE,"",high,""
+H053-2023-05,BOARD,MEMBER,FALSE,"",high,""
+H053-2023-06,BOARD,MEMBER,FALSE,"",high,""
+H053-2023-07,BOARD,MEMBER,FALSE,"",high,""
+H053-2023-08,BOARD,MEMBER,FALSE,"",high,""
+H053-2023-09,BOARD,MEMBER,FALSE,"",high,""
+H005-2021-01,MANAGER,"",FALSE,"",medium,"plan administrator paid $780 for 5 h/wk; trustee-run plan, no executive"
+H005-2021-02,BOARD,MEMBER,FALSE,"",high,""
+H005-2021-03,BOARD,MEMBER,FALSE,"",high,""
+H005-2021-04,BOARD,MEMBER,FALSE,"",high,""
+H005-2023-01,MANAGER,"",FALSE,"",medium,"plan administrator paid $845 for 5 h/wk; trustee-run plan, no executive"
+H005-2023-02,BOARD,MEMBER,FALSE,"",high,""
+H005-2023-03,BOARD,MEMBER,FALSE,"",high,""
+H005-2023-04,BOARD,MEMBER,FALSE,"",high,""
+H010-2021-01,CEO,"",TRUE,"",high,"general manager, $151k, 55 h/wk, O box; runs club of 171 employees"
+H010-2021-02,BOARD,CHAIR,FALSE,"",high,""
+H010-2021-03,BOARD,VICE CHAIR,FALSE,"",high,""
+H010-2021-04,BOARD,SECRETARY,FALSE,"",high,""
+H010-2021-05,BOARD,TREASURER,FALSE,"",high,""
+H010-2021-06,BOARD,MEMBER,FALSE,"",high,""
+H010-2021-07,BOARD,MEMBER,FALSE,"",high,""
+H010-2021-08,BOARD,MEMBER,FALSE,"",high,""
+H010-2021-09,BOARD,MEMBER,FALSE,"",high,""
+H010-2021-10,BOARD,MEMBER,FALSE,"",high,""
+H010-2023-01,CEO,"",TRUE,"",high,"incoming general manager from 03/2023, 55 h/wk, O box"
+H010-2023-02,PROFESSIONAL,"",FALSE,"",high,""
+H010-2023-03,CEO,"",TRUE,outgoing,high,general manager until 02/2023; succeeded by Yerby
+H010-2023-04,BOARD,CHAIR,FALSE,"",high,""
+H010-2023-05,BOARD,VICE CHAIR,FALSE,"",high,""
+H010-2023-06,BOARD,SECRETARY,FALSE,"",high,""
+H010-2023-07,BOARD,TREASURER,FALSE,"",high,""
+H010-2023-08,BOARD,MEMBER,FALSE,"",high,""
+H010-2023-09,BOARD,MEMBER,FALSE,"",high,""
+H010-2023-10,BOARD,MEMBER,FALSE,"",high,""
+H010-2023-11,BOARD,MEMBER,FALSE,"",high,""
+H010-2023-12,BOARD,MEMBER,FALSE,"",high,""
+H041-2021-01,CEO,"",TRUE,"",medium,"Teamsters secretary-treasurer is principal executive officer; full-time, top paid, listed first"
+H041-2021-02,OFFICER,"",FALSE,"",medium,"full-time paid president, paid below sec-treas; could be the chief executive"
+H041-2021-03,STAFF,"",FALSE,"",high,""
+H041-2021-04,DUAL,MEMBER,FALSE,"",medium,trustee also full-time paid assistant business agent (title shown in 2023)
+H041-2021-05,BOARD,MEMBER,FALSE,"",high,""
+H041-2021-06,BOARD,VICE CHAIR,FALSE,"",medium,vice president with small stipend and 5 h/wk: executive board seat
+H041-2021-07,BOARD,MEMBER,FALSE,"",high,""
+H041-2023-01,CEO,"",TRUE,"",medium,"Teamsters secretary-treasurer is principal executive officer; full-time, top paid, listed first"
+H041-2023-02,OFFICER,"",FALSE,"",medium,"full-time paid president, paid below sec-treas; could be the chief executive"
+H041-2023-03,STAFF,"",FALSE,"",high,""
+H041-2023-04,DUAL,MEMBER,FALSE,"",high,"trustee and full-time paid assistant business agent, K box"
+H041-2023-05,BOARD,VICE CHAIR,FALSE,"",medium,vice president with small stipend and 5 h/wk: executive board seat
+H041-2023-06,BOARD,MEMBER,FALSE,"",high,""
+H041-2023-07,BOARD,MEMBER,FALSE,"",high,""
+H045-2021-01,BOARD,CHAIR,FALSE,"",medium,"union president, $8.5k stipend for 10 h/wk, T+O; no executive in filing"
+H045-2021-02,BOARD,VICE CHAIR,FALSE,"",high,""
+H045-2021-03,BOARD,TREASURER,FALSE,"",high,""
+H045-2021-04,BOARD,VICE CHAIR,FALSE,"",high,""
+H045-2021-05,BOARD,SECRETARY,FALSE,"",high,""
+H045-2021-06,BOARD,MEMBER,FALSE,"",high,""
+H045-2021-07,BOARD,MEMBER,FALSE,"",high,""
+H045-2021-08,BOARD,MEMBER,FALSE,"",high,""
+H045-2021-09,BOARD,MEMBER,FALSE,"",high,""
+H045-2021-10,BOARD,MEMBER,FALSE,"",high,""
+H045-2021-11,BOARD,MEMBER,FALSE,"",high,""
+H045-2021-12,BOARD,MEMBER,FALSE,"",high,""
+H045-2021-13,BOARD,MEMBER,FALSE,"",high,""
+H045-2021-14,BOARD,MEMBER,FALSE,"",high,""
+H045-2021-15,BOARD,MEMBER,FALSE,"",high,""
+H045-2021-16,BOARD,MEMBER,FALSE,"",high,""
+H045-2021-17,BOARD,MEMBER,FALSE,"",high,""
+H045-2023-01,BOARD,CHAIR,FALSE,"",medium,"union president, $4.4k stipend for 10 h/wk, T+O; no executive in filing"
+H045-2023-02,BOARD,VICE CHAIR,FALSE,"",high,""
+H045-2023-03,BOARD,TREASURER,FALSE,"",high,""
+H045-2023-04,BOARD,SECRETARY,FALSE,"",high,""
+H045-2023-05,BOARD,VICE CHAIR,FALSE,"",high,""
+H045-2023-06,BOARD,MEMBER,FALSE,"",high,""
+H045-2023-07,BOARD,MEMBER,FALSE,"",high,""
+H045-2023-08,BOARD,MEMBER,FALSE,"",high,""
+H045-2023-09,BOARD,MEMBER,FALSE,"",high,""
+H045-2023-10,BOARD,MEMBER,FALSE,"",high,""
+H045-2023-11,BOARD,MEMBER,FALSE,"",high,""
+H045-2023-12,BOARD,MEMBER,FALSE,"",high,""
+H045-2023-13,BOARD,MEMBER,FALSE,"",high,""
+H045-2023-14,BOARD,MEMBER,FALSE,"",high,""
+H045-2023-15,BOARD,MEMBER,FALSE,"",high,""
+H046-2021-01,BOARD,TREASURER,FALSE,"",high,""
+H046-2021-02,BOARD,MEMBER,FALSE,"",high,""
+H046-2021-03,BOARD,MEMBER,FALSE,"",medium,warden is a minor union board office
+H046-2021-04,BOARD,MEMBER,FALSE,"",high,""
+H046-2021-05,BOARD,SECRETARY,FALSE,"",medium,financial secretary with token stipend; union board officer
+H046-2021-06,BOARD,MEMBER,FALSE,"",high,""
+H046-2021-07,BOARD,MEMBER,FALSE,"",high,""
+H046-2021-08,BOARD,MEMBER,FALSE,"",high,""
+H046-2021-09,BOARD,MEMBER,FALSE,"",high,""
+H046-2021-10,BOARD,SECRETARY,FALSE,"",high,""
+H046-2021-11,BOARD,MEMBER,FALSE,"",high,""
+H046-2021-12,BOARD,MEMBER,FALSE,"",high,""
+H046-2023-01,BOARD,MEMBER,FALSE,"",high,""
+H046-2023-02,BOARD,CHAIR,FALSE,"",high,""
+H046-2023-03,BOARD,CHAIR,FALSE,"",medium,"former president, token stipend; left office during year"
+H046-2023-04,BOARD,TREASURER,FALSE,"",high,""
+H046-2023-05,BOARD,MEMBER,FALSE,"",medium,warden is a minor union board office
+H046-2023-06,BOARD,VICE CHAIR,FALSE,"",high,""
+H046-2023-07,BOARD,MEMBER,FALSE,"",high,""
+H046-2023-08,BOARD,SECRETARY,FALSE,"",high,""
+H046-2023-09,BOARD,MEMBER,FALSE,"",high,""
+H046-2023-10,BOARD,MEMBER,FALSE,"",high,""
+H046-2023-11,BOARD,MEMBER,FALSE,"",high,""
+H046-2023-12,BOARD,MEMBER,FALSE,"",high,""
+H050-2021-01,OFFICER,"",FALSE,"",high,""
+H050-2021-02,PROFESSIONAL,"",FALSE,"",high,""
+H050-2021-03,OFFICER,"",FALSE,"",high,""
+H050-2021-04,MANAGER,"",FALSE,"",high,""
+H050-2021-05,MANAGER,"",FALSE,"",high,""
+H050-2021-06,OFFICER,"",FALSE,"",high,""
+H050-2021-07,MANAGER,"",FALSE,"",medium,"assistant treasurer, modest pay; finance staff below VP finance"
+H050-2021-08,MANAGER,"",FALSE,"",medium,"assistant treasurer, modest pay; finance staff below VP finance"
+H050-2021-09,CEO,"",TRUE,"",high,"unpaid Benedictine president, 40 h/wk, T+O: full-time executive (rule 7)"
+H050-2021-10,OFFICER,"",FALSE,"",medium,"seminary rector, unpaid Benedictine, 40 h/wk, T+O; heads a unit under the college president"
+H050-2021-11,BOARD,VICE CHAIR,FALSE,"",high,""
+H050-2021-12,BOARD,CHAIR,FALSE,"",high,""
+H050-2021-13,BOARD,MEMBER,FALSE,"",high,""
+H050-2021-14,BOARD,MEMBER,FALSE,"",high,""
+H050-2021-15,BOARD,MEMBER,FALSE,"",high,""
+H050-2021-16,BOARD,MEMBER,FALSE,"",high,""
+H050-2021-17,BOARD,MEMBER,FALSE,"",high,""
+H050-2021-18,BOARD,SECRETARY,FALSE,"",high,""
+H050-2021-19,BOARD,MEMBER,FALSE,"",high,""
+H050-2021-20,BOARD,MEMBER,FALSE,"",high,""
+H050-2021-21,BOARD,MEMBER,FALSE,"",high,""
+H050-2021-22,BOARD,MEMBER,FALSE,"",high,""
+H050-2021-23,BOARD,MEMBER,FALSE,"",high,""
+H050-2021-24,BOARD,MEMBER,FALSE,"",high,""
+H050-2021-25,BOARD,MEMBER,FALSE,"",high,""
+H050-2021-26,BOARD,MEMBER,FALSE,"",high,""
+H050-2021-27,BOARD,MEMBER,FALSE,"",high,""
+H050-2021-28,BOARD,MEMBER,FALSE,"",high,""
+H050-2021-29,BOARD,MEMBER,FALSE,"",high,""
+H050-2021-30,BOARD,MEMBER,FALSE,"",high,""
+H050-2021-31,BOARD,MEMBER,FALSE,"",high,""
+H050-2021-32,BOARD,MEMBER,FALSE,"",high,""
+H050-2021-33,BOARD,MEMBER,FALSE,"",high,""
+H050-2021-34,BOARD,MEMBER,FALSE,"",high,""
+H050-2021-35,BOARD,MEMBER,FALSE,"",high,""
+H050-2021-36,BOARD,MEMBER,FALSE,"",high,""
+H050-2021-37,BOARD,MEMBER,FALSE,"",high,""
+H050-2021-38,BOARD,MEMBER,FALSE,"",high,""
+H050-2021-39,BOARD,MEMBER,FALSE,"",high,""
+H050-2021-40,BOARD,MEMBER,FALSE,"",high,""
+H050-2021-41,BOARD,MEMBER,FALSE,"",high,""
+H050-2021-42,BOARD,MEMBER,FALSE,"",high,""
+H050-2021-43,BOARD,MEMBER,FALSE,"",high,""
+H050-2021-44,BOARD,MEMBER,FALSE,"",high,""
+H050-2021-45,BOARD,MEMBER,FALSE,"",high,""
+H050-2021-46,BOARD,MEMBER,FALSE,"",high,""
+H050-2021-47,BOARD,MEMBER,FALSE,"",high,""
+H050-2021-48,BOARD,MEMBER,FALSE,"",high,""
+H050-2021-49,BOARD,MEMBER,FALSE,"",high,""
+H050-2021-50,BOARD,MEMBER,FALSE,"",high,""
+H050-2021-51,BOARD,MEMBER,FALSE,"",high,""
+H050-2021-52,BOARD,MEMBER,FALSE,"",high,""
+H050-2021-53,BOARD,MEMBER,FALSE,"",high,""
+H050-2021-54,BOARD,MEMBER,FALSE,"",high,""
+H050-2023-01,OFFICER,"",FALSE,"",high,""
+H050-2023-02,OFFICER,"",FALSE,"",high,""
+H050-2023-03,PROFESSIONAL,"",FALSE,"",high,""
+H050-2023-04,OFFICER,"",FALSE,"",high,""
+H050-2023-05,MANAGER,"",FALSE,"",high,""
+H050-2023-06,PROFESSIONAL,"",FALSE,"",high,""
+H050-2023-07,MANAGER,"",FALSE,"",high,""
+H050-2023-08,MANAGER,"",FALSE,"",medium,"assistant treasurer, modest pay; finance staff below VP finance"
+H050-2023-09,CEO,"",TRUE,"",high,"unpaid Benedictine president, 40 h/wk, T+O: full-time executive (rule 7)"
+H050-2023-10,OFFICER,"",FALSE,"",medium,"seminary rector, unpaid Benedictine, 40 h/wk, T+O; heads a unit under the college president"
+H050-2023-11,MANAGER,"",FALSE,"",low,incoming assistant treasurer listed with no pay; role starts after year end
+H050-2023-12,BOARD,VICE CHAIR,FALSE,"",high,""
+H050-2023-13,BOARD,CHAIR,FALSE,"",high,""
+H050-2023-14,BOARD,MEMBER,FALSE,"",high,""
+H050-2023-15,BOARD,MEMBER,FALSE,"",high,""
+H050-2023-16,BOARD,MEMBER,FALSE,"",high,""
+H050-2023-17,BOARD,MEMBER,FALSE,"",high,""
+H050-2023-18,BOARD,MEMBER,FALSE,"",high,""
+H050-2023-19,BOARD,MEMBER,FALSE,"",high,""
+H050-2023-20,BOARD,MEMBER,FALSE,"",high,""
+H050-2023-21,BOARD,SECRETARY,FALSE,"",high,""
+H050-2023-22,BOARD,MEMBER,FALSE,"",high,""
+H050-2023-23,BOARD,MEMBER,FALSE,"",high,""
+H050-2023-24,BOARD,MEMBER,FALSE,"",high,""
+H050-2023-25,BOARD,MEMBER,FALSE,"",high,""
+H050-2023-26,BOARD,MEMBER,FALSE,"",high,""
+H050-2023-27,BOARD,MEMBER,FALSE,"",high,""
+H050-2023-28,BOARD,MEMBER,FALSE,"",high,""
+H050-2023-29,BOARD,MEMBER,FALSE,"",high,""
+H050-2023-30,BOARD,MEMBER,FALSE,"",high,""
+H050-2023-31,BOARD,MEMBER,FALSE,"",high,""
+H050-2023-32,BOARD,MEMBER,FALSE,"",high,""
+H050-2023-33,BOARD,MEMBER,FALSE,"",high,""
+H050-2023-34,BOARD,MEMBER,FALSE,"",high,""
+H050-2023-35,BOARD,MEMBER,FALSE,"",high,""
+H050-2023-36,BOARD,MEMBER,FALSE,"",high,""
+H050-2023-37,BOARD,MEMBER,FALSE,"",high,""
+H050-2023-38,BOARD,MEMBER,FALSE,"",high,""
+H050-2023-39,BOARD,MEMBER,FALSE,"",high,""
+H050-2023-40,BOARD,MEMBER,FALSE,"",high,""
+H050-2023-41,BOARD,MEMBER,FALSE,"",high,""
+H050-2023-42,BOARD,MEMBER,FALSE,"",high,""
+H050-2023-43,BOARD,MEMBER,FALSE,"",high,""
+H050-2023-44,BOARD,MEMBER,FALSE,"",high,""
+H050-2023-45,BOARD,MEMBER,FALSE,"",high,""
+H050-2023-46,BOARD,MEMBER,FALSE,"",high,""
+H050-2023-47,BOARD,MEMBER,FALSE,"",high,""
+H050-2023-48,BOARD,MEMBER,FALSE,"",high,""
+H050-2023-49,BOARD,MEMBER,FALSE,"",high,""
+H050-2023-50,BOARD,MEMBER,FALSE,"",high,""
+H050-2023-51,BOARD,MEMBER,FALSE,"",high,""
+H050-2023-52,BOARD,MEMBER,FALSE,"",high,""
+H050-2023-53,BOARD,MEMBER,FALSE,"",high,""
+H050-2023-54,BOARD,MEMBER,FALSE,"",high,""
+H018-2021-01,DUAL,MEMBER,FALSE,"",low,"trustee and paid fire chief ($10k, 40h) running fire operations; board president governs, so not the chief executive"
+H018-2021-02,BOARD,SECRETARY,FALSE,"",high,""
+H018-2021-03,BOARD,VICE CHAIR,FALSE,"",high,""
+H018-2021-04,BOARD,CHAIR,FALSE,"",high,""
+H018-2021-05,BOARD,MEMBER,FALSE,"",high,unpaid T box line officer
+H018-2021-06,BOARD,MEMBER,FALSE,"",high,""
+H018-2021-07,BOARD,MEMBER,FALSE,"",high,""
+H018-2021-08,BOARD,MEMBER,FALSE,"",high,unpaid T box
+H018-2021-09,BOARD,MEMBER,FALSE,"",high,""
+H018-2023-01,BOARD,MEMBER,FALSE,"",medium,fire chief now unpaid 10h; volunteer board-run company
+H018-2023-02,BOARD,MEMBER,FALSE,"",high,unpaid T box
+H018-2023-03,BOARD,SECRETARY,FALSE,"",high,""
+H018-2023-04,BOARD,VICE CHAIR,FALSE,"",high,""
+H018-2023-05,BOARD,CHAIR,FALSE,"",high,""
+H018-2023-06,BOARD,MEMBER,FALSE,"",high,""
+H018-2023-07,BOARD,MEMBER,FALSE,"",high,""
+H018-2023-08,BOARD,MEMBER,FALSE,"",high,""
+H018-2023-09,BOARD,MEMBER,FALSE,"",high,""
+H018-2023-10,BOARD,MEMBER,FALSE,"",high,""
+H029-2021-01,MANAGER,"",FALSE,"",low,"lodge administrator unpaid 15h, no staff; board-run lodge (rule 6)"
+H029-2021-02,BOARD,MEMBER,FALSE,"",high,""
+H029-2021-03,BOARD,MEMBER,FALSE,"",high,""
+H029-2021-04,BOARD,MEMBER,FALSE,"",high,""
+H029-2021-05,BOARD,VICE CHAIR,FALSE,"",high,""
+H029-2021-06,BOARD,CHAIR,FALSE,"",high,""
+H029-2021-07,BOARD,MEMBER,FALSE,"",medium,chaplain lodge officer
+H029-2021-08,BOARD,TREASURER,FALSE,"",high,""
+H029-2023-01,MANAGER,"",FALSE,"",low,"part-time administrator $19.5k 20h, 0 employees; board-run lodge (rule 6)"
+H029-2023-02,BOARD,MEMBER,FALSE,"",high,""
+H029-2023-03,BOARD,MEMBER,FALSE,"",high,same person also listed as treasurer
+H029-2023-04,BOARD,MEMBER,FALSE,"",high,""
+H029-2023-05,BOARD,MEMBER,FALSE,"",high,""
+H029-2023-06,BOARD,VICE CHAIR,FALSE,"",high,""
+H029-2023-07,BOARD,CHAIR,FALSE,"",high,""
+H029-2023-08,BOARD,MEMBER,FALSE,"",medium,chaplain lodge officer
+H029-2023-09,BOARD,TREASURER,FALSE,"",high,""
+H036-2021-01,DUAL,MEMBER,TRUE,"",high,"trustee and paid full-time CEO ($50k, 40h)"
+H036-2021-02,DUAL,MEMBER,FALSE,"",medium,trustee and paid full-time executive director ($36k) below the CEO; officer
+H036-2021-03,BOARD,MEMBER,FALSE,"",medium,one of five 'Chairman' titles; likely committee chairs
+H036-2021-04,BOARD,MEMBER,FALSE,"",medium,one of five 'Chairman' titles; likely committee chairs
+H036-2021-05,BOARD,SECRETARY,FALSE,"",high,""
+H036-2021-06,BOARD,TREASURER,FALSE,"",high,""
+H036-2021-07,BOARD,MEMBER,FALSE,"",high,""
+H036-2021-08,BOARD,MEMBER,FALSE,"",medium,one of five 'Chairman' titles; likely committee chairs
+H036-2021-09,BOARD,MEMBER,FALSE,"",medium,one of five 'Chairman' titles; likely committee chairs
+H036-2021-10,BOARD,MEMBER,FALSE,"",medium,one of five 'Chairman' titles; likely committee chairs
+H036-2023-01,DUAL,MEMBER,TRUE,"",medium,"trustee and CEO, 40h; pay not reported this year but same role as 2021"
+H036-2023-02,DUAL,MEMBER,FALSE,"",medium,"trustee and executive director below CEO, 40h; same role as 2021"
+H036-2023-03,BOARD,MEMBER,FALSE,"",medium,one of two 'Chairman' titles; likely committee chair
+H036-2023-04,BOARD,MEMBER,FALSE,"",medium,one of two 'Chairman' titles; likely committee chair
+H036-2023-05,BOARD,SECRETARY,FALSE,"",high,""
+H036-2023-06,BOARD,TREASURER,FALSE,"",high,""
+H036-2023-07,BOARD,MEMBER,FALSE,"",high,""
+H036-2023-08,BOARD,MEMBER,FALSE,"",high,""
+H036-2023-09,BOARD,MEMBER,FALSE,"",high,""
+H037-2021-01,DUAL,MEMBER,FALSE,"",medium,"trustee and paid part-time operations director ($4.8k, 20h), 0 employees; board-run, no chief executive"
+H037-2021-02,BOARD,MEMBER,FALSE,"",medium,small payment at 1h; board director
+H037-2021-03,BOARD,CHAIR,FALSE,"",high,""
+H037-2021-04,BOARD,SECRETARY TREASURER,FALSE,"",high,""
+H037-2021-05,BOARD,MEMBER,FALSE,"",high,""
+H037-2021-06,BOARD,MEMBER,FALSE,"",low,"titled executive director but unpaid at 1h; titular, listed as plain director in 2023"
+H037-2023-01,DUAL,MEMBER,FALSE,"",medium,"trustee and paid part-time operations director ($5.1k, 20h), 0 employees; board-run, no chief executive"
+H037-2023-02,BOARD,MEMBER,FALSE,"",medium,small payment at 1h; board director
+H037-2023-03,BOARD,CHAIR,FALSE,"",high,""
+H037-2023-04,BOARD,SECRETARY,FALSE,"",high,""
+H037-2023-05,BOARD,TREASURER,FALSE,"",high,""
+H037-2023-06,BOARD,MEMBER,FALSE,"",high,""
+H044-2021-01,DUAL,MEMBER,TRUE,"",medium,"IBEW business manager is the local's chief executive; T+O, paid $26k"
+H044-2021-02,DUAL,CHAIR,FALSE,"",medium,"union president, paid officer ($22.8k) presiding over executive board"
+H044-2021-03,DUAL,TREASURER,FALSE,"",medium,"union treasurer, paid officer ($14.4k)"
+H044-2021-04,DUAL,MEMBER,FALSE,"",low,T box plus paid membership services director ($9.6k); staff function
+H044-2021-05,DUAL,SECRETARY,FALSE,"",medium,"recording secretary, paid union officer ($7.2k)"
+H044-2021-06,DUAL,SECRETARY,FALSE,"",medium,"financial secretary, paid union officer ($7.2k)"
+H044-2021-07,DUAL,VICE CHAIR,FALSE,"",low,"vice president, paid union officer ($4.8k); could be stipend only"
+H044-2021-08,BOARD,MEMBER,FALSE,"",high,small stipend
+H044-2021-09,BOARD,MEMBER,FALSE,"",high,small stipend
+H044-2021-10,BOARD,MEMBER,FALSE,"",high,small stipend
+H044-2021-11,BOARD,MEMBER,FALSE,"",high,small stipend
+H044-2021-12,BOARD,MEMBER,FALSE,"",high,small stipend
+H044-2021-13,BOARD,MEMBER,FALSE,"",high,""
+H044-2023-01,DUAL,CHAIR,FALSE,"",medium,"union president, paid officer ($31.6k) presiding over executive board; business manager runs the local"
+H044-2023-02,DUAL,MEMBER,TRUE,"",medium,"IBEW business manager is the local's chief executive; T+O, paid $31.2k"
+H044-2023-03,DUAL,TREASURER,FALSE,"",medium,"union treasurer, paid officer ($24k)"
+H044-2023-04,DUAL,SECRETARY,FALSE,"",medium,"financial secretary, paid union officer ($19.7k)"
+H044-2023-05,DUAL,MEMBER,FALSE,"",low,T box plus paid membership services director ($15.6k); staff function
+H044-2023-06,DUAL,SECRETARY,FALSE,"",medium,"recording secretary, paid union officer ($13.2k)"
+H044-2023-07,DUAL,VICE CHAIR,FALSE,"",low,"vice president, paid union officer ($10.8k); could be stipend only"
+H044-2023-08,BOARD,MEMBER,FALSE,"",high,small stipend
+H044-2023-09,BOARD,MEMBER,FALSE,"",high,small stipend
+H044-2023-10,BOARD,MEMBER,FALSE,"",high,small stipend
+H044-2023-11,BOARD,MEMBER,FALSE,"",high,small stipend
+H044-2023-12,BOARD,MEMBER,FALSE,"",high,small stipend
+H063-2021-01,BOARD,TREASURER,FALSE,"",medium,quartermaster (VFW treasurer) with $4.1k stipend at 5h; post run by commander
+H063-2021-02,BOARD,CHAIR,FALSE,"",high,commander heads the post
+H063-2021-03,BOARD,VICE CHAIR,FALSE,"",high,""
+H063-2021-04,BOARD,SECRETARY,FALSE,"",medium,adjutant is the post secretary
+H063-2021-05,BOARD,MEMBER,FALSE,"",medium,junior vice commander
+H063-2021-06,BOARD,MEMBER,FALSE,"",high,""
+H063-2023-01,BOARD,TREASURER,FALSE,"",medium,quartermaster and treasurer; $5.2k related-org stipend at 5h
+H063-2023-02,BOARD,VICE CHAIR,FALSE,"",high,""
+H063-2023-03,BOARD,SECRETARY,FALSE,"",medium,adjutant is the post secretary
+H063-2023-04,BOARD,MEMBER,FALSE,"",high,""
+H063-2023-05,BOARD,CHAIR,FALSE,"",medium,commander heads the post; a president is also listed
+H063-2023-06,BOARD,MEMBER,FALSE,"",low,president alongside commander; likely heads the post home association
+H063-2023-07,BOARD,SECRETARY,FALSE,"",medium,clerk is corporate secretary
+H063-2023-08,BOARD,MEMBER,FALSE,"",high,""
+H063-2023-09,BOARD,MEMBER,FALSE,"",high,""
+H063-2023-10,BOARD,MEMBER,FALSE,"",high,""
+H001-2021-01,DUAL,MEMBER,TRUE,"",medium,"paid full-time executive director ($117k, 40 h) with trustee box; job: executive director"
+H001-2021-02,BOARD,CHAIR,FALSE,"",high,""
+H001-2021-03,BOARD,VICE CHAIR,FALSE,"",high,""
+H001-2021-04,BOARD,SECRETARY,FALSE,"",high,""
+H001-2021-05,BOARD,TREASURER,FALSE,"",high,""
+H001-2021-06,BOARD,MEMBER,FALSE,"",high,""
+H001-2021-07,BOARD,MEMBER,FALSE,"",high,""
+H001-2021-08,BOARD,MEMBER,FALSE,"",high,""
+H001-2021-09,BOARD,MEMBER,FALSE,"",high,""
+H001-2023-01,DUAL,MEMBER,TRUE,"",medium,"paid full-time executive director ($120k, 40 h) with trustee box; job: executive director"
+H001-2023-02,BOARD,CHAIR,FALSE,"",high,""
+H001-2023-03,BOARD,VICE CHAIR,FALSE,"",high,""
+H001-2023-04,BOARD,SECRETARY,FALSE,"",high,""
+H001-2023-05,BOARD,TREASURER,FALSE,"",high,""
+H001-2023-06,BOARD,MEMBER,FALSE,"",high,""
+H001-2023-07,BOARD,MEMBER,FALSE,"",high,""
+H001-2023-08,BOARD,MEMBER,FALSE,"",high,""
+H001-2023-09,BOARD,MEMBER,FALSE,"",high,""
+H001-2023-10,BOARD,MEMBER,FALSE,"",high,""
+H001-2023-11,BOARD,MEMBER,FALSE,"",high,""
+H007-2021-01,BOARD,CHAIR,FALSE,"",medium,president with $1.3k stipend at 2 h/wk: titular president; no paid executive listed
+H007-2021-02,BOARD,TREASURER,FALSE,"",high,""
+H007-2021-03,BOARD,VICE CHAIR,FALSE,"",high,""
+H007-2021-04,BOARD,SECRETARY,FALSE,"",high,""
+H007-2021-05,BOARD,MEMBER,FALSE,"",high,""
+H007-2021-06,BOARD,MEMBER,FALSE,"",high,""
+H007-2021-07,BOARD,MEMBER,FALSE,"",high,""
+H007-2021-08,BOARD,MEMBER,FALSE,"",high,""
+H007-2021-09,BOARD,MEMBER,FALSE,"",high,""
+H007-2023-01,BOARD,CHAIR,FALSE,"",medium,president at 2 h/wk with small related-org stipend; no paid executive listed
+H007-2023-02,BOARD,TREASURER,FALSE,"",high,""
+H007-2023-03,BOARD,VICE CHAIR,FALSE,"",high,""
+H007-2023-04,BOARD,SECRETARY,FALSE,"",high,""
+H007-2023-05,BOARD,MEMBER,FALSE,"",high,""
+H007-2023-06,BOARD,MEMBER,FALSE,"",high,""
+H007-2023-07,BOARD,MEMBER,FALSE,"",high,""
+H007-2023-08,BOARD,MEMBER,FALSE,"",high,""
+H032-2021-01,BOARD,TREASURER,FALSE,"",medium,lodge treasurer with $1.4k stipend at 5 h/wk; officer box only but on board in 2023
+H032-2021-02,BOARD,SECRETARY,FALSE,"",medium,lodge secretary with $1.4k stipend at 5 h/wk; officer box only but on board in 2023
+H032-2021-03,BOARD,CHAIR,FALSE,"",high,Exalted Ruler presides over lodge; no employees
+H032-2021-04,BOARD,MEMBER,FALSE,"",high,""
+H032-2021-05,BOARD,VICE CHAIR,FALSE,"",medium,Leading Knight is first vice officer under Exalted Ruler
+H032-2021-06,BOARD,MEMBER,FALSE,"",medium,Loyal Knight: junior vice officer
+H032-2021-07,BOARD,MEMBER,FALSE,"",medium,Lecturing Knight: junior vice officer
+H032-2021-08,BOARD,MEMBER,FALSE,"",high,""
+H032-2021-09,BOARD,MEMBER,FALSE,"",high,""
+H032-2021-10,BOARD,MEMBER,FALSE,"",high,""
+H032-2021-11,BOARD,MEMBER,FALSE,"",high,""
+H032-2023-01,BOARD,CHAIR,FALSE,"",high,Exalted Ruler presides over lodge; no employees
+H032-2023-02,BOARD,TREASURER,FALSE,"",high,""
+H032-2023-03,BOARD,SECRETARY,FALSE,"",high,""
+H032-2023-04,BOARD,MEMBER,FALSE,"",high,""
+H032-2023-05,BOARD,VICE CHAIR,FALSE,"",medium,Leading Knight is first vice officer under Exalted Ruler
+H032-2023-06,BOARD,MEMBER,FALSE,"",medium,Loyal Knight: junior vice officer
+H032-2023-07,BOARD,MEMBER,FALSE,"",medium,Lecturing Knight: junior vice officer
+H032-2023-08,BOARD,MEMBER,FALSE,"",high,""
+H032-2023-09,BOARD,MEMBER,FALSE,"",high,""
+H032-2023-10,BOARD,MEMBER,FALSE,"",high,""
+H032-2023-11,BOARD,MEMBER,FALSE,"",high,""
+H064-2021-01,BOARD,CHAIR,FALSE,"",medium,"unpaid post commander, 1 h/wk; 25 employees but no paid executive listed"
+H064-2021-02,BOARD,TREASURER,FALSE,"",medium,VFW quartermaster is the post's finance officer; unpaid
+H064-2021-03,BOARD,MEMBER,FALSE,"",medium,junior vice commander; unpaid
+H064-2021-04,BOARD,VICE CHAIR,FALSE,"",medium,senior vice commander; unpaid
+H064-2021-05,BOARD,MEMBER,FALSE,"",medium,chaplain officer; unpaid
+H064-2021-06,BOARD,MEMBER,FALSE,"",high,""
+H064-2021-07,BOARD,MEMBER,FALSE,"",high,""
+H064-2021-08,BOARD,MEMBER,FALSE,"",high,""
+H064-2021-09,BOARD,SECRETARY,FALSE,"",medium,VFW adjutant is the post secretary; unpaid with trustee box
+H064-2021-10,BOARD,MEMBER,FALSE,"",medium,service officer; unpaid with trustee box
+H064-2023-01,BOARD,CHAIR,FALSE,"",medium,"unpaid post commander, 1 h/wk; 25 employees but no paid executive listed"
+H064-2023-02,BOARD,TREASURER,FALSE,"",medium,VFW quartermaster is the post's finance officer; unpaid
+H064-2023-03,BOARD,MEMBER,FALSE,"",medium,junior vice commander; unpaid
+H064-2023-04,BOARD,MEMBER,FALSE,"",high,""
+H064-2023-05,BOARD,MEMBER,FALSE,"",medium,chaplain officer; unpaid
+H064-2023-06,BOARD,MEMBER,FALSE,"",high,""
+H064-2023-07,BOARD,MEMBER,FALSE,"",high,""
+H064-2023-08,BOARD,SECRETARY,FALSE,"",medium,VFW adjutant is the post secretary; unpaid with trustee box
+H064-2023-09,BOARD,VICE CHAIR,FALSE,"",medium,senior vice commander; unpaid

@@ -26,12 +26,19 @@
 # ceo-sample/sample.csv.
 #
 #   Rscript data-raw/partvii-validation/24-ceo-sample.R
+#
+# CEO_SET=ceo-holdout draws the held-out check of the CEO thesaurus (F-033):
+# 8 organizations in each of the 8 strata the thesaurus covers, none of them in
+# the first sample, seed 2027, with the 2021 and 2023 filings only. It writes
+# to PARTVII_DIR/ceo-holdout and ceo-holdout/ instead.
 
 suppressMessages({ library(arrow); library(data.table) })
 PV   <- Sys.getenv("PARTVII_DIR", file.path(Sys.getenv("USERPROFILE", "~"), "Documents", "PARTVII"))
-OUT  <- file.path(PV, "ceo-sample"); dir.create(OUT, showWarnings = FALSE)
-REPO <- "data-raw/partvii-validation/ceo-sample"; dir.create(REPO, showWarnings = FALSE)
+SET  <- Sys.getenv("CEO_SET", "ceo-sample"); holdout <- SET != "ceo-sample"
+OUT  <- file.path(PV, SET); dir.create(OUT, showWarnings = FALSE)
+REPO <- file.path("data-raw/partvii-validation", SET); dir.create(REPO, showWarnings = FALSE)
 years <- 2019:2023
+keep_years <- if (holdout) c(2021L, 2023L) else years   # the filings written for labeling
 num <- function(x) { x <- suppressWarnings(as.numeric(x)); x[is.na(x)] <- 0; x }
 
 # ---- 1. one filing per organization and year -------------------------------------
@@ -84,7 +91,12 @@ org[, stratum := fcase(
 print(org[, .(orgs = .N, with_exec = sum(exec), max_rows_ok = sum(max_rows <= 60)), by = stratum][order(orgs)])
 
 # ---- 3. draw ---------------------------------------------------------------------------
-set.seed(2026)
+set.seed(if (holdout) 2027 else 2026)
+th_strata <- c("veterans post", "lodge", "union", "club or co-op", "benefit trust or cemetery", "university", "ministry", "fire department")
+if (holdout) {
+  first <- fread("data-raw/partvii-validation/ceo-sample/sample.csv", colClasses = "character")
+  org <- org[!EIN2 %in% first$EIN2 & stratum %in% th_strata]
+}
 cap <- function(s) if (s == "multi-CEO system") 100 else 60
 take <- function(s, n) {
   pool <- org[stratum == s & max_rows <= cap(s)]
@@ -92,23 +104,23 @@ take <- function(s, n) {
   na <- min(nrow(a), ceiling(n / 2)); nb <- min(nrow(b), n - na); na <- min(nrow(a), n - nb)
   rbind(a[sample(.N, na)], b[sample(.N, nb)])
 }
-n_of <- function(s) if (s == "control charity") 20 else 10
+n_of <- function(s) if (holdout) 8 else if (s == "control charity") 20 else 10
 smp <- rbindlist(lapply(sort(unique(na.omit(org$stratum))), function(s) take(s, n_of(s))))
-smp[, org_id := sprintf("O%03d", seq_len(.N))]
+smp[, org_id := sprintf(if (holdout) "H%03d" else "O%03d", seq_len(.N))]
 cat(sprintf("\nsample: %d organizations\n", nrow(smp))); print(smp[, .(orgs = .N, exec = sum(exec)), by = stratum])
 
 # ---- 4. the filings' Part VII rows and context ------------------------------------------
-fls <- fl[smp[, .(EIN2, org_id, stratum)], on = "EIN2"]
-raw <- rbindlist(lapply(years, function(y) {
+fls <- fl[smp[, .(EIN2, org_id, stratum)], on = "EIN2"][year %in% keep_years]
+raw <- rbindlist(lapply(keep_years, function(y) {
   x <- as.data.table(read_parquet(file.path(PV, "efile", sprintf("F9-P07-T01-COMPENSATION-%d.parquet", y))))
   x[OBJECTID %in% fls[year == y, OBJECTID]][, year := y]
 }), fill = TRUE)
-p1 <- rbindlist(lapply(years, function(y) {
+p1 <- rbindlist(lapply(keep_years, function(y) {
   a <- as.data.table(read_parquet(file.path(PV, "efile", sprintf("F9-P01-T00-SUMMARY-%d.parquet", y)),
         col_select = c("OBJECTID", "F9_01_ACT_GVRN_ACT_MISSION", "F9_01_ACT_GVRN_EMPL_TOT", "F9_01_ACT_GVRN_VOL_TOT", "F9_01_EXP_TOT_CY")))
   a[OBJECTID %in% fls$OBJECTID]
 }), fill = TRUE)
-ez <- rbindlist(lapply(years, function(y) {
+ez <- rbindlist(lapply(keep_years, function(y) {
   f <- file.path(PV, "efile", sprintf("F9-P01-T00-SUMMARY-EZ-%d.parquet", y))
   a <- as.data.table(read_parquet(f)); a <- a[OBJECTID %in% fls$OBJECTID]
   e <- grep("EXP_TOT", names(a), value = TRUE)[1]

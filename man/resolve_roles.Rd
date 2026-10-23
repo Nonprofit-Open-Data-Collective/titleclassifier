@@ -18,7 +18,7 @@ each of the person's rows):
 \describe{
 \item{role.position}{board, officer, board_officer, staff, or unknown}
 \item{role.final}{CEO, OFFICER, MANAGER, PROFESSIONAL, STAFF, or BOARD}
-\item{role.board}{for BOARD: CHAIR, VICE CHAIR, SECRETARY, TREASURER, or MEMBER}
+\item{role.board}{for BOARD: CHAIR, VICE CHAIR, SECRETARY TREASURER, SECRETARY, TREASURER, or MEMBER}
 \item{role.ceo}{for CEO: designated, co-ceo, interim, imputed, or model}
 \item{role.source}{what settled the position: checkbox, title+pay, or title}
 \item{role.method}{rules, or model (990-EZ, xgboost installed)}

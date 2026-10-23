@@ -111,6 +111,18 @@ get_title_xwalk <- function(){ .crosswalk_data( "title.xwalk" ) }
 get_title_patterns <- function(){ .crosswalk_data( "title.patterns" ) }
 
 
+#' @title Load the CEO thesaurus
+#'
+#' @description Returns the chief-executive titles by organization type that
+#'   `resolve_roles()` uses: the `ceo.thesaurus` package data.
+#'
+#' @return A data frame with columns `org_type`, `title_pattern`, `effect`,
+#'   `min_hours`, `min_pay`, `outranks` and `evidence`.
+#'
+#' @export
+get_ceo_thesaurus <- function(){ .crosswalk_data( "ceo.thesaurus" ) }
+
+
 #' @title Load the title-taxonomy crosswalk
 #'
 #' @description Returns the `title.standard` to taxonomy crosswalk used by
