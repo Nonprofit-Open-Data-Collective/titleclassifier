@@ -32,7 +32,7 @@ title.taxonomy <- read_table("title-taxonomy.csv",
 
 # each title is an employee level or a board role (or neither: not a role)
 emp_levels  <- c("CEO", "OFFICER", "MANAGER", "PROFESSIONAL", "STAFF")
-board_roles <- c("CHAIR", "VICE CHAIR", "SECRETARY", "TREASURER", "MEMBER")
+board_roles <- c("CHAIR", "VICE CHAIR", "SECRETARY", "SECRETARY TREASURER", "TREASURER", "MEMBER")
 lv <- title.taxonomy$emp.level; rl <- title.taxonomy$board.role
 bad <- title.taxonomy$title.standard[!lv %in% c(emp_levels, "") | !rl %in% c(board_roles, "") | (nzchar(lv) & nzchar(rl))]
 if (length(bad)) stop("invalid emp.level / board.role in title-taxonomy.csv: ", paste(bad, collapse = ", "))
@@ -50,8 +50,8 @@ title.taxonomy <- within(title.taxonomy, {
   board   <- flag(nzchar(rl))
   pres    <- flag(rl == "CHAIR")
   vp      <- flag(rl == "VICE CHAIR")
-  sec     <- flag(rl == "SECRETARY")
-  treas   <- flag(rl == "TREASURER")
+  sec     <- flag(rl %in% c("SECRETARY", "SECRETARY TREASURER"))
+  treas   <- flag(rl %in% c("TREASURER", "SECRETARY TREASURER"))
   mem     <- flag(rl == "MEMBER")
 })
 title.taxonomy <- title.taxonomy[, c(

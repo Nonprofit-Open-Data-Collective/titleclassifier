@@ -184,3 +184,13 @@ test_that("an uncoded title that starts with an office keeps it (F-032)", {
   w <- person("W", "w1", NA, hours = 1, trustee = 1, officer = 1, title.raw = "TREASURER AND TRUSTREE")
   expect_equal(pr_of(w)$role.board, "TREASURER")
 })
+
+test_that("a secretary-treasurer keeps the combined office (F-032)", {
+  st <- rbind(person("ST", "st1", "BOARD SECRETARY TREASURER", board.role = "SECRETARY TREASURER", hours = 2, trustee = 1, officer = 1),
+              person("ST", "st2", "BOARD SECRETARY", board.role = "SECRETARY", hours = 2, trustee = 1, officer = 1,
+                     title.raw = "SECRETARY / TREASURER"),
+              person("ST", "st2", "BOARD TREASURER", board.role = "TREASURER", hours = 2, trustee = 1, officer = 1,
+                     title.raw = "SECRETARY / TREASURER"))
+  ps <- pr_of(st)
+  expect_equal(ps$role.board[match(c("st1", "st2"), ps$person.id)], c("SECRETARY TREASURER", "SECRETARY TREASURER"))
+})

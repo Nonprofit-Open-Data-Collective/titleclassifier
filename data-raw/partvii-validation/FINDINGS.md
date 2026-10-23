@@ -1257,7 +1257,7 @@ alone, because the labels count an outgoing CEO who served part of the year.
 |---|---|---|
 | F-031 set: right chief executive (750 filings) | 80.9% | **85.1%** |
 | F-031: CEO precision / recall (people) | 80.7 / 83.8% | 84.7 / 85.3% |
-| F-031: board role right (board seats) | 96.4% | **98.6%** |
+| F-031: board role right (board seats) | 96.4% | **98.7%** |
 | F-031: role | 94.4% | 94.7% |
 | Labeled set v1 (2010-12, 155 people) | 94.2% | **95.5%** |
 | Labeled set v2 (2010-12, 312 people) | 89.7% | **90.4%** |
@@ -1290,15 +1290,26 @@ R3 +1.1. The board changes add +2.2. Chief executive by stratum:
   82.5%: stipend holders are no longer called CEOs. The fall is largest for
   c9 trusts (40.1% to 35.4%) and c7 clubs (70.3% to 68.0%).
 
-**Regression and tests.** The reference is rebuilt: md5 `37a64d4f...`, 4,125
-x 112. On the demo, 16 roles and 84 board roles change, matching the patterns
-above. 244 tests pass, 7 of them new for these rules.
+**Secretary-treasurer is its own office** (user decision, 2026-10-23).
+- Before, the crosswalk filed SECRETARY TREASURER under BOARD TREASURER but
+  BOARD SECRETARY TREASURER under BOARD SECRETARY, and the guide said "the
+  first office named".
+- Now there is a sixth board standard, BOARD SECRETARY TREASURER, with board
+  role SECRETARY TREASURER. 13 variants map to it. A person whose title was
+  split into a secretary row and a treasurer row also gets SECRETARY
+  TREASURER.
+- The legacy flags set both `sec` and `treas`. The 990-EZ role model still
+  sees it as TREASURER, as it was trained.
+- The scorers (`26-ceo-score.R`, `09-gold-check.R`, `21-performance.R`)
+  accept it for a label of SECRETARY or TREASURER, since the labels predate
+  it. The guide now has it as a board role.
+- F-031 board role: 98.6% -> 98.7%.
+
+**Regression and tests.** The reference is rebuilt: md5 `0769408f...`, 4,125
+x 112. On the demo, the role and board-role changes match the patterns above.
+245 tests pass, 8 of them new for these rules.
 
 **Open:**
-- **SECRETARY TREASURER.** The crosswalk maps it to BOARD TREASURER, but BOARD
-  SECRETARY TREASURER maps to BOARD SECRETARY. The guide says "the first
-  office named" (secretary), and the labels follow the guide. One convention
-  is needed.
 - **The rest of the CEO errors.** Of the remaining 112 wrong filings, about 30
   are type-specific titles (`data-dev/CEO-THESAURUS-PLAN.md`). The rest are:
   - stipend officers at 5+ hours;

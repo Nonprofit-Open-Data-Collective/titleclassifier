@@ -88,9 +88,10 @@ if (file.exists(v2f)) {
   pr2 <- function(cls) { p <- ev$role.final == cls; t <- ev$role == cls
     c(precision = round(sum(p & t) / sum(p), 2), recall = round(sum(p & t) / sum(t), 2), labeled = sum(t)) }
   cat("\n"); print(t(sapply(c("CEO", "OFFICER", "MANAGER", "PROFESSIONAL", "STAFF", "BOARD"), pr2)))
+  br_ok <- function(lab, pred) lab == pred | (pred %in% "SECRETARY TREASURER" & lab %in% c("SECRETARY", "TREASURER"))
   b <- ev[ev$role == "BOARD" & ev$role.final == "BOARD", ]
-  cat(sprintf("\nboard seats with the right board role: %d of %d (%.0f%%)\n", sum(b$board_role == b$role.board),
-              nrow(b), 100 * mean(b$board_role == b$role.board)))
+  cat(sprintf("\nboard seats with the right board role: %d of %d (%.0f%%)\n", sum(br_ok(b$board_role, b$role.board)),
+              nrow(b), 100 * mean(br_ok(b$board_role, b$role.board))))
   cat("\n"); print(table(label = ev$role, step09 = ev$role.final))
   utils::write.csv(v[, setdiff(names(v), ".k")], file.path(out_dir, "gold-v2-results.csv"), row.names = FALSE)
 }

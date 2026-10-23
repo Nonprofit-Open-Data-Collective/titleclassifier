@@ -70,7 +70,7 @@ out <- rbind(cbind(breakdown = "all", group = "all", acc(g, NULL)),
 prec <- g[, .(predicted = .N, precision = round(100 * mean(hit), 1)), by = .(role = role.final)][
   order(match(role, c("CEO", "OFFICER", "MANAGER", "PROFESSIONAL", "STAFF", "BOARD")))]
 b <- g[role == "BOARD" & role.final == "BOARD"]
-brd <- data.table(board_seats = nrow(b), right_board_role = round(100 * mean(b$board_role == b$role.board), 1))
+brd <- data.table(board_seats = nrow(b), right_board_role = round(100 * mean(b$board_role == b$role.board | (b$role.board %in% "SECRETARY TREASURER" & b$board_role %in% c("SECRETARY", "TREASURER"))), 1))
 fwrite(out, file.path(RES, "perf-gold.csv")); fwrite(prec, file.path(RES, "perf-gold-precision.csv"))
 fwrite(brd, file.path(RES, "perf-gold-board-role.csv"))
 cat("\nlabeled set:\n"); print(out); print(prec); print(brd)

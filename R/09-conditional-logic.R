@@ -77,7 +77,7 @@ conditional_logic <- function(comp.data)
 #'   \describe{
 #'     \item{role.position}{board, officer, board_officer, staff, or unknown}
 #'     \item{role.final}{CEO, OFFICER, MANAGER, PROFESSIONAL, STAFF, or BOARD}
-#'     \item{role.board}{for BOARD: CHAIR, VICE CHAIR, SECRETARY, TREASURER, or MEMBER}
+#'     \item{role.board}{for BOARD: CHAIR, VICE CHAIR, SECRETARY TREASURER, SECRETARY, TREASURER, or MEMBER}
 #'     \item{role.ceo}{for CEO: designated, co-ceo, interim, imputed, or model}
 #'     \item{role.source}{what settled the position: checkbox, title+pay, or title}
 #'     \item{role.method}{rules, or model (990-EZ, xgboost installed)}
@@ -249,7 +249,7 @@ resolve_roles <- function( comp.data, use_model = TRUE )
 
   # the board role: the crosswalk's, or read from the title for an employee
   # title that turned out to be a board seat (VICE PRESIDENT, SECRETARY, ...)
-  brank <- c( CHAIR = 1L, `VICE CHAIR` = 2L, SECRETARY = 3L, TREASURER = 4L, MEMBER = 5L )
+  brank <- c( CHAIR = 1L, `VICE CHAIR` = 2L, `SECRETARY TREASURER` = 3L, SECRETARY = 4L, TREASURER = 5L, MEMBER = 6L )
   # an assistant secretary or treasurer on the board holds a seat, not the
   # office: the board keeps one secretary and one treasurer
   asst_office <- chr( d$title.standard ) %in% c( "ASSISTANT SECRETARY", "ASSISTANT TREASURER" )
@@ -276,10 +276,15 @@ resolve_roles <- function( comp.data, use_model = TRUE )
           grepl( "OF MEDICAL STAFF", fb ),                  "MEMBER",
           grepl( "VICE (PRESIDENT|CHAIR)", fb ),            "VICE CHAIR",
           grepl( "PRESIDENT|CHAIR", fb ),                   "CHAIR",
+          grepl( "SECRETARY.*TREASURER|TREASURER.*SECRETARY", fb ), "SECRETARY TREASURER",
           grepl( "SECRETARY", fb ),                         "SECRETARY",
           grepl( "TREASURER", fb ),                         "TREASURER",
           default = "MEMBER" ) ]
-  pb <- d[ , .( role.board = names(brank)[ min( brank[.brole_t] ) ] ), by = .( object.id, person.id ) ]
+  # a person whose title was split into a secretary row and a treasurer row
+  # holds the combined office
+  pb <- d[ , .( role.board = if( all( c( "SECRETARY", "TREASURER" ) %in% .brole_t ) && min( brank[.brole_t] ) >= 3L )
+                               "SECRETARY TREASURER" else names(brank)[ min( brank[.brole_t] ) ] ),
+           by = .( object.id, person.id ) ]
   p <- merge( p, pb, by = c( "object.id", "person.id" ), all.x = TRUE )
   p[ role.final != "BOARD", role.board := NA_character_ ]
 

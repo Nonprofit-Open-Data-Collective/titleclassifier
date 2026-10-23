@@ -15,9 +15,11 @@ Rscript data-raw/crosswalks/build-crosswalks.R
 
 `title-taxonomy.csv` gives each standard title an `emp.level` (CEO, OFFICER,
 MANAGER, PROFESSIONAL, STAFF) or a `board.role` (CHAIR, VICE CHAIR, SECRETARY,
-TREASURER, MEMBER). Board titles use only the five core standards (BOARD
-PRESIDENT, BOARD VICE PRESIDENT, BOARD SECRETARY, BOARD TREASURER, BOARD
-MEMBER): add other board titles as standardization variants of these.
+SECRETARY TREASURER, TREASURER, MEMBER). Board titles use only the six core
+standards (BOARD PRESIDENT, BOARD VICE PRESIDENT, BOARD SECRETARY, BOARD
+SECRETARY TREASURER, BOARD TREASURER, BOARD MEMBER): add other board titles as
+standardization variants of these. The combined secretary-treasurer office is
+kept whole (FINDINGS.md F-032); its legacy flags set both `sec` and `treas`.
 `build-crosswalks.R` derives the legacy flags (`emp`, `ceo`, ... `mem`) for
 the package.
 

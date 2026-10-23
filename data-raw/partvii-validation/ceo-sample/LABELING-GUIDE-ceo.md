@@ -22,7 +22,7 @@ row_id,role,board_role,ceo,ceo_note,confidence,notes
 | Column | Values | When |
 |---|---|---|
 | `role` | `CEO`, `OFFICER`, `MANAGER`, `PROFESSIONAL`, `STAFF`, `BOARD`, `DUAL`, `UNSURE`, `NONE` | always |
-| `board_role` | `CHAIR`, `VICE CHAIR`, `SECRETARY`, `TREASURER`, `MEMBER` | when `role` is `BOARD` or `DUAL`; blank otherwise |
+| `board_role` | `CHAIR`, `VICE CHAIR`, `SECRETARY`, `SECRETARY TREASURER`, `TREASURER`, `MEMBER` | when `role` is `BOARD` or `DUAL`; blank otherwise |
 | `ceo` | `Y` or blank | `Y` for the organization's chief executive in that year (see below) |
 | `ceo_note` | `co`, `interim`, `outgoing` | optional, for a chief executive who is one of two, acting, or leaving |
 | `confidence` | `high`, `medium`, `low` | always |
@@ -72,7 +72,8 @@ a `DUAL` (a trustee who is also the paid executive director). Rules:
 - `MEMBER`: every other trustee, director, council member or delegate, and an
   assistant secretary or assistant treasurer who sits on the board.
 
-For a combined post such as secretary-treasurer, give the first one named.
+A combined secretary-treasurer is `SECRETARY TREASURER`. For any other combined
+post (e.g. vice president and treasurer), give the first one named.
 
 ## Following people across years
 
