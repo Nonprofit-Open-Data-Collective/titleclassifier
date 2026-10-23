@@ -84,8 +84,8 @@ conditional_logic <- function(comp.data)
 #' the rules agree with the label for 90.1% of full-990 people. On 750
 #' filings of 2019-2023 labeled for their chief executive
 #' (`data-raw/partvii-validation/ceo-sample/`), step 09 names the right one
-#' for 87.6%; on 126 held-out filings of the thesaurus's organization types,
-#' 81.7% (FINDINGS.md F-031 to F-033). On 990-EZ
+#' for 88.1%; on 126 held-out filings of the thesaurus's organization types,
+#' 81.7% (FINDINGS.md F-031 to F-034). On 990-EZ
 #' people the model agrees for 92.5%, and the rules for 82.5%. On 23,931 people
 #' from organizations that switch between the forms, labeled by their
 #' full-990-year role, the model agrees for 95.0% and the rules for 92.0%.
@@ -174,6 +174,10 @@ resolve_roles <- function( comp.data, use_model = TRUE )
   ot <- org_types( comp.data )
   d[ ot, on = "object.id", .otype := i.org.type ]
   d[ , .v7 := toupper( chr( if( is.null( d$title.v7 ) ) d$title.raw else d$title.v7 ) ) ]
+  # the title before step 07's C-suite fixes: replace_ceo() rewrites a paid
+  # CHANCELLOR to CEO, so an entry that outranks CHANCELLOR (a university
+  # president) also sees the title as filed, when paid at least as much
+  d[ , .v6 := toupper( chr( if( is.null( d$title.v6 ) ) d$.v7 else d$title.v6 ) ) ]
   d[ , `:=`( .th_ceo = FALSE, .th_not = FALSE, .th_out = NA_character_ ) ]
   thes <- get_ceo_thesaurus()
   if( ! is.null( thes ) && nrow( thes ) && any( ! is.na( d$.otype ) ) )
@@ -200,7 +204,8 @@ resolve_roles <- function( comp.data, use_model = TRUE )
              .p_lead = any(.lead), .p_off = any(.cb_off), .p_tru = any(.cb_tru),
              .p_pres = any(.pres), .p_interim = any(.interim),
              .p_th_ceo = any(.th_ceo), .p_th_not = any(.th_not) & ! any(.th_ceo),
-             .p_th_out = .th_out[ .th_ceo ][1], .p_titles = paste( unique(.v7), collapse = " | " ) ),
+             .p_th_out = .th_out[ .th_ceo ][1], .p_titles = paste( unique(.v7), collapse = " | " ),
+             .p_titles6 = paste( unique(.v6), collapse = " | " ) ),
      by = .( object.id, person.id ) ]
 
   # ---- 3. leadership, per filing (on one row per person) -----------------------
@@ -242,19 +247,24 @@ resolve_roles <- function( comp.data, use_model = TRUE )
   # organization's type is the CEO when the filing has none, when its CEO was
   # only inferred from pay, or when the CEO's title is one the entry outranks
   # (a university president over a chancellor)
-  th_apply <- function( pick, ceo, out, titles )
+  th_apply <- function( pick, ceo, out, titles, titles6, comp )
   {
     k <- which( pick ); cur <- which( ! is.na( ceo ) )
     if( ! length( k ) || k %in% cur ) return( FALSE )
     if( ! length( cur ) || all( ceo[cur] %in% c( "imputed", "model" ) ) ) return( TRUE )
     o <- out[k]
-    ! is.na( o ) && nzchar( o ) && any( grepl( o, titles[cur], perl = TRUE ) )
+    if( is.na( o ) || ! nzchar( o ) ) return( FALSE )
+    if( any( grepl( o, titles[cur], perl = TRUE ) ) ) return( TRUE )
+    # a title step 07 rewrote to CEO from pay (a paid CHANCELLOR): outranked
+    # only by a holder paid at least as much, since the rewrite rests on pay
+    hit6 <- cur[ grepl( o, titles6[cur], perl = TRUE ) ]
+    length( hit6 ) > 0 && comp[k] >= max( comp[hit6] )
   }
   p[ , .th_best := if( any( .p_th_ceo ) ) max( .p_comp[ .p_th_ceo ] ) else NA_real_, by = object.id ]
   p[ , .th_pick := .p_th_ceo & .p_comp == .th_best ]
   p[ .th_pick == TRUE, .kt := seq_len(.N), by = object.id ]
   p[ .th_pick & .kt > 1, .th_pick := FALSE ]
-  p[ , .th_apply := th_apply( .th_pick, role.ceo, .p_th_out, .p_titles ), by = object.id ]
+  p[ , .th_apply := th_apply( .th_pick, role.ceo, .p_th_out, .p_titles, .p_titles6, .p_comp ), by = object.id ]
   p[ .th_apply & ! .th_pick, role.ceo := NA_character_ ]
   p[ .th_apply & .th_pick, role.ceo := "thesaurus" ]
   p[ , org.leadership := data.table::fcase(
@@ -313,7 +323,7 @@ resolve_roles <- function( comp.data, use_model = TRUE )
                                               data.table::fcoalesce( role.ceo, "model" ), NA_character_ ) ]
       p[ ez & role.ceo %in% "imputed", role.ceo := "model" ]
       # the thesaurus also outranks the model's own pick (F-033)
-      p[ ez, .th_apply := th_apply( .th_pick, role.ceo, .p_th_out, .p_titles ) | .th_apply, by = object.id ]
+      p[ ez, .th_apply := th_apply( .th_pick, role.ceo, .p_th_out, .p_titles, .p_titles6, .p_comp ) | .th_apply, by = object.id ]
       p[ ez & .th_apply & ! .th_pick & role.final == "CEO" & ! role.ceo %in% c( "designated", "co-ceo", "interim" ),
          `:=`( role.final = data.table::fifelse( .rules_final == "CEO", "STAFF", .rules_final ), role.ceo = NA_character_ ) ]
       p[ ez & .th_apply & .th_pick, `:=`( role.final = "CEO", role.ceo = "thesaurus" ) ]

@@ -146,7 +146,8 @@ knitr::kable(data.frame(`filed title` = out$title.raw, `standard title` = out$ti
 * **PRESIDENT & CEO collapses to CEO** (step 04). A paired title names the
   CEO outright.
 * **CHANCELLOR** is rewritten in step 07: a paid chancellor becomes CEO, an
-  unpaid one BOARD PRESIDENT. (These examples are unpaid.)
+  unpaid one BOARD PRESIDENT. (These examples are unpaid.) In a university,
+  a better-paid president outranks a paid chancellor (section 3).
 * **GENERAL MANAGER, BUSINESS MANAGER, FUND ADMINISTRATOR and ADJUTANT** are
   staff or board titles in general. In a club, a union, a benefit trust or a
   veterans post, they name the chief executive. Section 3 handles them.
@@ -292,7 +293,7 @@ The entries by type:
 | **coop** | the **general manager**, $25k+ and 20+ h/wk | | |
 | **trust** | the **fund, plan, trust or benefits administrator**, $25k+ and 20+ h/wk | | the CHAIRMAN and TRUSTEES are the board |
 | **union** | the **business manager**, $25k+ and 20+ h/wk; outranks a paid **president** | | the PRESIDENT is the board chair even when paid |
-| **university** | the **president**, $50k+ and 20+ h/wk; outranks a chancellor, provost or vice president | | the board CHAIR |
+| **university** | the **president**, $50k+ and 20+ h/wk; outranks a provost or vice president, and a chancellor paid no more than the president | | the board CHAIR |
 | **ministry** | the **senior, lead, general or head pastor**, a **bishop**, **overseer**, **rabbi** or **rector**, 20+ h/wk, **paid or not**; an associate or youth pastor does not match | | |
 | **fire** | the paid full-time **fire chief** ($25k+, 20+ h/wk) | the company's **secretary or treasurer** on part-time pay (under $40k and 35 h/wk) | |
 | **cemetery** | | an **unpaid superintendent** | |
@@ -330,8 +331,8 @@ types_ex <- list(
     title = c("Real Estate Manager", "Fund Administrator", "Chairman"),
     pay = c(120000, 95000, 0), hours = c(40, 40, 2), boxes = c("K", "K", "T")), "trust"),
   filing("University", "990", p(
-    title = c("Vice President for Advancement", "President", "Chair"),
-    pay = c(300000, 280000, 0), hours = c(50, 50, 2), boxes = c("O", "TO", "TO")), "university"),
+    title = c("Chancellor", "President", "Vice President for Advancement", "Chair"),
+    pay = c(262000, 366000, 300000, 0), hours = c(40, 40, 40, 2), boxes = c("O", "TO", "O", "TO")), "university"),
   filing("Church", "990", p(
     title = c("Senior Pastor", "Chair", "Treasurer"),
     pay = c(0, 0, 0), hours = c(50, 2, 2), boxes = c("T", "T", "T")), "ministry"))
@@ -398,8 +399,13 @@ MANAGER, a leadership word, even though the title is uncoded.
 show(res_types, "University", was)
 ```
 
-**University.** The president runs the university. Pay alone favors whoever
-earns most, here a vice president.
+**University.** The president runs the university. The paid chancellor
+holds a CEO-level title (step 07 rewrites a paid CHANCELLOR to CEO), so the
+rules alone make the chancellor the designated CEO. The university entry
+outranks a chancellor, provost or vice president, so the president is the CEO
+and the chancellor an officer. Because step 07 makes a chancellor CEO on the
+strength of pay, the president outranks a chancellor only when paid at least
+as much; a better-paid chancellor stays the CEO.
 
 ```{r, echo = FALSE}
 show(res_types, "Church", was)
@@ -415,15 +421,15 @@ The type-specific labels (FINDINGS.md F-031 to F-033) cover 750 filings of
 150 organizations from 2019-2023. The table gives the share of filings where
 step 09 names the right chief executive (or rightly names none):
 
-| Stratum | Before (F-031) | Rules fixed (F-032) | With the thesaurus (F-033) |
-|---|---:|---:|---:|
-| All 750 filings | 80.9% | 85.1% | **87.6%** |
-| University | 54% | 78% | 82% |
-| Veterans post | 54% | 60% | 66% |
-| Club or co-op | 74% | 84% | 92% |
-| Lodge | 86% | 86% | 92% |
-| Ministry | 88% | 88% | 96% |
-| Benefit trust or cemetery | 84% | 84% | 90% |
+| Stratum | Before (F-031) | Rules fixed (F-032) | With the thesaurus (F-033) | Chancellor fix (F-034) |
+|---|---:|---:|---:|---:|
+| All 750 filings | 80.9% | 85.1% | 87.6% | **88.1%** |
+| University | 54% | 78% | 82% | 90% |
+| Veterans post | 54% | 60% | 66% | 66% |
+| Club or co-op | 74% | 84% | 92% | 92% |
+| Lodge | 86% | 86% | 92% | 92% |
+| Ministry | 88% | 88% | 96% | 96% |
+| Benefit trust or cemetery | 84% | 84% | 90% | 90% |
 
 The thesaurus entries were written from these labels. On 126 held-out filings
 from 64 organizations of the same types, the share rose from 79.4% to 81.7%.
@@ -432,10 +438,6 @@ lodges.
 
 ### Known limits
 
-- **A paid chancellor.** Step 07 rewrites a paid CHANCELLOR to the title CEO
-  before the thesaurus sees it. The university entry's `outranks` then cannot
-  match the chancellor, so a paid chancellor stays the designated CEO even
-  when a paid president is listed.
 - **Two-pastor churches.** ASSOCIATE PASTOR maps to the CEO-level standard
   PASTOR. A church with a senior and an associate pastor therefore gets two
   co-CEOs. The thesaurus does not split them, because both are designated by

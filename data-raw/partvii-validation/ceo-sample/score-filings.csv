@@ -609,10 +609,10 @@ O122,2020,university,"","",0,0,right: no CEO
 O122,2021,university,"","",0,0,right: no CEO
 O122,2022,university,"","",0,0,right: no CEO
 O122,2023,university,"","",0,0,right: no CEO
-O123,2019,university,O123-2019-01,O123-2019-02,1,1,wrong person
-O123,2020,university,O123-2020-01,O123-2020-02,1,1,wrong person
-O123,2021,university,O123-2021-01,O123-2021-02,1,1,wrong person
-O123,2022,university,O123-2022-01,O123-2022-02,1,1,wrong person
+O123,2019,university,O123-2019-01,O123-2019-01,1,1,right CEO
+O123,2020,university,O123-2020-01,O123-2020-01,1,1,right CEO
+O123,2021,university,O123-2021-01,O123-2021-01,1,1,right CEO
+O123,2022,university,O123-2022-01,O123-2022-01,1,1,right CEO
 O123,2023,university,O123-2023-01,O123-2023-01,1,1,right CEO
 O124,2019,university,"","",0,0,right: no CEO
 O124,2020,university,"","",0,0,right: no CEO

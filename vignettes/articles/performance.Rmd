@@ -264,6 +264,8 @@ Two rounds of changes were made against the 750 filings:
    the right-CEO share from 80.9% to 85.1%.
 2. The [CEO thesaurus](step-09-conditional-logic.html#the-ceo-thesaurus)
    raised it to 87.6%.
+3. Letting a better-paid university president outrank a paid chancellor
+   (F-034) raised it to 88.1%.
 
 On the held-out filings the thesaurus raised it from 79.4% to 81.7%, all of
 it in lodges (68.8% to 87.5%).

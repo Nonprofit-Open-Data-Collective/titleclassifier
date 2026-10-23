@@ -88,3 +88,27 @@ test_that("rule 7 imputes no one when several unpaid leaders tie for the most ho
              tperson("W", "w2", "VICE PRESIDENT", "BOARD VICE PRESIDENT", board.role = "VICE CHAIR", hours = 50, trustee = 1, officer = 1))
   expect_length(ceo_of(pr_th(w)), 0)
 })
+
+test_that("a university president outranks a paid chancellor rewritten to CEO when paid as much", {
+  # replace_ceo() turns a paid CHANCELLOR into the title CEO (title.v7); the
+  # university entry still sees CHANCELLOR (title.v6), and outranks it when the
+  # president is paid at least as much (the rewrite itself rests on pay)
+  u <- rbind(tperson("U", "u1", "CHANCELLOR", "CEO", "CEO", comp = 262000, hours = 40, officer = 1, org.type = "university"),
+             tperson("U", "u2", "PRESIDENT", "BOARD PRESIDENT", board.role = "CHAIR", comp = 366000, hours = 40,
+                     trustee = 1, officer = 1, org.type = "university"),
+             tperson("U", "u3", "CHAIR", "BOARD PRESIDENT", board.role = "CHAIR", hours = 2, trustee = 1, org.type = "university"))
+  u$title.v6 <- u$title.raw
+  u$title.v7[u$person.id == "u1"] <- "CEO"
+  p <- pr_th(u)
+  expect_equal(ceo_of(p), "u2")
+  expect_equal(p$role.ceo[p$person.id == "u2"], "thesaurus")
+  expect_equal(p$role.final[p$person.id == "u1"], "OFFICER")
+  # a better-paid chancellor stays the designated CEO
+  u$tot.comp[u$person.id == "u1"] <- 423000
+  p <- pr_th(u)
+  expect_equal(ceo_of(p), "u1")
+  expect_equal(p$role.ceo[p$person.id == "u1"], "designated")
+  # outside a university the chancellor stays the designated CEO
+  u$tot.comp[u$person.id == "u1"] <- 262000; u$org.type <- NA
+  expect_equal(ceo_of(pr_th(u)), "u1")
+})

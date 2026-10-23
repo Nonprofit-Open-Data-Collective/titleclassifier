@@ -1453,3 +1453,35 @@ change:
 - union abbreviations (BM/FS, BMFINSEC);
 - unpaid religious presidents of colleges;
 - a minimum gap for pay ties in rule 4.
+
+### F-034 A university president outranks a paid chancellor (done)
+
+**The bug.** The university entry of the CEO thesaurus (F-033) outranks
+CHANCELLOR, but step 07's `replace_ceo()` rewrites a paid CHANCELLOR to the
+title CEO before step 09 runs. The outranks check read `title.v7`, so it
+never saw CHANCELLOR: a paid chancellor stayed the designated CEO over a
+paid president. Found while writing the Identifying CEOs article.
+
+**The fix** (`resolve_roles()`, `th_apply()`). The outranks check also reads
+the title before the C-suite fixes (`title.v6`). Because the rewrite rests on
+pay, a title matched only there is outranked only by a holder paid at least
+as much. As first written, without the pay condition, the fix also made a
+campus president outrank a system chancellor paid $595k (Ottawa University)
+and changed Life University's CEO; the pay condition keeps both chancellors.
+
+**Effect:**
+
+| Measure | F-033 | F-034 |
+|---|---|---|
+| F-031 set: right chief executive (750 filings) | 87.6% | **88.1%** |
+| F-031: CEO precision / recall (people) | 88.3 / 88.1% | 89.1 / 88.9% |
+| F-031: university | 82% | 90% |
+| Held-out set (126 filings) | 81.7% | 81.7% |
+
+- The gain is one organization, Waynesburg University, in four years: the
+  president ($355-367k) is the CEO, not the chancellor ($262-268k).
+- On the 2019-2023 sample, 7 filings have a paid chancellor rewritten to CEO,
+  4 of them typed university. One changes: Abilene Christian University,
+  where a $620k president replaces a $23k chancellor.
+- The demo regression reference is unchanged (md5 `54100c86...`). 285 tests
+  pass, 1 new (`test-org-type.R`).
