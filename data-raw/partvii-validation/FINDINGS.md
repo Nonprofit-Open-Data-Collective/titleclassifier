@@ -1485,3 +1485,84 @@ and changed Life University's CEO; the pay condition keeps both chancellors.
   where a $620k president replaces a $23k chancellor.
 - The demo regression reference is unchanged (md5 `54100c86...`). 285 tests
   pass, 1 new (`test-org-type.R`).
+
+### F-035 Which Claude model labels the CEO / board panel well enough? (done)
+
+**Question.** How well do Claude models of different sizes label board
+members, CEOs and CEO transitions, and what is the cheapest one before
+quality drops? (`data-dev/NEXT-PLAN.md` item 4.)
+
+**Design** (`29-model-eval.R`):
+- **Task.** The F-031 panel: 150 organizations x 2019-2023, 750 filings,
+  9,297 rows in the 25 blind batches.
+- **Models.** Haiku 5.5, Sonnet 5.5, Opus 5.5 and Fable 5.1. Each labeled
+  every batch as a subagent with the same guide and prompt as the F-031
+  labelers, three batches per agent. They worked from a copy of the guide and
+  case files outside the repository, so they could not see any labels.
+- **Reference.** The consensus labels: 9,104 rows both F-031 labelers agreed
+  on. Filing-level and transition measures use the 606 "clean" filings with
+  no undecided disagreement.
+- **Overlap rule.** An outgoing and an incoming CEO on the same return both
+  count as the CEO (guide rule 9, NEXT-PLAN.md).
+- **Baseline.** Step 09, at no model cost.
+
+| Measure | Step 09 | Haiku 5.5 | Sonnet 5.5 | Opus 5.5 | Fable 5.1 |
+|---|---|---|---|---|---|
+| Role accuracy (rows) | 95.0 | 94.9 | 98.2 | **99.7** | 98.8 |
+| Board seats: precision / recall | 99.3 / 97.2 | 99.9 / 94.9 | 99.9 / 98.7 | 99.8 / **99.9** | 99.0 / 99.6 |
+| Board role right | 98.7 | 98.8 | **99.4** | 99.3 | 99.3 |
+| CEO flag: precision / recall | 89.1 / 88.9 | 92.3 / 92.3 | 94.1 / 97.4 | **97.6** / 97.2 | 96.5 / **98.8** |
+| Filings with the right set of CEOs (606) | 88.0 | 89.9 | 94.6 | 96.2 | **97.7** |
+| ... of which no CEO, right | 93.6 | 90.1 | 91.6 | 96.1 | **96.6** |
+| Transition filings with both CEOs (26) | 76.9 | 92.3 | 92.3 | 92.3 | 92.3 |
+| CEO transitions (75 of 469 year pairs): precision / recall | 70.5 / 89.3 | 87.8 / 86.7 | 91.8 / 89.3 | **97.3 / 96.0** | **97.3 / 96.0** |
+| Year pairs fully right | 84.2 | 88.1 | 93.6 | 95.9 | **97.2** |
+
+**Cost.** Each model processed 1.6-2.1 million tokens across 9 agents.
+
+| Model | Price per million tokens, input / output | Estimated cost, 750 filings | Per 1,000 filings | Wall time, agent-minutes |
+|---|---|---|---|---|
+| Haiku 5.5 | $0.10 / $0.50 | $0.25 | $0.33 | 54 |
+| Sonnet 5.5 | $2 / $10 | $4.09 | $5.45 | 39 |
+| Opus 5.5 | $4 / $20 | $8.05 | $10.73 | 44 |
+| Fable 5.1 | $10 / $50 | $21.02 | $28.03 | 66 |
+
+Costs are rough. Output is estimated from the CSVs written (about 4
+characters a token); hidden thinking tokens are billed as output but not
+counted, and cache reads are billed lower. The ratios between models hold
+better than the levels.
+
+**Reading.**
+- **Haiku is no better than step 09.** CEOs per filing: 89.9 against 88.0.
+  It finds fewer board seats (recall 94.9) and is weakest in veterans posts
+  (74%) and lodges (77%). Not usable unsupervised for board and CEO labels.
+- **Sonnet is the cheapest acceptable model.**
+  - It gets 94.6% of filings and catches transitions at 92 / 89.
+  - It is weak where judgment matters: multi-CEO systems 82%, lodges 77%,
+    veterans posts 84%.
+- **Opus is the best value.**
+  - It is twice Sonnet's price and closes most of the gap to Fable: 96.2% of
+    filings, transitions 97 / 96.
+  - It has the highest role accuracy, 99.7%.
+- **Fable is the most accurate on CEOs** (97.7%), at 2.6 times Opus's cost.
+  - It ties Opus on transitions.
+  - It is the only model at 100% in multi-CEO systems.
+
+**Caveats.**
+- **The reference labels came from two agents of a single model family.**
+  This may favor that family, Opus in particular.
+- **The 193 undecided disagreement rows are excluded.** They are the hardest
+  cases, so every score here is optimistic.
+- **Some misses may be label errors.**
+  - In lodge O054, all four models make the paid lodge secretary the CEO
+    every year, where the labels (and step 09) name none.
+  - In trade association O107, Opus and Fable name no CEO in any year, where
+    the labels have two (a 2021 transition).
+
+  Both belong in the disagreement review (NEXT-PLAN.md item 1).
+- **Some agents listed their own output folder** (one Haiku agent, two Sonnet
+  agents) despite the instruction. No agent opened another model's or the
+  reference labels.
+
+Raw labels: `PARTVII_DIR/model-eval/<model>/batch-NN.csv`. Results:
+`panel-results/model-eval-{summary,by-stratum,usage,cost}.csv`.
