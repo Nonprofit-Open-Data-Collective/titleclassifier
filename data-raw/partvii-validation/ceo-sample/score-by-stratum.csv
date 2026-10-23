@@ -1,13 +1,13 @@
 stratum,people,role_accuracy,board_seats,board_role_right,ceo_precision,ceo_recall,filings,ceo_right
-ALL,9098,95,7587,98.7,88.3,88.1,750,87.6
+ALL,9098,95.1,7587,98.7,89.1,88.9,750,88.1
 veterans post,761,94.9,703,98.4,26.7,26.7,50,66
 multi-CEO system,890,91.3,541,99.8,83.8,95,50,82
 union,416,86.1,257,96.5,96.3,74.3,50,82
-university,889,94.8,721,98.2,75,72,50,82
 control charity,1158,96.7,1003,98.4,91,84.7,100,86
 veterinary association,721,95.4,633,97.6,89.4,97.7,50,88
 benefit trust or cemetery,291,95.9,250,98.8,82.6,86.4,50,90
 fire department,431,92.8,370,99.2,92.3,82.8,50,90
+university,889,95.7,721,98.2,91.7,88,50,90
 club or co-op,566,91.7,436,100,90.6,93.5,50,92
 lodge,471,96.2,445,97.5,66.7,66.7,50,92
 museum,681,98.4,615,99.8,100,90.9,50,92

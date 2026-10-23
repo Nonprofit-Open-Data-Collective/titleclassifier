@@ -269,7 +269,9 @@ In checks against hand labels, the thesaurus raised the share of filings
 with the right chief executive from 85.1% to 87.6% on the 750 filings it was
 written from. On 126 filings from organizations it had not seen, the share
 rose from 79.4% to 81.7%. The gains were largest for lodges, clubs and
-ministries ([Performance](performance.html)).
+ministries. A later fix, letting a better-paid university president outrank
+a paid chancellor, raised the 750-filing share to 88.1%
+([Performance](performance.html)).
 
 ## Columns added
 
