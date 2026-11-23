@@ -42,8 +42,11 @@ Suggests:
     knitr,
     rmarkdown,
     pander,
+    peopleparser (>= 0.1.0),
     testthat (>= 3.0.0),
     xgboost
+Remotes:
+    Nonprofit-Open-Data-Collective/peopleparser@v0.1.0
 VignetteBuilder: knitr
 Config/testthat/edition: 3
 Roxygen: list(markdown = TRUE)

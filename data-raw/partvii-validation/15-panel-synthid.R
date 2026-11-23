@@ -5,7 +5,12 @@
 #
 # Input: the step 09 output for the panel (13-panel-run.R), one row per person
 # per year (role.primary). Names are parsed with peopleparser::parse_names(),
-# as synthid's own preprocessing does (synthid/dev/01_preprocess_year.R).
+# as synthid's own preprocessing does (synthid/dev/01_preprocess_year.R), with
+# add_nicknames = TRUE (peopleparser >= 0.1.0) so each record also carries its
+# first-name variant columns: first_name_type, first_name_formal,
+# first_name_nicknames, first_name_canonical and canonical_rule. link_panel()
+# passes them through to its output. synthid already scores nickname pairs with
+# the same variant lexicon, so these columns do not change the links.
 # synthid::link_panel() then runs one organization at a time, in parallel
 # across organizations, with its tuned weighted threshold. titleclassifier's
 # output has no TABLE_ID, so the per-filing person key person.id stands in
@@ -22,6 +27,10 @@
 # peopleparser is attached, not just called with ::, so that its parallel
 # workers find the census.names lookup table (get_census_data uses utils::data)
 suppressMessages({ library(data.table); library(future); library(furrr); library(peopleparser) })
+if (packageVersion("peopleparser") < "0.1.0")
+  stop("needs peopleparser >= 0.1.0 for first-name variants: ",
+       "remotes::install_github(\"Nonprofit-Open-Data-Collective/peopleparser@v0.1.0\")")
+NICK <- c("first_name_type", "first_name_formal", "first_name_nicknames", "first_name_canonical", "canonical_rule")
 PV    <- Sys.getenv("PARTVII_DIR", file.path(Sys.getenv("USERPROFILE", "~"), "Documents", "PARTVII"))
 SYN   <- normalizePath(Sys.getenv("SYNTHID_DIR", "../synthid"), winslash = "/")
 args  <- commandArgs(trailingOnly = TRUE)
@@ -32,7 +41,7 @@ d <- rbindlist(lapply(list.files(file.path(PV, "sample"), "^classified-\\d{4}\\.
 d <- d[!is.na(dtk.name) & nzchar(trimws(dtk.name))]
 message(sprintf("panel: %d person-years in %d organizations", nrow(d), uniqueN(d$EIN2)))
 
-parsed <- peopleparser::parse_names(d$dtk.name)
+parsed <- peopleparser::parse_names(d$dtk.name, add_nicknames = TRUE)
 pn <- data.table(
   ein = d$EIN2, org.name = d$org.name, taxyr = as.character(d$taxyr), name = parsed$name,
   OBJECTID = d$object.id, TABLE_ID = d$person.id,
@@ -41,7 +50,8 @@ pn <- data.table(
   title.standard = d$title.standard,
   role.final = d$role.final, role.board = d$role.board, role.ceo = d$role.ceo,
   org.leadership = d$org.leadership, tot.comp = d$tot.comp, tot.hours = d$tot.hours,
-  size = d$size, return_type = d$return_type, weight = d$weight)
+  size = d$size, return_type = d$return_type, weight = d$weight,
+  parsed[NICK])
 
 # batches of whole organizations, linked in parallel
 eins <- unique(pn$ein)

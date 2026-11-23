@@ -29,6 +29,10 @@
 
 source("tests/regression/regression-helpers.R"); tc_load_package()
 suppressMessages({ library(data.table); library(arrow); library(xgboost); library(future); library(furrr); library(peopleparser) })
+if (packageVersion("peopleparser") < "0.1.0")
+  stop("needs peopleparser >= 0.1.0 for first-name variants: ",
+       "remotes::install_github(\"Nonprofit-Open-Data-Collective/peopleparser@v0.1.0\")")
+NICK <- c("first_name_type", "first_name_formal", "first_name_nicknames", "first_name_canonical", "canonical_rule")
 source("data-raw/partvii-validation/_nobox-features.R")
 PV  <- Sys.getenv("PARTVII_DIR", file.path(Sys.getenv("USERPROFILE", "~"), "Documents", "PARTVII"))
 SYN <- normalizePath(Sys.getenv("SYNTHID_DIR", "../synthid"), winslash = "/")
@@ -72,11 +76,12 @@ saveRDS(cl, file.path(PV, "sample", "switch-classified.rds"))   # used by 19-nob
 
 # ---- 3. link people across the two years (synthid) ------------------------------
 p <- cl[role.primary == TRUE & !is.na(dtk.name) & nzchar(trimws(dtk.name))]
-parsed <- peopleparser::parse_names(p$dtk.name)
+parsed <- peopleparser::parse_names(p$dtk.name, add_nicknames = TRUE)
 pn <- data.table(ein = p$EIN2, org.name = p$org.name, taxyr = as.character(p$year), name = parsed$name,
                  OBJECTID = p$object.id, TABLE_ID = p$person.id, salutation = parsed$salutation,
                  first_name = parsed$first_name, middle_name = parsed$middle_name, last_name = parsed$last_name,
-                 suffix = parsed$suffix, gender = parsed$gender, title.standard = p$title.standard)
+                 suffix = parsed$suffix, gender = parsed$gender, title.standard = p$title.standard,
+                 parsed[NICK])
 batches <- split(unique(pn$ein), ceiling(seq_along(unique(pn$ein)) / 100))
 plan(multisession, workers = NW)
 lk <- rbindlist(future_map(batches, function(b) {
@@ -85,7 +90,7 @@ lk <- rbindlist(future_map(batches, function(b) {
   data.table::as.data.table(synthid::link_panel(as.data.frame(pn[ein %in% b])))
 }, .options = furrr_options(seed = TRUE, globals = c("pn", "SYN"), packages = c("data.table", "devtools"))), fill = TRUE)
 plan(sequential)
-p[lk, on = c(object.id = "OBJECTID", person.id = "TABLE_ID"), EMP_ID := i.EMP_ID]
+p[lk, on = c(object.id = "OBJECTID", person.id = "TABLE_ID"), `:=`(EMP_ID = i.EMP_ID, first_name_canonical = i.first_name_canonical)]
 
 # ---- 4. labels and scores ---------------------------------------------------------
 f <- features(cl)[role.primary == TRUE]
@@ -98,7 +103,7 @@ ez  <- p[return_type == "990EZ" & !is.na(EMP_ID)]
 ful <- p[return_type == "990" & !is.na(EMP_ID), .(EMP_ID, label = role.final, title_990 = title.standard,
                                                   board_990 = role.board)]
 ful <- ful[!duplicated(EMP_ID)]
-lab <- merge(ez[, .(EIN2, object.id, person.id, EMP_ID, year, size, title.raw, title.standard, tot.comp, tot.hours,
+lab <- merge(ez[, .(EIN2, object.id, person.id, EMP_ID, year, size, title.raw, title.standard, tot.comp, tot.hours, first_name_canonical,
                     step09 = role.final, model)], ful, by = "EMP_ID")
 lab[, same_title := !is.na(title.standard) & title.standard == title_990]
 pairs[, `:=`(ez_obj = fifelse(f0 == "990EZ", o0, o1))]
