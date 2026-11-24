@@ -29,9 +29,9 @@
 
 source("tests/regression/regression-helpers.R"); tc_load_package()
 suppressMessages({ library(data.table); library(arrow); library(xgboost); library(future); library(furrr); library(peopleparser) })
-if (packageVersion("peopleparser") < "0.1.0")
-  stop("needs peopleparser >= 0.1.0 for first-name variants: ",
-       "remotes::install_github(\"Nonprofit-Open-Data-Collective/peopleparser@v0.1.0\")")
+if (packageVersion("peopleparser") < "0.2.0")
+  stop("needs peopleparser >= 0.2.0 (first-name variants, workers argument): ",
+       "remotes::install_github(\"Nonprofit-Open-Data-Collective/peopleparser@v0.2.0\")")
 NICK <- c("first_name_type", "first_name_formal", "first_name_nicknames", "first_name_canonical", "canonical_rule")
 source("data-raw/partvii-validation/_nobox-features.R")
 PV  <- Sys.getenv("PARTVII_DIR", file.path(Sys.getenv("USERPROFILE", "~"), "Documents", "PARTVII"))
@@ -76,7 +76,7 @@ saveRDS(cl, file.path(PV, "sample", "switch-classified.rds"))   # used by 19-nob
 
 # ---- 3. link people across the two years (synthid) ------------------------------
 p <- cl[role.primary == TRUE & !is.na(dtk.name) & nzchar(trimws(dtk.name))]
-parsed <- peopleparser::parse_names(p$dtk.name, add_nicknames = TRUE)
+parsed <- peopleparser::parse_names(p$dtk.name, add_nicknames = TRUE, workers = NW)
 pn <- data.table(ein = p$EIN2, org.name = p$org.name, taxyr = as.character(p$year), name = parsed$name,
                  OBJECTID = p$object.id, TABLE_ID = p$person.id, salutation = parsed$salutation,
                  first_name = parsed$first_name, middle_name = parsed$middle_name, last_name = parsed$last_name,
