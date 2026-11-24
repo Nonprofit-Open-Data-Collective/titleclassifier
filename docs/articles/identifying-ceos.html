@@ -55,6 +55,7 @@
 <li class="nav-item"><a class="nav-link" href="../articles/taxonomy.html">Taxonomy</a></li>
 <li class="nav-item"><a class="nav-link" href="../articles/performance.html">Performance</a></li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
@@ -91,9 +92,19 @@
 
     
     
-<p>Most research on nonprofit leadership starts with one question per organization: who is the chief executive? Part VII seldom answers it directly: - Many filers list a CEO or executive director. - Many others list a “President” who may be the paid head or the volunteer board chair. - Some list only board officers and a bookkeeper. - Some organization types name their chief executive with a title of their own: a union’s business manager, a club’s general manager, a Legion post’s adjutant.</p>
-<p>On 2019-2023 filings that pay anyone, a title alone names the CEO for 64% of 501(c)(3) charities. For unions, lodges, benefit trusts, cemeteries and veterans posts it names the CEO for only 0-13%.</p>
-<p><code>titleclassifier</code> finds the CEO in layers. Each layer is described below, in the order the pipeline applies it:</p>
+<p>Most research on nonprofit leadership starts with one question per
+organization: who is the chief executive? Part VII seldom answers it
+directly: - Many filers list a CEO or executive director. - Many others
+list a “President” who may be the paid head or the volunteer board
+chair. - Some list only board officers and a bookkeeper. - Some
+organization types name their chief executive with a title of their own:
+a union’s business manager, a club’s general manager, a Legion post’s
+adjutant.</p>
+<p>On 2019-2023 filings that pay anyone, a title alone names the CEO for
+64% of 501(c)(3) charities. For unions, lodges, benefit trusts,
+cemeteries and veterans posts it names the CEO for only 0-13%.</p>
+<p><code>titleclassifier</code> finds the CEO in layers. Each layer is
+described below, in the order the pipeline applies it:</p>
 <pre><code>1. Standard title (step 07)    "Exec. Dir." -&gt; EXECUTIVE DIRECTOR
 2. Title level (step 08)       EXECUTIVE DIRECTOR is a CEO-level title
 3. Rules (step 09)             designated by title -&gt; imputed from pay -&gt;
@@ -102,7 +113,9 @@
                                title, and the stipend titles that are never a CEO
 5. 990-EZ (step 09)            no checkboxes: a model replaces the rules,
                                with a guard; the thesaurus still applies</code></pre>
-<p>The result is in <code>role.final == "CEO"</code>, with how the CEO was found in <code>role.ceo</code>, and how the filing is led in <code>org.leadership</code>:</p>
+<p>The result is in <code>role.final == "CEO"</code>, with how the CEO
+was found in <code>role.ceo</code>, and how the filing is led in
+<code>org.leadership</code>:</p>
 <table class="table">
 <colgroup>
 <col width="50%">
@@ -127,7 +140,8 @@
 </tr>
 <tr class="even">
 <td>imputed</td>
-<td>the highest-paid plausible leader when no title names one, or an unpaid full-time leader</td>
+<td>the highest-paid plausible leader when no title names one, or an
+unpaid full-time leader</td>
 </tr>
 <tr class="odd">
 <td>thesaurus</td>
@@ -140,6 +154,10 @@
 </tbody>
 </table>
 <table class="table">
+<colgroup>
+<col width="50%">
+<col width="50%">
+</colgroup>
 <thead><tr class="header">
 <th><code>org.leadership</code></th>
 <th>The filing …</th>
@@ -162,7 +180,9 @@
 <div class="section level2">
 <h2 id="from-the-title-to-a-ceo-level-title">1. From the title to a CEO-level title<a class="anchor" aria-label="anchor" href="#from-the-title-to-a-ceo-level-title"></a>
 </h2>
-<p>Steps 01 to 07 clean the title and map it to one of a few hundred standard titles (<code>title.standard</code>). Step 08 gives each standard a level. Eight standards are CEO level:</p>
+<p>Steps 01 to 07 clean the title and map it to one of a few hundred
+standard titles (<code>title.standard</code>). Step 08 gives each
+standard a level. Eight standards are CEO level:</p>
 <table class="table">
 <colgroup>
 <col width="15%">
@@ -188,7 +208,8 @@
 <tr class="odd">
 <td align="left">EXECUTIVE DIRECTOR</td>
 <td align="right">43</td>
-<td align="left">ED, EXECDIR, EXECUTIVE DR, EXECUTIVE DIRECTOR, EXECUTIVE DRIECTOR</td>
+<td align="left">ED, EXECDIR, EXECUTIVE DR, EXECUTIVE DIRECTOR,
+EXECUTIVE DRIECTOR</td>
 </tr>
 <tr class="even">
 <td align="left">GENERAL DIRECTOR</td>
@@ -203,12 +224,14 @@
 <tr class="even">
 <td align="left">PRESIDENT</td>
 <td align="right">28</td>
-<td align="left">PRESIDENT AN, CORP PRESIDENT, PRESIDENT SCH O, CAMPUS PRESIDENT, PARENT PRESIDENT</td>
+<td align="left">PRESIDENT AN, CORP PRESIDENT, PRESIDENT SCH O, CAMPUS
+PRESIDENT, PARENT PRESIDENT</td>
 </tr>
 <tr class="odd">
 <td align="left">PRINCIPAL</td>
 <td align="right">10</td>
-<td align="left">PRINCIPAL, ES PRINCIPAL, HS PRINCIPAL, MS PRINCIPAL, PRINCIPAL IN</td>
+<td align="left">PRINCIPAL, ES PRINCIPAL, HS PRINCIPAL, MS PRINCIPAL,
+PRINCIPAL IN</td>
 </tr>
 <tr class="even">
 <td align="left">SUPERINTENDENT</td>
@@ -217,8 +240,14 @@
 </tr>
 </tbody>
 </table>
-<p>The crosswalk decides what a title means <em>on its own</em>. The titles that matter most for the CEO are the ones it cannot settle:</p>
+<p>The crosswalk decides what a title means <em>on its own</em>. The
+titles that matter most for the CEO are the ones it cannot settle:</p>
 <table class="table">
+<colgroup>
+<col width="37%">
+<col width="34%">
+<col width="27%">
+</colgroup>
 <thead><tr class="header">
 <th align="left">filed title</th>
 <th align="left">standard title</th>
@@ -324,41 +353,83 @@
 </table>
 <ul>
 <li>
-<strong>PRESIDENT is a board title.</strong> On its own, PRESIDENT maps to BOARD PRESIDENT. The crosswalk files the volunteer reading, the more common one across all filers. Step 09 decides whether a particular president runs the organization.</li>
+<strong>PRESIDENT is a board title.</strong> On its own, PRESIDENT
+maps to BOARD PRESIDENT. The crosswalk files the volunteer reading, the
+more common one across all filers. Step 09 decides whether a particular
+president runs the organization.</li>
 <li>
-<strong>PRESIDENT &amp; CEO collapses to CEO</strong> (step 04). A paired title names the CEO outright.</li>
+<strong>PRESIDENT &amp; CEO collapses to CEO</strong> (step 04). A
+paired title names the CEO outright.</li>
 <li>
-<strong>CHANCELLOR</strong> is rewritten in step 07: a paid chancellor becomes CEO, an unpaid one BOARD PRESIDENT. (These examples are unpaid.) In a university, a better-paid president outranks a paid chancellor (section 3).</li>
+<strong>CHANCELLOR</strong> is rewritten in step 07: a paid
+chancellor becomes CEO, an unpaid one BOARD PRESIDENT. (These examples
+are unpaid.) In a university, a better-paid president outranks a paid
+chancellor (section 3).</li>
 <li>
-<strong>GENERAL MANAGER, BUSINESS MANAGER, FUND ADMINISTRATOR and ADJUTANT</strong> are staff or board titles in general. In a club, a union, a benefit trust or a veterans post, they name the chief executive. Section 3 handles them.</li>
+<strong>GENERAL MANAGER, BUSINESS MANAGER, FUND ADMINISTRATOR and
+ADJUTANT</strong> are staff or board titles in general. In a club, a
+union, a benefit trust or a veterans post, they name the chief
+executive. Section 3 handles them.</li>
 </ul>
 </div>
 <div class="section level2">
 <h2 id="the-rules">2. The rules<a class="anchor" aria-label="anchor" href="#the-rules"></a>
 </h2>
-<p>Step 09 (<code><a href="../reference/resolve_roles.html">resolve_roles()</a></code>) reads each person’s checkboxes, pay and hours along with the title, and decides the filing’s CEO in this order. Each rule applies only if the earlier ones found no CEO.</p>
+<p>Step 09 (<code><a href="../reference/resolve_roles.html">resolve_roles()</a></code>) reads each person’s
+checkboxes, pay and hours along with the title, and decides the filing’s
+CEO in this order. Each rule applies only if the earlier ones found no
+CEO.</p>
 <ol style="list-style-type: decimal">
 <li>
-<strong>Designated.</strong> A person with a CEO-level title is the CEO, unless the checkboxes put them on the board only. Two or more designated CEOs are each <code>co-ceo</code>; a designated CEO with an INTERIM status (INTERIM, ACTING) is <code>interim</code>.</li>
+<strong>Designated.</strong> A person with a CEO-level title is the
+CEO, unless the checkboxes put them on the board only. Two or more
+designated CEOs are each <code>co-ceo</code>; a designated CEO with an
+INTERIM status (INTERIM, ACTING) is <code>interim</code>.</li>
 <li>
-<strong>Imputed from pay.</strong> The highest-paid <em>plausible leader</em> is the CEO. A plausible leader:
+<strong>Imputed from pay.</strong> The highest-paid <em>plausible
+leader</em> is the CEO. A plausible leader:
 <ul>
 <li>is paid;</li>
-<li>has the officer box, or a leadership title (president, director, manager, administrator, chief, …);</li>
+<li>has the officer box, or a leadership title (president, director,
+manager, administrator, chief, …);</li>
 <li>works 15+ hours a week or is paid $25,000+;</li>
-<li>reports at least 5 hours a week, if they report hours at all. Presidents are exempt: older filings often show a paid president at 0.1 hours;</li>
-<li>is not a board chair with the trustee box working under 25 hours a week. That pattern is a paid chair, not an executive;</li>
+<li>reports at least 5 hours a week, if they report hours at all.
+Presidents are exempt: older filings often show a paid president at 0.1
+hours;</li>
+<li>is not a board chair with the trustee box working under 25 hours a
+week. That pattern is a paid chair, not an executive;</li>
 <li>does not hold a stipend title in the CEO thesaurus (section 3).</li>
 </ul>
 </li>
 <li>
-<strong>An unpaid full-time leader.</strong> On a full 990, an unpaid person with a leader or chair title, 35+ hours a week and the officer box is the CEO (<code>imputed</code>). The founder-president of an all-volunteer organization and the superior of a religious order are examples. If several people tie for the most hours, as in a student group whose officers all report 50, no one is named.</li>
+<strong>An unpaid full-time leader.</strong> On a full 990, an
+unpaid person with a leader or chair title, 35+ hours a week and the
+officer box is the CEO (<code>imputed</code>). The founder-president of
+an all-volunteer organization and the superior of a religious order are
+examples. If several people tie for the most hours, as in a student
+group whose officers all report 50, no one is named.</li>
 <li>
-<strong>Otherwise no CEO.</strong> A filing that pays people but has no plausible leader is <code>board_governed</code>; one that pays no one is <code>no_paid</code>.</li>
+<strong>Otherwise no CEO.</strong> A filing that pays people but has
+no plausible leader is <code>board_governed</code>; one that pays no one
+is <code>no_paid</code>.</li>
 </ol>
-<p>Two further rules keep stipends from making executives: - <strong>The stipend rule.</strong> A board title held under 10 hours a week for under $25,000 is a board seat, even with the officer box: a titular president with a stipend. - <strong>Past and elect.</strong> A past president or president-elect (a FORMER or FUTURE status from step 06) holds a board seat, not the office.</p>
+<p>Two further rules keep stipends from making executives: - <strong>The
+stipend rule.</strong> A board title held under 10 hours a week for
+under $25,000 is a board seat, even with the officer box: a titular
+president with a stipend. - <strong>Past and elect.</strong> A past
+president or president-elect (a FORMER or FUTURE status from step 06)
+holds a board seat, not the office.</p>
 <table class="table">
-<caption>A designated: org.type none; org.leadership designated</caption>
+<caption>A designated: org.type none; org.leadership
+designated</caption>
+<colgroup>
+<col width="29%">
+<col width="9%">
+<col width="7%">
+<col width="7%">
+<col width="19%">
+<col width="25%">
+</colgroup>
 <thead><tr class="header">
 <th align="left">title</th>
 <th align="right">pay</th>
@@ -404,6 +475,14 @@
 </table>
 <table class="table">
 <caption>B imputed: org.type none; org.leadership imputed</caption>
+<colgroup>
+<col width="23%">
+<col width="9%">
+<col width="8%">
+<col width="8%">
+<col width="23%">
+<col width="25%">
+</colgroup>
 <thead><tr class="header">
 <th align="left">title</th>
 <th align="right">pay</th>
@@ -440,7 +519,16 @@
 </tbody>
 </table>
 <table class="table">
-<caption>C unpaid full-time: org.type none; org.leadership imputed</caption>
+<caption>C unpaid full-time: org.type none; org.leadership
+imputed</caption>
+<colgroup>
+<col width="22%">
+<col width="6%">
+<col width="9%">
+<col width="9%">
+<col width="25%">
+<col width="27%">
+</colgroup>
 <thead><tr class="header">
 <th align="left">title</th>
 <th align="right">pay</th>
@@ -477,7 +565,8 @@
 </tbody>
 </table>
 <table class="table">
-<caption>D board-governed: org.type none; org.leadership board_governed</caption>
+<caption>D board-governed: org.type none; org.leadership
+board_governed</caption>
 <thead><tr class="header">
 <th align="left">title</th>
 <th align="right">pay</th>
@@ -517,25 +606,43 @@
 <li>
 <strong>A.</strong> The CEO is designated by title.</li>
 <li>
-<strong>B.</strong> No title names a CEO, so the paid, full-time president with the officer box is imputed. The unpaid vice president is a board seat.</li>
+<strong>B.</strong> No title names a CEO, so the paid, full-time
+president with the officer box is imputed. The unpaid vice president is
+a board seat.</li>
 <li>
-<strong>C.</strong> Nobody is paid. The president works 45 hours a week with the officer box, so the president is the unpaid full-time leader.</li>
+<strong>C.</strong> Nobody is paid. The president works 45 hours a
+week with the officer box, so the president is the unpaid full-time
+leader.</li>
 <li>
-<strong>D.</strong> The president’s $6,000 for 5 hours a week is a stipend (the stipend rule), and a bookkeeper is not a plausible leader, so the board runs the organization.</li>
+<strong>D.</strong> The president’s $6,000 for 5 hours a week is a
+stipend (the stipend rule), and a bookkeeper is not a plausible leader,
+so the board runs the organization.</li>
 </ul>
 </div>
 <div class="section level2">
 <h2 id="organization-types-with-their-own-ceo-titles">3. Organization types with their own CEO titles<a class="anchor" aria-label="anchor" href="#organization-types-with-their-own-ceo-titles"></a>
 </h2>
-<p>Some kinds of organization name their chief executive with a title the rules read as something else. Some also pay board officers stipends that the pay rule mistakes for executive pay. Labeling all five years of 150 organizations (FINDINGS.md F-031) showed where step 09 picked the wrong person or none. The <strong>CEO thesaurus</strong> (<code>ceo.thesaurus</code>, from <code>data-raw/crosswalks/ceo-thesaurus.csv</code>) records the fixes by organization type.</p>
+<p>Some kinds of organization name their chief executive with a title
+the rules read as something else. Some also pay board officers stipends
+that the pay rule mistakes for executive pay. Labeling all five years of
+150 organizations (FINDINGS.md F-031) showed where step 09 picked the
+wrong person or none. The <strong>CEO thesaurus</strong>
+(<code>ceo.thesaurus</code>, from
+<code>data-raw/crosswalks/ceo-thesaurus.csv</code>) records the fixes by
+organization type.</p>
 <div class="section level3">
 <h3 id="finding-the-organization-type">Finding the organization type<a class="anchor" aria-label="anchor" href="#finding-the-organization-type"></a>
 </h3>
-<p><code><a href="../reference/org_types.html">org_types()</a></code> gives each filing one of 11 types, or none. It uses, in order of preference:</p>
+<p><code><a href="../reference/org_types.html">org_types()</a></code> gives each filing one of 11 types, or none.
+It uses, in order of preference:</p>
 <ol style="list-style-type: decimal">
-<li>an <code>org.type</code> column you supply (the examples here do this);</li>
-<li>NTEE code and 501(c) subsection columns joined from the IRS Business Master File (for example with <code><a href="https://rdrr.io/pkg/panel990/man/bmf_retrieve.html" class="external-link">panel990::bmf_retrieve()</a></code>), mapped by <code><a href="../reference/org_type_from_codes.html">org_type_from_codes()</a></code>;</li>
-<li>the organization’s name and the titles in its Part VII, by <code><a href="../reference/org_type_from_name.html">org_type_from_name()</a></code>.</li>
+<li>an <code>org.type</code> column you supply (the examples here do
+this);</li>
+<li>NTEE code and 501(c) subsection columns joined from the IRS Business
+Master File (for example with <code><a href="https://nonprofit-open-data-collective.github.io/panel990/reference/bmf_retrieve.html" class="external-link">panel990::bmf_retrieve()</a></code>),
+mapped by <code><a href="../reference/org_type_from_codes.html">org_type_from_codes()</a></code>;</li>
+<li>the organization’s name and the titles in its Part VII, by
+<code><a href="../reference/org_type_from_name.html">org_type_from_name()</a></code>.</li>
 </ol>
 <table class="table">
 <colgroup>
@@ -552,17 +659,20 @@
 <tr class="odd">
 <td>veterans</td>
 <td>501(c)(19), (c)(23)</td>
-<td>AMERICAN LEGION, VFW, AMVETS, DAV; an ADJUTANT or QUARTERMASTER on Part VII</td>
+<td>AMERICAN LEGION, VFW, AMVETS, DAV; an ADJUTANT or QUARTERMASTER on
+Part VII</td>
 </tr>
 <tr class="even">
 <td>fraternal</td>
 <td>501(c)(8), (c)(10)</td>
-<td>LODGE, ELKS, MASONIC, MOOSE, EAGLES, KNIGHTS OF COLUMBUS, GRANGE; EXALTED RULER, WORSHIPFUL, POTENTATE</td>
+<td>LODGE, ELKS, MASONIC, MOOSE, EAGLES, KNIGHTS OF COLUMBUS, GRANGE;
+EXALTED RULER, WORSHIPFUL, POTENTATE</td>
 </tr>
 <tr class="odd">
 <td>union</td>
 <td>501(c)(5), NTEE J or none</td>
-<td>LOCAL 123, UNION, BROTHERHOOD, TEAMSTERS, IBEW, AFSCME; a BUSINESS AGENT or BUSINESS MANAGER</td>
+<td>LOCAL 123, UNION, BROTHERHOOD, TEAMSTERS, IBEW, AFSCME; a BUSINESS
+AGENT or BUSINESS MANAGER</td>
 </tr>
 <tr class="even">
 <td>club</td>
@@ -572,7 +682,8 @@
 <tr class="odd">
 <td>coop</td>
 <td>501(c)(12)</td>
-<td>COOPERATIVE, CO-OP, ELECTRIC MEMBERSHIP, WATER SUPPLY, TELEPHONE</td>
+<td>COOPERATIVE, CO-OP, ELECTRIC MEMBERSHIP, WATER SUPPLY,
+TELEPHONE</td>
 </tr>
 <tr class="even">
 <td>trust</td>
@@ -592,7 +703,8 @@
 <tr class="odd">
 <td>ministry</td>
 <td>NTEE X</td>
-<td>CHURCH, MINISTRY, CONGREGATION, PARISH, DIOCESE; a PASTOR, REVEREND or BISHOP</td>
+<td>CHURCH, MINISTRY, CONGREGATION, PARISH, DIOCESE; a PASTOR, REVEREND
+or BISHOP</td>
 </tr>
 <tr class="even">
 <td>fire</td>
@@ -606,19 +718,32 @@
 </tr>
 </tbody>
 </table>
-<p>When codes are present, the subsection settles the membership types: a 501(c)(3) “Union Rescue Mission” is not a union. The name can only add a type that a missing or wrong NTEE code would have given (university, fire, orchestra, ministry). The output records the result in <code>org.type</code> and its source in <code>org.type.source</code> (supplied, codes, inferred or none).</p>
+<p>When codes are present, the subsection settles the membership types:
+a 501(c)(3) “Union Rescue Mission” is not a union. The name can only add
+a type that a missing or wrong NTEE code would have given (university,
+fire, orchestra, ministry). The output records the result in
+<code>org.type</code> and its source in <code>org.type.source</code>
+(supplied, codes, inferred or none).</p>
 </div>
 <div class="section level3">
 <h3 id="the-thesaurus-entries">The thesaurus entries<a class="anchor" aria-label="anchor" href="#the-thesaurus-entries"></a>
 </h3>
-<p>Each entry pairs an organization type with a title pattern, matched against the cleaned title (<code>title.v7</code>), and an effect:</p>
+<p>Each entry pairs an organization type with a title pattern, matched
+against the cleaned title (<code>title.v7</code>), and an effect:</p>
 <ul>
 <li>
-<strong>ceo.</strong> The holder runs that kind of organization, if paid at least <code>min_pay</code> and working at least <code>min_hours</code> a week. Unreported hours do not rule a paid holder out.</li>
+<strong>ceo.</strong> The holder runs that kind of organization, if
+paid at least <code>min_pay</code> and working at least
+<code>min_hours</code> a week. Unreported hours do not rule a paid
+holder out.</li>
 <li>
-<strong>not_ceo.</strong> A holder paid under <code>min_pay</code> and, where <code>min_hours</code> is set, working under <code>min_hours</code> a week is on a stipend. They are never made the CEO, by title or by pay.</li>
+<strong>not_ceo.</strong> A holder paid under <code>min_pay</code>
+and, where <code>min_hours</code> is set, working under
+<code>min_hours</code> a week is on a stipend. They are never made the
+CEO, by title or by pay.</li>
 <li>
-<strong>outranks.</strong> Titles a <code>ceo</code> holder wins over even when the filing already has a CEO.</li>
+<strong>outranks.</strong> Titles a <code>ceo</code> holder wins
+over even when the filing already has a CEO.</li>
 </ul>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">th</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_ceo_thesaurus.html">get_ceo_thesaurus</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -651,7 +776,8 @@
 </tr>
 <tr class="even">
 <td align="left">veterans</td>
-<td align="left">TREASURER|FINANCE OFFICER|QUARTERMASTER|TRUSTEE|SECRETARY|ADJUTANT)not_ceo</td>
+<td align="left">TREASURER|FINANCE
+OFFICER|QUARTERMASTER|TRUSTEE|SECRETARY|ADJUTANT)not_ceo</td>
 <td align="left">35</td>
 <td align="right">30000</td>
 <td align="right"></td>
@@ -670,7 +796,8 @@
 <td align="left">GENERAL MANAGER|CLUB MANAGER|GM)ceo</td>
 <td align="left">20</td>
 <td align="right">25000</td>
-<td align="right">SUPERINTENDENT|GOLF|PROFESSIONAL|\b|CHEF|CONTROLLER|DIRECTOR OF</td>
+<td align="right">SUPERINTENDENT|GOLF|PROFESSIONAL||CHEF|CONTROLLER|DIRECTOR
+OF</td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
@@ -691,7 +818,8 @@
 </tr>
 <tr class="odd">
 <td align="left">trust</td>
-<td align="left">^(FUND |PLAN |TRUST |BENEFITS? )?A?D?MINISTRATORceo</td>
+<td align="left">^(FUND |PLAN |TRUST |BENEFITS?
+)?A?D?MINISTRATORceo</td>
 <td align="left">20</td>
 <td align="right">25000</td>
 <td align="right"></td>
@@ -715,7 +843,8 @@
 </tr>
 <tr class="even">
 <td align="left">ministry</td>
-<td align="left">^(SENIOR |LEAD |GENERAL |HEAD )?PASTOR\b|\b|\b|<sup>RABBI\b|</sup>RECTORceo</td>
+<td align="left">^(SENIOR |LEAD |GENERAL |HEAD
+)?PASTOR|||<sup>RABBI|</sup>RECTORceo</td>
 <td align="left">20</td>
 <td align="right">0</td>
 <td align="right"></td>
@@ -764,20 +893,28 @@
 <tbody>
 <tr class="odd">
 <td><strong>veterans</strong></td>
-<td>the post or department <strong>adjutant</strong>, paid $25k+ for 20+ h/wk</td>
-<td>treasurer, finance officer, quartermaster, trustee, secretary or adjutant on a stipend (under $30k and 35 h/wk)</td>
-<td>the COMMANDER is the board chair; a DEPARTMENT SENIOR VICE COMMANDER the vice chair</td>
+<td>the post or department <strong>adjutant</strong>, paid $25k+ for 20+
+h/wk</td>
+<td>treasurer, finance officer, quartermaster, trustee, secretary or
+adjutant on a stipend (under $30k and 35 h/wk)</td>
+<td>the COMMANDER is the board chair; a DEPARTMENT SENIOR VICE COMMANDER
+the vice chair</td>
 </tr>
 <tr class="even">
 <td><strong>fraternal</strong></td>
 <td>no single title: usually a paid executive or none</td>
-<td>the lodge <strong>secretary, recorder or treasurer</strong> on a stipend (under $40k and 35 h/wk)</td>
-<td>EXALTED RULER, WORSHIPFUL MASTER and POTENTATE are the chair; wardens, rabbans and knights are members</td>
+<td>the lodge <strong>secretary, recorder or treasurer</strong> on a
+stipend (under $40k and 35 h/wk)</td>
+<td>EXALTED RULER, WORSHIPFUL MASTER and POTENTATE are the chair;
+wardens, rabbans and knights are members</td>
 </tr>
 <tr class="odd">
 <td><strong>club</strong></td>
-<td>the <strong>general manager</strong> (or club manager, GM), $25k+ and 20+ h/wk; outranks a better-paid superintendent, golf pro, chef, controller or “director of”</td>
-<td>a <strong>pool, snack, canteen, bar or grounds manager</strong> paid under $25k</td>
+<td>the <strong>general manager</strong> (or club manager, GM), $25k+
+and 20+ h/wk; outranks a better-paid superintendent, golf pro, chef,
+controller or “director of”</td>
+<td>a <strong>pool, snack, canteen, bar or grounds manager</strong> paid
+under $25k</td>
 <td>the PRESIDENT is the board chair</td>
 </tr>
 <tr class="even">
@@ -788,33 +925,43 @@
 </tr>
 <tr class="odd">
 <td><strong>trust</strong></td>
-<td>the <strong>fund, plan, trust or benefits administrator</strong>, $25k+ and 20+ h/wk</td>
+<td>the <strong>fund, plan, trust or benefits administrator</strong>,
+$25k+ and 20+ h/wk</td>
 <td></td>
 <td>the CHAIRMAN and TRUSTEES are the board</td>
 </tr>
 <tr class="even">
 <td><strong>union</strong></td>
-<td>the <strong>business manager</strong>, $25k+ and 20+ h/wk; outranks a paid <strong>president</strong>
+<td>the <strong>business manager</strong>, $25k+ and 20+ h/wk; outranks
+a paid <strong>president</strong>
 </td>
 <td></td>
 <td>the PRESIDENT is the board chair even when paid</td>
 </tr>
 <tr class="odd">
 <td><strong>university</strong></td>
-<td>the <strong>president</strong>, $50k+ and 20+ h/wk; outranks a provost or vice president, and a chancellor paid no more than the president</td>
+<td>the <strong>president</strong>, $50k+ and 20+ h/wk; outranks a
+provost or vice president, and a chancellor paid no more than the
+president</td>
 <td></td>
 <td>the board CHAIR</td>
 </tr>
 <tr class="even">
 <td><strong>ministry</strong></td>
-<td>the <strong>senior, lead, general or head pastor</strong>, a <strong>bishop</strong>, <strong>overseer</strong>, <strong>rabbi</strong> or <strong>rector</strong>, 20+ h/wk, <strong>paid or not</strong>; an associate or youth pastor does not match</td>
+<td>the <strong>senior, lead, general or head pastor</strong>, a
+<strong>bishop</strong>, <strong>overseer</strong>,
+<strong>rabbi</strong> or <strong>rector</strong>, 20+ h/wk,
+<strong>paid or not</strong>; an associate or youth pastor does not
+match</td>
 <td></td>
 <td></td>
 </tr>
 <tr class="odd">
 <td><strong>fire</strong></td>
-<td>the paid full-time <strong>fire chief</strong> ($25k+, 20+ h/wk)</td>
-<td>the company’s <strong>secretary or treasurer</strong> on part-time pay (under $40k and 35 h/wk)</td>
+<td>the paid full-time <strong>fire chief</strong> ($25k+, 20+
+h/wk)</td>
+<td>the company’s <strong>secretary or treasurer</strong> on part-time
+pay (under $40k and 35 h/wk)</td>
 <td></td>
 </tr>
 <tr class="even">
@@ -826,7 +973,8 @@
 </tr>
 <tr class="odd">
 <td><strong>orchestra</strong></td>
-<td>no entry: an executive director or president &amp; CEO usually names the CEO</td>
+<td>no entry: an executive director or president &amp; CEO usually names
+the CEO</td>
 <td></td>
 <td></td>
 </tr>
@@ -838,19 +986,32 @@
 </h3>
 <ol style="list-style-type: decimal">
 <li>
-<strong>not_ceo</strong> titles are removed from the running before the rules: they are not designated and not imputed.</li>
+<strong>not_ceo</strong> titles are removed from the running before
+the rules: they are not designated and not imputed.</li>
 <li>The rules of section 2 run.</li>
-<li>The best-paid holder of a <strong>ceo</strong> title becomes the CEO (<code>role.ceo = "thesaurus"</code>) in three cases:
+<li>The best-paid holder of a <strong>ceo</strong> title becomes the CEO
+(<code>role.ceo = "thesaurus"</code>) in three cases:
 <ul>
 <li>the filing has no CEO;</li>
 <li>its CEO was only imputed from pay or named by the 990-EZ model;</li>
 <li>its CEO’s title is one the entry outranks.</li>
 </ul>
-A CEO designated by a CEO-level title, such as an executive director, stays the CEO.</li>
+A CEO designated by a CEO-level title, such as an executive director,
+stays the CEO.</li>
 </ol>
-<p>Each example filing is run twice: as is, and with the thesaurus switched off (the rules of section 2 alone).</p>
+<p>Each example filing is run twice: as is, and with the thesaurus
+switched off (the rules of section 2 alone).</p>
 <table class="table">
 <caption>Club: org.type club; org.leadership thesaurus</caption>
+<colgroup>
+<col width="25%">
+<col width="7%">
+<col width="5%">
+<col width="5%">
+<col width="15%">
+<col width="19%">
+<col width="20%">
+</colgroup>
 <thead><tr class="header">
 <th align="left">title</th>
 <th align="right">pay</th>
@@ -899,9 +1060,21 @@ A CEO designated by a CEO-level title, such as an executive director, stays the 
 </tr>
 </tbody>
 </table>
-<p><strong>Club.</strong> The golf course superintendent is the best-paid person, so pay alone would make the superintendent the CEO. The general manager runs the club, and the club entry ranks the general manager above the superintendent.</p>
+<p><strong>Club.</strong> The golf course superintendent is the
+best-paid person, so pay alone would make the superintendent the CEO.
+The general manager runs the club, and the club entry ranks the general
+manager above the superintendent.</p>
 <table class="table">
 <caption>Union local: org.type union; org.leadership thesaurus</caption>
+<colgroup>
+<col width="20%">
+<col width="8%">
+<col width="6%">
+<col width="6%">
+<col width="16%">
+<col width="20%">
+<col width="22%">
+</colgroup>
 <thead><tr class="header">
 <th align="left">title</th>
 <th align="right">pay</th>
@@ -941,9 +1114,22 @@ A CEO designated by a CEO-level title, such as an executive director, stays the 
 </tr>
 </tbody>
 </table>
-<p><strong>Union local.</strong> A union president is often paid, and here earns more than the business manager. The president is still the elected chair. The business manager runs the local, and the union entry ranks them above the president.</p>
+<p><strong>Union local.</strong> A union president is often paid, and
+here earns more than the business manager. The president is still the
+elected chair. The business manager runs the local, and the union entry
+ranks them above the president.</p>
 <table class="table">
-<caption>Legion department: org.type veterans; org.leadership thesaurus</caption>
+<caption>Legion department: org.type veterans; org.leadership
+thesaurus</caption>
+<colgroup>
+<col width="21%">
+<col width="7%">
+<col width="6%">
+<col width="6%">
+<col width="16%">
+<col width="20%">
+<col width="22%">
+</colgroup>
 <thead><tr class="header">
 <th align="left">title</th>
 <th align="right">pay</th>
@@ -983,9 +1169,21 @@ A CEO designated by a CEO-level title, such as an executive director, stays the 
 </tr>
 </tbody>
 </table>
-<p><strong>Veterans.</strong> The department adjutant runs the department. The treasurer is better paid, so pay alone would pick the treasurer. The commander is the board chair.</p>
+<p><strong>Veterans.</strong> The department adjutant runs the
+department. The treasurer is better paid, so pay alone would pick the
+treasurer. The commander is the board chair.</p>
 <table class="table">
-<caption>Lodge: org.type fraternal; org.leadership board_governed</caption>
+<caption>Lodge: org.type fraternal; org.leadership
+board_governed</caption>
+<colgroup>
+<col width="17%">
+<col width="8%">
+<col width="7%">
+<col width="7%">
+<col width="20%">
+<col width="10%">
+<col width="27%">
+</colgroup>
 <thead><tr class="header">
 <th align="left">title</th>
 <th align="right">pay</th>
@@ -1025,9 +1223,23 @@ A CEO designated by a CEO-level title, such as an executive director, stays the 
 </tr>
 </tbody>
 </table>
-<p><strong>Lodge.</strong> The secretary has the officer box and $24,000 for 20 hours a week: enough for the pay rule to name a CEO. In a lodge that is a stipend. The fraternal entry keeps the secretary from being the CEO, and the lodge is run by its board. Before this entry, lodge secretaries were made CEO from pay 91 times in the 2019-2023 sample.</p>
-<table class="table">
-<caption>Pension fund: org.type trust; org.leadership thesaurus</caption>
+<p><strong>Lodge.</strong> The secretary has the officer box and $24,000
+for 20 hours a week: enough for the pay rule to name a CEO. In a lodge
+that is a stipend. The fraternal entry keeps the secretary from being
+the CEO, and the lodge is run by its board. Before this entry, lodge
+secretaries were made CEO from pay 91 times in the 2019-2023 sample.</p>
+<table style="width:100%;" class="table">
+<caption>Pension fund: org.type trust; org.leadership
+thesaurus</caption>
+<colgroup>
+<col width="21%">
+<col width="8%">
+<col width="6%">
+<col width="6%">
+<col width="12%">
+<col width="21%">
+<col width="23%">
+</colgroup>
 <thead><tr class="header">
 <th align="left">title</th>
 <th align="right">pay</th>
@@ -1067,9 +1279,22 @@ A CEO designated by a CEO-level title, such as an executive director, stays the 
 </tr>
 </tbody>
 </table>
-<p><strong>Benefit trust.</strong> The fund administrator runs the trust. Without the thesaurus, pay picks the better-paid real estate manager: the title holds MANAGER, a leadership word, even though the title is uncoded.</p>
+<p><strong>Benefit trust.</strong> The fund administrator runs the
+trust. Without the thesaurus, pay picks the better-paid real estate
+manager: the title holds MANAGER, a leadership word, even though the
+title is uncoded.</p>
 <table class="table">
-<caption>University: org.type university; org.leadership thesaurus</caption>
+<caption>University: org.type university; org.leadership
+thesaurus</caption>
+<colgroup>
+<col width="29%">
+<col width="7%">
+<col width="5%">
+<col width="5%">
+<col width="11%">
+<col width="19%">
+<col width="20%">
+</colgroup>
 <thead><tr class="header">
 <th align="left">title</th>
 <th align="right">pay</th>
@@ -1118,9 +1343,25 @@ A CEO designated by a CEO-level title, such as an executive director, stays the 
 </tr>
 </tbody>
 </table>
-<p><strong>University.</strong> The president runs the university. The paid chancellor holds a CEO-level title (step 07 rewrites a paid CHANCELLOR to CEO), so the rules alone make the chancellor the designated CEO. The university entry outranks a chancellor, provost or vice president, so the president is the CEO and the chancellor an officer. Because step 07 makes a chancellor CEO on the strength of pay, the president outranks a chancellor only when paid at least as much; a better-paid chancellor stays the CEO.</p>
+<p><strong>University.</strong> The president runs the university. The
+paid chancellor holds a CEO-level title (step 07 rewrites a paid
+CHANCELLOR to CEO), so the rules alone make the chancellor the
+designated CEO. The university entry outranks a chancellor, provost or
+vice president, so the president is the CEO and the chancellor an
+officer. Because step 07 makes a chancellor CEO on the strength of pay,
+the president outranks a chancellor only when paid at least as much; a
+better-paid chancellor stays the CEO.</p>
 <table class="table">
 <caption>Church: org.type ministry; org.leadership thesaurus</caption>
+<colgroup>
+<col width="15%">
+<col width="4%">
+<col width="6%">
+<col width="6%">
+<col width="18%">
+<col width="22%">
+<col width="25%">
+</colgroup>
 <thead><tr class="header">
 <th align="left">title</th>
 <th align="right">pay</th>
@@ -1160,12 +1401,17 @@ A CEO designated by a CEO-level title, such as an executive director, stays the 
 </tr>
 </tbody>
 </table>
-<p><strong>Church.</strong> A senior pastor runs the church whether paid or not. Here the pastor is unpaid and has only the trustee box, so neither the pay rule nor the unpaid full-time rule applies.</p>
+<p><strong>Church.</strong> A senior pastor runs the church whether paid
+or not. Here the pastor is unpaid and has only the trustee box, so
+neither the pay rule nor the unpaid full-time rule applies.</p>
 </div>
 <div class="section level3">
 <h3 id="how-much-it-helps">How much it helps<a class="anchor" aria-label="anchor" href="#how-much-it-helps"></a>
 </h3>
-<p>The type-specific labels (FINDINGS.md F-031 to F-033) cover 750 filings of 150 organizations from 2019-2023. The table gives the share of filings where step 09 names the right chief executive (or rightly names none):</p>
+<p>The type-specific labels (FINDINGS.md F-031 to F-033) cover 750
+filings of 150 organizations from 2019-2023. The table gives the share
+of filings where step 09 names the right chief executive (or rightly
+names none):</p>
 <table class="table">
 <colgroup>
 <col width="15%">
@@ -1233,25 +1479,39 @@ A CEO designated by a CEO-level title, such as an executive director, stays the 
 </tr>
 </tbody>
 </table>
-<p>The thesaurus entries were written from these labels. On 126 held-out filings from 64 organizations of the same types, the share rose from 79.4% to 81.7%. The gain is about the same size as in the sample, and comes mostly from lodges.</p>
+<p>The thesaurus entries were written from these labels. On 126 held-out
+filings from 64 organizations of the same types, the share rose from
+79.4% to 81.7%. The gain is about the same size as in the sample, and
+comes mostly from lodges.</p>
 </div>
 <div class="section level3">
 <h3 id="known-limits">Known limits<a class="anchor" aria-label="anchor" href="#known-limits"></a>
 </h3>
 <ul>
 <li>
-<strong>Two-pastor churches.</strong> ASSOCIATE PASTOR maps to the CEO-level standard PASTOR. A church with a senior and an associate pastor therefore gets two co-CEOs. The thesaurus does not split them, because both are designated by title.</li>
+<strong>Two-pastor churches.</strong> ASSOCIATE PASTOR maps to the
+CEO-level standard PASTOR. A church with a senior and an associate
+pastor therefore gets two co-CEOs. The thesaurus does not split them,
+because both are designated by title.</li>
 <li>
-<strong>Combined titles.</strong> The union pattern misses compressed titles such as BMFINSEC (business manager and financial secretary).</li>
+<strong>Combined titles.</strong> The union pattern misses
+compressed titles such as BMFINSEC (business manager and financial
+secretary).</li>
 <li>
-<strong>Former and interim CEOs</strong> who served part of the year can be named alongside the current CEO. Telling them apart needs the tax period’s dates.</li>
+<strong>Former and interim CEOs</strong> who served part of the year
+can be named alongside the current CEO. Telling them apart needs the tax
+period’s dates.</li>
 </ul>
 </div>
 </div>
 <div class="section level2">
 <h2 id="the-990-and-990-ez-divide">4. The 990 and 990-EZ divide<a class="anchor" aria-label="anchor" href="#the-990-and-990-ez-divide"></a>
 </h2>
-<p>Smaller organizations file the 990-EZ. Its Part VII lists the same people, titles, pay and hours, but <strong>not the position checkboxes</strong>: no trustee, officer, key employee or highly compensated box. In 2022, 990-EZ filings supplied 1.2 million of the 5.1 million Part VII rows.</p>
+<p>Smaller organizations file the 990-EZ. Its Part VII lists the same
+people, titles, pay and hours, but <strong>not the position
+checkboxes</strong>: no trustee, officer, key employee or highly
+compensated box. In 2022, 990-EZ filings supplied 1.2 million of the 5.1
+million Part VII rows.</p>
 <p>Most of the rules lean on those boxes:</p>
 <table class="table">
 <colgroup>
@@ -1278,7 +1538,8 @@ A CEO designated by a CEO-level title, such as an executive director, stays the 
 <tr class="odd">
 <td>Imputed from pay</td>
 <td>needs the officer box <strong>or</strong> a leadership title</td>
-<td>needs a leadership title: a paid treasurer who runs the organization is missed</td>
+<td>needs a leadership title: a paid treasurer who runs the organization
+is missed</td>
 </tr>
 <tr class="even">
 <td>Unpaid full-time leader</td>
@@ -1292,44 +1553,91 @@ A CEO designated by a CEO-level title, such as an executive director, stays the 
 </tr>
 </tbody>
 </table>
-<p>Without the boxes, the rules miss most officers and call too many people staff. On the 40 hand-labeled 990-EZ people, the rules get 82.5% of roles right. So on a 990-EZ, step 09 does three things:</p>
+<p>Without the boxes, the rules miss most officers and call too many
+people staff. On the 40 hand-labeled 990-EZ people, the rules get 82.5%
+of roles right. So on a 990-EZ, step 09 does three things:</p>
 <ol style="list-style-type: decimal">
 <li>
-<strong>The model replaces the rules.</strong> When the xgboost package is installed, each person’s role on a 990-EZ comes from the no-checkbox role model (section 5). <code>role.method</code> is <code>model</code>.</li>
+<strong>The model replaces the rules.</strong> When the xgboost
+package is installed, each person’s role on a 990-EZ comes from the
+no-checkbox role model (section 5). <code>role.method</code> is
+<code>model</code>.</li>
 <li>
-<strong>A guard on the model’s CEO.</strong> If the model names as CEO someone with no CEO-level title who works under 20 hours a week for under $50,000, the person keeps the role the rules give instead. On the labeled filings, those model CEOs were mostly stipend-paid officers of board-run organizations.</li>
+<strong>A guard on the model’s CEO.</strong> If the model names as
+CEO someone with no CEO-level title who works under 20 hours a week for
+under $50,000, the person keeps the role the rules give instead. On the
+labeled filings, those model CEOs were mostly stipend-paid officers of
+board-run organizations.</li>
 <li>
-<strong>The thesaurus still applies.</strong> It overrides the model’s CEO in the same cases as above, so a club’s general manager outranks a golf professional whom the model would pick.</li>
+<strong>The thesaurus still applies.</strong> It overrides the
+model’s CEO in the same cases as above, so a club’s general manager
+outranks a golf professional whom the model would pick.</li>
 </ol>
-<p>With the model, 92.5% of the labeled 990-EZ people get the right role. On 23,931 people at organizations that switched between the forms, the model agrees with their full-990-year role 95.0% of the time, against 92.0% for the rules. Use <code>resolve_roles(use_model = FALSE)</code> to use the rules everywhere.</p>
+<p>With the model, 92.5% of the labeled 990-EZ people get the right
+role. On 23,931 people at organizations that switched between the forms,
+the model agrees with their full-990-year role 95.0% of the time,
+against 92.0% for the rules. Use
+<code>resolve_roles(use_model = FALSE)</code> to use the rules
+everywhere.</p>
 </div>
 <div class="section level2">
 <h2 id="the-role-model">5. The role model<a class="anchor" aria-label="anchor" href="#the-role-model"></a>
 </h2>
-<p>The model is a classifier trained to answer one question: what would the checkboxes have said? It predicts each person’s role (BOARD, CEO, OFFICER, MANAGER, PROFESSIONAL or STAFF) from what a 990-EZ does report.</p>
+<p>The model is a classifier trained to answer one question: what would
+the checkboxes have said? It predicts each person’s role (BOARD, CEO,
+OFFICER, MANAGER, PROFESSIONAL or STAFF) from what a 990-EZ does
+report.</p>
 <ul>
 <li>
-<strong>Teacher.</strong> About 557,000 people on full-990 filings from 2019-2023, each labeled with the role the rules give them <em>with</em> the boxes. The boxes are then hidden from the model.</li>
+<strong>Teacher.</strong> About 557,000 people on full-990 filings
+from 2019-2023, each labeled with the role the rules give them
+<em>with</em> the boxes. The boxes are then hidden from the model.</li>
 <li>
-<strong>990-EZ examples.</strong> 20,800 people at organizations that switched forms, labeled with their role in the full-990 year.</li>
+<strong>990-EZ examples.</strong> 20,800 people at organizations
+that switched forms, labeled with their role in the full-990 year.</li>
 <li>
-<strong>Features.</strong> 100 per person, built by <code><a href="../reference/role_model_features.html">role_model_features()</a></code>:
+<strong>Features.</strong> 100 per person, built by
+<code><a href="../reference/role_model_features.html">role_model_features()</a></code>:
 <ul>
 <li>title keywords (PRESIDENT, TREASURER, DIRECTOR, PASTOR, …);</li>
-<li>the title’s level, board role, domain and SOC group from the taxonomy;</li>
+<li>the title’s level, board role, domain and SOC group from the
+taxonomy;</li>
 <li>pay and hours;</li>
 <li>the person’s rank and share of the filing’s pay and hours;</li>
-<li>the filing’s make-up: how many people, how many paid, how many other CEO and board titles;</li>
+<li>the filing’s make-up: how many people, how many paid, how many other
+CEO and board titles;</li>
 <li>status flags.</li>
 </ul>
 </li>
 <li>
-<strong>Model.</strong> Gradient-boosted decision trees (xgboost), shipped in <code>inst/extdata/role-model/</code>. See <a href="classifiers.html">Rules and models</a>.</li>
+<strong>Model.</strong> Gradient-boosted decision trees (xgboost),
+shipped in <code>inst/extdata/role-model/</code>. See <a href="classifiers.html">Rules and models</a>.</li>
 </ul>
-<p>In effect the model has learned from full-990 filers what a paid person’s situation implies about the boxes. In a small filing where the board is unpaid, the one person paid for real hours almost always ticks the officer box and runs the organization, whatever their title says. A board officer on a small stipend almost always ticks only the trustee box.</p>
-<p>Four 990-EZ filings show where the model changes the CEO, and where step 09 holds it back. <code>rules alone</code> is <code>use_model = FALSE</code>. <code>model's pick</code> is the model’s raw prediction, before the guard and the thesaurus. <code>P(CEO)</code> is the model’s probability that the person is the CEO.</p>
+<p>In effect the model has learned from full-990 filers what a paid
+person’s situation implies about the boxes. In a small filing where the
+board is unpaid, the one person paid for real hours almost always ticks
+the officer box and runs the organization, whatever their title says. A
+board officer on a small stipend almost always ticks only the trustee
+box.</p>
+<p>Four 990-EZ filings show where the model changes the CEO, and where
+step 09 holds it back. <code>rules alone</code> is
+<code>use_model = FALSE</code>. <code>model's pick</code> is the model’s
+raw prediction, before the guard and the thesaurus. <code>P(CEO)</code>
+is the model’s probability that the person is the CEO.</p>
 <table class="table">
-<caption>EZ-1 paid treasurer: org.type none; org.leadership model</caption>
+<caption>EZ-1 paid treasurer: org.type none; org.leadership
+model</caption>
+<colgroup>
+<col width="10%">
+<col width="7%">
+<col width="6%">
+<col width="6%">
+<col width="17%">
+<col width="17%">
+<col width="12%">
+<col width="13%">
+<col width="7%">
+</colgroup>
 <thead><tr class="header">
 <th align="left">title</th>
 <th align="right">pay</th>
@@ -1377,9 +1685,27 @@ A CEO designated by a CEO-level title, such as an executive director, stays the 
 </tr>
 </tbody>
 </table>
-<p><strong>The model adds a CEO.</strong> The treasurer is the only paid person, at $30,000 for 25 hours a week. TREASURER is not a leadership title, so the rules cannot impute a CEO: the treasurer is STAFF and the filing has no CEO. In full-990 data, an organization’s only paid person, working real hours while the board is unpaid, nearly always has the officer box and runs the organization. The model makes the treasurer the CEO.</p>
+<p><strong>The model adds a CEO.</strong> The treasurer is the only paid
+person, at $30,000 for 25 hours a week. TREASURER is not a leadership
+title, so the rules cannot impute a CEO: the treasurer is STAFF and the
+filing has no CEO. In full-990 data, an organization’s only paid person,
+working real hours while the board is unpaid, nearly always has the
+officer box and runs the organization. The model makes the treasurer the
+CEO.</p>
 <table class="table">
-<caption>EZ-2 stipend president: org.type none; org.leadership board_governed</caption>
+<caption>EZ-2 stipend president: org.type none; org.leadership
+board_governed</caption>
+<colgroup>
+<col width="16%">
+<col width="7%">
+<col width="6%">
+<col width="6%">
+<col width="18%">
+<col width="8%">
+<col width="13%">
+<col width="14%">
+<col width="7%">
+</colgroup>
 <thead><tr class="header">
 <th align="left">title</th>
 <th align="right">pay</th>
@@ -1427,9 +1753,27 @@ A CEO designated by a CEO-level title, such as an executive director, stays the 
 </tr>
 </tbody>
 </table>
-<p><strong>The model removes a CEO.</strong> The president is paid $30,000 for 10 hours a week. That is over the pay rule’s $25,000, and just over the stipend rule’s limits, so the rules impute the president as CEO. On full 990s, a president paid like this for so few hours, in a filing with no one else paid, mostly ticks only the trustee box: a board chair with a stipend. The model reads the president as a board seat, and the filing as run by its board.</p>
+<p><strong>The model removes a CEO.</strong> The president is paid
+$30,000 for 10 hours a week. That is over the pay rule’s $25,000, and
+just over the stipend rule’s limits, so the rules impute the president
+as CEO. On full 990s, a president paid like this for so few hours, in a
+filing with no one else paid, mostly ticks only the trustee box: a board
+chair with a stipend. The model reads the president as a board seat, and
+the filing as run by its board.</p>
 <table class="table">
-<caption>EZ-3 part-time coordinator: org.type none; org.leadership board_governed</caption>
+<caption>EZ-3 part-time coordinator: org.type none; org.leadership
+board_governed</caption>
+<colgroup>
+<col width="13%">
+<col width="8%">
+<col width="6%">
+<col width="6%">
+<col width="18%">
+<col width="9%">
+<col width="13%">
+<col width="14%">
+<col width="8%">
+</colgroup>
 <thead><tr class="header">
 <th align="left">title</th>
 <th align="right">pay</th>
@@ -1477,9 +1821,24 @@ A CEO designated by a CEO-level title, such as an executive director, stays the 
 </tr>
 </tbody>
 </table>
-<p><strong>The guard holds the model back.</strong> The model leans toward naming the only paid person as CEO: a coordinator, here, at $18,000 for 15 hours a week. But the coordinator has no CEO-level title and works under 20 hours a week for under $50,000. The guard keeps the rules’ answer, STAFF, and the filing has no CEO.</p>
-<table class="table">
+<p><strong>The guard holds the model back.</strong> The model leans
+toward naming the only paid person as CEO: a coordinator, here, at
+$18,000 for 15 hours a week. But the coordinator has no CEO-level title
+and works under 20 hours a week for under $50,000. The guard keeps the
+rules’ answer, STAFF, and the filing has no CEO.</p>
+<table style="width:100%;" class="table">
 <caption>EZ-4 club: org.type club; org.leadership thesaurus</caption>
+<colgroup>
+<col width="17%">
+<col width="6%">
+<col width="5%">
+<col width="5%">
+<col width="12%">
+<col width="19%">
+<col width="12%">
+<col width="12%">
+<col width="6%">
+</colgroup>
 <thead><tr class="header">
 <th align="left">title</th>
 <th align="right">pay</th>
@@ -1527,8 +1886,16 @@ A CEO designated by a CEO-level title, such as an executive director, stays the 
 </tr>
 </tbody>
 </table>
-<p><strong>The thesaurus overrides the model.</strong> The model picks the best-paid person, the golf professional. This is a club, and the club entry ranks the general manager above a golf pro.</p>
-<p>The model’s limits are the teacher’s: - <strong>It inherits the rules’ errors.</strong> It learned from the rules applied to full-990 filings, so it repeats what the rules get wrong there. - <strong>It does not know organization types.</strong> That is why the thesaurus runs after it. - <strong>It is less transparent than a rule.</strong> To see why it decided, compare <code>role.method</code> and run <code>resolve_roles(use_model = FALSE)</code> on the same rows.</p>
+<p><strong>The thesaurus overrides the model.</strong> The model picks
+the best-paid person, the golf professional. This is a club, and the
+club entry ranks the general manager above a golf pro.</p>
+<p>The model’s limits are the teacher’s: - <strong>It inherits the
+rules’ errors.</strong> It learned from the rules applied to full-990
+filings, so it repeats what the rules get wrong there. - <strong>It does
+not know organization types.</strong> That is why the thesaurus runs
+after it. - <strong>It is less transparent than a rule.</strong> To see
+why it decided, compare <code>role.method</code> and run
+<code>resolve_roles(use_model = FALSE)</code> on the same rows.</p>
 </div>
 <div class="section level2">
 <h2 id="putting-it-together">Putting it together<a class="anchor" aria-label="anchor" href="#putting-it-together"></a>
@@ -1584,7 +1951,7 @@ A CEO designated by a CEO-level title, such as an executive director, stays the 
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>

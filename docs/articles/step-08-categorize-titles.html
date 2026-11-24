@@ -55,6 +55,7 @@
 <li class="nav-item"><a class="nav-link" href="../articles/taxonomy.html">Taxonomy</a></li>
 <li class="nav-item"><a class="nav-link" href="../articles/performance.html">Performance</a></li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
@@ -91,7 +92,10 @@
 
     
     
-<p><strong><code><a href="../reference/categorize_titles.html">categorize_titles()</a></code></strong> attaches the taxonomy to each standardized title, adds features that describe each person’s place in their filing, and renames the columns to the tidy output schema.</p>
+<p><strong><code><a href="../reference/categorize_titles.html">categorize_titles()</a></code></strong> attaches the
+taxonomy to each standardized title, adds features that describe each
+person’s place in their filing, and renames the columns to the tidy
+output schema.</p>
 <div class="section level2">
 <h2 id="before-and-after">Before and after<a class="anchor" aria-label="anchor" href="#before-and-after"></a>
 </h2>
@@ -219,7 +223,8 @@
 <td align="left">operations</td>
 <td align="left">administration</td>
 <td align="left">43-6011</td>
-<td align="left">Executive Secretaries and Executive Administrative Assistants</td>
+<td align="left">Executive Secretaries and Executive Administrative
+Assistants</td>
 <td align="left">STAFF</td>
 <td align="left"></td>
 </tr>
@@ -279,7 +284,9 @@
 </tr>
 </tbody>
 </table>
-<p>Each title is either a job (an <code>emp.level</code> and, usually, a SOC occupation) or a board seat (a <code>board.role</code>), never both. An uncoded title (SENIOR RABBI) gets no taxonomy fields. The <a href="taxonomy.html">Taxonomy</a> article explains every category.</p>
+<p>Each title is either a job (an <code>emp.level</code> and, usually, a
+SOC occupation) or a board seat (a <code>board.role</code>), never both.
+An uncoded title (SENIOR RABBI) gets no taxonomy fields. The <a href="taxonomy.html">Taxonomy</a> article explains every category.</p>
 </div>
 <div class="section level2">
 <h2 id="what-it-does">What it does<a class="anchor" aria-label="anchor" href="#what-it-does"></a>
@@ -306,13 +313,16 @@
 <td>
 <code>domain.category</code>, <code>domain.label</code>
 </td>
-<td>the functional area (executive / general management, operations / finance, industry-specific / medical, …)</td>
+<td>the functional area (executive / general management, operations /
+finance, industry-specific / medical, …)</td>
 </tr>
 <tr class="even">
 <td>
-<code>major.group</code> … <code>detailed.occupation</code>, <code>soc.label</code>
+<code>major.group</code> … <code>detailed.occupation</code>,
+<code>soc.label</code>
 </td>
-<td>the 2018 BLS Standard Occupational Classification code, at four levels</td>
+<td>the 2018 BLS Standard Occupational Classification code, at four
+levels</td>
 </tr>
 <tr class="odd">
 <td><code>emp.level</code></td>
@@ -320,13 +330,18 @@
 </tr>
 <tr class="even">
 <td><code>board.role</code></td>
-<td>for a board seat: CHAIR, VICE CHAIR, SECRETARY, SECRETARY TREASURER, TREASURER or MEMBER</td>
+<td>for a board seat: CHAIR, VICE CHAIR, SECRETARY, SECRETARY TREASURER,
+TREASURER or MEMBER</td>
 </tr>
 <tr class="odd">
 <td>
-<code>emp</code>, <code>ceo</code>, <code>c.level</code>, <code>mgr</code>, <code>spec</code>, <code>board</code>, <code>pres</code>, <code>vp</code>, <code>sec</code>, <code>treas</code>, <code>mem</code>
+<code>emp</code>, <code>ceo</code>, <code>c.level</code>,
+<code>mgr</code>, <code>spec</code>, <code>board</code>,
+<code>pres</code>, <code>vp</code>, <code>sec</code>,
+<code>treas</code>, <code>mem</code>
 </td>
-<td>legacy 0/1 flags, derived from <code>emp.level</code> and <code>board.role</code>
+<td>legacy 0/1 flags, derived from <code>emp.level</code> and
+<code>board.role</code>
 </td>
 </tr>
 </tbody>
@@ -335,14 +350,26 @@
 <div class="section level3">
 <h3 id="engineered-features">Engineered features<a class="anchor" aria-label="anchor" href="#engineered-features"></a>
 </h3>
-<p><code><a href="../reference/add_features.html">add_features()</a></code> computes, within each filing (<code>object.id</code>):</p>
+<p><code><a href="../reference/add_features.html">add_features()</a></code> computes, within each filing
+(<code>object.id</code>):</p>
 <ul>
-<li>each person’s pay and hours: <code>tot.comp</code>, <code>tot.hours</code> (and versions that include related organizations), <code>pay.rank</code>, <code>hours.rank</code>, <code>pay.pct.of.max</code>, <code>pay.pct.of.tot</code>, <code>hours.pct.of.max</code>;</li>
-<li>the filing’s make-up: <code>num.dtk</code> (people), <code>num.titles</code>, <code>num.paid</code>, <code>num.fte</code> (40+ hours), <code>num.fte.30h</code>, <code>num.pte</code>;</li>
-<li>counts by taxonomy: <code>num.emp</code>, <code>num.board</code>, <code>num.ceos</code>, <code>num.clevel</code>, <code>num.mgr</code>, <code>num.spec</code>, <code>num.pres</code>, <code>num.vp</code>, <code>num.treas</code>, <code>num.sec</code>, <code>num.mem</code>;</li>
-<li>a person’s titles: <code>title.count</code> and <code>title.order</code> (from step 04), <code>title.mult.x</code>.</li>
+<li>each person’s pay and hours: <code>tot.comp</code>,
+<code>tot.hours</code> (and versions that include related
+organizations), <code>pay.rank</code>, <code>hours.rank</code>,
+<code>pay.pct.of.max</code>, <code>pay.pct.of.tot</code>,
+<code>hours.pct.of.max</code>;</li>
+<li>the filing’s make-up: <code>num.dtk</code> (people),
+<code>num.titles</code>, <code>num.paid</code>, <code>num.fte</code>
+(40+ hours), <code>num.fte.30h</code>, <code>num.pte</code>;</li>
+<li>counts by taxonomy: <code>num.emp</code>, <code>num.board</code>,
+<code>num.ceos</code>, <code>num.clevel</code>, <code>num.mgr</code>,
+<code>num.spec</code>, <code>num.pres</code>, <code>num.vp</code>,
+<code>num.treas</code>, <code>num.sec</code>, <code>num.mem</code>;</li>
+<li>a person’s titles: <code>title.count</code> and
+<code>title.order</code> (from step 04), <code>title.mult.x</code>.</li>
 </ul>
-<p>People with several titles are weighted so that they are not counted twice.</p>
+<p>People with several titles are weighted so that they are not counted
+twice.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">tinypartvii</span><span class="op">)</span></span>
 <span><span class="va">big</span> <span class="op">&lt;-</span> <span class="va">tinypartvii</span> <span class="op">|&gt;</span> <span class="fu">group_by</span><span class="op">(</span><span class="va">OBJECTID</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -406,13 +433,17 @@
 <tbody><tr class="odd">
 <td><code>title.taxonomy</code></td>
 <td>crosswalk (package data)</td>
-<td>for each <code>title.standard</code>: domain, SOC codes, <code>emp.level</code>, <code>board.role</code>, legacy flags</td>
+<td>for each <code>title.standard</code>: domain, SOC codes,
+<code>emp.level</code>, <code>board.role</code>, legacy flags</td>
 <td>
-<code><a href="../reference/get_title_taxonomy.html">get_title_taxonomy()</a></code> or <code>data(title.taxonomy)</code>
+<code><a href="../reference/get_title_taxonomy.html">get_title_taxonomy()</a></code> or
+<code>data(title.taxonomy)</code>
 </td>
 </tr></tbody>
 </table>
-<p>The source is <code>data-raw/crosswalks/title-taxonomy.csv</code> in the source repository. The domain vocabulary, with a description of each domain, is <code>data-raw/crosswalks/domains.csv</code>.</p>
+<p>The source is <code>data-raw/crosswalks/title-taxonomy.csv</code> in
+the source repository. The domain vocabulary, with a description of each
+domain, is <code>data-raw/crosswalks/domains.csv</code>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tax</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_title_taxonomy.html">get_title_taxonomy</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">tax</span><span class="op">)</span></span>
@@ -437,7 +468,11 @@
 <span><span class="co">#&gt; 40                                  TREASURER</span></span>
 <span><span class="co">#&gt; 48      Chief Executives       CEO           </span></span>
 <span><span class="co">#&gt; 134 Fundraising Managers   MANAGER</span></span></code></pre></div>
-<p><strong>Input:</strong> the output of step 07. <strong>Output:</strong> one row per person and title with the taxonomy fields, the status flags, the engineered features, and the title at each step (<code>title.raw</code>, <code>title.v1</code> … <code>title.v7</code>). Continue with <a href="step-09-conditional-logic.html">step 09</a>.</p>
+<p><strong>Input:</strong> the output of step 07.
+<strong>Output:</strong> one row per person and title with the taxonomy
+fields, the status flags, the engineered features, and the title at each
+step (<code>title.raw</code>, <code>title.v1</code> …
+<code>title.v7</code>). Continue with <a href="step-09-conditional-logic.html">step 09</a>.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
@@ -450,7 +485,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>

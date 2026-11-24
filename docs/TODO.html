@@ -35,6 +35,7 @@
 <li class="nav-item"><a class="nav-link" href="articles/taxonomy.html">Taxonomy</a></li>
 <li class="nav-item"><a class="nav-link" href="articles/performance.html">Performance</a></li>
 <li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
+<li class="nav-item"><a class="nav-link" href="news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="search.json"></form></li>
 <li class="nav-item dropdown">
@@ -57,6 +58,7 @@
     </div>
 
 <div id="titleclassifier--todo--maintenance-notes" class="section level1">
+
 <div class="section level2">
 <h2 id="export-surface-keep-public-vs-make-internal-deferred">Export surface: keep-public vs. make-internal (deferred)<a class="anchor" aria-label="anchor" href="#export-surface-keep-public-vs-make-internal-deferred"></a></h2>
 <p>Right now <strong>every function is exported</strong> — intentional for the beta, since being able to call and test individual helpers aids debugging and refinement. Before a 1.0 release we should shrink the public API so <code><a href="reference/titleclassifier-package.html">?titleclassifier</a></code> and the pkgdown reference show only what users need. Suggested split below. To demote a function: remove its <code>@export</code> tag (add <code>@keywords internal</code> and <code>@noRd</code> if we also want to drop the <code>.Rd</code>), then re-run <code><a href="https://devtools.r-lib.org/reference/document.html" class="external-link">devtools::document()</a></code>. No behavior change — internal functions still work package-wide.</p>
@@ -127,7 +129,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>

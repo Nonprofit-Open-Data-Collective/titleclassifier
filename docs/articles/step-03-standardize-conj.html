@@ -55,6 +55,7 @@
 <li class="nav-item"><a class="nav-link" href="../articles/taxonomy.html">Taxonomy</a></li>
 <li class="nav-item"><a class="nav-link" href="../articles/performance.html">Performance</a></li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
@@ -91,7 +92,13 @@
 
     
     
-<p>People list several roles in one title with no standard punctuation: “CEO AND BOARD PRESIDENT”, “SEC/TREAS”, “BOARD MEMBER; TREASURER”. Other titles use the same words inside a single role: “VP OF FINANCE AND ADMINISTRATION”. <strong><code><a href="../reference/standardize_conj.html">standardize_conj()</a></code></strong> turns every connector that separates two titles into a single <code>&amp;</code>, so that <a href="step-04-split-titles.html">step 04</a> can split on it, and leaves compound titles whole.</p>
+<p>People list several roles in one title with no standard punctuation:
+“CEO AND BOARD PRESIDENT”, “SEC/TREAS”, “BOARD MEMBER; TREASURER”. Other
+titles use the same words inside a single role: “VP OF FINANCE AND
+ADMINISTRATION”. <strong><code><a href="../reference/standardize_conj.html">standardize_conj()</a></code></strong> turns
+every connector that separates two titles into a single
+<code>&amp;</code>, so that <a href="step-04-split-titles.html">step
+04</a> can split on it, and leaves compound titles whole.</p>
 <div class="section level2">
 <h2 id="before-and-after">Before and after<a class="anchor" aria-label="anchor" href="#before-and-after"></a>
 </h2>
@@ -164,7 +171,10 @@
 +- standardize_slash()      a slash as separator, as "of", or as filler
 +- standardize_and()        again, for cases the steps above created
 +- standardize_separator()  ";" and "\" -&gt; &amp;</code></pre>
-<p>The decision for AND, a comma or a slash is the same: if the words on both sides are recognizable titles, the connector separates two roles and becomes <code>&amp;</code>. If the words after it are a subject (FINANCE, MARKETING), it means “of”. Otherwise it is dropped.</p>
+<p>The decision for AND, a comma or a slash is the same: if the words on
+both sides are recognizable titles, the connector separates two roles
+and becomes <code>&amp;</code>. If the words after it are a subject
+(FINANCE, MARKETING), it means “of”. Otherwise it is dropped.</p>
 </div>
 <div class="section level2">
 <h2 id="assets">Assets<a class="anchor" aria-label="anchor" href="#assets"></a>
@@ -185,7 +195,8 @@
 <tbody><tr class="odd">
 <td><code>likely.titles</code></td>
 <td>word list (package data)</td>
-<td>titles that, found on both sides of a connector, make it a separator</td>
+<td>titles that, found on both sides of a connector, make it a
+separator</td>
 <td><code>data(likely.titles)</code></td>
 </tr></tbody>
 </table>
@@ -218,7 +229,9 @@
 <span><span class="co">#&gt; [1] "DIRECTOR UNTIL"</span></span>
 <span><span class="fu"><a href="../reference/standardize_of.html">standardize_of</a></span><span class="op">(</span><span class="st">"VICE PRESIDENT AS OF"</span><span class="op">)</span>               <span class="co"># -&gt; VICE PRESIDENT SINCE</span></span>
 <span><span class="co">#&gt; [1] "VICE PRESIDENT SINCE"</span></span></code></pre></div>
-<p><strong>Input:</strong> <code>TitleTxt2</code>. <strong>Output:</strong> <code>TitleTxt3</code>, with <code>&amp;</code> as the only separator between titles. Continue with <a href="step-04-split-titles.html">step 04</a>.</p>
+<p><strong>Input:</strong> <code>TitleTxt2</code>.
+<strong>Output:</strong> <code>TitleTxt3</code>, with <code>&amp;</code>
+as the only separator between titles. Continue with <a href="step-04-split-titles.html">step 04</a>.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
@@ -231,7 +244,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>
