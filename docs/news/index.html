@@ -74,12 +74,19 @@
 <strong>Stability over time.</strong> For the 6,000 organizations followed from 2019 to 2023, 95-98% of people keep their role from one year to the next (board members: 99.2%), and in most groups 88-92% of organizations keep the same CEO.</li>
 </ul></div>
 <div class="section level3">
-<h3 id="name-parsing-for-the-validation-scripts-peopleparser-development-version">Name parsing for the validation scripts: peopleparser 0.2.0<a class="anchor" aria-label="anchor" href="#name-parsing-for-the-validation-scripts-peopleparser-development-version"></a></h3>
+<h3 id="name-parsing-for-the-validation-scripts-peopleparser-development-version">Name parsing for the validation scripts: peopleparser 0.2.4<a class="anchor" aria-label="anchor" href="#name-parsing-for-the-validation-scripts-peopleparser-development-version"></a></h3>
 <p>Name parsing is not part of the package pipeline. Only the scripts that link people across years, <code>15-panel-synthid.R</code> and <code>18-switch-labels.R</code>, parse names, using peopleparser before <code><a href="https://rdrr.io/pkg/synthid/man/link_panel.html" class="external-link">synthid::link_panel()</a></code>.</p>
-<ul><li>peopleparser is now a declared dependency: <code>peopleparser (&gt;= 0.2.0)</code> in <code>Suggests</code>, installed from the <code>v0.2.0</code> tag through <code>Remotes</code>. Both scripts stop with the install command if an older version is installed.</li>
+<ul><li>peopleparser is now a declared dependency: <code>peopleparser (&gt;= 0.2.4)</code> in <code>Suggests</code>, installed from the <code>v0.2.4</code> tag through <code>Remotes</code>. Both scripts stop with the install command if an older version is installed.</li>
 <li>Both scripts call <code>parse_names(add_nicknames = TRUE)</code> and carry the new first-name variant columns (<code>first_name_type</code>, <code>first_name_formal</code>, <code>first_name_nicknames</code>, <code>first_name_canonical</code>, <code>canonical_rule</code>) into their linked output. synthid already matches nicknames using the same variant table, so the links themselves do not change.</li>
 <li>Since peopleparser 0.2.0, <code>parse_names()</code> no longer starts its own parallel workers. Both scripts now pass <code>workers = NW</code>, so parsing still uses the script’s worker count (all cores but one by default).</li>
-<li>Rerunning either script with peopleparser 0.2.0 can change a few parses, and so a few links, compared with earlier outputs. The main causes are the 2020 Census name tables, more credential stripping, and two-word names keeping their written order. On peopleparser’s own sample of 9,608 Part VII names, 0.1.0 changed 253 first or last names and 0.2.0 changed 20 more. The baseline numbers above were produced before this update.</li>
+<li>The scripts use none of the options added in 0.2.1 (<code>classify</code>, <code>split_run_together</code>), so their calls are unchanged from 0.2.0.</li>
+<li>Rerunning either script with peopleparser 0.2.4 can change some parses, and so some links, compared with earlier outputs:
+<ul><li>0.1.0 moved to the 2020 Census name tables and strips more credentials (253 of 9,608 Part VII names changed first or last name).</li>
+<li>0.2.0 keeps two-word names in their written order (20 more changed).</li>
+<li>0.2.2 does the same for three-word names and joins a middle name to the surname only when it is a strong surname (<code>JOHN LEE SMITH</code> keeps <code>LEE</code>).</li>
+<li>0.2.3 and 0.2.4 strip trailing credentials that used to become the surname (<code>ANDREA M GORDON NMF</code>, <code>CAROL RUSSELL NP</code>).</li>
+</ul>
+Against the parses stored in synthid’s Part VII people tables, peopleparser reports that 9% of 10,000 names parse differently, most of them gender codes or a corrected name order. The baseline numbers above were produced before this update.</li>
 </ul></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
