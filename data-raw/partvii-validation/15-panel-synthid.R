@@ -29,9 +29,9 @@
 # workers = NW. Its workers load the installed peopleparser, so install it;
 # devtools::load_all() of a peopleparser checkout makes parse_names() stop.
 suppressMessages({ library(data.table); library(future); library(furrr); library(peopleparser) })
-if (packageVersion("peopleparser") < "0.2.0")
-  stop("needs peopleparser >= 0.2.0 (first-name variants, workers argument): ",
-       "remotes::install_github(\"Nonprofit-Open-Data-Collective/peopleparser@v0.2.0\")")
+if (packageVersion("peopleparser") < "0.2.4")
+  stop("needs peopleparser >= 0.2.4: ",
+       "remotes::install_github(\"Nonprofit-Open-Data-Collective/peopleparser@v0.2.4\")")
 NICK <- c("first_name_type", "first_name_formal", "first_name_nicknames", "first_name_canonical", "canonical_rule")
 PV    <- Sys.getenv("PARTVII_DIR", file.path(Sys.getenv("USERPROFILE", "~"), "Documents", "PARTVII"))
 SYN   <- normalizePath(Sys.getenv("SYNTHID_DIR", "../synthid"), winslash = "/")

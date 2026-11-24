@@ -33,14 +33,14 @@ article (`vignettes/articles/performance.Rmd`).
   members: 99.2%), and in most groups 88-92% of organizations keep the same
   CEO.
 
-## Name parsing for the validation scripts: peopleparser 0.2.0
+## Name parsing for the validation scripts: peopleparser 0.2.4
 
 Name parsing is not part of the package pipeline. Only the scripts that link
 people across years, `15-panel-synthid.R` and `18-switch-labels.R`, parse
 names, using peopleparser before `synthid::link_panel()`.
 
-* peopleparser is now a declared dependency: `peopleparser (>= 0.2.0)` in
-  `Suggests`, installed from the `v0.2.0` tag through `Remotes`. Both scripts
+* peopleparser is now a declared dependency: `peopleparser (>= 0.2.4)` in
+  `Suggests`, installed from the `v0.2.4` tag through `Remotes`. Both scripts
   stop with the install command if an older version is installed.
 * Both scripts call `parse_names(add_nicknames = TRUE)` and carry the new
   first-name variant columns (`first_name_type`, `first_name_formal`,
@@ -50,9 +50,19 @@ names, using peopleparser before `synthid::link_panel()`.
 * Since peopleparser 0.2.0, `parse_names()` no longer starts its own parallel
   workers. Both scripts now pass `workers = NW`, so parsing still uses the
   script's worker count (all cores but one by default).
-* Rerunning either script with peopleparser 0.2.0 can change a few parses,
-  and so a few links, compared with earlier outputs. The main causes are the
-  2020 Census name tables, more credential stripping, and two-word names
-  keeping their written order. On peopleparser's own sample of 9,608 Part VII
-  names, 0.1.0 changed 253 first or last names and 0.2.0 changed 20 more.
-  The baseline numbers above were produced before this update.
+* The scripts use none of the options added in 0.2.1 (`classify`,
+  `split_run_together`), so their calls are unchanged from 0.2.0.
+* Rerunning either script with peopleparser 0.2.4 can change some parses,
+  and so some links, compared with earlier outputs:
+  * 0.1.0 moved to the 2020 Census name tables and strips more credentials
+    (253 of 9,608 Part VII names changed first or last name).
+  * 0.2.0 keeps two-word names in their written order (20 more changed).
+  * 0.2.2 does the same for three-word names and joins a middle name to the
+    surname only when it is a strong surname (`JOHN LEE SMITH` keeps `LEE`).
+  * 0.2.3 and 0.2.4 strip trailing credentials that used to become the
+    surname (`ANDREA M GORDON NMF`, `CAROL RUSSELL NP`).
+
+  Against the parses stored in synthid's Part VII people tables, peopleparser
+  reports that 9% of 10,000 names parse differently, most of them gender
+  codes or a corrected name order. The baseline numbers above were produced
+  before this update.
