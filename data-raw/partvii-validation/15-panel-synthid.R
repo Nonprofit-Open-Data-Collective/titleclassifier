@@ -24,12 +24,14 @@
 #
 #   Rscript data-raw/partvii-validation/15-panel-synthid.R [workers]
 
-# peopleparser is attached, not just called with ::, so that its parallel
-# workers find the census.names lookup table (get_census_data uses utils::data)
+# Since peopleparser 0.2.0, parse_names() runs in the current session unless it
+# is given workers = (or a future plan is set), so the call below passes
+# workers = NW. Its workers load the installed peopleparser, so install it;
+# devtools::load_all() of a peopleparser checkout makes parse_names() stop.
 suppressMessages({ library(data.table); library(future); library(furrr); library(peopleparser) })
-if (packageVersion("peopleparser") < "0.1.0")
-  stop("needs peopleparser >= 0.1.0 for first-name variants: ",
-       "remotes::install_github(\"Nonprofit-Open-Data-Collective/peopleparser@v0.1.0\")")
+if (packageVersion("peopleparser") < "0.2.0")
+  stop("needs peopleparser >= 0.2.0 (first-name variants, workers argument): ",
+       "remotes::install_github(\"Nonprofit-Open-Data-Collective/peopleparser@v0.2.0\")")
 NICK <- c("first_name_type", "first_name_formal", "first_name_nicknames", "first_name_canonical", "canonical_rule")
 PV    <- Sys.getenv("PARTVII_DIR", file.path(Sys.getenv("USERPROFILE", "~"), "Documents", "PARTVII"))
 SYN   <- normalizePath(Sys.getenv("SYNTHID_DIR", "../synthid"), winslash = "/")
@@ -41,7 +43,7 @@ d <- rbindlist(lapply(list.files(file.path(PV, "sample"), "^classified-\\d{4}\\.
 d <- d[!is.na(dtk.name) & nzchar(trimws(dtk.name))]
 message(sprintf("panel: %d person-years in %d organizations", nrow(d), uniqueN(d$EIN2)))
 
-parsed <- peopleparser::parse_names(d$dtk.name, add_nicknames = TRUE)
+parsed <- peopleparser::parse_names(d$dtk.name, add_nicknames = TRUE, workers = NW)
 pn <- data.table(
   ein = d$EIN2, org.name = d$org.name, taxyr = as.character(d$taxyr), name = parsed$name,
   OBJECTID = d$object.id, TABLE_ID = d$person.id,
