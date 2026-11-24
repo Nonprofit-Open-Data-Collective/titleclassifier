@@ -55,6 +55,7 @@
 <li class="active nav-item"><a class="nav-link" href="../articles/taxonomy.html">Taxonomy</a></li>
 <li class="nav-item"><a class="nav-link" href="../articles/performance.html">Performance</a></li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
@@ -91,7 +92,8 @@
 
     
     
-<p>Every title that <code>titleclassifier</code> codes ends up described along four dimensions:</p>
+<p>Every title that <code>titleclassifier</code> codes ends up described
+along four dimensions:</p>
 <table class="table">
 <colgroup>
 <col width="25%">
@@ -115,31 +117,40 @@
 <tr class="even">
 <td><strong>Domain and occupation</strong></td>
 <td>
-<code>domain.category</code>, <code>domain.label</code>, SOC codes</td>
+<code>domain.category</code>, <code>domain.label</code>, SOC
+codes</td>
 <td>taxonomy, step 08</td>
 <td>what area of work is it in?</td>
 </tr>
 <tr class="odd">
 <td><strong>Level or board role</strong></td>
 <td>
-<code>emp.level</code> or <code>board.role</code> (title only); <code>role.final</code>, <code>role.board</code>, <code>role.ceo</code> (resolved)</td>
+<code>emp.level</code> or <code>board.role</code> (title only);
+<code>role.final</code>, <code>role.board</code>, <code>role.ceo</code>
+(resolved)</td>
 <td>taxonomy, step 08; rules and model, step 09</td>
 <td>how senior is the person, and are they staff or board?</td>
 </tr>
 <tr class="even">
 <td><strong>Qualifiers</strong></td>
 <td>
-<code>strata</code>, <code>strata.label</code>, status flags, multiple-title fields</td>
+<code>strata</code>, <code>strata.label</code>, status flags,
+multiple-title fields</td>
 <td>crosswalk, steps 04, 06 and 07</td>
 <td>rank within the title, status in the role, other roles held</td>
 </tr>
 </tbody>
 </table>
-<p>The standard titles and their taxonomy are package data: <code><a href="../reference/get_title_taxonomy.html">get_title_taxonomy()</a></code> returns one row per standard title (377 titles), and <code><a href="../reference/get_title_xwalk.html">get_title_xwalk()</a></code> maps the 9,301 known variants onto them.</p>
+<p>The standard titles and their taxonomy are package data:
+<code><a href="../reference/get_title_taxonomy.html">get_title_taxonomy()</a></code> returns one row per standard title
+(377 titles), and <code><a href="../reference/get_title_xwalk.html">get_title_xwalk()</a></code> maps the 9,301 known
+variants onto them.</p>
 <div class="section level2">
 <h2 id="domains">Domains<a class="anchor" aria-label="anchor" href="#domains"></a>
 </h2>
-<p>The domain says what area of an organization the title works in. It has two levels: four broad categories, plus a fifth for entries that are not job titles, and a label within each category.</p>
+<p>The domain says what area of an organization the title works in. It
+has two levels: four broad categories, plus a fifth for entries that are
+not job titles, and a label within each category.</p>
 <table class="table">
 <colgroup>
 <col width="50%">
@@ -160,15 +171,18 @@
 </tr>
 <tr class="odd">
 <td>operations</td>
-<td>support functions found in any organization: finance, fundraising, HR, technology, …</td>
+<td>support functions found in any organization: finance, fundraising,
+HR, technology, …</td>
 </tr>
 <tr class="even">
 <td>industry-specific</td>
-<td>work specific to the organization’s field: medical, education, religion, …</td>
+<td>work specific to the organization’s field: medical, education,
+religion, …</td>
 </tr>
 <tr class="odd">
 <td>non-job title</td>
-<td>no title, boilerplate in place of one, or text that is not a job</td>
+<td>no title, boilerplate in place of one, or text that is not a
+job</td>
 </tr>
 </tbody>
 </table>
@@ -196,7 +210,8 @@
 <td align="left">governance</td>
 <td align="left">board</td>
 <td align="right">6</td>
-<td align="left">BOARD MEMBER, BOARD PRESIDENT, BOARD SECRETARY, BOARD TREASURER</td>
+<td align="left">BOARD MEMBER, BOARD PRESIDENT, BOARD SECRETARY, BOARD
+TREASURER</td>
 </tr>
 <tr class="odd">
 <td align="left">operations</td>
@@ -208,7 +223,8 @@
 <td align="left">operations</td>
 <td align="left">marketing and communications</td>
 <td align="right">30</td>
-<td align="left">LIAISON, MARKETING, COMMUNICATIONS, DIRECTOR OF SALES</td>
+<td align="left">LIAISON, MARKETING, COMMUNICATIONS, DIRECTOR OF
+SALES</td>
 </tr>
 <tr class="odd">
 <td align="left">operations</td>
@@ -232,7 +248,8 @@
 <td align="left">operations</td>
 <td align="left">programs and events</td>
 <td align="right">17</td>
-<td align="left">PROGRAMS, CIVIC DIRECTOR, YOUTH DIRECTOR, OUTREACH MANAGER</td>
+<td align="left">PROGRAMS, CIVIC DIRECTOR, YOUTH DIRECTOR, OUTREACH
+MANAGER</td>
 </tr>
 <tr class="odd">
 <td align="left">operations</td>
@@ -250,19 +267,22 @@
 <td align="left">operations</td>
 <td align="left">technology</td>
 <td align="right">11</td>
-<td align="left">WEBMASTER, TECHNOLOGY, CHIEF DIGITAL OFFICER, DIRECTOR OF TECHNOLOGY</td>
+<td align="left">WEBMASTER, TECHNOLOGY, CHIEF DIGITAL OFFICER, DIRECTOR
+OF TECHNOLOGY</td>
 </tr>
 <tr class="even">
 <td align="left">operations</td>
 <td align="left">human resources</td>
 <td align="right">8</td>
-<td align="left">RECRUITMENT, HUMAN RESOURCES, TRAINING OFFICER, TRAINING DIRECTOR</td>
+<td align="left">RECRUITMENT, HUMAN RESOURCES, TRAINING OFFICER,
+TRAINING DIRECTOR</td>
 </tr>
 <tr class="odd">
 <td align="left">operations</td>
 <td align="left">research and development</td>
 <td align="right">5</td>
-<td align="left">SCIENTIST, SENIOR FELLOW, DIRECTOR OF RESEARCH, CHIEF SCIENTIFIC OFFICER</td>
+<td align="left">SCIENTIST, SENIOR FELLOW, DIRECTOR OF RESEARCH, CHIEF
+SCIENTIFIC OFFICER</td>
 </tr>
 <tr class="even">
 <td align="left">operations</td>
@@ -316,13 +336,15 @@
 <td align="left">industry-specific</td>
 <td align="left">engineering and architecture</td>
 <td align="right">4</td>
-<td align="left">ARCHITECT, CHIEF ARCHITECT, DIRECTOR OF ENGINEERING, CHIEF MECHANICAL OFFICER</td>
+<td align="left">ARCHITECT, CHIEF ARCHITECT, DIRECTOR OF ENGINEERING,
+CHIEF MECHANICAL OFFICER</td>
 </tr>
 <tr class="odd">
 <td align="left">industry-specific</td>
 <td align="left">hospitality</td>
 <td align="right">4</td>
-<td align="left">CHEF, BARTENDER, EXECUTIVE CHEF, VICE PRESIDENT OF HOSPITALITY</td>
+<td align="left">CHEF, BARTENDER, EXECUTIVE CHEF, VICE PRESIDENT OF
+HOSPITALITY</td>
 </tr>
 <tr class="even">
 <td align="left">industry-specific</td>
@@ -334,7 +356,8 @@
 <td align="left">industry-specific</td>
 <td align="left">housing</td>
 <td align="right">2</td>
-<td align="left">VICE PRESIDENT OF HOUSING, VICE PRESIDENT OF HOUSING OPERATIONS</td>
+<td align="left">VICE PRESIDENT OF HOUSING, VICE PRESIDENT OF HOUSING
+OPERATIONS</td>
 </tr>
 <tr class="even">
 <td align="left">industry-specific</td>
@@ -362,12 +385,18 @@
 </tr>
 </tbody>
 </table>
-<p>The source of the domain vocabulary is <code>data-raw/crosswalks/domains.csv</code>.</p>
+<p>The source of the domain vocabulary is
+<code>data-raw/crosswalks/domains.csv</code>.</p>
 </div>
 <div class="section level2">
 <h2 id="occupation-codes-soc">Occupation codes (SOC)<a class="anchor" aria-label="anchor" href="#occupation-codes-soc"></a>
 </h2>
-<p>Job titles carry a 2018 BLS <a href="https://www.bls.gov/soc/" class="external-link">Standard Occupational Classification</a> code at four levels: <code>major.group</code> (two digits), <code>minor.group</code>, <code>broad.group</code> and <code>detailed.occupation</code>, with the occupation’s name in <code>soc.label</code>. Board seats have no SOC code: serving on a board is not an occupation.</p>
+<p>Job titles carry a 2018 BLS <a href="https://www.bls.gov/soc/" class="external-link">Standard Occupational Classification</a>
+code at four levels: <code>major.group</code> (two digits),
+<code>minor.group</code>, <code>broad.group</code> and
+<code>detailed.occupation</code>, with the occupation’s name in
+<code>soc.label</code>. Board seats have no SOC code: serving on a board
+is not an occupation.</p>
 <table class="table">
 <colgroup>
 <col width="7%">
@@ -403,7 +432,8 @@
 <tr class="odd">
 <td align="left">19</td>
 <td align="right">5</td>
-<td align="left">Historians, Life, Physical, and Social Science Occupations</td>
+<td align="left">Historians, Life, Physical, and Social Science
+Occupations</td>
 </tr>
 <tr class="even">
 <td align="left">21</td>
@@ -433,7 +463,9 @@
 <tr class="odd">
 <td align="left">33</td>
 <td align="right">4</td>
-<td align="left">Firefighters, First-Line Supervisors of Security Workers, First-Line Supervisors of Firefighting and Prevention Workers</td>
+<td align="left">Firefighters, First-Line Supervisors of Security
+Workers, First-Line Supervisors of Firefighting and Prevention
+Workers</td>
 </tr>
 <tr class="even">
 <td align="left">35</td>
@@ -443,7 +475,9 @@
 <tr class="odd">
 <td align="left">37</td>
 <td align="right">4</td>
-<td align="left">Janitors and Cleaners, Except Maids and Housekeeping Cleaners, First-Line Supervisors of Landscaping, Lawn Service, and Groundskeeping Workers</td>
+<td align="left">Janitors and Cleaners, Except Maids and Housekeeping
+Cleaners, First-Line Supervisors of Landscaping, Lawn Service, and
+Groundskeeping Workers</td>
 </tr>
 <tr class="even">
 <td align="left">39</td>
@@ -458,12 +492,14 @@
 <tr class="even">
 <td align="left">43</td>
 <td align="right">14</td>
-<td align="left">Dispatchers, Office Clerks, General, Secretaries and Administrative Assistants</td>
+<td align="left">Dispatchers, Office Clerks, General, Secretaries and
+Administrative Assistants</td>
 </tr>
 <tr class="odd">
 <td align="left">49</td>
 <td align="right">2</td>
-<td align="left">Maintenance and Repair Workers, General, Electrical Power-Line Installers and Repairers</td>
+<td align="left">Maintenance and Repair Workers, General, Electrical
+Power-Line Installers and Repairers</td>
 </tr>
 <tr class="even">
 <td align="left">53</td>
@@ -472,7 +508,8 @@
 </tr>
 </tbody>
 </table>
-<p>Most leadership titles fall in major group 11, Management Occupations.</p>
+<p>Most leadership titles fall in major group 11, Management
+Occupations.</p>
 </div>
 <div class="section level2">
 <h2 id="roles">Roles<a class="anchor" aria-label="anchor" href="#roles"></a>
@@ -480,9 +517,16 @@
 <p>A person’s role is the central output. It has two forms:</p>
 <ul>
 <li>
-<strong>Title only</strong> (step 08): the taxonomy gives each standard title either an employee level (<code>emp.level</code>) or a board role (<code>board.role</code>), never both. This is what the title says on its own.</li>
+<strong>Title only</strong> (step 08): the taxonomy gives each
+standard title either an employee level (<code>emp.level</code>) or a
+board role (<code>board.role</code>), never both. This is what the title
+says on its own.</li>
 <li>
-<strong>Resolved</strong> (step 09): <code>role.final</code> is the role after reading the filer’s checkboxes, pay and hours. A PRESIDENT is a board seat by title, but a paid, full-time president with no other CEO is the CEO. See <a href="step-09-conditional-logic.html">step 09</a>.</li>
+<strong>Resolved</strong> (step 09): <code>role.final</code> is the
+role after reading the filer’s checkboxes, pay and hours. A PRESIDENT is
+a board seat by title, but a paid, full-time president with no other CEO
+is the CEO. See <a href="step-09-conditional-logic.html">step
+09</a>.</li>
 </ul>
 <div class="section level3">
 <h3 id="employee-levels">Employee levels<a class="anchor" aria-label="anchor" href="#employee-levels"></a>
@@ -506,7 +550,8 @@
 </tr>
 <tr class="even">
 <td><strong>OFFICER</strong></td>
-<td>C-suite below the CEO, vice presidents, deputies, general counsel</td>
+<td>C-suite below the CEO, vice presidents, deputies, general
+counsel</td>
 <td>FOUNDER, PROVOST, DEPUTY CEO, FIRE CHIEF</td>
 </tr>
 <tr class="odd">
@@ -516,7 +561,8 @@
 </tr>
 <tr class="even">
 <td><strong>PROFESSIONAL</strong></td>
-<td>highly paid non-managerial experts: physicians, lawyers, professors, coaches</td>
+<td>highly paid non-managerial experts: physicians, lawyers, professors,
+coaches</td>
 <td>ACTOR, COACH, NURSE, PILOT</td>
 </tr>
 <tr class="odd">
@@ -579,7 +625,15 @@
 </tr>
 </tbody>
 </table>
-<p>When step 09 turns an employee title into a board seat (an unpaid VICE PRESIDENT who ticks only the trustee box, say), <code>role.board</code> is read from the title: VICE PRESIDENT becomes VICE CHAIR. A past president or president-elect holds a seat (MEMBER), not the office. A person whose title was split into a secretary row and a treasurer row is a SECRETARY TREASURER. (An ADJUTANT is a board secretary by title. In a veterans organization a paid full-time adjutant is often the chief executive, which step 09’s CEO thesaurus picks up.)</p>
+<p>When step 09 turns an employee title into a board seat (an unpaid
+VICE PRESIDENT who ticks only the trustee box, say),
+<code>role.board</code> is read from the title: VICE PRESIDENT becomes
+VICE CHAIR. A past president or president-elect holds a seat (MEMBER),
+not the office. A person whose title was split into a secretary row and
+a treasurer row is a SECRETARY TREASURER. (An ADJUTANT is a board
+secretary by title. In a veterans organization a paid full-time adjutant
+is often the chief executive, which step 09’s CEO thesaurus picks
+up.)</p>
 </div>
 <div class="section level3">
 <h3 id="resolved-role-columns">Resolved role columns<a class="anchor" aria-label="anchor" href="#resolved-role-columns"></a>
@@ -603,13 +657,22 @@
 </tr>
 <tr class="even">
 <td><code>role.board</code></td>
-<td>CHAIR, VICE CHAIR, SECRETARY TREASURER, SECRETARY, TREASURER, MEMBER</td>
-<td>for BOARD: the seat; for a person with several board titles, the most senior</td>
+<td>CHAIR, VICE CHAIR, SECRETARY TREASURER, SECRETARY, TREASURER,
+MEMBER</td>
+<td>for BOARD: the seat; for a person with several board titles, the
+most senior</td>
 </tr>
 <tr class="odd">
 <td><code>role.ceo</code></td>
 <td>designated, co-ceo, interim, imputed, thesaurus, model</td>
-<td>for CEO: how the CEO was found. <code>designated</code>: a CEO-level title in an officer position. <code>co-ceo</code>: two or more designated. <code>interim</code>: designated and flagged interim. <code>imputed</code>: no CEO title, the highest-paid plausible leader (or the one unpaid full-time leader). <code>thesaurus</code>: a title that runs this kind of organization, from the CEO thesaurus (an adjutant, a club’s general manager). <code>model</code>: named by the 990-EZ model</td>
+<td>for CEO: how the CEO was found. <code>designated</code>: a CEO-level
+title in an officer position. <code>co-ceo</code>: two or more
+designated. <code>interim</code>: designated and flagged interim.
+<code>imputed</code>: no CEO title, the highest-paid plausible leader
+(or the one unpaid full-time leader). <code>thesaurus</code>: a title
+that runs this kind of organization, from the CEO thesaurus (an
+adjutant, a club’s general manager). <code>model</code>: named by the
+990-EZ model</td>
 </tr>
 <tr class="even">
 <td><code>role.position</code></td>
@@ -624,22 +687,28 @@
 <tr class="even">
 <td><code>role.method</code></td>
 <td>rules, model</td>
-<td>which classifier decided (<a href="classifiers.html">Rules and models</a>)</td>
+<td>which classifier decided (<a href="classifiers.html">Rules and
+models</a>)</td>
 </tr>
 <tr class="odd">
 <td><code>org.leadership</code></td>
 <td>designated, thesaurus, imputed, model, board_governed, no_paid</td>
-<td>per filing: how its chief executive was found. <code>board_governed</code>: people are paid but none is a plausible leader. <code>no_paid</code>: nobody is paid</td>
+<td>per filing: how its chief executive was found.
+<code>board_governed</code>: people are paid but none is a plausible
+leader. <code>no_paid</code>: nobody is paid</td>
 </tr>
 <tr class="even">
 <td><code>org.type</code></td>
-<td>veterans, fraternal, union, club, coop, trust, cemetery, university, ministry, fire, orchestra, or NA</td>
-<td>per filing: the kind of organization the CEO thesaurus is keyed on</td>
+<td>veterans, fraternal, union, club, coop, trust, cemetery, university,
+ministry, fire, orchestra, or NA</td>
+<td>per filing: the kind of organization the CEO thesaurus is keyed
+on</td>
 </tr>
 <tr class="odd">
 <td><code>org.type.source</code></td>
 <td>supplied, codes, inferred, none</td>
-<td>where <code>org.type</code> came from: a supplied column, BMF NTEE and 501(c) codes, or the name and titles</td>
+<td>where <code>org.type</code> came from: a supplied column, BMF NTEE
+and 501(c) codes, or the name and titles</td>
 </tr>
 </tbody>
 </table>
@@ -648,7 +717,10 @@
 <div class="section level2">
 <h2 id="strata">Strata<a class="anchor" aria-label="anchor" href="#strata"></a>
 </h2>
-<p>The crosswalk drops rank and type words from the standard title and records them in <code>strata</code> and <code>strata.label</code>, so that SENIOR VICE PRESIDENT OF MARKETING and VICE PRESIDENT OF MARKETING share one standard but stay distinguishable.</p>
+<p>The crosswalk drops rank and type words from the standard title and
+records them in <code>strata</code> and <code>strata.label</code>, so
+that SENIOR VICE PRESIDENT OF MARKETING and VICE PRESIDENT OF MARKETING
+share one standard but stay distinguishable.</p>
 <table class="table">
 <colgroup>
 <col width="33%">
@@ -665,7 +737,8 @@
 <tr class="odd">
 <td>superior</td>
 <td>a higher rank of the title</td>
-<td>head, chair, chief, grand, senior, exalted, general, leading, managing, executive, executive senior</td>
+<td>head, chair, chief, grand, senior, exalted, general, leading,
+managing, executive, executive senior</td>
 </tr>
 <tr class="even">
 <td>subordinate</td>
@@ -675,12 +748,14 @@
 <tr class="odd">
 <td>duplex</td>
 <td>a second kind of seat alongside the usual one</td>
-<td>co, adhoc, advisory, at large, emeritus, honorary, alternate, exofficio</td>
+<td>co, adhoc, advisory, at large, emeritus, honorary, alternate,
+exofficio</td>
 </tr>
 <tr class="even">
 <td>committee</td>
 <td>a committee seat, and which committee</td>
-<td>hr, vp, chair, member, finance, lifetime, executive, marketing, management, supervisory</td>
+<td>hr, vp, chair, member, finance, lifetime, executive, marketing,
+management, supervisory</td>
 </tr>
 <tr class="odd">
 <td>regional</td>
@@ -713,7 +788,8 @@
 <div class="section level2">
 <h2 id="status-flags">Status flags<a class="anchor" aria-label="anchor" href="#status-flags"></a>
 </h2>
-<p>Step 06 removes status qualifiers from the title and records each as a 0/1 flag. A person’s flags apply to all of their titles.</p>
+<p>Step 06 removes status qualifiers from the title and records each as
+a 0/1 flag. A person’s flags apply to all of their titles.</p>
 <table class="table">
 <colgroup>
 <col width="33%">
@@ -748,7 +824,8 @@
 </tr>
 <tr class="odd">
 <td><code>partial.x</code></td>
-<td>part of the year only: a date, or outgoing, future or partial-year status</td>
+<td>part of the year only: a date, or outgoing, future or partial-year
+status</td>
 <td>PARTIAL YEAR, PART YEAR</td>
 </tr>
 <tr class="even">
@@ -810,16 +887,32 @@
 <div class="section level2">
 <h2 id="people-with-several-roles">People with several roles<a class="anchor" aria-label="anchor" href="#people-with-several-roles"></a>
 </h2>
-<p>A Part VII entry can name several roles, and a person can sit on the board and work on staff. These are recorded at three levels:</p>
+<p>A Part VII entry can name several roles, and a person can sit on the
+board and work on staff. These are recorded at three levels:</p>
 <ul>
 <li>
-<strong>Several titles in one entry.</strong> “PRESIDENT &amp; TREASURER” becomes two rows (step 04). <code>title.count</code> is the person’s number of titles, <code>title.order</code> this title’s position, and <code>title.mult.x</code> marks people with more than one. Both rows carry the person’s pay and hours once; the per-filing counts (<code>num.dtk</code>, <code>num.board</code>, …) weight them so that the person is counted once.</li>
+<strong>Several titles in one entry.</strong> “PRESIDENT &amp;
+TREASURER” becomes two rows (step 04). <code>title.count</code> is the
+person’s number of titles, <code>title.order</code> this title’s
+position, and <code>title.mult.x</code> marks people with more than one.
+Both rows carry the person’s pay and hours once; the per-filing counts
+(<code>num.dtk</code>, <code>num.board</code>, …) weight them so that
+the person is counted once.</li>
 <li>
-<strong>One role per person.</strong> Step 09 resolves each person to a single <code>role.final</code>, using their most senior position, and marks one of their rows with <code>role.primary = TRUE</code>. Count people with <code>role.primary</code>; count titles without it.</li>
+<strong>One role per person.</strong> Step 09 resolves each person
+to a single <code>role.final</code>, using their most senior position,
+and marks one of their rows with <code>role.primary = TRUE</code>. Count
+people with <code>role.primary</code>; count titles without it.</li>
 <li>
-<strong>Dual roles.</strong> A person who ticks both the trustee and officer boxes holds a board seat and an office (<code>role.position = "board_officer"</code>). They are BOARD unless paid in an executive title, in which case they are CEO or OFFICER: a working board member who runs the organization.</li>
+<strong>Dual roles.</strong> A person who ticks both the trustee and
+officer boxes holds a board seat and an office
+(<code>role.position = "board_officer"</code>). They are BOARD unless
+paid in an executive title, in which case they are CEO or OFFICER: a
+working board member who runs the organization.</li>
 <li>
-<strong>Shared roles.</strong> <code>co.x</code> marks a shared title (CO-CHAIR). Two or more designated CEOs in a filing are each <code>role.ceo = "co-ceo"</code>.</li>
+<strong>Shared roles.</strong> <code>co.x</code> marks a shared
+title (CO-CHAIR). Two or more designated CEOs in a filing are each
+<code>role.ceo = "co-ceo"</code>.</li>
 </ul>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">tinypartvii</span><span class="op">)</span></span>
@@ -871,7 +964,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>

@@ -2,6 +2,9 @@ url: https://nonprofit-open-data-collective.github.io/titleclassifier/
 
 destination: docs
 
+# no Markdown copies of each page or llms.txt (pkgdown >= 2.2)
+llm-docs: false
+
 template:
   bootstrap: 5
   light-switch: true

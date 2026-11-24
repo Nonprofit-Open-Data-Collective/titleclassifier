@@ -55,6 +55,7 @@
 <li class="nav-item"><a class="nav-link" href="../articles/taxonomy.html">Taxonomy</a></li>
 <li class="nav-item"><a class="nav-link" href="../articles/performance.html">Performance</a></li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
@@ -91,11 +92,22 @@
 
     
     
-<p>With the separators reduced to <code>&amp;</code>, <strong><code><a href="../reference/split_titles.html">split_titles()</a></code></strong> turns a row that holds several roles into one row per role. The person’s name, pay, hours and checkboxes repeat on each row; <code>Num.Titles</code> numbers the rows. A few common pairs are collapsed to one title rather than split: “PRESIDENT &amp; CEO” is a CEO.</p>
+<p>With the separators reduced to <code>&amp;</code>,
+<strong><code><a href="../reference/split_titles.html">split_titles()</a></code></strong> turns a row that holds
+several roles into one row per role. The person’s name, pay, hours and
+checkboxes repeat on each row; <code>Num.Titles</code> numbers the rows.
+A few common pairs are collapsed to one title rather than split:
+“PRESIDENT &amp; CEO” is a CEO.</p>
 <div class="section level2">
 <h2 id="before-and-after">Before and after<a class="anchor" aria-label="anchor" href="#before-and-after"></a>
 </h2>
 <table class="table">
+<colgroup>
+<col width="12%">
+<col width="37%">
+<col width="37%">
+<col width="13%">
+</colgroup>
 <thead><tr class="header">
 <th align="left">person</th>
 <th align="left">before (TitleTxt3)</th>
@@ -205,12 +217,17 @@
 +- apply_misc_split_rules()  fixes for edge cases (PRESIDENT &amp; CEO -&gt; CEO, ...)
 +- identify_split_num()      how many titles does the string hold?
 +- remove_first_split()      peel off the text before the first "&amp;", repeat</code></pre>
-<p>Later steps work on one title per row. The person-level view comes back in <a href="step-08-categorize-titles.html">step 08</a>, which counts each person once (<code>title.count</code>, <code>title.order</code>), and <a href="step-09-conditional-logic.html">step 09</a>, which gives each person one role.</p>
+<p>Later steps work on one title per row. The person-level view comes
+back in <a href="step-08-categorize-titles.html">step 08</a>, which
+counts each person once (<code>title.count</code>,
+<code>title.order</code>), and <a href="step-09-conditional-logic.html">step 09</a>, which gives each
+person one role.</p>
 </div>
 <div class="section level2">
 <h2 id="assets">Assets<a class="anchor" aria-label="anchor" href="#assets"></a>
 </h2>
-<p>Step 04 uses no crosswalk or word list: it relies on the <code>&amp;</code> separators that step 03 wrote.</p>
+<p>Step 04 uses no crosswalk or word list: it relies on the
+<code>&amp;</code> separators that step 03 wrote.</p>
 </div>
 <div class="section level2">
 <h2 id="try-it">Try it<a class="anchor" aria-label="anchor" href="#try-it"></a>
@@ -238,7 +255,10 @@
 <span><span class="co">#&gt; 71              ANNA ALVARADO          1 SECRETARY &amp; TREASURER SECRETARY</span></span>
 <span><span class="co">#&gt; 71.1            ANNA ALVARADO          2 SECRETARY &amp; TREASURER TREASURER</span></span>
 <span><span class="co">#&gt; 96         RABBI DANIEL ZARET          1       PRESIDENT &amp; CEO       CEO</span></span></code></pre></div>
-<p><strong>Input:</strong> <code>TitleTxt3</code>. <strong>Output:</strong> one row per title, with the single title in <code>TitleTxt4</code> and its position within the person’s entry in <code>Num.Titles</code>. Continue with <a href="step-05-standardize-spelling.html">step 05</a>.</p>
+<p><strong>Input:</strong> <code>TitleTxt3</code>.
+<strong>Output:</strong> one row per title, with the single title in
+<code>TitleTxt4</code> and its position within the person’s entry in
+<code>Num.Titles</code>. Continue with <a href="step-05-standardize-spelling.html">step 05</a>.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
@@ -251,7 +271,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>

@@ -59,6 +59,7 @@
 <li class="nav-item"><a class="nav-link" href="articles/taxonomy.html">Taxonomy</a></li>
 <li class="nav-item"><a class="nav-link" href="articles/performance.html">Performance</a></li>
 <li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
+<li class="nav-item"><a class="nav-link" href="news/index.html">Changelog</a></li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
@@ -92,44 +93,44 @@
 <col width="25%">
 <col width="25%">
 </colgroup>
-<thead><tr class="header">
+<thead><tr>
 <th>Filed title</th>
 <th>Standard title</th>
 <th>Domain</th>
 <th>Role</th>
 </tr></thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td>Pres. &amp; CEO</td>
 <td>CEO</td>
 <td>executive / general management</td>
 <td>CEO</td>
 </tr>
-<tr class="even">
+<tr>
 <td>Sec/Treas</td>
 <td>BOARD SECRETARY + BOARD TREASURER</td>
 <td>governance / board</td>
 <td>BOARD (SECRETARY)</td>
 </tr>
-<tr class="odd">
+<tr>
 <td>Board Member (thru 6/2023)</td>
 <td>BOARD MEMBER, flagged partial year</td>
 <td>governance / board</td>
 <td>BOARD (MEMBER)</td>
 </tr>
-<tr class="even">
+<tr>
 <td>Exec. V.P.</td>
 <td>EXECUTIVE VICE PRESIDENT</td>
 <td>executive / general management</td>
 <td>OFFICER</td>
 </tr>
-<tr class="odd">
+<tr>
 <td>Dir of Development</td>
 <td>DIRECTOR OF DEVELOPMENT</td>
 <td>operations / fundraising and membership</td>
 <td>MANAGER</td>
 </tr>
-<tr class="even">
+<tr>
 <td>Staff Physician</td>
 <td>DOCTOR</td>
 <td>industry-specific / medical</td>
@@ -143,21 +144,21 @@
 </h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("pak")</span></span>
-<span><span class="fu">pak</span><span class="fu">::</span><span class="fu">pak</span><span class="op">(</span><span class="st">"Nonprofit-Open-Data-Collective/titleclassifier"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"Nonprofit-Open-Data-Collective/titleclassifier"</span><span class="op">)</span></span></code></pre></div>
 <p>To classify 990-EZ returns with the role model, also install xgboost (optional; without it the rules decide):</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">pak</span><span class="fu">::</span><span class="fu">pak</span><span class="op">(</span><span class="st">"xgboost"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"xgboost"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="get-a-part-vii-table">Get a Part VII table<a class="anchor" aria-label="anchor" href="#get-a-part-vii-table"></a>
 </h2>
 <p>Part VII tables are published in the NCCS efile store, one file per tax year. The <a href="https://github.com/Nonprofit-Open-Data-Collective/panel990" class="external-link">panel990</a> package downloads and reads them:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">pak</span><span class="fu">::</span><span class="fu">pak</span><span class="op">(</span><span class="st">"Nonprofit-Open-Data-Collective/panel990"</span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">panel990</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"Nonprofit-Open-Data-Collective/panel990"</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nonprofit-open-data-collective.github.io/panel990/" class="external-link">panel990</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">dl</span>   <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/panel990/man/download_tables.html" class="external-link">download_tables</a></span><span class="op">(</span>years <span class="op">=</span> <span class="fl">2022</span>, tables <span class="op">=</span> <span class="st">"F9-P07-T01-COMPENSATION"</span><span class="op">)</span></span>
-<span><span class="va">pvii</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/panel990/man/read_tables.html" class="external-link">read_tables</a></span><span class="op">(</span><span class="va">dl</span><span class="op">)</span><span class="op">$</span><span class="va">tables</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="va">dl</span>   <span class="op">&lt;-</span> <span class="fu"><a href="https://nonprofit-open-data-collective.github.io/panel990/reference/download_tables.html" class="external-link">download_tables</a></span><span class="op">(</span>years <span class="op">=</span> <span class="fl">2022</span>, tables <span class="op">=</span> <span class="st">"F9-P07-T01-COMPENSATION"</span><span class="op">)</span></span>
+<span><span class="va">pvii</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://nonprofit-open-data-collective.github.io/panel990/reference/read_tables.html" class="external-link">read_tables</a></span><span class="op">(</span><span class="va">dl</span><span class="op">)</span><span class="op">$</span><span class="va">tables</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">pvii</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 5073368      37</span></span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
@@ -267,7 +268,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>

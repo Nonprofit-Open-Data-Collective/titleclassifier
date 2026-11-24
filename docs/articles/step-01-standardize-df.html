@@ -55,6 +55,7 @@
 <li class="nav-item"><a class="nav-link" href="../articles/taxonomy.html">Taxonomy</a></li>
 <li class="nav-item"><a class="nav-link" href="../articles/performance.html">Performance</a></li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
@@ -91,7 +92,10 @@
 
     
     
-<p><strong><code><a href="../reference/standardize_df.html">standardize_df()</a></code></strong> turns a raw Part VII compensation table into the form the rest of the pipeline expects: upper-case titles without periods, numeric hours and pay, and 0/1 checkboxes.</p>
+<p><strong><code><a href="../reference/standardize_df.html">standardize_df()</a></code></strong> turns a raw Part VII
+compensation table into the form the rest of the pipeline expects:
+upper-case titles without periods, numeric hours and pay, and 0/1
+checkboxes.</p>
 <div class="section level2">
 <h2 id="before-and-after">Before and after<a class="anchor" aria-label="anchor" href="#before-and-after"></a>
 </h2>
@@ -231,16 +235,24 @@
 +- to_numeric()    hours and the pay components as numbers, blanks as 0
 +- to_boole()      checkboxes: "X" -&gt; 1, blank -&gt; 0; NA on a 990-EZ, which has no boxes</code></pre>
 <ul>
-<li>Keeps the filed title as <code>TITLE_RAW</code> and gives each row a <code>PERSONID</code>.</li>
-<li>Sums hours at the organization and at related organizations into <code>TOT.HOURS</code>.</li>
-<li>Sums pay from the organization and from related organizations, other compensation and benefits into <code>TOT.COMP</code>.</li>
-<li>Converts the trustee, officer, key-employee, highly-compensated and former checkboxes to 1 or 0. A 990-EZ has no checkboxes, so on a 990-EZ they are NA.</li>
+<li>Keeps the filed title as <code>TITLE_RAW</code> and gives each row a
+<code>PERSONID</code>.</li>
+<li>Sums hours at the organization and at related organizations into
+<code>TOT.HOURS</code>.</li>
+<li>Sums pay from the organization and from related organizations, other
+compensation and benefits into <code>TOT.COMP</code>.</li>
+<li>Converts the trustee, officer, key-employee, highly-compensated and
+former checkboxes to 1 or 0. A 990-EZ has no checkboxes, so on a 990-EZ
+they are NA.</li>
 </ul>
 </div>
 <div class="section level2">
 <h2 id="assets">Assets<a class="anchor" aria-label="anchor" href="#assets"></a>
 </h2>
-<p>Step 01 uses no crosswalk or word list. It needs the Part VII column names of the NCCS efile schema (<code>F9_07_COMP_DTK_*</code>). See the <a href="workflow.html">Workflow</a> article for fetching the tables. <code>tinypartvii</code> is a demo slice in that schema:</p>
+<p>Step 01 uses no crosswalk or word list. It needs the Part VII column
+names of the NCCS efile schema (<code>F9_07_COMP_DTK_*</code>). See the
+<a href="workflow.html">Workflow</a> article for fetching the tables.
+<code>tinypartvii</code> is a demo slice in that schema:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">tinypartvii</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">tinypartvii</span><span class="op">)</span></span>
@@ -275,7 +287,10 @@
 <span><span class="co">#&gt; 4                     MEMBER                    MEMBER        20        0</span></span>
 <span><span class="co">#&gt; 5                  PRESIDENT                 PRESIDENT         0        0</span></span>
 <span><span class="co">#&gt; 6                         VP                        VP        10        0</span></span></code></pre></div>
-<p><strong>Input:</strong> a raw Part VII data frame (NCCS efile schema). <strong>Output:</strong> the same rows with cleaned title text, numeric hours and pay, 0/1 checkboxes and a <code>PERSONID</code>. Continue with <a href="step-02-remove-dates.html">step 02</a>.</p>
+<p><strong>Input:</strong> a raw Part VII data frame (NCCS efile
+schema). <strong>Output:</strong> the same rows with cleaned title text,
+numeric hours and pay, 0/1 checkboxes and a <code>PERSONID</code>.
+Continue with <a href="step-02-remove-dates.html">step 02</a>.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
@@ -288,7 +303,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>

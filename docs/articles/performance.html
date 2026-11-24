@@ -55,6 +55,7 @@
 <li class="nav-item"><a class="nav-link" href="../articles/taxonomy.html">Taxonomy</a></li>
 <li class="active nav-item"><a class="nav-link" href="../articles/performance.html">Performance</a></li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
@@ -91,14 +92,21 @@
 
     
     
-<p>How much of Part VII does <code>titleclassifier</code> code, and how often is it right? This page reports two kinds of evidence:</p>
+<p>How much of Part VII does <code>titleclassifier</code> code, and how
+often is it right? This page reports two kinds of evidence:</p>
 <ul>
 <li>
-<strong>Coverage</strong>: the share of titles that reach a standard title, measured on a large stratified sample of recent filings.</li>
+<strong>Coverage</strong>: the share of titles that reach a standard
+title, measured on a large stratified sample of recent filings.</li>
 <li>
-<strong>Accuracy</strong>: agreement with hand labels, broken out by form, role, pay and organization size. It is backed by checks that need no labels: agreement with the filer’s own checkboxes, and stability over time.</li>
+<strong>Accuracy</strong>: agreement with hand labels, broken out by
+form, role, pay and organization size. It is backed by checks that need
+no labels: agreement with the filer’s own checkboxes, and stability over
+time.</li>
 </ul>
-<p>Every number comes from the scripts in <code>data-raw/partvii-validation/</code> of the source repository, run on the NCCS efile tables (release <code>efile_v2_3</code>).</p>
+<p>Every number comes from the scripts in
+<code>data-raw/partvii-validation/</code> of the source repository, run
+on the NCCS efile tables (release <code>efile_v2_3</code>).</p>
 <div class="section level2">
 <h2 id="the-data">The data<a class="anchor" aria-label="anchor" href="#the-data"></a>
 </h2>
@@ -116,39 +124,73 @@
 <tbody>
 <tr class="odd">
 <td><strong>Calibration sample</strong></td>
-<td>60,520 filings from 2019-2023: 6,000 organizations followed for all five years, plus 6,000 fresh organizations a year. Stratified by form (990, 990-EZ), size (total expenses, Part I) and number of paid people, with design weights</td>
+<td>60,520 filings from 2019-2023: 6,000 organizations followed for all
+five years, plus 6,000 fresh organizations a year. Stratified by form
+(990, 990-EZ), size (total expenses, Part I) and number of paid people,
+with design weights</td>
 <td>coverage; checkbox agreement; stability over time</td>
 </tr>
 <tr class="even">
 <td><strong>Hand-labeled set</strong></td>
-<td>316 people on 2010-2012 filings (276 on full 990s, 40 on 990-EZs), drawn to over-represent hard cases: paid presidents, board-run organizations, managers. Each was labeled from the whole filing in two independent passes, with disagreements settled by hand</td>
+<td>316 people on 2010-2012 filings (276 on full 990s, 40 on 990-EZs),
+drawn to over-represent hard cases: paid presidents, board-run
+organizations, managers. Each was labeled from the whole filing in two
+independent passes, with disagreements settled by hand</td>
 <td>accuracy</td>
 </tr>
 <tr class="odd">
 <td><strong>Form switchers</strong></td>
-<td>23,931 people at organizations that filed a 990-EZ one year and a full 990 the next (or the reverse), matched across years with <a href="https://github.com/Nonprofit-Open-Data-Collective/synthid" class="external-link">synthid</a>. Their full-990 role, decided with the checkboxes, labels their 990-EZ year</td>
+<td>23,931 people at organizations that filed a 990-EZ one year and a
+full 990 the next (or the reverse), matched across years with <a href="https://github.com/Nonprofit-Open-Data-Collective/synthid" class="external-link">synthid</a>.
+Their full-990 role, decided with the checkboxes, labels their 990-EZ
+year</td>
 <td>accuracy on 990-EZ returns</td>
 </tr>
 <tr class="even">
 <td><strong>CEO label set</strong></td>
-<td>750 filings from 2019-2023: 150 organizations over five years, in 14 strata chosen where the chief executive is hard to find (unions, clubs, lodges, veterans posts, universities, ministries, fire departments, multi-CEO systems…) plus ordinary charities. Two independent labelers gave every row a role and board role, and named each filing’s chief executive; the scores use the rows where they agree</td>
+<td>750 filings from 2019-2023: 150 organizations over five years, in 14
+strata chosen where the chief executive is hard to find (unions, clubs,
+lodges, veterans posts, universities, ministries, fire departments,
+multi-CEO systems…) plus ordinary charities. Two independent labelers
+gave every row a role and board role, and named each filing’s chief
+executive; the scores use the rows where they agree</td>
 <td>chief executive and board role, by kind of organization</td>
 </tr>
 <tr class="odd">
 <td><strong>Held-out CEO set</strong></td>
-<td>126 filings (2021 and 2023) from 64 other organizations of the 8 types the CEO thesaurus covers, labeled the same way. The thesaurus was written before they were labeled; one threshold was adjusted after</td>
+<td>126 filings (2021 and 2023) from 64 other organizations of the 8
+types the CEO thesaurus covers, labeled the same way. The thesaurus was
+written before they were labeled; one threshold was adjusted after</td>
 <td>the same, on organizations the rules were not written from</td>
 </tr>
 </tbody>
 </table>
-<p>Size bins are total expenses: $0, $1-150k, $150k-1m, $1m-10m, $10m-100m and $100m+. Filers reporting $0 get their own bin because they almost never pay anyone.</p>
+<p>Size bins are total expenses: $0, $1-150k, $150k-1m, $1m-10m,
+$10m-100m and $100m+. Filers reporting $0 get their own bin because they
+almost never pay anyone.</p>
 </div>
 <div class="section level2">
 <h2 id="coverage">Coverage<a class="anchor" aria-label="anchor" href="#coverage"></a>
 </h2>
-<p>A title row is <strong>coded</strong> when step 07 finds its standard title, by exact match in the crosswalk or by a pattern rule. It is <strong>uncoded</strong> when neither applies. A few coded titles are not job titles at all (blank, “SEE SCHEDULE O”).</p>
-<p>Weighted to the population of 2019-2023 filers, <strong>96.1% of title rows are coded</strong> (95.3% exactly and 0.8% by pattern) and <strong>3.7% remain uncoded</strong>. Every person still gets a role: step 09 resolves an uncoded title from the checkboxes, pay and hours.</p>
-<table class="table">
+<p>A title row is <strong>coded</strong> when step 07 finds its standard
+title, by exact match in the crosswalk or by a pattern rule. It is
+<strong>uncoded</strong> when neither applies. A few coded titles are
+not job titles at all (blank, “SEE SCHEDULE O”).</p>
+<p>Weighted to the population of 2019-2023 filers, <strong>96.1% of
+title rows are coded</strong> (95.3% exactly and 0.8% by pattern) and
+<strong>3.7% remain uncoded</strong>. Every person still gets a role:
+step 09 resolves an uncoded title from the checkboxes, pay and
+hours.</p>
+<table style="width:100%;" class="table">
+<colgroup>
+<col width="25%">
+<col width="12%">
+<col width="6%">
+<col width="8%">
+<col width="15%">
+<col width="8%">
+<col width="21%">
+</colgroup>
 <thead><tr class="header">
 <th align="left">Filings</th>
 <th align="right">Title rows</th>
@@ -197,7 +239,10 @@
 </tr>
 </tbody>
 </table>
-<p>By size, coverage is highest for small and mid-sized organizations and lowest for the largest. Their Part VII lists many specialized staff, and their titles often include unit or system names (“HOSPITAL GROUP RETURN SCHE”, “MEMBER AND PHYSICIAN AND NGPG”):</p>
+<p>By size, coverage is highest for small and mid-sized organizations
+and lowest for the largest. Their Part VII lists many specialized staff,
+and their titles often include unit or system names (“HOSPITAL GROUP
+RETURN SCHE”, “MEMBER AND PHYSICIAN AND NGPG”):</p>
 <table class="table">
 <thead><tr class="header">
 <th align="left">Form</th>
@@ -293,7 +338,11 @@
 </tr>
 </tbody>
 </table>
-<p>Uncoded titles are a long tail. The 20,723 distinct uncoded titles in the sample are mostly one-offs: the 25 most common account for only 2.3% of uncoded rows. The most common are truncations, acronyms and organization names (“TAF”, “AHF”, “CLASS A POS”, “DIRECTOR CATALIGHT”), which a crosswalk entry would fix one at a time.</p>
+<p>Uncoded titles are a long tail. The 20,723 distinct uncoded titles in
+the sample are mostly one-offs: the 25 most common account for only 2.3%
+of uncoded rows. The most common are truncations, acronyms and
+organization names (“TAF”, “AHF”, “CLASS A POS”, “DIRECTOR CATALIGHT”),
+which a crosswalk entry would fix one at a time.</p>
 <table class="table">
 <thead><tr class="header">
 <th align="left">Uncoded title</th>
@@ -346,8 +395,14 @@
 <div class="section level2">
 <h2 id="accuracy">Accuracy<a class="anchor" aria-label="anchor" href="#accuracy"></a>
 </h2>
-<p>Accuracy is the share of hand-labeled people whose resolved role (<code>role.final</code>) matches the label. A person labeled DUAL (a board seat and a paid executive job at once) counts as correct when resolved as CEO, OFFICER or BOARD.</p>
-<p><strong>Overall, 90.4% of 312 labeled people get the right role.</strong> Board members on the right seat: 98.2% of correctly identified board members also get the right board role (chair, vice chair, secretary, treasurer or member).</p>
+<p>Accuracy is the share of hand-labeled people whose resolved role
+(<code>role.final</code>) matches the label. A person labeled DUAL (a
+board seat and a paid executive job at once) counts as correct when
+resolved as CEO, OFFICER or BOARD.</p>
+<p><strong>Overall, 90.4% of 312 labeled people get the right
+role.</strong> Board members on the right seat: 98.2% of correctly
+identified board members also get the right board role (chair, vice
+chair, secretary, treasurer or member).</p>
 <div class="section level3">
 <h3 id="by-form">By form<a class="anchor" aria-label="anchor" href="#by-form"></a>
 </h3>
@@ -373,7 +428,9 @@
 </tr>
 </tbody>
 </table>
-<p>On 990-EZ returns the model replaced rules that scored 82.5% on the same 40 people. On 23,931 form switchers, the model agrees with the full-990-year role more often than the rules do:</p>
+<p>On 990-EZ returns the model replaced rules that scored 82.5% on the
+same 40 people. On 23,931 form switchers, the model agrees with the
+full-990-year role more often than the rules do:</p>
 <table class="table">
 <thead><tr class="header">
 <th align="left">990-EZ people</th>
@@ -408,12 +465,18 @@
 </tr>
 </tbody>
 </table>
-<p>These scores come from the first version of the model, before the switchers were added to its training data. The shipped model, scored on the half of the switchers it did not train on, agrees 96.7% (rules 95.1%) on people with the same title in both years, and 74.0% (rules 63.6%) on those not on the board.</p>
+<p>These scores come from the first version of the model, before the
+switchers were added to its training data. The shipped model, scored on
+the half of the switchers it did not train on, agrees 96.7% (rules
+95.1%) on people with the same title in both years, and 74.0% (rules
+63.6%) on those not on the board.</p>
 </div>
 <div class="section level3">
 <h3 id="by-role">By role<a class="anchor" aria-label="anchor" href="#by-role"></a>
 </h3>
-<p>Recall is the share of people with a given label who get that role. Precision is the share of people given a role whose label matches it.</p>
+<p>Recall is the share of people with a given label who get that role.
+Precision is the share of people given a role whose label matches
+it.</p>
 <table class="table">
 <thead><tr class="header">
 <th align="left">Role</th>
@@ -474,7 +537,12 @@
 </tr>
 </tbody>
 </table>
-<p>Board members, who are most of the people on Part VII, and chief executives are identified reliably. The hard boundaries are below the CEO: officers versus managers versus staff. Those lines depend on duties that a title, pay and hours only partly reveal. STAFF is the weakest role: few people on Part VII are rank-and-file staff, and step 09 assigns STAFF to more people than are labeled so.</p>
+<p>Board members, who are most of the people on Part VII, and chief
+executives are identified reliably. The hard boundaries are below the
+CEO: officers versus managers versus staff. Those lines depend on duties
+that a title, pay and hours only partly reveal. STAFF is the weakest
+role: few people on Part VII are rank-and-file staff, and step 09
+assigns STAFF to more people than are labeled so.</p>
 </div>
 <div class="section level3">
 <h3 id="by-pay">By pay<a class="anchor" aria-label="anchor" href="#by-pay"></a>
@@ -498,7 +566,10 @@
 </tr>
 </tbody>
 </table>
-<p>Unpaid people are almost all board members, and nearly always classified correctly. Paid people carry the hard cases: is a paid president the CEO, is a paid director a board member or a department head?</p>
+<p>Unpaid people are almost all board members, and nearly always
+classified correctly. Paid people carry the hard cases: is a paid
+president the CEO, is a paid director a board member or a department
+head?</p>
 </div>
 <div class="section level3">
 <h3 id="by-size">By size<a class="anchor" aria-label="anchor" href="#by-size"></a>
@@ -537,17 +608,23 @@
 </tr>
 </tbody>
 </table>
-<p>The labeled set has no $0 filers and only 10 people at $100m+ organizations, so the size breakdown is indicative only. The checks below cover every size at scale.</p>
+<p>The labeled set has no $0 filers and only 10 people at $100m+
+organizations, so the size breakdown is indicative only. The checks
+below cover every size at scale.</p>
 </div>
 </div>
 <div class="section level2">
 <h2 id="checks-at-scale">Checks at scale<a class="anchor" aria-label="anchor" href="#checks-at-scale"></a>
 </h2>
-<p>These checks use the calibration sample and need no labels. They measure consistency: they flag problems, but agreement does not prove the answer is right.</p>
+<p>These checks use the calibration sample and need no labels. They
+measure consistency: they flag problems, but agreement does not prove
+the answer is right.</p>
 <div class="section level3">
 <h3 id="agreement-with-the-filers-checkboxes">Agreement with the filer’s checkboxes<a class="anchor" aria-label="anchor" href="#agreement-with-the-filers-checkboxes"></a>
 </h3>
-<p>On a full 990 the filer ticks a box for each person’s position. A board title should come with the trustee box, and a paid executive title with the officer box:</p>
+<p>On a full 990 the filer ticks a box for each person’s position. A
+board title should come with the trustee box, and a paid executive title
+with the officer box:</p>
 <table style="width:100%;" class="table">
 <colgroup>
 <col width="6%">
@@ -616,12 +693,20 @@
 </tr>
 </tbody>
 </table>
-<p>Nearly every trustee box goes with a board title (92-96% at every size). The reverse is weaker at small organizations: at $1-150k only 77% of board titles carry the trustee box, because board officers there often tick only the officer box. At $100m+ only 53% of paid executive titles carry the officer box: large organizations list many vice presidents as key employees rather than corporate officers. Step 09 treats a paid executive title as an officer position with or without the box.</p>
+<p>Nearly every trustee box goes with a board title (92-96% at every
+size). The reverse is weaker at small organizations: at $1-150k only 77%
+of board titles carry the trustee box, because board officers there
+often tick only the officer box. At $100m+ only 53% of paid executive
+titles carry the officer box: large organizations list many vice
+presidents as key employees rather than corporate officers. Step 09
+treats a paid executive title as an officer position with or without the
+box.</p>
 </div>
 <div class="section level3">
 <h3 id="finding-the-chief-executive">Finding the chief executive<a class="anchor" aria-label="anchor" href="#finding-the-chief-executive"></a>
 </h3>
-<p>The share of filings that pay someone and in which step 09 names a CEO, and how the leadership was found:</p>
+<p>The share of filings that pay someone and in which step 09 names a
+CEO, and how the leadership was found:</p>
 <table class="table">
 <colgroup>
 <col width="6%">
@@ -766,13 +851,20 @@
 </tr>
 </tbody>
 </table>
-<p>Among full-990 filings that pay anyone, a CEO is named in 64% at $1-150k and over 95% from $1m up. The rest are <code>board_governed</code>: small organizations whose only paid people are a bookkeeper or a part-time helper, or whose paid president works a few hours for a stipend.</p>
+<p>Among full-990 filings that pay anyone, a CEO is named in 64% at
+$1-150k and over 95% from $1m up. The rest are
+<code>board_governed</code>: small organizations whose only paid people
+are a bookkeeper or a part-time helper, or whose paid president works a
+few hours for a stipend.</p>
 </div>
 <div class="section level3">
 <h3 id="the-chief-executive-by-kind-of-organization">The chief executive, by kind of organization<a class="anchor" aria-label="anchor" href="#the-chief-executive-by-kind-of-organization"></a>
 </h3>
-<p>Naming a CEO is not the same as naming the right one. The CEO label sets test that on 2019-2023 filings, where the labelers chose each filing’s chief executive (or none, for a board-run organization).</p>
-<p>The two labelers named the same chief executive for 98.4% of the 750 filings and 96.9% of the held-out ones.</p>
+<p>Naming a CEO is not the same as naming the right one. The CEO label
+sets test that on 2019-2023 filings, where the labelers chose each
+filing’s chief executive (or none, for a board-run organization).</p>
+<p>The two labelers named the same chief executive for 98.4% of the 750
+filings and 96.9% of the held-out ones.</p>
 <table class="table">
 <colgroup>
 <col width="26%">
@@ -913,21 +1005,35 @@
 </tr>
 </tbody>
 </table>
-<p>Step 09 names the right chief executive for <strong>88.1% of the 750 filings</strong> and for 81.7% of the held-out ones. Board seats get the right board role 98.7% of the time.</p>
+<p>Step 09 names the right chief executive for <strong>88.1% of the 750
+filings</strong> and for 81.7% of the held-out ones. Board seats get the
+right board role 98.7% of the time.</p>
 <p>Two rounds of changes were made against the 750 filings:</p>
 <ol style="list-style-type: decimal">
-<li>Rules for stipends, past presidents and unpaid full-time leaders raised the right-CEO share from 80.9% to 85.1%.</li>
-<li>The <a href="step-09-conditional-logic.html#the-ceo-thesaurus">CEO thesaurus</a> raised it to 87.6%.</li>
-<li>Letting a better-paid university president outrank a paid chancellor (F-034) raised it to 88.1%.</li>
+<li>Rules for stipends, past presidents and unpaid full-time leaders
+raised the right-CEO share from 80.9% to 85.1%.</li>
+<li>The <a href="step-09-conditional-logic.html#the-ceo-thesaurus">CEO
+thesaurus</a> raised it to 87.6%.</li>
+<li>Letting a better-paid university president outrank a paid chancellor
+(F-034) raised it to 88.1%.</li>
 </ol>
-<p>On the held-out filings the thesaurus raised it from 79.4% to 81.7%, all of it in lodges (68.8% to 87.5%).</p>
-<p>Veterans posts are the hardest of the 750. Their adjutants, quartermasters and commanders split the work, and often the labelers name no CEO at all. Unions come next: the one in charge may be a business manager, a paid president or a secretary-treasurer.</p>
-<p>In the held-out set, ministries and universities are the weakest, each with only 14-16 filings: * a ministry run by two people, such as a married couple; * an unpaid religious president of a college; * a president who reports one hour a week while a chancellor is listed.</p>
+<p>On the held-out filings the thesaurus raised it from 79.4% to 81.7%,
+all of it in lodges (68.8% to 87.5%).</p>
+<p>Veterans posts are the hardest of the 750. Their adjutants,
+quartermasters and commanders split the work, and often the labelers
+name no CEO at all. Unions come next: the one in charge may be a
+business manager, a paid president or a secretary-treasurer.</p>
+<p>In the held-out set, ministries and universities are the weakest,
+each with only 14-16 filings: * a ministry run by two people, such as a
+married couple; * an unpaid religious president of a college; * a
+president who reports one hour a week while a chancellor is listed.</p>
 </div>
 <div class="section level3">
 <h3 id="stability-over-time">Stability over time<a class="anchor" aria-label="anchor" href="#stability-over-time"></a>
 </h3>
-<p>For the 6,000 organizations followed for five years, people were matched from one year to the next with synthid. A person’s role should rarely change from one year to the next, and neither should the CEO:</p>
+<p>For the 6,000 organizations followed for five years, people were
+matched from one year to the next with synthid. A person’s role should
+rarely change from one year to the next, and neither should the CEO:</p>
 <table class="table">
 <thead><tr class="header">
 <th align="left">Form</th>
@@ -1075,7 +1181,10 @@
 </tr>
 </tbody>
 </table>
-<p>95-98% of people keep their role from one year to the next, and in most groups 88-92% of organizations keep the same CEO. Some change is real (CEOs turn over, board members become officers), so these rates are a floor on consistency, not an error rate.</p>
+<p>95-98% of people keep their role from one year to the next, and in
+most groups 88-92% of organizations keep the same CEO. Some change is
+real (CEOs turn over, board members become officers), so these rates are
+a floor on consistency, not an error rate.</p>
 </div>
 </div>
 <div class="section level2">
@@ -1100,7 +1209,8 @@
 </tr>
 <tr class="even">
 <td>
-<code>14-panel-calibrate.R</code>, <code>15-panel-synthid.R</code>
+<code>14-panel-calibrate.R</code>,
+<code>15-panel-synthid.R</code>
 </td>
 <td>checkbox agreement, CEO coverage, stability over time</td>
 </tr>
@@ -1110,7 +1220,8 @@
 </tr>
 <tr class="even">
 <td>
-<code>18-switch-labels.R</code>, <code>20-role-model-ship.R</code>
+<code>18-switch-labels.R</code>,
+<code>20-role-model-ship.R</code>
 </td>
 <td>the form-switcher test set and the shipped model</td>
 </tr>
@@ -1122,7 +1233,8 @@
 <td>
 <code>24-ceo-sample.R</code> to <code>27-ceo-rerun.R</code>
 </td>
-<td>the CEO label sets (<code>CEO_SET=ceo-holdout</code> for the held-out one): sample, blind case files, scores</td>
+<td>the CEO label sets (<code>CEO_SET=ceo-holdout</code> for the
+held-out one): sample, blind case files, scores</td>
 </tr>
 </tbody>
 </table>
@@ -1138,7 +1250,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>

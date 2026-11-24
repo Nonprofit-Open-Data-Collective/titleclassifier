@@ -55,6 +55,7 @@
 <li class="nav-item"><a class="nav-link" href="../articles/taxonomy.html">Taxonomy</a></li>
 <li class="nav-item"><a class="nav-link" href="../articles/performance.html">Performance</a></li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
@@ -91,15 +92,29 @@
 
     
     
-<p>The pipeline is driven by two kinds of reference data: <strong>crosswalks</strong> (curated lookup tables shipped as package data) and <strong>word lists</strong> (character vectors shipped as package data used by the regex-based cleaning steps).</p>
+<p>The pipeline is driven by two kinds of reference data:
+<strong>crosswalks</strong> (curated lookup tables shipped as package
+data) and <strong>word lists</strong> (character vectors shipped as
+package data used by the regex-based cleaning steps).</p>
 <div class="section level2">
 <h2 id="crosswalks">Crosswalks<a class="anchor" aria-label="anchor" href="#crosswalks"></a>
 </h2>
-<p>The five crosswalks are package data (<code>title.xwalk</code>, <code>title.patterns</code>, <code>title.taxonomy</code>, <code>status.codes</code>, <code>ceo.thesaurus</code>). Their source is the CSV tables in <code>data-raw/crosswalks/</code> of the source repository: edit a table, then run <code>data-raw/crosswalks/build-crosswalks.R</code> to rebuild the package data. (Until October 2026 the crosswalks were kept in a Google Sheet; it is retired, and an export of every tab is archived in <code>data-raw/crosswalks/archive/</code>.)</p>
+<p>The five crosswalks are package data (<code>title.xwalk</code>,
+<code>title.patterns</code>, <code>title.taxonomy</code>,
+<code>status.codes</code>, <code>ceo.thesaurus</code>). Their source is
+the CSV tables in <code>data-raw/crosswalks/</code> of the source
+repository: edit a table, then run
+<code>data-raw/crosswalks/build-crosswalks.R</code> to rebuild the
+package data. (Until October 2026 the crosswalks were kept in a Google
+Sheet; it is retired, and an export of every tab is archived in
+<code>data-raw/crosswalks/archive/</code>.)</p>
 <div class="section level3">
 <h3 id="title-standardization-get_title_xwalk">Title standardization (<code>get_title_xwalk()</code>)<a class="anchor" aria-label="anchor" href="#title-standardization-get_title_xwalk"></a>
 </h3>
-<p>Maps every observed title <strong>variant</strong> to a canonical <code>title.standard</code>, plus a <code>strata</code> / <code>strata.label</code> for board sub-roles. Used in step 07, <code><a href="../reference/standardize_titles.html">standardize_titles()</a></code>.</p>
+<p>Maps every observed title <strong>variant</strong> to a canonical
+<code>title.standard</code>, plus a <code>strata</code> /
+<code>strata.label</code> for board sub-roles. Used in step 07,
+<code><a href="../reference/standardize_titles.html">standardize_titles()</a></code>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">xwalk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_title_xwalk.html">get_title_xwalk</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">xwalk</span><span class="op">)</span></span>
@@ -118,7 +133,12 @@
 <div class="section level3">
 <h3 id="title-patterns-get_title_patterns">Title patterns (<code>get_title_patterns()</code>)<a class="anchor" aria-label="anchor" href="#title-patterns-get_title_patterns"></a>
 </h3>
-<p>Head rules for titles the standardization crosswalk does not list: a title whose longest known prefix or suffix has a rule maps to that rule’s <code>title.standard</code> (<code>title.match</code> is <code>pattern</code>). Each rule records its <code>support</code> (titles it was learned from) and <code>precision</code>. Used in step 07, <code><a href="../reference/standardize_titles.html">standardize_titles()</a></code>.</p>
+<p>Head rules for titles the standardization crosswalk does not list: a
+title whose longest known prefix or suffix has a rule maps to that
+rule’s <code>title.standard</code> (<code>title.match</code> is
+<code>pattern</code>). Each rule records its <code>support</code>
+(titles it was learned from) and <code>precision</code>. Used in step
+07, <code><a href="../reference/standardize_titles.html">standardize_titles()</a></code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_title_patterns.html">get_title_patterns</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">pat</span><span class="op">)</span></span>
@@ -135,7 +155,10 @@
 <div class="section level3">
 <h3 id="title-taxonomy-get_title_taxonomy">Title taxonomy (<code>get_title_taxonomy()</code>)<a class="anchor" aria-label="anchor" href="#title-taxonomy-get_title_taxonomy"></a>
 </h3>
-<p>Maps each canonical <code>title.standard</code> to its taxonomy dimensions: functional <code>domain.category</code> / <code>domain.label</code>, the BLS SOC occupation codes, and its role. A title is either an employee level or a board role:</p>
+<p>Maps each canonical <code>title.standard</code> to its taxonomy
+dimensions: functional <code>domain.category</code> /
+<code>domain.label</code>, the BLS SOC occupation codes, and its role. A
+title is either an employee level or a board role:</p>
 <ul>
 <li>
 <code>emp.level</code>:
@@ -147,15 +170,25 @@
 <li>
 <code>MANAGER</code>: directors of departments, managers.</li>
 <li>
-<code>PROFESSIONAL</code>: non-managerial jobs often reported for their pay, such as physicians, lawyers, professors and coaches.</li>
+<code>PROFESSIONAL</code>: non-managerial jobs often reported for
+their pay, such as physicians, lawyers, professors and coaches.</li>
 <li>
 <code>STAFF</code>: everything else.</li>
 </ul>
 </li>
 <li>
-<code>board.role</code>: <code>CHAIR</code>, <code>VICE CHAIR</code>, <code>SECRETARY</code>, <code>SECRETARY TREASURER</code>, <code>TREASURER</code> or <code>MEMBER</code>. Board titles map to six standards, BOARD PRESIDENT through BOARD MEMBER; the combined secretary-treasurer office is kept whole.</li>
+<code>board.role</code>: <code>CHAIR</code>,
+<code>VICE CHAIR</code>, <code>SECRETARY</code>,
+<code>SECRETARY TREASURER</code>, <code>TREASURER</code> or
+<code>MEMBER</code>. Board titles map to six standards, BOARD PRESIDENT
+through BOARD MEMBER; the combined secretary-treasurer office is kept
+whole.</li>
 </ul>
-<p>The legacy flags (<code>ceo</code>, <code>c.level</code>, <code>mgr</code>, <code>spec</code>, <code>board</code>, <code>pres</code>, …) are derived from these two columns. <code>dir.vp</code> is retired. Used in step 08, <code><a href="../reference/categorize_titles.html">categorize_titles()</a></code>.</p>
+<p>The legacy flags (<code>ceo</code>, <code>c.level</code>,
+<code>mgr</code>, <code>spec</code>, <code>board</code>,
+<code>pres</code>, …) are derived from these two columns.
+<code>dir.vp</code> is retired. Used in step 08,
+<code><a href="../reference/categorize_titles.html">categorize_titles()</a></code>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tax</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_title_taxonomy.html">get_title_taxonomy</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">tax</span><span class="op">)</span></span>
@@ -194,7 +227,11 @@
 <div class="section level3">
 <h3 id="status-codes-get_status_codes">Status codes (<code>get_status_codes()</code>)<a class="anchor" aria-label="anchor" href="#status-codes-get_status_codes"></a>
 </h3>
-<p>Maps status-qualifier <strong>variants</strong> (e.g. <code>ACTING</code>, <code>EMERITUS</code>, <code>INTERIM</code>) to a standardized <code>status.qualifier</code> (e.g. <code>INTERIM</code>, <code>FORMER</code>). Used in step 06, <code><a href="../reference/gen_status_codes.html">gen_status_codes()</a></code>.</p>
+<p>Maps status-qualifier <strong>variants</strong>
+(e.g. <code>ACTING</code>, <code>EMERITUS</code>, <code>INTERIM</code>)
+to a standardized <code>status.qualifier</code>
+(e.g. <code>INTERIM</code>, <code>FORMER</code>). Used in step 06,
+<code><a href="../reference/gen_status_codes.html">gen_status_codes()</a></code>.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_status_codes.html">get_status_codes</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">sc</span><span class="op">)</span></span>
@@ -213,7 +250,14 @@
 <div class="section level3">
 <h3 id="ceo-thesaurus-get_ceo_thesaurus">CEO thesaurus (<code>get_ceo_thesaurus()</code>)<a class="anchor" aria-label="anchor" href="#ceo-thesaurus-get_ceo_thesaurus"></a>
 </h3>
-<p>Chief-executive titles by organization type: a post adjutant, a club’s general manager, a union’s business manager. Each entry is a regular expression on the cleaned title for one <code>org_type</code>, with its pay and hours thresholds. Some entries list the titles they outrank. Others (<code>not_ceo</code>) mark titles never made CEO on a stipend, such as a lodge secretary. Used in step 09, <code><a href="../reference/resolve_roles.html">resolve_roles()</a></code>. See <a href="step-09-conditional-logic.html#the-ceo-thesaurus">Step 09</a> for where the organization type comes from.</p>
+<p>Chief-executive titles by organization type: a post adjutant, a
+club’s general manager, a union’s business manager. Each entry is a
+regular expression on the cleaned title for one <code>org_type</code>,
+with its pay and hours thresholds. Some entries list the titles they
+outrank. Others (<code>not_ceo</code>) mark titles never made CEO on a
+stipend, such as a lodge secretary. Used in step 09,
+<code><a href="../reference/resolve_roles.html">resolve_roles()</a></code>. See <a href="step-09-conditional-logic.html#the-ceo-thesaurus">Step 09</a> for
+where the organization type comes from.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">th</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_ceo_thesaurus.html">get_ceo_thesaurus</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">th</span><span class="op">)</span></span>
@@ -266,7 +310,8 @@
 <div class="section level2">
 <h2 id="word-lists-package-data">Word lists (package data)<a class="anchor" aria-label="anchor" href="#word-lists-package-data"></a>
 </h2>
-<p>These character vectors are lazy-loaded package datasets used by the regex cleaning steps. Load any of them with <code><a href="https://rdrr.io/r/utils/data.html" class="external-link">data()</a></code>.</p>
+<p>These character vectors are lazy-loaded package datasets used by the
+regex cleaning steps. Load any of them with <code><a href="https://rdrr.io/r/utils/data.html" class="external-link">data()</a></code>.</p>
 <table class="table">
 <colgroup>
 <col width="33%">
@@ -367,7 +412,8 @@
 <tbody>
 <tr class="odd">
 <td><code>tinypartvii</code></td>
-<td>~81k raw Part VII rows (10,000 orgs) in the modern schema, ready for <code><a href="../reference/standardize_df.html">standardize_df()</a></code>.</td>
+<td>~81k raw Part VII rows (10,000 orgs) in the modern schema, ready for
+<code><a href="../reference/standardize_df.html">standardize_df()</a></code>.</td>
 </tr>
 <tr class="even">
 <td><code>raw.titles</code></td>
@@ -399,7 +445,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>
