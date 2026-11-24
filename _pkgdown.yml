@@ -32,7 +32,7 @@ navbar:
   type: dark
   bg: primary
   structure:
-    left:  [workflow, steps, taxonomy, performance, reference]
+    left:  [workflow, steps, taxonomy, performance, reference, news]
     right: [search, lightswitch, github]
   components:
     workflow:
